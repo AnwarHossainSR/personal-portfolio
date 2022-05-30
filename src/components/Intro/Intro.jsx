@@ -3,15 +3,15 @@ import { motion } from "framer-motion";
 import React from "react";
 import { Link } from "react-scroll";
 import boy from "../../img/boy.png";
-//import crown from "../../img/crown.png";
+import crown from "../../img/crown.png";
 import Github from "../../img/github.png";
 import glassesimoji from "../../img/glassesimoji.png";
 import Instagram from "../../img/instagram.png";
 import LinkedIn from "../../img/linkedin.png";
-//import thumbup from "../../img/thumbup.png";
+import thumbup from "../../img/thumbup.png";
 import Vector1 from "../../img/Vector1.png";
 import Vector2 from "../../img/Vector2.png";
-//import FloatinDiv from "../FloatingDiv/FloatingDiv";
+import FloatinDiv from "../FloatingDiv/FloatingDiv";
 import "./Intro.css";
 const Intro = () => {
   // Transition
@@ -64,7 +64,7 @@ const Intro = () => {
           transition={transition}
           className="floating-div"
         >
-          {/* <FloatinDiv img={crown} text1="Web" text2="Developer" /> */}
+          <FloatinDiv img={crown} text1="Web" text2="Developer" />
         </motion.div>
 
         {/* animation */}
@@ -75,7 +75,7 @@ const Intro = () => {
           className="floating-div"
         >
           {/* floatinDiv mein change hy dark mode ka */}
-          {/* <FloatinDiv img={thumbup} text1="Best Design" text2="Award" /> */}
+          <FloatinDiv img={thumbup} text1="Best Design" text2="Award" />
         </motion.div>
 
         <div className="blur" style={{ background: "rgb(238 210 255)" }}></div>
