@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import Intro from "./components/Intro/Intro";
 import Navbar from "./components/Navbar/Navbar";
+import Services from "./components/Services/Services";
 const App = () => {
   const darkMode = false;
   return (
@@ -14,6 +15,7 @@ const App = () => {
     >
       <Navbar />
       <Intro />
+      <Services />
     </div>
   );
 };
