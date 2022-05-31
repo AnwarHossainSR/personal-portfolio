@@ -1,7 +1,8 @@
 //import { themeContext } from "../../Context";
 import { motion } from "framer-motion";
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-scroll";
+import { themeContext } from "../../Context";
 import boy from "../../img/boy.png";
 import crown from "../../img/crown.png";
 import Github from "../../img/github.png";
@@ -18,8 +19,8 @@ const Intro = () => {
   const transition = { duration: 2, type: "spring" };
 
   // context
-  //const theme = useContext(themeContext);
-  const darkMode = false;
+  const theme = useContext(themeContext);
+  const darkMode = theme.state.darkMode;
 
   return (
     <div className="Intro" id="Intro">

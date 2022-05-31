@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import "./App.css";
 import Contact from "./components/Contact/Contact";
 import Experience from "./components/Experience/Experience";
@@ -9,8 +9,10 @@ import Portfolio from "./components/Portfolio/Portfolio";
 import Services from "./components/Services/Services";
 import Testimonial from "./components/Testimonials/Testimonial";
 import Works from "./components/Works/Works";
+import { themeContext } from "./Context";
 const App = () => {
-  const darkMode = false;
+  const theme = useContext(themeContext);
+  const darkMode = theme.state.darkMode;
   return (
     <div
       className="App"
