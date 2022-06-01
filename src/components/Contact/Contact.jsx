@@ -12,23 +12,21 @@ const Contact = () => {
 
     emailjs
       .sendForm(
-        "service_2mu5xtl",
-        "template_m5udu2c",
+        "service_psafvyf",
+        "template_9td2zv8",
         form.current,
-        "VLwg1ltOWvnCYAiK_"
+        "aBmlK_uW6eFlu2K9e"
       )
       .then(
         (result) => {
-          console.log(result.text);
           setDone(true);
-          form.reset();
+          form.current.reset();
         },
         (error) => {
           console.log(error.text);
         }
       );
   };
-
   return (
     <div className="contact-form" id="contact">
       {/* left side copy and paste from work section */}
