@@ -1,12 +1,12 @@
-import React, { useContext } from "react";
-import "./Services.css";
-import Card from "../Card/Card";
-import HeartEmoji from "../../img/heartemoji.png";
-import Glasses from "../../img/glasses.png";
-import Humble from "../../img/humble.png";
-import { themeContext } from "../../Context";
 import { motion } from "framer-motion";
-import Resume from './resume.pdf';
+import React, { useContext } from "react";
+import { themeContext } from "../../Context";
+import Glasses from "../../img/glasses.png";
+import HeartEmoji from "../../img/heartemoji.png";
+import Humble from "../../img/humble.png";
+import Card from "../Card/Card";
+import Resume from "./resume.pdf";
+import "./Services.css";
 
 const Services = () => {
   // context
@@ -31,7 +31,7 @@ const Services = () => {
           <br />
           ispum is simpley dummy text of printing
         </spane>
-        <a href={Resume} download>
+        <a href={Resume} blank="_" download>
           <button className="button s-button">Download CV</button>
         </a>
         <div className="blur s-blur1" style={{ background: "#ABF1FF94" }}></div>
