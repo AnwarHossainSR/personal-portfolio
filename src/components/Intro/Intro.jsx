@@ -1,6 +1,6 @@
 //import { themeContext } from "../../Context";
 import { motion } from "framer-motion";
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Link } from "react-scroll";
 import { themeContext } from "../../Context";
 import boy from "../../img/boy.png";
@@ -21,7 +21,9 @@ const Intro = () => {
   // context
   const theme = useContext(themeContext);
   const darkMode = theme.state.darkMode;
-
+  const openInNewTab = (url) => {
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
   return (
     <div className="Intro" id="Intro">
       {/* left name side */}
@@ -40,9 +42,23 @@ const Intro = () => {
         </Link>
         {/* social icons */}
         <div className="i-icons">
-          <img src={Github} alt="" />
-          <img src={LinkedIn} alt="" />
-          <img src={Instagram} alt="" />
+          <img
+            src={Github}
+            alt="github"
+            onClick={() => openInNewTab("https://github.com/AnwarHossainSR")}
+          />
+          <img
+            src={LinkedIn}
+            alt="linkdin"
+            onClick={() => openInNewTab("https://www.linkedin.com/in/anwarsr/")}
+          />
+          <img
+            src={Instagram}
+            alt="instragram"
+            onClick={() =>
+              openInNewTab("https://www.instagram.com/mahedi_hasan_sr/")
+            }
+          />
         </div>
       </div>
       {/* right image side */}

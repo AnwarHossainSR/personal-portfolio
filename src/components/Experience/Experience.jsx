@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { themeContext } from "../../Context";
 import "./Experience.css";
 const Experience = () => {
@@ -13,7 +13,7 @@ const Experience = () => {
           className="circle"
           style={{ color: darkMode ? "var(--orange)" : "" }}
         >
-          8+
+          2+
         </div>
         <span style={{ color: darkMode ? "white" : "" }}>years </span>
         <span>Experience</span>
@@ -33,7 +33,7 @@ const Experience = () => {
           className="circle"
           style={{ color: darkMode ? "var(--orange)" : "" }}
         >
-          5+
+          2+
         </div>
         <span style={{ color: darkMode ? "white" : "" }}>companies </span>
         <span>Work</span>
