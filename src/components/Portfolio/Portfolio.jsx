@@ -1,11 +1,16 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper";
 import { themeContext } from "../../Context";
+import Blog from "../../img/blog_app.png";
+import AdminDashboard from "../../img/dashboard.png";
 import Ecommerce from "../../img/ecommerce.png";
-import HOC from "../../img/hoc.png";
-import MusicApp from "../../img/musicapp.png";
-import Sidebar from "../../img/sidebar.png";
+import MovieApp from "../../img/movie_app.png";
+import PortfolioApp from "../../img/portfolio.png";
+import Reservation from "../../img/reservation.png";
+import SOcialMedia from "../../img/social_media.png";
+
 import "./Portfolio.css";
 const Portfolio = () => {
   const theme = useContext(themeContext);
@@ -18,22 +23,80 @@ const Portfolio = () => {
 
       {/* slider */}
       <Swiper
-        spaceBetween={30}
-        slidesPerView={3}
+        spaceBetween={10}
+        slidesPerView={"auto"}
+        pagination={{
+          clickable: true,
+        }}
+        modules={[Pagination]}
         grabCursor={true}
         className="portfolio-slider"
       >
         <SwiperSlide>
-          <img src={Sidebar} alt="" />
+          <img
+            src={MovieApp}
+            alt=""
+            onClick={() =>
+              window.open("https://responsivemovie-app.netlify.app/", "_blank")
+            }
+          />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={Ecommerce} alt="" />
+          <img
+            src={AdminDashboard}
+            alt=""
+            onClick={() =>
+              window.open("https://admin-uidashboard.netlify.app", "_blank")
+            }
+          />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={MusicApp} alt="" />
+          <img
+            src={PortfolioApp}
+            alt=""
+            onClick={() =>
+              window.open("https://anwarportfolio.netlify.app", "_blank")
+            }
+          />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={HOC} alt="" />
+          <img
+            src={SOcialMedia}
+            alt=""
+            onClick={() =>
+              window.open("https://social-media-site-sr.netlify.app/", "_blank")
+            }
+          />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img
+            src={Reservation}
+            alt=""
+            onClick={() =>
+              window.open("https://reservation-v1.netlify.app", "_blank")
+            }
+          />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img
+            src={Ecommerce}
+            alt=""
+            onClick={() =>
+              window.open(
+                "http://ecommerce-multi-vendor.herokuapp.com/",
+                "_blank"
+              )
+            }
+          />
+        </SwiperSlide>
+        <SwiperSlide>
+          <img
+            src={Blog}
+            alt=""
+            onClick={() =>
+              window.open("http://advanceblog.herokuapp.com/", "_blank")
+            }
+          />
         </SwiperSlide>
       </Swiper>
     </div>

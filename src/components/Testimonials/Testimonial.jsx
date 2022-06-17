@@ -1,7 +1,6 @@
-import React from "react";
-import "./Testimonial.css";
-import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "./Testimonial.css";
 
 import { Pagination } from "swiper";
 import "swiper/css/pagination";
@@ -40,14 +39,15 @@ const Testimonial = () => {
         <span>Clients always get </span>
         <span>Exceptional Work </span>
         <span>from me...</span>
-      <div className="blur t-blur1" style={{ background: "var(--purple)" }}></div>
-      <div className="blur t-blur2" style={{ background: "skyblue" }}></div>
-
+        <div
+          className="blur t-blur1"
+          style={{ background: "var(--purple)" }}
+        ></div>
+        <div className="blur t-blur2" style={{ background: "skyblue" }}></div>
       </div>
       <Swiper
-        // install Swiper modules
         modules={[Pagination]}
-        slidesPerView={1}
+        slidesPerView={2}
         pagination={{ clickable: true }}
       >
         {clients.map((client, index) => {
