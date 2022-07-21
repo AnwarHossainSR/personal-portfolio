@@ -1,10 +1,10 @@
 import { motion } from "framer-motion";
 import React, { useContext } from "react";
 import { themeContext } from "../../Context";
-import Glasses from "../../img/glasses.png";
-import HeartEmoji from "../../img/heartemoji.png";
-import Humble from "../../img/humble.png";
-import Card from "../Card/Card";
+import Glasses from "../../assets/img/glasses.png";
+import HeartEmoji from "../../assets/img/heartemoji.png";
+import Humble from "../../assets/img/humble.png";
+import Card from "../Card";
 import Resume from "./resume.pdf";
 import "./Services.css";
 
@@ -26,11 +26,11 @@ const Services = () => {
         {/* dark mode */}
         <span style={{ color: darkMode ? "white" : "" }}>My Awesome</span>
         <span>services</span>
-        <spane>
+        <span>
           Lorem ispum is simpley dummy text of printing of printing Lorem
           <br />
           ispum is simpley dummy text of printing
-        </spane>
+        </span>
         <a href={Resume} blank="_" download>
           <button className="button s-button">Download CV</button>
         </a>

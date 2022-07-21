@@ -3,16 +3,16 @@ import { motion } from "framer-motion";
 import { useContext } from "react";
 import { Link } from "react-scroll";
 import { themeContext } from "../../Context";
-import boy from "../../img/boy.png";
-import crown from "../../img/crown.png";
-import Github from "../../img/github.png";
-import glassesimoji from "../../img/glassesimoji.png";
-import Instagram from "../../img/instagram.png";
-import LinkedIn from "../../img/linkedin.png";
-import thumbup from "../../img/thumbup.png";
-import Vector1 from "../../img/Vector1.png";
-import Vector2 from "../../img/Vector2.png";
-import FloatinDiv from "../FloatingDiv/FloatingDiv";
+import boy from "../../assets/img/boy.png";
+import crown from "../../assets/img/crown.png";
+import Github from "../../assets/img/github.png";
+import glassesimoji from "../../assets/img/glassesimoji.png";
+import Instagram from "../../assets/img/instagram.png";
+import LinkedIn from "../../assets/img/linkedin.png";
+import thumbup from "../../assets/img/thumbup.png";
+import Vector1 from "../../assets/img/Vector1.png";
+import Vector2 from "../../assets/img/Vector2.png";
+import FloatinDiv from "../FloatingDiv";
 import "./Intro.css";
 const Intro = () => {
   // Transition
