@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { themeContext } from '../../Context';
+import { themeContext } from '../../context/Context';
 import './Experience.css';
 const Experience = () => {
   const theme = useContext(themeContext);

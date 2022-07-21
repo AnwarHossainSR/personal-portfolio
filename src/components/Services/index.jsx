@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import React, { useContext } from "react";
-import { themeContext } from "../../Context";
+import { themeContext } from "../../context/Context";
 import Glasses from "../../assets/img/glasses.png";
 import HeartEmoji from "../../assets/img/heartemoji.png";
 import Humble from "../../assets/img/humble.png";

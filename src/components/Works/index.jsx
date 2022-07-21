@@ -6,7 +6,7 @@ import Facebook from '../../assets/img/Facebook.png';
 import Fiverr from '../../assets/img/fiverr.png';
 import Shopify from '../../assets/img/Shopify.png';
 import Upwork from '../../assets/img/Upwork.png';
-import { themeContext } from '../../Context';
+import { themeContext } from '../../context/Context';
 import './Works.css';
 const Works = () => {
   // context

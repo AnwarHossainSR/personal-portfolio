@@ -2,7 +2,7 @@ import { useContext } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
-import { themeContext } from "../../Context";
+import { themeContext } from "../../context/Context";
 import Blog from "../../assets/img/blog_app.png";
 import AdminDashboard from "../../assets/img/dashboard.png";
 import Ecommerce from "../../assets/img/ecommerce.png";

@@ -2,7 +2,7 @@
 import { motion } from "framer-motion";
 import { useContext } from "react";
 import { Link } from "react-scroll";
-import { themeContext } from "../../Context";
+import { themeContext } from "../../context/Context";
 import boy from "../../assets/img/boy.png";
 import crown from "../../assets/img/crown.png";
 import Github from "../../assets/img/github.png";

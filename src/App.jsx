@@ -5,7 +5,7 @@ import { animateScroll as scroll } from 'react-scroll';
 import './App.css';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import { themeContext } from './Context';
+import { themeContext } from './context/Context';
 import Home from './pages/home';
 
 const App = () => {
