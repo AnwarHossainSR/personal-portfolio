@@ -3,13 +3,13 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
 import { themeContext } from "../../Context";
-import Blog from "../../img/blog_app.png";
-import AdminDashboard from "../../img/dashboard.png";
-import Ecommerce from "../../img/ecommerce.png";
-import MovieApp from "../../img/movie_app.png";
-import PortfolioApp from "../../img/portfolio.png";
-import Reservation from "../../img/reservation.png";
-import SOcialMedia from "../../img/social_media.png";
+import Blog from "../../assets/img/blog_app.png";
+import AdminDashboard from "../../assets/img/dashboard.png";
+import Ecommerce from "../../assets/img/ecommerce.png";
+import MovieApp from "../../assets/img/movie_app.png";
+import PortfolioApp from "../../assets/img/portfolio.png";
+import Reservation from "../../assets/img/reservation.png";
+import SOcialMedia from "../../assets/img/social_media.png";
 
 import "./Portfolio.css";
 const Portfolio = () => {
