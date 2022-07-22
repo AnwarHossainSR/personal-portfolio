@@ -1,17 +1,12 @@
 import { motion } from 'framer-motion';
-import React, { useContext } from 'react';
+import React from 'react';
 import Glasses from '../../assets/img/glasses.png';
 import HeartEmoji from '../../assets/img/heartemoji.png';
 import Humble from '../../assets/img/humble.png';
-import { themeContext } from '../../context/Context';
 import Card from '../Card';
 import Resume from './resume.pdf';
 
-const Services = () => {
-  // context
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
-
+const Services = ({ darkMode }) => {
   // transition
   const transition = {
     duration: 1,
@@ -26,9 +21,16 @@ const Services = () => {
         <span style={{ color: darkMode ? 'white' : '' }}>My Awesome</span>
         <span>services</span>
         <span>
-          Lorem ispum is simpley dummy text of printing of printing Lorem
+          Since beginning my journey as a freelance designer over 11 years,
           <br />
-          ispum is simpley dummy text of printing
+          I've done remote work for agencies, consulted for startups, and
+          collaborated with talented people
+          <br />
+          to create digital products for both business and consumer use. I'm
+          quietly confident,
+          <br />
+          naturally curious, and perpetually working on improving my work at a
+          time.
         </span>
         <a href={Resume} blank='_' download>
           <button className='button s-button'>Download CV</button>
@@ -46,7 +48,7 @@ const Services = () => {
           <Card
             emoji={HeartEmoji}
             heading={'Design'}
-            detail={'Figma, Sketch, Photoshop, Adobe Illustrator, Adobe xd'}
+            detail={'Figma, Sketch, Photoshop, Adobe xd'}
           />
         </motion.div>
         {/* second card */}
@@ -58,7 +60,9 @@ const Services = () => {
           <Card
             emoji={Glasses}
             heading={'Developer'}
-            detail={'Html, Css, JavaScript, React, Nodejs, Express'}
+            detail={
+              '.Net, Laravel, JavaScript, React, Nodejs, Express, Typescript'
+            }
           />
         </motion.div>
         {/* 3rd */}
@@ -71,7 +75,7 @@ const Services = () => {
             emoji={Humble}
             heading={'UI/UX'}
             detail={
-              'Lorem ispum dummy text are usually use in section where we need some random text'
+              'There some project what i have designed and developed, and also some of the project i have worked on.'
             }
             color='rgba(252, 166, 31, 0.45)'
           />
