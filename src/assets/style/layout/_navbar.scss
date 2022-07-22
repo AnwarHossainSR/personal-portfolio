@@ -49,7 +49,7 @@
         cursor: pointer;
       }
       &.active {
-        color: var(--orange);
+        color: var(--orange)!important;
       }
     }
   }

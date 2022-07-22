@@ -22,14 +22,14 @@ const Navbar = ({ darkMode }) => {
       {/* right */}
       <div className='n-right'>
         <div className='n-list'>
-          <ul style={{ listStyleType: 'none' }}>
+          <ul style={{ listStyleType: 'none' }} >
             <li>
-              <Link to='/' className={`${pathname === '/' && 'active'}`}>
+              <Link style={{ color:darkMode?'white':'' }} to='/' className={`${pathname === '/' && 'active'}`}>
                 Home
               </Link>
             </li>
             <li>
-              <Link
+              <Link style={{ color:darkMode?'white':'' }}
                 to='/portfolio'
                 className={`${pathname === '/portfolio' && 'active'}`}
               >
@@ -37,7 +37,7 @@ const Navbar = ({ darkMode }) => {
               </Link>
             </li>
             <li>
-              <Link
+              <Link style={{ color:darkMode?'white':'' }}
                 to='/blogs'
                 className={`${pathname === '/blogs' && 'active'}`}
               >
