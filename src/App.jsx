@@ -1,14 +1,14 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { AiOutlineArrowUp } from 'react-icons/ai';
-import { Route, Routes } from 'react-router-dom';
-import { animateScroll as scroll } from 'react-scroll';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
-import { themeContext } from './context/Context';
-import Blogs from './pages/blogs';
-import Contact from './pages/contact';
-import Home from './pages/home';
-import Portfolio from './pages/portfolio';
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { AiOutlineArrowUp } from "react-icons/ai";
+import { Route, Routes } from "react-router-dom";
+import { animateScroll as scroll } from "react-scroll";
+import Footer from "./components/Footer";
+import Navbar from "./components/Navbar";
+import { themeContext } from "./context/Context";
+import Blogs from "./pages/blogs";
+import Contact from "./pages/contact";
+import Home from "./pages/home";
+import Portfolio from "./pages/portfolio";
 
 const App = () => {
   const [showGoTop, setshowGoTop] = useState(false);
@@ -30,29 +30,29 @@ const App = () => {
     if (ref?.current.clientHeight < 300) {
       setshowGoTop(false);
     }
-    window.addEventListener('scroll', handleVisibleButton);
+    window.addEventListener("scroll", handleVisibleButton);
   }, [ref]);
   return (
     <div
-      className='App'
+      className="App"
       style={{
-        background: darkMode ? 'black' : '',
-        color: darkMode ? 'white' : '',
+        background: darkMode ? "black" : "",
+        color: darkMode ? "white" : "",
       }}
       ref={ref}
     >
       <Navbar darkMode={darkMode} />
       <Routes>
-        <Route path='/'>
+        <Route path="/">
           <Route index element={<Home darkMode={darkMode} />} />
-          <Route path='portfolio' element={<Portfolio darkMode={darkMode} />} />
-          <Route path='blogs' element={<Blogs darkMode={darkMode} />} />
-          <Route path='contact' element={<Contact darkMode={darkMode} />} />
+          <Route path="portfolio" element={<Portfolio darkMode={darkMode} />} />
+          <Route path="blogs" element={<Blogs darkMode={darkMode} />} />
+          <Route path="contact" element={<Contact darkMode={darkMode} />} />
         </Route>
       </Routes>
       <Footer />
       <div
-        className={`${showGoTop ? 'scroll-top-visible' : 'scroll-top-hidden'}`}
+        className={`${showGoTop ? "scroll-top-visible" : "scroll-top-hidden"}`}
         onClick={() => scroll.scrollToTop()}
       >
         <AiOutlineArrowUp />
