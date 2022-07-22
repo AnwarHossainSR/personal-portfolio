@@ -1,6 +1,5 @@
 import { useContext } from 'react';
 import { themeContext } from '../../context/Context';
-import './Experience.css';
 const Experience = () => {
   const theme = useContext(themeContext);
   const darkMode = theme.state.darkMode;

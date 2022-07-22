@@ -11,7 +11,6 @@ import PortfolioApp from "../../assets/img/portfolio.png";
 import Reservation from "../../assets/img/reservation.png";
 import SOcialMedia from "../../assets/img/social_media.png";
 
-import "./Portfolio.css";
 const Portfolio = () => {
   const theme = useContext(themeContext);
   const darkMode = theme.state.darkMode;

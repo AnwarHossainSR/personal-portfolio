@@ -1,49 +1,22 @@
-import "swiper/css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "./Testimonial.css";
+import 'swiper/css';
+import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { Pagination } from "swiper";
-import "swiper/css/pagination";
-import profilePic1 from "../../assets/img/profile1.jpg";
-import profilePic2 from "../../assets/img/profile2.jpg";
-import profilePic3 from "../../assets/img/profile3.jpg";
-import profilePic4 from "../../assets/img/profile4.jpg";
+import { Pagination } from 'swiper';
+import 'swiper/css/pagination';
+import { clients } from '../../constant/Clients';
 
 const Testimonial = () => {
-  const clients = [
-    {
-      img: profilePic1,
-      review:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex officiis molestiae quod tempora laudantium, cumque error a nisi placeat quae exercitationem, maiores reiciendis! Eaque dicta minima, iure maiores dolorum sed.",
-    },
-    {
-      img: profilePic2,
-      review:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex officiis molestiae quod tempora laudantium, cumque error a nisi placeat quae exercitationem, maiores reiciendis! Eaque dicta minima, iure maiores dolorum sed.",
-    },
-    {
-      img: profilePic3,
-      review:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex officiis molestiae quod tempora laudantium, cumque error a nisi placeat quae exercitationem, maiores reiciendis! Eaque dicta minima, iure maiores dolorum sed.",
-    },
-    {
-      img: profilePic4,
-      review:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ex officiis molestiae quod tempora laudantium, cumque error a nisi placeat quae exercitationem, maiores reiciendis! Eaque dicta minima, iure maiores dolorum sed.",
-    },
-  ];
-
   return (
-    <div className="t-wrapper" id="testimonial">
-      <div className="t-heading">
+    <div className='t-wrapper' id='testimonial'>
+      <div className='t-heading'>
         <span>Clients always get </span>
         <span>Exceptional Work </span>
         <span>from me...</span>
         <div
-          className="blur t-blur1"
-          style={{ background: "var(--purple)" }}
+          className='blur t-blur1'
+          style={{ background: 'var(--purple)' }}
         ></div>
-        <div className="blur t-blur2" style={{ background: "skyblue" }}></div>
+        <div className='blur t-blur2' style={{ background: 'skyblue' }}></div>
       </div>
       <Swiper
         modules={[Pagination]}
@@ -53,8 +26,8 @@ const Testimonial = () => {
         {clients.map((client, index) => {
           return (
             <SwiperSlide key={index}>
-              <div className="testimonial">
-                <img src={client.img} alt="" />
+              <div className='testimonial'>
+                <img src={client.img} alt='' />
                 <span>{client.review}</span>
               </div>
             </SwiperSlide>

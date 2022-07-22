@@ -3,7 +3,6 @@ import Gitub from '@iconscout/react-unicons/icons/uil-github';
 import Insta from '@iconscout/react-unicons/icons/uil-instagram';
 import React from 'react';
 import Wave from '../../assets/img/wave.png';
-import './Footer.css';
 
 const Footer = () => {
   const handleClick = (value) => {
@@ -16,19 +15,19 @@ const Footer = () => {
         <span>anwarmahedisr@gmail.com</span>
         <div className='f-icons'>
           <Insta
-            color='white'
+            color='red'
             size={'3rem'}
             onClick={() =>
               handleClick('https://www.instagram.com/mahedi_hasan_sr/?hl=en')
             }
           />
           <Facebook
-            color='white'
+            color='blue'
             size={'3rem'}
             onClick={() => handleClick('https://www.facebook.com/MahediSR007')}
           />
           <Gitub
-            color='white'
+            color='black'
             size={'3rem'}
             onClick={() => handleClick('https://github.com/AnwarHossainSR')}
           />
