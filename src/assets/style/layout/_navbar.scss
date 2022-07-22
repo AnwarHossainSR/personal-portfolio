@@ -34,9 +34,16 @@
   margin-right: 4rem;
 }
 
-.n-list > ul :hover {
-  color: var(--orange);
-  cursor: pointer;
+.n-list > ul {
+  li {
+    a {
+      color: var(--orange);
+      &:hover {
+        color: var(--black);
+        cursor: pointer;
+      }
+    }
+  }
 }
 
 .n-button {

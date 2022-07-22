@@ -2,7 +2,7 @@ import { useContext } from "react";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper";
-import { themeContext } from "../../Context";
+import { themeContext } from "../../context/Context";
 import Blog from "../../assets/img/blog_app.png";
 import AdminDashboard from "../../assets/img/dashboard.png";
 import Ecommerce from "../../assets/img/ecommerce.png";
@@ -11,7 +11,6 @@ import PortfolioApp from "../../assets/img/portfolio.png";
 import Reservation from "../../assets/img/reservation.png";
 import SOcialMedia from "../../assets/img/social_media.png";
 
-import "./Portfolio.css";
 const Portfolio = () => {
   const theme = useContext(themeContext);
   const darkMode = theme.state.darkMode;

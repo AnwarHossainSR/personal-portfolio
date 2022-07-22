@@ -5,8 +5,10 @@ import { animateScroll as scroll } from 'react-scroll';
 import './App.css';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
-import { themeContext } from './Context';
+import { themeContext } from './context/Context';
+import Blogs from './pages/blogs';
 import Home from './pages/home';
+import Portfolio from './pages/portfolio';
 
 const App = () => {
   const [showGoTop, setshowGoTop] = useState(false);
@@ -43,11 +45,8 @@ const App = () => {
       <Routes>
         <Route path='/'>
           <Route index element={<Home />} />
-          {/* <Route path='teams' element={<Teams />}>
-          <Route path=':teamId' element={<Team />} />
-          <Route path='new' element={<NewTeamForm />} />
-          <Route index element={<LeagueStandings />} />
-        </Route> */}
+          <Route path='portfolio' element={<Portfolio />} />
+          <Route path='blogs' element={<Blogs />} />
         </Route>
       </Routes>
       <Footer />

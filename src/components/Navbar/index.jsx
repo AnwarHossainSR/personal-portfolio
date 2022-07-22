@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Toggle from '../Toggle';
-import './Navbar.css';
 const navbar = () => {
   return (
     <div className='n-wrapper' id='Navbar'>
