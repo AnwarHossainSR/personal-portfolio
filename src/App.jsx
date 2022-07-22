@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AiOutlineArrowUp } from 'react-icons/ai';
 import { Route, Routes } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
-import './App.css';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import { themeContext } from './context/Context';
