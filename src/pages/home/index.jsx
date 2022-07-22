@@ -6,11 +6,11 @@ import Portfolio from '../../components/Portfolio';
 import Services from '../../components/Services';
 import Testimonial from '../../components/Testimonials';
 import Works from '../../components/Works';
-const Home = () => {
+const Home = ({ darkMode }) => {
   return (
     <>
       <Intro />
-      <Services />
+      <Services darkMode={darkMode} />
       <Experience />
       <Works />
       <Portfolio />

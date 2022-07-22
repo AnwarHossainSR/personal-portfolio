@@ -1,0 +1,93 @@
+.portfolio-page {
+    padding-bottom: 5rem;
+
+    &__header {
+        display: flex;
+        flex-direction: column;
+        //gap: 0.25rem;
+
+        &--text {
+            text-align: center;
+            color: var(--black);
+            font-weight: bold;
+            font-size: 3rem;
+        }
+
+        &--filter {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: .4rem;
+
+            span {
+                //background: rgb(255, 235, 235);
+                width: fit-content;
+                min-height: .1rem;
+                padding: .6rem;
+                border-radius: .3rem;
+
+                &:hover {
+                    cursor: pointer;
+                    background: linear-gradient(180deg, #fdc50f 26.71%, #fb982f 99.36%);
+
+                }
+
+                &.active {
+                    background: linear-gradient(180deg, #fdc50f 26.71%, #fb982f 99.36%);
+                    ;
+                }
+            }
+        }
+    }
+
+    &__body {
+        &--content {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: left;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+
+            &--item {
+                width: 375px;
+                height: 200px;
+                border-radius: .3rem;
+                overflow: hidden;
+                position: relative;
+                transition: all .3s ease-in-out;
+                cursor: pointer;
+
+                &__text {
+                    width: 375px;
+                    height: 200px;
+                    border-radius: .3rem;
+                    overflow: hidden;
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background: linear-gradient(180deg, #14140f 26.71%, #100800 99.36%);
+                    color: #fff;
+                    visibility: hidden;
+                    opacity: 0;
+                    transition: opacity .2s, visibility .2s;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                &:hover &__text {
+                    visibility: visible;
+                    opacity: .9;
+                    transform: scale(1.05);
+                    transition: all .3s ease-in-out;
+                }
+            }
+        }
+    }
+}

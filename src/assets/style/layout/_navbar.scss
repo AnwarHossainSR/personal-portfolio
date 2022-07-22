@@ -5,6 +5,7 @@
   margin-bottom: 2rem;
   top: 0;
 }
+
 .n-left {
   flex: 1;
   align-items: center;
@@ -16,7 +17,10 @@
 .n-name {
   font-size: 1.3rem;
   font-weight: bold;
+  cursor: pointer;
+  color: var(--black);
 }
+
 .n-right {
   flex: 1;
   display: flex;
@@ -28,19 +32,24 @@
 .n-list {
   flex: 10;
 }
-.n-list > ul {
+
+.n-list>ul {
   display: flex;
   gap: 2rem;
   margin-right: 4rem;
 }
 
-.n-list > ul {
+.n-list>ul {
   li {
     a {
-      color: var(--orange);
+      color: var(--black);
+
       &:hover {
-        color: var(--black);
+        color: var(--orange);
         cursor: pointer;
+      }
+      &.active {
+        color: var(--orange);
       }
     }
   }

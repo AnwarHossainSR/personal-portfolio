@@ -1,12 +1,22 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import Toggle from '../Toggle';
-const navbar = () => {
+const Navbar = ({ darkMode }) => {
+  let { pathname } = useLocation();
+
   return (
     <div className='n-wrapper' id='Navbar'>
       {/* left */}
       <div className='n-left'>
-        <div className='n-name'>Anwar</div>
+        <NavLink
+          to='/'
+          className='n-name'
+          style={{
+            color: darkMode ? 'white' : '',
+          }}
+        >
+          Anwar
+        </NavLink>
         <Toggle />
       </div>
       {/* right */}
@@ -14,13 +24,25 @@ const navbar = () => {
         <div className='n-list'>
           <ul style={{ listStyleType: 'none' }}>
             <li>
-              <Link to='/'>Home</Link>
+              <Link to='/' className={`${pathname === '/' && 'active'}`}>
+                Home
+              </Link>
             </li>
             <li>
-              <Link to='/portfolio'>Protfolio</Link>
+              <Link
+                to='/portfolio'
+                className={`${pathname === '/portfolio' && 'active'}`}
+              >
+                Protfolio
+              </Link>
             </li>
             <li>
-              <Link to='/blogs'>Blogs</Link>
+              <Link
+                to='/blogs'
+                className={`${pathname === '/blogs' && 'active'}`}
+              >
+                Blogs
+              </Link>
             </li>
           </ul>
         </div>
@@ -32,4 +54,4 @@ const navbar = () => {
   );
 };
 
-export default navbar;
+export default Navbar;

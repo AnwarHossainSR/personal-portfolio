@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AiOutlineArrowUp } from 'react-icons/ai';
 import { Route, Routes } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
-import './App.css';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import { themeContext } from './context/Context';
 import Blogs from './pages/blogs';
+import Contact from './pages/contact';
 import Home from './pages/home';
 import Portfolio from './pages/portfolio';
 
@@ -41,12 +41,13 @@ const App = () => {
       }}
       ref={ref}
     >
-      <Navbar />
+      <Navbar darkMode={darkMode} />
       <Routes>
         <Route path='/'>
-          <Route index element={<Home />} />
-          <Route path='portfolio' element={<Portfolio />} />
-          <Route path='blogs' element={<Blogs />} />
+          <Route index element={<Home darkMode={darkMode} />} />
+          <Route path='portfolio' element={<Portfolio darkMode={darkMode} />} />
+          <Route path='blogs' element={<Blogs darkMode={darkMode} />} />
+          <Route path='contact' element={<Contact darkMode={darkMode} />} />
         </Route>
       </Routes>
       <Footer />
