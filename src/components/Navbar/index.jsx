@@ -1,18 +1,18 @@
-import React from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import Toggle from '../Toggle';
+import React from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import Toggle from "../Toggle";
 const Navbar = ({ darkMode }) => {
   let { pathname } = useLocation();
 
   return (
-    <div className='n-wrapper' id='Navbar'>
+    <div className="n-wrapper" id="Navbar">
       {/* left */}
-      <div className='n-left'>
+      <div className="n-left">
         <NavLink
-          to='/'
-          className='n-name'
+          to="/"
+          className="n-name"
           style={{
-            color: darkMode ? 'white' : '',
+            color: darkMode ? "white" : "",
           }}
         >
           Anwar
@@ -20,34 +20,40 @@ const Navbar = ({ darkMode }) => {
         <Toggle />
       </div>
       {/* right */}
-      <div className='n-right'>
-        <div className='n-list'>
-          <ul style={{ listStyleType: 'none' }} >
+      <div className="n-right">
+        <div className="n-list">
+          <ul style={{ listStyleType: "none" }}>
             <li>
-              <Link style={{ color:darkMode?'white':'' }} to='/' className={`${pathname === '/' && 'active'}`}>
+              <Link
+                style={{ color: darkMode ? "white" : "" }}
+                to="/"
+                className={`${pathname === "/" && "active"}`}
+              >
                 Home
               </Link>
             </li>
             <li>
-              <Link style={{ color:darkMode?'white':'' }}
-                to='/portfolio'
-                className={`${pathname === '/portfolio' && 'active'}`}
+              <Link
+                style={{ color: darkMode ? "white" : "" }}
+                to="/portfolio"
+                className={`${pathname === "/portfolio" && "active"}`}
               >
                 Protfolio
               </Link>
             </li>
             <li>
-              <Link style={{ color:darkMode?'white':'' }}
-                to='/blogs'
-                className={`${pathname === '/blogs' && 'active'}`}
+              <Link
+                style={{ color: darkMode ? "white" : "" }}
+                to="/blogs"
+                className={`${pathname === "/blogs" && "active"}`}
               >
                 Blogs
               </Link>
             </li>
           </ul>
         </div>
-        <Link to='contact'>
-          <button className='button n-button'>Contact</button>
+        <Link to="contact">
+          <button className="button n-button">Contact</button>
         </Link>
       </div>
     </div>
