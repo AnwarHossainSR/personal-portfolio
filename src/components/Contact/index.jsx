@@ -1,6 +1,6 @@
-import emailjs from '@emailjs/browser';
-import { useContext, useRef, useState } from 'react';
-import { themeContext } from '../../context/Context';
+import emailjs from "@emailjs/browser";
+import { useContext, useRef, useState } from "react";
+import { themeContext } from "../../context/Context";
 //import './Contact.css';
 const Contact = () => {
   const theme = useContext(themeContext);
@@ -12,10 +12,10 @@ const Contact = () => {
 
     emailjs
       .sendForm(
-        'service_psafvyf',
-        'template_9td2zv8',
+        "service_psafvyf",
+        "template_9td2zv8",
         form.current,
-        'aBmlK_uW6eFlu2K9e'
+        "aBmlK_uW6eFlu2K9e"
       )
       .then(
         (result) => {
@@ -28,47 +28,47 @@ const Contact = () => {
       );
   };
   return (
-    <div className='contact-form' id='contact'>
+    <div className="contact-form" id="contact">
       {/* left side copy and paste from work section */}
-      <div className='w-left'>
-        <div className='awesome'>
+      <div className="w-left">
+        <div className="awesome">
           {/* darkMode */}
-          <span style={{ color: darkMode ? 'white' : '' }}>Get in Touch</span>
+          <span style={{ color: darkMode ? "white" : "" }}>Get in Touch</span>
           <span>Contact me</span>
           <div
-            className='blur s-blur1'
-            style={{ background: '#ABF1FF94' }}
+            className="blur s-blur1"
+            style={{ background: "#ABF1FF94" }}
           ></div>
         </div>
       </div>
       {/* right side form */}
-      <div className='c-right'>
+      <div className="c-right">
         <form ref={form} onSubmit={sendEmail}>
           <input
-            type='text'
-            name='user_name'
-            className='user'
-            placeholder='Name'
+            type="text"
+            name="user_name"
+            className="user"
+            placeholder="Name"
             required
           />
           <input
-            type='email'
-            name='user_email'
-            className='user'
-            placeholder='Email'
+            type="email"
+            name="user_email"
+            className="user"
+            placeholder="Email"
             required
           />
           <textarea
-            name='message'
-            className='user'
-            placeholder='Message'
+            name="message"
+            className="user"
+            placeholder="Message"
             required
           />
-          <input type='submit' value='Send' className='button' />
-          <span>{done && 'Thanks for Contacting me'}</span>
+          <input type="submit" value="Send" className="button" />
+          <span>{done && "Thanks for Contacting me"}</span>
           <div
-            className='blur c-blur1'
-            style={{ background: 'var(--purple)' }}
+            className="blur c-blur1"
+            style={{ background: "var(--purple)" }}
           ></div>
         </form>
       </div>
