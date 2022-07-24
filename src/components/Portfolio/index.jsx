@@ -1,103 +1,47 @@
-import { useContext } from "react";
-import "swiper/css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper";
-import { themeContext } from "../../context/Context";
-import Blog from "../../assets/img/blog_app.png";
-import AdminDashboard from "../../assets/img/dashboard.png";
-import Ecommerce from "../../assets/img/ecommerce.png";
-import MovieApp from "../../assets/img/movie_app.png";
-import PortfolioApp from "../../assets/img/portfolio.png";
-import Reservation from "../../assets/img/reservation.png";
-import SOcialMedia from "../../assets/img/social_media.png";
+import { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { Pagination } from 'swiper';
+import 'swiper/css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { projects } from '../../constant/portfolio';
+import { themeContext } from '../../context/Context';
 
 const Portfolio = () => {
   const theme = useContext(themeContext);
   const darkMode = theme.state.darkMode;
   return (
-    <div className="portfolio" id="portfolio">
+    <div className='portfolio' id='portfolio'>
       {/* heading */}
-      <span style={{ color: darkMode ? "white" : "" }}>Recent Projects</span>
+      <span style={{ color: darkMode ? 'white' : '' }}>Recent Projects</span>
       <span>Portfolio</span>
 
       {/* slider */}
       <Swiper
         spaceBetween={10}
-        slidesPerView={"auto"}
+        slidesPerView={'auto'}
         pagination={{
           clickable: true,
         }}
         modules={[Pagination]}
         grabCursor={true}
-        className="portfolio-slider"
+        className='portfolio-slider'
       >
-        <SwiperSlide>
-          <img
-            src={MovieApp}
-            alt=""
-            onClick={() =>
-              window.open("https://responsivemovie-app.netlify.app/", "_blank")
-            }
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            src={AdminDashboard}
-            alt=""
-            onClick={() =>
-              window.open("https://admin-uidashboard.netlify.app", "_blank")
-            }
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            src={PortfolioApp}
-            alt=""
-            onClick={() =>
-              window.open("https://anwarportfolio.netlify.app", "_blank")
-            }
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            src={SOcialMedia}
-            alt=""
-            onClick={() =>
-              window.open("https://social-media-site-sr.netlify.app/", "_blank")
-            }
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            src={Reservation}
-            alt=""
-            onClick={() =>
-              window.open("https://reservation-v1.netlify.app", "_blank")
-            }
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            src={Ecommerce}
-            alt=""
-            onClick={() =>
-              window.open(
-                "http://ecommerce-multi-vendor.herokuapp.com/",
-                "_blank"
-              )
-            }
-          />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img
-            src={Blog}
-            alt=""
-            onClick={() =>
-              window.open("http://advanceblog.herokuapp.com/", "_blank")
-            }
-          />
-        </SwiperSlide>
+        {projects.length > 0 &&
+          projects.map((project, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={project.img}
+                alt={project.title}
+                onClick={() => window.open(project.link, '_blank')}
+              />
+            </SwiperSlide>
+          ))}
       </Swiper>
+      <div className='see-more'>
+        <Link to='portfolio'>
+          <button className='button n-button'>See More</button>
+        </Link>
+      </div>
     </div>
   );
 };

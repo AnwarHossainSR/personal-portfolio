@@ -5,7 +5,7 @@ import { animateScroll as scroll } from 'react-scroll';
 import Footer from './components/Footer';
 import Navbar from './components/Navbar';
 import { themeContext } from './context/Context';
-import Blogs from './pages/blogs';
+import About from './pages/about';
 import Contact from './pages/contact';
 import Home from './pages/home';
 import Portfolio from './pages/portfolio';
@@ -46,7 +46,8 @@ const App = () => {
         <Route path='/'>
           <Route index element={<Home darkMode={darkMode} />} />
           <Route path='portfolio' element={<Portfolio darkMode={darkMode} />} />
-          <Route path='blogs' element={<Blogs darkMode={darkMode} />} />
+          <Route path='portfolio/:id' element={<Portfolio darkMode={darkMode} />} />
+          <Route path='about' element={<About darkMode={darkMode} />} />
           <Route path='contact' element={<Contact darkMode={darkMode} />} />
         </Route>
       </Routes>

@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FaSearchPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import Tab from '../../components/Tab';
 import { projects } from '../../constant/portfolio';
 
 const Portfolio = ({ darkMode }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className='portfolio-page'>
       <div className='portfolio-page__header'>
@@ -16,9 +21,12 @@ const Portfolio = ({ darkMode }) => {
           Some of my spare time tinkering.
         </p>
         <div className='portfolio-page__header--filter'>
-          <span className='active'>All</span>
-          <span>Web</span>
-          <span>Mobile</span>
+          <Tab className='active' text='All' />
+          <Tab text='React' />
+          <Tab text='Nextjs' />
+          <Tab text='Nodejs' />
+          <Tab text='Laravel' />
+          <Tab text='Native' />
         </div>
       </div>
       <div className='portfolio-page__body'>
@@ -30,6 +38,7 @@ const Portfolio = ({ darkMode }) => {
                   <FaSearchPlus
                     style={{ fontSize: '2rem', color: 'var(--yellow)' }}
                   />
+                  <span>{project.title}</span>
                 </Link>
               </p>
               <img src={project.img} alt='icon' width={375} height={200} />
