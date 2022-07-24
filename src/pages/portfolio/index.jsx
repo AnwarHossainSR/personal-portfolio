@@ -1,9 +1,14 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { FaSearchPlus } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { projects } from '../../constant/portfolio';
 
 const Portfolio = ({ darkMode }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [])
+  
   return (
     <div className='portfolio-page'>
       <div className='portfolio-page__header'>
@@ -30,6 +35,7 @@ const Portfolio = ({ darkMode }) => {
                   <FaSearchPlus
                     style={{ fontSize: '2rem', color: 'var(--yellow)' }}
                   />
+                  <span>{project.title}</span>
                 </Link>
               </p>
               <img src={project.img} alt='icon' width={375} height={200} />
