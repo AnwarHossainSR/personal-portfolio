@@ -1,12 +1,12 @@
 import Blog from '../assets/img/blog_app.png';
 import AdminDashboard from '../assets/img/dashboard.png';
+import Dev from '../assets/img/dev.png';
 import Ecommerce from '../assets/img/ecommerce.png';
 import MovieApp from '../assets/img/movie_app.png';
 import PortfolioApp from '../assets/img/portfolio.png';
 import Reservation from '../assets/img/reservation.png';
 import SocialMedia from '../assets/img/social_media.png';
 import YoutubeApp from '../assets/img/youtube-app.png';
-import Dev from '../assets/img/dev.png';
 
 export const projects = [
   {
@@ -14,7 +14,14 @@ export const projects = [
     title: 'dev.to clone',
     description: 'A clone of dev.to website',
     link: 'https://dev-to-clone-v1.netlify.app/',
-    tag: ['React', 'Nodejs','Sass'],
+    tag: ['React', 'Nodejs', 'Sass'],
+  },
+  {
+    img: Dev,
+    title: 'dev.to clone',
+    description: 'A clone of dev.to website',
+    link: 'https://dev-to-clone-v1.netlify.app/',
+    tag: ['React', 'Nodejs', 'Sass'],
   },
   {
     img: YoutubeApp,
