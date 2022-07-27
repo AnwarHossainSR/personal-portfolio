@@ -7,6 +7,7 @@ import PortfolioApp from '../assets/img/portfolio.png';
 import Reservation from '../assets/img/reservation.png';
 import SocialMedia from '../assets/img/social_media.png';
 import YoutubeApp from '../assets/img/youtube-app.png';
+import SocialSite from '../assets/img/social_site.png';
 
 export const projects = [
   {
@@ -56,6 +57,13 @@ export const projects = [
     title: 'Portfolio',
     description: 'A portfolio app that allows users to manage their projects.',
     link: 'https://anwarportfolio.netlify.app',
+  },
+  {
+    img: SocialSite,
+    title: 'Mateal Ui Social Site',
+    description:
+      'A social media app that allows users to share their posts and comments with other users.',
+    link: 'https://material-ui-social-media.vercel.app/',
   },
   {
     img: Reservation,
