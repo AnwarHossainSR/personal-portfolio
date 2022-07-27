@@ -6,15 +6,23 @@ import PortfolioApp from '../assets/img/portfolio.png';
 import Reservation from '../assets/img/reservation.png';
 import SocialMedia from '../assets/img/social_media.png';
 import YoutubeApp from '../assets/img/youtube-app.png';
+import Dev from '../assets/img/dev.png';
 
 export const projects = [
+  {
+    img: Dev,
+    title: 'dev.to clone',
+    description: 'A clone of dev.to website',
+    link: 'https://dev-to-clone-v1.netlify.app/',
+    tag: ['React', 'Nodejs','Sass'],
+  },
   {
     img: YoutubeApp,
     title: 'Youtube App',
     description:
       'A React app that allows users to search for videos and save them to their own personal library.',
     link: 'https://youtube-streaming.netlify.app/',
-    tag: ['React','Redux','NodeJS','Express','MongoDB'],
+    tag: ['React', 'Redux', 'NodeJS', 'Express', 'MongoDB'],
   },
   {
     img: SocialMedia,
