@@ -18,13 +18,6 @@ export const projects = [
     tag: ['React', 'Nodejs', 'Sass'],
   },
   {
-    img: Dev,
-    title: 'dev.to clone',
-    description: 'A clone of dev.to website',
-    link: 'https://dev-to-clone-v1.netlify.app/',
-    tag: ['React', 'Nodejs', 'Sass'],
-  },
-  {
     img: YoutubeApp,
     title: 'Youtube App',
     description:
