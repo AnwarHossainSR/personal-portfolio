@@ -1,8 +1,10 @@
+import {GiCutDiamond} from 'react-icons/gi';
+import { MdOutlineMobileFriendly,MdComputer } from 'react-icons/md';
 import Blog from '../assets/img/blog_app.png';
 import AdminDashboard from '../assets/img/dashboard.png';
 import Dev from '../assets/img/dev.png';
-import Ecommerce from '../assets/img/ecommerce.png';
 import EcommerceApp from '../assets/img/ecommerce-app.png';
+import Ecommerce from '../assets/img/ecommerce.png';
 import MovieApp from '../assets/img/movie_app.png';
 import PortfolioApp from '../assets/img/portfolio.png';
 import Reservation from '../assets/img/reservation.png';
@@ -133,5 +135,26 @@ export const tags = [
   },
   {
     name: 'native',
+  },
+];
+
+export const specializationData = [
+  {
+    img: MdComputer,
+    title: 'Web Development',
+    description:
+      'Working with client and community, we deliver masterplans that create vibrant new places and spaces, attract people, and encourage investment through.',
+  },
+  {
+    img: MdOutlineMobileFriendly,
+    title: 'Mobile Coding',
+    description:
+      'Working with client and community, we deliver masterplans that create vibrant new places and spaces, attract people, and encourage investment through.',
+  },
+  {
+    img: GiCutDiamond,
+    title: 'UI/UX Design',
+    description:
+      'Working with client and community, we deliver masterplans that create vibrant new places and spaces, attract people, and encourage investment through.',
   },
 ];

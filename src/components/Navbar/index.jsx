@@ -1,7 +1,7 @@
 import React from 'react';
+import { GoThreeBars } from 'react-icons/go';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import Toggle from '../Toggle';
-import {GoThreeBars} from 'react-icons/go';
 const Navbar = ({ darkMode }) => {
   let { pathname } = useLocation();
 
@@ -46,7 +46,7 @@ const Navbar = ({ darkMode }) => {
               <Link
                 style={{ color: darkMode ? 'white' : '' }}
                 to='/about'
-                className={`${pathname === '/blogs' && 'active'}`}
+                className={`${pathname === '/about' && 'active'}`}
               >
                 About
               </Link>
@@ -57,7 +57,7 @@ const Navbar = ({ darkMode }) => {
           <button className='button n-button'>Contact</button>
         </Link>
         <div className='navbar-icon'>
-          <GoThreeBars style={{ fontSize:'2rem' }} />
+          <GoThreeBars style={{ fontSize: '2rem' }} />
         </div>
       </div>
     </div>
