@@ -10,13 +10,17 @@
     &__header {
         display: flex;
         flex-direction: column;
-        //gap: 0.25rem;
 
         &--text {
             text-align: center;
             color: var(--black);
             font-weight: bold;
             font-size: 3rem;
+
+            @include mobile {
+                font-size: .8rem;
+                width: 100%;
+            }
         }
 
         &--filter {
@@ -26,13 +30,22 @@
             align-items: center;
             gap: .4rem;
 
+            @include mobile {
+                gap: 0;
+            }
+
             span {
-                //background: rgb(255, 235, 235);
                 width: fit-content;
                 min-height: .1rem;
                 padding: .6rem;
                 border-radius: .3rem;
                 text-transform: capitalize;
+                box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
+
+                @include mobile {
+                    font-size: .5rem;
+                    cursor: pointer;
+                }
 
                 &:hover {
                     cursor: pointer;
@@ -145,6 +158,7 @@
                             padding: 3px 10px 3px 10px;
                             color: #ffffff;
                             text-transform: capitalize;
+                            box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
                         }
 
                     }
