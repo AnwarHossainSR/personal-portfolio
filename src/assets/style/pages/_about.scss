@@ -1,0 +1,98 @@
+.about {
+    padding: 0 1.5rem;
+    padding-bottom: 5rem;
+
+    &-content {
+
+        &__specialization {
+            margin-top: 2rem;
+
+            h1 {
+                font-size: 2.5rem;
+                font-weight: 700;
+                margin-bottom: 2rem;
+                text-align: center;
+
+                span {
+                    font-size: 2.5rem;
+                    font-weight: 700;
+                    color: var(--orange);
+                }
+            }
+
+            &--content {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                overflow: hidden;
+                margin-bottom: 1.5rem;
+
+                gap: 1rem;
+
+                .specialization--card {
+                    min-width: 300px;
+                    min-height: 220px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: flex-start;
+                    flex-direction: column;
+                    background-color: #2C2C38;
+                    padding: 1rem;
+                    box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+
+                    &--heading {
+                        font-size: 1.5rem;
+                        font-weight: 700;
+                        margin: 1.5rem 0;
+                    }
+
+                    &--body {
+                        overflow: hidden;
+                        margin-bottom: 1.5rem;
+                        font-size: 1rem;
+                        color: rgb(117, 115, 113)
+                    }
+                }
+            }
+
+            &__info {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 2rem 0;
+                gap: 1.5rem;
+
+                &-left {
+                    width: 32rem;
+                    height: auto;
+                    background-color: #2C2C38;
+                    padding: 3rem 4rem;
+                    position: relative;
+
+                    .title {
+                        position: absolute;
+                        top: -1.5rem;
+                        color: #ffffff !important;
+                        font-size: 2rem;
+                    }
+                }
+
+                &-right {
+                    width: 32rem;
+                    height: auto;
+                    background-color: #2C2C38;
+                    padding: 3rem 4rem;
+                    position: relative;
+                    margin-top: 10rem;
+
+                    .title {
+                        position: absolute;
+                        top: -1.5rem;
+                        color: #ffffff !important;
+                        font-size: 2rem;
+                    }
+                }
+            }
+        }
+    }
+}
