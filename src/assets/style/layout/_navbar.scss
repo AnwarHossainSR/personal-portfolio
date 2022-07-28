@@ -27,6 +27,19 @@
   align-items: center;
   justify-content: flex-end;
   font-weight: 400;
+  a{
+    @include mobile{
+      display: none;
+    }
+  }
+  .navbar-icon{
+    color: var(--orange);
+    cursor: pointer;
+    display: none;
+    @include mobile{
+      display: block;
+    }
+  }
 }
 
 .n-list {

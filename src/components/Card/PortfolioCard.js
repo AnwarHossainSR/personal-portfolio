@@ -18,7 +18,12 @@ const PortfolioCard = ({ project }) => {
                   <span key={index}>#{tag}</span>
                 ))}
             </div>
-            <span className='view'>View</span>
+            <span
+              className='view'
+              onClick={() => window.open(project.link, '_blank')}
+            >
+              View
+            </span>
           </div>
         </div>
       </div>
