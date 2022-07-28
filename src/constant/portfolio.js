@@ -2,6 +2,7 @@ import Blog from '../assets/img/blog_app.png';
 import AdminDashboard from '../assets/img/dashboard.png';
 import Dev from '../assets/img/dev.png';
 import Ecommerce from '../assets/img/ecommerce.png';
+import EcommerceApp from '../assets/img/ecommerce-app.png';
 import MovieApp from '../assets/img/movie_app.png';
 import PortfolioApp from '../assets/img/portfolio.png';
 import Reservation from '../assets/img/reservation.png';
@@ -11,6 +12,14 @@ import TwitterClone from '../assets/img/twitter-clone.png';
 import YoutubeApp from '../assets/img/youtube-app.png';
 
 export const projects = [
+  {
+    img: EcommerceApp,
+    title: 'Ecommerce Application',
+    description: 'A ecommerce app that allows users to manage their products.',
+    link: 'https://ecommerce-v3.netlify.app/',
+    tags: ['react', 'javascript'],
+    github: 'https://github.com/AnwarHossainSR/ecommerce-client',
+  },
   {
     img: TwitterClone,
     title: 'Twitter Clone',
