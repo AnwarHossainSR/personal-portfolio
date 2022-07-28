@@ -32,6 +32,7 @@
                 min-height: .1rem;
                 padding: .6rem;
                 border-radius: .3rem;
+                text-transform: capitalize;
 
                 &:hover {
                     cursor: pointer;
@@ -65,7 +66,7 @@
                     flex-grow: 0;
                     background: #fff;
                     border: 2px solid #fff;
-                    box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
+                    box-shadow: rgba(0, 0, 0, 0.2) 0px 12px 28px 0px, rgba(0, 0, 0, 0.1) 0px 2px 4px 0px, rgba(255, 255, 255, 0.05) 0px 0px 0px 1px inset;
                     cursor: pointer;
                     transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
                     overflow: hidden;
@@ -93,6 +94,7 @@
                             color: #ffffff;
                             font-size: 1rem;
                             margin: -.5rem 0 0 -.5rem;
+                            text-transform: capitalize;
                         }
 
                         p:nth-child(2) {
@@ -100,13 +102,15 @@
                             height: 30%;
                             margin: .5rem 0 0 -.5rem;
                             color: #cac1c1;
+                            text-transform: capitalize;
                         }
 
                         p:nth-child(3) {
                             position: absolute;
                             top: 0;
                             right: 10px;
-                            color: #ffffff;font-size: 1,5rem;
+                            color: #ffffff;
+                            font-size: 1, 5rem;
                         }
 
                         div {
@@ -116,7 +120,7 @@
                             align-items: center;
                             flex-wrap: wrap;
                             overflow: hidden;
-                            gap:.2rem;
+                            gap: .2rem;
                             text-overflow: ellipsis;
                             white-space: nowrap;
 
@@ -125,11 +129,13 @@
                                 width: fit-content;
                                 background: linear-gradient(180deg, #fdc50f 26.71%, #fb982f 99.36%);
                                 padding: 0 2px 0 2px;
-                                color:#020202;
+                                color: #020202;
                                 transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
+                                text-transform: capitalize;
                             }
                         }
-                        .view{
+
+                        .view {
                             position: absolute;
                             bottom: 0;
                             right: 0;
@@ -137,7 +143,8 @@
                             width: fit-content;
                             background: var(--orange);
                             padding: 3px 10px 3px 10px;
-                            color:#ffffff;
+                            color: #ffffff;
+                            text-transform: capitalize;
                         }
 
                     }
