@@ -1,5 +1,11 @@
 .portfolio-page {
+    padding: 0 1.5rem;
     padding-bottom: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    overflow: hidden;
 
     &__header {
         display: flex;
@@ -18,7 +24,6 @@
             flex-direction: row;
             justify-content: center;
             align-items: center;
-            margin-bottom: 2rem;
             gap: .4rem;
 
             span {
@@ -36,7 +41,6 @@
 
                 &.active {
                     background: linear-gradient(180deg, #fdc50f 26.71%, #fb982f 99.36%);
-                    ;
                 }
             }
         }
@@ -45,59 +49,119 @@
     &__body {
         &--content {
             display: flex;
-            flex-direction: row;
             flex-wrap: wrap;
             justify-content: center;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 2rem;
+            margin-top: 4rem;
+            //position: relative;
 
-            &--item {
-                width: 375px;
-                height: 200px;
-                border-radius: .3rem;
-                overflow: hidden;
-                position: relative;
-                transition: all .3s ease-in-out;
-                cursor: pointer;
+            .card-wrapper {
 
-                &__text {
-                    width: 375px;
+                .project-card {
+                    flex: 1;
+                    flex-basis: 350px;
                     height: 200px;
-                    border-radius: .3rem;
+                    flex-grow: 0;
+                    background: #fff;
+                    border: 2px solid #fff;
+                    box-shadow: 0 0 20px -10px rgba(0, 0, 0, 0.5);
+                    cursor: pointer;
+                    transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
                     overflow: hidden;
-                    position: absolute;
-                    top: 0;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    background: linear-gradient(180deg, #14140f 26.71%, #100800 99.36%);
-                    color: #fff;
-                    visibility: hidden;
-                    opacity: 0;
-                    transition: opacity .2s, visibility .2s;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    position: relative;
 
-                    a {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        color: #fff!important;
-                        row-gap: 5px;
+                    img {
+                        width: 350px;
+                        height: 200px;
+                        transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
+                    }
+
+                    .project-descriptions {
+                        position: absolute;
+                        top: 0px;
+                        left: 0px;
+                        background-image: linear-gradient(to bottom, #121c2a, #374a52, #6a7b7a, #a6aea9, #e3e4e0);
+                        width: 100%;
+                        height: 100%;
+                        transition: all .7s ease-in-out;
+                        padding: 20px;
+                        box-sizing: border-box;
+                        clip-path: circle(0% at 100% 100%);
+
+                        p:nth-child(1) {
+                            color: #ffffff;
+                            font-size: 1rem;
+                            margin: -.5rem 0 0 -.5rem;
+                        }
+
+                        p:nth-child(2) {
+                            font-size: .7rem;
+                            height: 30%;
+                            margin: .5rem 0 0 -.5rem;
+                            color: #cac1c1;
+                        }
+
+                        p:nth-child(3) {
+                            position: absolute;
+                            top: 0;
+                            right: 10px;
+                            color: #ffffff;font-size: 1,5rem;
+                        }
+
+                        div {
+                            margin: 1rem 0 0 -.5rem;
+                            display: flex;
+                            justify-content: flex-start;
+                            align-items: center;
+                            flex-wrap: wrap;
+                            overflow: hidden;
+                            gap:.2rem;
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+
+                            span {
+                                font-size: .7rem;
+                                width: fit-content;
+                                background: linear-gradient(180deg, #fdc50f 26.71%, #fb982f 99.36%);
+                                padding: 0 2px 0 2px;
+                                color:#020202;
+                                transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
+                            }
+                        }
+                        .view{
+                            position: absolute;
+                            bottom: 0;
+                            right: 0;
+                            font-size: 1rem;
+                            width: fit-content;
+                            background: var(--orange);
+                            padding: 3px 10px 3px 10px;
+                            color:#ffffff;
+                        }
+
+                    }
+
+                    &:hover {
+                        transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
+                        box-shadow: 0px 2px 3px rgba(0, 0, 0, .3);
+                        transform: scale(.97);
+
+                        .project-descriptions {
+                            left: 0px;
+                            transition: all .7s ease-in-out;
+                            clip-path: circle(75%);
+                        }
+
+                        .project-card-image {
+                            transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
+                            transform: scale(1.6) rotate(20deg);
+                            filter: blur(3px);
+                        }
                     }
                 }
-
-                &:hover &__text {
-                    visibility: visible;
-                    opacity: .9;
-                    transform: scale(1.05);
-                    transition: all .3s ease-in-out;
-                    color: #fff;
-                }
             }
+
         }
     }
 }
