@@ -1,6 +1,6 @@
 import React from 'react';
-import { BsGithub } from 'react-icons/bs';
-const PortfolioCard = ({ project }) => {
+import {BsGithub} from 'react-icons/bs';
+const PortfolioCard = ({project}) => {
   return (
     <div>
       <div className='card-wrapper'>
