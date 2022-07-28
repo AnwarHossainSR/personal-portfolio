@@ -3,15 +3,11 @@ import React from 'react';
 import Glasses from '../../assets/img/glasses.png';
 import HeartEmoji from '../../assets/img/heartemoji.png';
 import Humble from '../../assets/img/humble.png';
+import { transition } from '../../constant/FramerMotion';
 import Card from '../Card';
 import Resume from './resume.pdf';
 
 const Services = ({ darkMode }) => {
-  // transition
-  const transition = {
-    duration: 1,
-    type: 'spring',
-  };
 
   return (
     <div className='services' id='services'>

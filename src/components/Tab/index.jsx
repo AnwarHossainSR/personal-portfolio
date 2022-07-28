@@ -1,6 +1,9 @@
-
-const Tab = ({ text,className}) => {
-  return <span className={className}>{text}</span>;
+const Tab = ({ text, className, handleEvent }) => {
+  return (
+    <span className={className} onClick={handleEvent}>
+      {text}
+    </span>
+  );
 };
 
-export default Tab
+export default Tab;
