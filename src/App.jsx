@@ -46,7 +46,10 @@ const App = () => {
         <Route path='/'>
           <Route index element={<Home darkMode={darkMode} />} />
           <Route path='portfolio' element={<Portfolio darkMode={darkMode} />} />
-          <Route path='portfolio/:id' element={<Portfolio darkMode={darkMode} />} />
+          <Route
+            path='portfolio/:id'
+            element={<Portfolio darkMode={darkMode} />}
+          />
           <Route path='about' element={<About darkMode={darkMode} />} />
           <Route path='contact' element={<Contact darkMode={darkMode} />} />
         </Route>
