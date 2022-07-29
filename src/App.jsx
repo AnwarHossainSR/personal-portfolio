@@ -36,7 +36,7 @@ const App = () => {
     <div
       className='App'
       style={{
-        background: darkMode ? 'black' : '',
+        background: darkMode ? 'var(--black)' : '',
         color: darkMode ? 'white' : '',
       }}
       ref={ref}
