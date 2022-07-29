@@ -8,20 +8,25 @@
   flex-direction: column;
   gap: 2rem;
   position: relative;
+
   @include mobile {
     padding: 0;
   }
+
   .t-heading {
     align-self: start;
+
     span {
       &:nth-of-type(2) {
         color: var(--orange);
       }
     }
+
     .t-blur1 {
       left: 38rem;
       top: 16rem;
     }
+
     .t-blur2 {
       top: 9rem;
       left: 0;
@@ -29,7 +34,7 @@
   }
 }
 
-.t-heading > * {
+.t-heading>* {
   font-size: 2rem;
   font-weight: bold;
 }
@@ -47,15 +52,18 @@
   border: 7px solid var(--blueCard);
   box-shadow: var(--boxShadow);
   border-radius: 20px;
+
   img {
     width: 6rem;
     height: 6rem;
     border-radius: 100%;
+
     @include mobile {
       width: 70px;
       height: 70px;
     }
   }
+
   span {
     color: var(--gray);
   }
@@ -71,7 +79,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-left: 1rem;
 }
+
 
 .t-wrapper .swiper-pagination-bullet-active {
   background: var(--orange);
