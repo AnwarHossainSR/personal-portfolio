@@ -2,12 +2,14 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AiOutlineArrowUp } from 'react-icons/ai';
 import { Route, Routes } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
+import AdminLayout from './components/Layout/AdminLayout';
+import AppLayout from './components/Layout/AppLayout';
 import { themeContext } from './context/Context';
 import About from './pages/about';
+import Dashboard from './pages/admin';
 import Contact from './pages/contact';
 import Home from './pages/home';
+import Login from './pages/login';
 import Portfolio from './pages/portfolio';
 
 const App = () => {
@@ -41,9 +43,8 @@ const App = () => {
       }}
       ref={ref}
     >
-      <Navbar darkMode={darkMode} />
       <Routes>
-        <Route path='/'>
+        <Route path='/' element={<AppLayout darkMode={darkMode} />}>
           <Route index element={<Home darkMode={darkMode} />} />
           <Route path='portfolio' element={<Portfolio darkMode={darkMode} />} />
           <Route
@@ -52,9 +53,12 @@ const App = () => {
           />
           <Route path='about' element={<About darkMode={darkMode} />} />
           <Route path='contact' element={<Contact darkMode={darkMode} />} />
+          <Route path='admin/login' element={<Login darkMode={darkMode} />} />
+        </Route>
+        <Route path='/admin' element={<AdminLayout darkMode={darkMode} />}>
+          <Route path='dashboard' element={<Dashboard darkMode={darkMode} />} />
         </Route>
       </Routes>
-      <Footer />
       <div
         className={`${showGoTop ? 'scroll-top-visible' : 'scroll-top-hidden'}`}
         onClick={() => scroll.scrollToTop()}

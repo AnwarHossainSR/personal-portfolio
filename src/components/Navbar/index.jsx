@@ -39,7 +39,7 @@ const Navbar = ({ darkMode }) => {
           <ul style={{ listStyleType: 'none' }}>
             <li>
               <Link
-                style={{ color: darkMode ? 'white' : '' }}
+                style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to='/'
                 className={`${pathname === '/' && 'active'}`}
               >
@@ -48,7 +48,7 @@ const Navbar = ({ darkMode }) => {
             </li>
             <li>
               <Link
-                style={{ color: darkMode ? 'white' : '' }}
+                style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to='/portfolio'
                 className={`${pathname === '/portfolio' && 'active'}`}
               >
@@ -57,11 +57,20 @@ const Navbar = ({ darkMode }) => {
             </li>
             <li>
               <Link
-                style={{ color: darkMode ? 'white' : '' }}
+                style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to='/about'
                 className={`${pathname === '/about' && 'active'}`}
               >
                 About Me
+              </Link>
+            </li>
+            <li>
+              <Link
+                style={{ color: darkMode ? 'var(--gray)' : '' }}
+                to='/admin/login'
+                className={`${pathname === '/admin/login' && 'active'}`}
+              >
+                Sign In
               </Link>
             </li>
 

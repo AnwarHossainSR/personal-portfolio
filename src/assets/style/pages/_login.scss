@@ -1,0 +1,45 @@
+.login {
+    margin: 7rem 0;
+    @include flexDefine(center, center);
+
+    &__container {
+        width: 15rem;
+        padding: 2rem;
+        background-color: var(--black);
+        border-radius: .5rem;
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+        @include flexDefine(center, center);
+        flex-direction: column;
+
+        h1 {
+            font-size: 2rem;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        &__field {
+            margin-bottom: 1rem;
+
+            input {
+                border: none;
+                border-bottom: 1px solid var(--orange);
+                background-color: var(--black);
+                color: var(--gray);
+                font-size: 1rem;
+                padding: .5rem;
+                width: 13rem;
+
+                &:focus {
+                    outline: none;
+                    background-color: var(--black);
+                }
+            }
+        }
+
+        &__button {
+            margin-top: 3rem;
+            @include flexDefine(center, center);
+        }
+
+    }
+}
