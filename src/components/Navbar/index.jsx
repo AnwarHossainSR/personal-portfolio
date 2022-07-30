@@ -26,7 +26,7 @@ const Navbar = ({ darkMode }) => {
           to='/'
           className='n-name'
           style={{
-            color: darkMode ? 'white' : '',
+            color: 'var(--orange)',
           }}
         >
           Anwar
@@ -61,7 +61,7 @@ const Navbar = ({ darkMode }) => {
                 to='/about'
                 className={`${pathname === '/about' && 'active'}`}
               >
-                About
+                About Me
               </Link>
             </li>
 

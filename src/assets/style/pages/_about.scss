@@ -73,7 +73,7 @@
 
     &__work {
         margin-top: 10rem;
-        @include flexDefine(center,center);
+        @include flexDefine(center, center);
         flex-direction: column;
 
         &-heading {
@@ -82,7 +82,6 @@
             justify-content: flex-start;
             align-items: center;
             gap: 1rem;
-            //color: #64FFDA;
             color: var(--orange);
 
             &__serial {
@@ -99,6 +98,55 @@
                 width: 14rem;
                 height: 1px;
                 background: var(--orange);
+            }
+        }
+
+        &-body {
+            @include flexDefine(flex-start);
+            gap: 5rem;
+            max-width: 100%;
+            margin-top: 5rem;
+            margin-bottom: 3rem;
+            color: #7B86A4;
+            font-size: 1rem;
+            border-left: 1px solid #7B86A4;
+
+            &-left {
+                max-width: 50%;
+                //margin: 0 0 1rem 1rem;
+
+                li {
+                    padding: 0 0 1rem 1.5rem;
+                    cursor: pointer;
+
+                    &.active {
+                        border-left: 2px solid var(--orange);
+                    }
+                }
+            }
+
+            &-right {
+                max-width: 100%;
+                line-height: 1.5rem;
+
+                &__heading {
+                    font-size: 1.1rem;
+                    width: fit-content;
+                    color: #ABB6D4;
+
+                    span {
+                        color: var(--orange);
+                    }
+                }
+
+                &__duration {
+                    font-size: 0.8rem;
+                    width: fit-content;
+                }
+                &__description{
+                    font-size: 1rem;
+                    width: fit-content;
+                }
             }
         }
     }

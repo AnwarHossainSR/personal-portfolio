@@ -4,9 +4,11 @@ const Technology = ({ technology }) => {
   return (
     <li>
       <span>
-        <GoTriangleRight style={{ color: 'var(--orange)',fontSize:'.6rem' }} />
+        <GoTriangleRight
+          style={{ color: 'var(--orange)', fontSize: '.6rem' }}
+        />
       </span>
-      <span style={{ marginLeft:5 }}>{technology}</span>
+      <span style={{ marginLeft: 5 }}>{technology}</span>
     </li>
   );
 };

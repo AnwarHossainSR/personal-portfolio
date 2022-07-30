@@ -15,19 +15,19 @@ const Footer = () => {
         <span>anwarmahedisr@gmail.com</span>
         <div className='f-icons'>
           <Insta
-            color='red'
+            color='var(--dark)'
             size={'3rem'}
             onClick={() =>
               handleClick('https://www.instagram.com/mahedi_hasan_sr/?hl=en')
             }
           />
           <Facebook
-            color='blue'
+            color='var(--dark)'
             size={'3rem'}
             onClick={() => handleClick('https://www.facebook.com/MahediSR007')}
           />
           <Gitub
-            color='black'
+            color='var(--dark)'
             size={'3rem'}
             onClick={() => handleClick('https://github.com/AnwarHossainSR')}
           />
