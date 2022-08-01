@@ -2,6 +2,10 @@
     padding: 4rem 8.5rem;
     padding-bottom: 5rem;
 
+    @include mobile {
+        padding: 2rem 0;
+    }
+
     &-heading {
         margin-bottom: 1rem;
         display: flex;
@@ -11,20 +15,36 @@
         //color: #64FFDA;
         color: var(--orange);
 
+        @include mobile {
+            gap: .4rem;
+        }
+
         &__serial {
             font-size: 1.2rem;
+
+            @include mobile {
+                font-size: 1rem;
+            }
         }
 
         &__title {
             font-size: 2rem;
             width: fit-content;
             color: #ABB6D4;
+
+            @include mobile {
+                font-size: 1.2rem;
+            }
         }
 
         .hr {
-            width: 14rem;
+            width: 170px;
             height: 1px;
             background: var(--orange);
+
+            @include mobile {
+                width: 7rem;
+            }
         }
     }
 
@@ -32,14 +52,27 @@
         @include flexDefine(flex-start);
         gap: 5rem;
 
+        @include mobile {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
         &-left {
             max-width: 50%;
             color: #7B86A4;
+
+            @include mobile {
+                max-width: 100%;
+            }
 
             ul {
                 @include flexDefine(flex-start);
                 flex-wrap: wrap;
                 gap: 4rem;
+
+                @include mobile {
+                    gap: 1rem;
+                }
             }
         }
 
@@ -55,18 +88,28 @@
                 z-index: 5;
                 border-radius: 10px;
                 cursor: pointer;
+
+                @include mobile {
+                    width: 250px;
+                    height: 250px;
+                    left: 20px;
+                }
             }
 
             .border {
                 width: 300px;
                 height: 300px;
                 border: 2px solid var(--orange);
-                ;
                 border-radius: 5px;
                 position: absolute;
                 top: 1rem;
                 left: 1rem;
                 cursor: pointer;
+
+                @include mobile {
+                    width: 250px;
+                    height: 240px;
+                }
             }
         }
     }
@@ -76,6 +119,10 @@
         @include flexDefine(center, center);
         flex-direction: column;
 
+        @include mobile {
+            margin-top: 17rem;
+        }
+
         &-heading {
             margin-bottom: 1rem;
             display: flex;
@@ -84,20 +131,36 @@
             gap: 1rem;
             color: var(--orange);
 
+            @include mobile {
+                gap: .4rem;
+            }
+
             &__serial {
                 font-size: 1.2rem;
+
+                @include mobile {
+                    font-size: 1rem;
+                }
             }
 
             &__title {
                 font-size: 2rem;
                 width: fit-content;
                 color: #ABB6D4;
+
+                @include mobile {
+                    font-size: 1.2rem;
+                }
             }
 
             .hr {
-                width: 14rem;
+                width: 200px;
                 height: 1px;
                 background: var(--orange);
+
+                @include mobile {
+                    width: 4rem;
+                }
             }
         }
 
@@ -111,16 +174,43 @@
             font-size: 1rem;
             border-left: 1px solid #7B86A4;
 
+            @include mobile {
+                margin-top: 0;
+                margin-bottom: 5rem;
+                border-left: none;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
             &-left {
-                max-width: 50%;
+                width: 50%;
+
                 //margin: 0 0 1rem 1rem;
+                @include mobile {
+                    width: 100%;
+                    @include flexDefine(flex-start, center);
+                    margin: 1rem 0 1rem 0;
+                    width: 100%;
+                    gap: .5rem;
+                }
 
                 li {
-                    padding: 0 0 1rem 1.5rem;
+                    padding: .2rem .5rem;
                     cursor: pointer;
+
+                    @include mobile {
+                        overflow-x: auto;
+                        padding: 0 .5rem 0 0;
+                        text-align: center;
+                    }
 
                     &.active {
                         border-left: 2px solid var(--orange);
+
+                        @include mobile {
+                            border-left: none;
+                            border-bottom: 2px solid var(--orange);
+                        }
                     }
                 }
             }
@@ -128,6 +218,10 @@
             &-right {
                 max-width: 100%;
                 line-height: 1.5rem;
+
+                @include mobile {
+                    //display: none;
+                }
 
                 &__heading {
                     font-size: 1.1rem;
@@ -143,7 +237,8 @@
                     font-size: 0.8rem;
                     width: fit-content;
                 }
-                &__description{
+
+                &__description {
                     font-size: 1rem;
                     width: fit-content;
                 }

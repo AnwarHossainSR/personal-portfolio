@@ -4,6 +4,7 @@
   margin: -0.5rem -3.5rem;
   position: relative;
   margin-top: -7rem;
+
   .f-content {
     position: absolute;
     display: flex;
@@ -14,9 +15,17 @@
     margin-top: 4rem;
     gap: 4rem;
     color: var(--black);
+
     @include mobile {
       transform: scale(0.5);
     }
+
+    span {
+      @include mobile {
+        font-size: 2rem;
+      }
+    }
+
     .f-icons {
       display: flex;
       gap: 2rem;
