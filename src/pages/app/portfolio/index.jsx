@@ -1,18 +1,18 @@
-import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
-import PortfolioCard from '../../../components/app/Card/PortfolioCard';
-import Tab from '../../../components/app/Tab';
-import { projects, tags } from '../../../constant/portfolio';
+import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import PortfolioCard from "../../../components/app/Card/PortfolioCard";
+import Tab from "../../../components/app/Tab";
+import { projects, tags } from "../../../constant/portfolio";
 
 const Portfolio = ({ darkMode }) => {
-  const [filter, setfilter] = useState('all');
+  const [filter, setfilter] = useState("all");
   const [portfolioProjects, setportfolioProjects] = useState(projects);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   useEffect(() => {
     const filteredProjects = () => {
-      if (filter === 'all') {
+      if (filter === "all") {
         return projects;
       }
       return projects.filter((project) => project.tags.includes(filter));
@@ -21,35 +21,35 @@ const Portfolio = ({ darkMode }) => {
   }, [filter]);
 
   return (
-    <div className='portfolio-page'>
-      <div className='portfolio-page__header'>
+    <div className="portfolio-page">
+      <div className="portfolio-page__header">
         <p
-          className='portfolio-page__header--text'
+          className="portfolio-page__header--text"
           style={{
-            color: darkMode ? 'white' : '',
+            color: darkMode ? "white" : "",
           }}
         >
           Some of my spare time tinkering.
         </p>
-        <div className='portfolio-page__header--filter'>
+        <div className="portfolio-page__header--filter">
           {tags.map((tag, index) => (
             <Tab
               key={index}
-              className={`${filter === tag.name ? 'active' : ''}`}
+              className={`${filter === tag.name ? "active" : ""}`}
               text={tag.name}
               handleEvent={() => setfilter(tag.name)}
             />
           ))}
         </div>
       </div>
-      <div className='portfolio-page__body'>
-        <motion.div layoutId='underline'>
-          <div className='portfolio-page__body--content'>
+      <div className="portfolio-page__body">
+        <motion.div layoutId="underline">
+          <div className="portfolio-page__body--content">
             {portfolioProjects.map((project, index) => (
               <PortfolioCard key={index} project={project} />
             ))}
             {portfolioProjects.length === 0 &&
-              'No projects found under ' + filter + ' tag'}
+              "No projects found under " + filter + " tag"}
           </div>
         </motion.div>
       </div>

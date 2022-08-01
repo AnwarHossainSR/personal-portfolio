@@ -1,5 +1,5 @@
-import React from 'react';
-import ContactComponnet from '../../../components/app/Contact';
+import React from "react";
+import ContactComponnet from "../../../components/app/Contact";
 const Contact = () => {
   return (
     <div>
