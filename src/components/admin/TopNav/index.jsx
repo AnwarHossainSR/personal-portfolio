@@ -1,8 +1,10 @@
+import { signOut } from 'firebase/auth';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import user_image from '../../../assets/images/tuat.png';
 import notifications from '../../../assets/JsonData/notification.json';
 import user_menu from '../../../assets/JsonData/user_menus.json';
+import { auth } from '../../../utils/firebase';
 import Dropdown from '../Dropdown';
 
 const curr_user = {
@@ -26,8 +28,8 @@ const renderUserToggle = (user) => (
   </div>
 );
 
-const renderUserMenu = (item, index) => (
-  <Link to='/' key={index}>
+const renderUserMenu = (item, index, logOut) => (
+  <Link to='/' key={index} onClick={logOut}>
     <div className='notification-item'>
       <i className={item.icon}></i>
       <span>{item.content}</span>
@@ -35,7 +37,12 @@ const renderUserMenu = (item, index) => (
   </Link>
 );
 
-const TopNav = () => {
+const TopNav = (props) => {
+  const logOut = () => {
+    signOut(auth);
+    localStorage.removeItem('accessToken');
+    props.navigate('/');
+  };
   return (
     <div className='topnav'>
       <div className='topnav__search'>
@@ -48,7 +55,7 @@ const TopNav = () => {
           <Dropdown
             customToggle={() => renderUserToggle(curr_user)}
             contentData={user_menu}
-            renderItems={(item, index) => renderUserMenu(item, index)}
+            renderItems={(item, index) => renderUserMenu(item, index, logOut)}
           />
         </div>
         <div className='topnav__right-item'>
