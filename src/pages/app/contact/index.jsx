@@ -1,6 +1,6 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
-import ContactComponnet from '../../../components/app/Contact';
+import React from "react";
+import { Helmet } from "react-helmet-async";
+import ContactComponnet from "../../../components/app/Contact";
 
 const Contact = () => {
   return (
