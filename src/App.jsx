@@ -1,16 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AiOutlineArrowUp } from 'react-icons/ai';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
-import Footer from './components/Footer';
-import Navbar from './components/Navbar';
+import AdminLayout from './components/Layout/AdminLayout';
+import AppLayout from './components/Layout/AppLayout';
 import { themeContext } from './context/Context';
-import About from './pages/about';
-import Contact from './pages/contact';
-import Home from './pages/home';
-import Portfolio from './pages/portfolio';
+import About from './pages/app/about';
+import Contact from './pages/app/contact';
+import Home from './pages/app/home';
+import Portfolio from './pages/app/portfolio';
+import Login from './pages/login';
 
 const App = () => {
+  const location = useLocation();
   const [showGoTop, setshowGoTop] = useState(false);
   const theme = useContext(themeContext);
   const darkMode = theme.state.darkMode;
@@ -24,34 +26,40 @@ const App = () => {
       return setshowGoTop(false);
     }
   };
-
   //SCROLL LISTENER
   useEffect(() => {
-    if (ref?.current.clientHeight < 300) {
+    if (
+      !location.pathname.startsWith('/admin') &&
+      ref?.current.clientHeight < 300
+    ) {
       setshowGoTop(false);
     }
     window.addEventListener('scroll', handleVisibleButton);
-  }, [ref]);
+  }, [location.pathname, ref]);
+  if (location.pathname.startsWith('/admin'))
+    return <AdminLayout />;
   return (
     <div
       className='App'
       style={{
-        background: darkMode ? 'black' : '',
+        background: darkMode ? 'var(--black)' : '',
         color: darkMode ? 'white' : '',
       }}
       ref={ref}
     >
-      <Navbar darkMode={darkMode} />
       <Routes>
-        <Route path='/'>
+        <Route path='/' element={<AppLayout darkMode={darkMode} />}>
           <Route index element={<Home darkMode={darkMode} />} />
           <Route path='portfolio' element={<Portfolio darkMode={darkMode} />} />
-          <Route path='portfolio/:id' element={<Portfolio darkMode={darkMode} />} />
+          <Route
+            path='portfolio/:id'
+            element={<Portfolio darkMode={darkMode} />}
+          />
           <Route path='about' element={<About darkMode={darkMode} />} />
           <Route path='contact' element={<Contact darkMode={darkMode} />} />
+          <Route path='login' element={<Login darkMode={darkMode} />} />
         </Route>
       </Routes>
-      <Footer />
       <div
         className={`${showGoTop ? 'scroll-top-visible' : 'scroll-top-hidden'}`}
         onClick={() => scroll.scrollToTop()}

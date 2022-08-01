@@ -6,10 +6,10 @@
   background-blend-mode: overlay;
 }
 
-@mixin flexDefine($justify) {
+@mixin flexDefine($justify, $align: false) {
   display: flex;
   justify-content: $justify;
-  align-items: center;
+  align-items: $align;
 }
 
 @mixin fontsDefine($size, $weight: false, $height: false, $style: false) {
