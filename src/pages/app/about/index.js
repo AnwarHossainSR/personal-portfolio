@@ -1,10 +1,12 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import {motion} from 'framer-motion';
+import {useState} from 'react';
+
 import AnwarImage from '../../../assets/img/anwar.svg';
 import Technology from '../../../components/app/Technology';
-import { workData } from '../../../constant/About';
-import { transition } from '../../../constant/FramerMotion';
-const About = ({ darkMode }) => {
+import {workData} from '../../../constant/About';
+import {transition} from '../../../constant/FramerMotion';
+
+const About = ({darkMode}) => {
   const [active, setactive] = useState(0);
   return (
     <div className='about'>
