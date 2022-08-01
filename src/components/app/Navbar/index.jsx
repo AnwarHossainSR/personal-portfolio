@@ -42,6 +42,7 @@ const Navbar = ({ darkMode }) => {
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to='/'
                 className={`${pathname === '/' && 'active'}`}
+                onClick={() => setOpen(false)}
               >
                 Home
               </Link>
@@ -51,6 +52,7 @@ const Navbar = ({ darkMode }) => {
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to='/portfolio'
                 className={`${pathname === '/portfolio' && 'active'}`}
+                onClick={() => setOpen(false)}
               >
                 Protfolio
               </Link>
@@ -60,6 +62,7 @@ const Navbar = ({ darkMode }) => {
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to='/about'
                 className={`${pathname === '/about' && 'active'}`}
+                onClick={() => setOpen(false)}
               >
                 About Me
               </Link>
@@ -69,6 +72,7 @@ const Navbar = ({ darkMode }) => {
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to='/login'
                 className={`${pathname === '/login' && 'active'}`}
+                onClick={() => setOpen(false)}
               >
                 Sign In
               </Link>

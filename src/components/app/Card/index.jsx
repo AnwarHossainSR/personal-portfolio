@@ -1,7 +1,10 @@
 import React from 'react';
-const Card = ({ emoji, heading, detail, color }) => {
+const Card = ({ emoji, heading, detail, darkMode }) => {
   return (
-    <div className='card' style={{ borderColor: { color } }}>
+    <div
+      className='card'
+      style={{ backgroundColor: darkMode ? 'var(--black)' : '' }}
+    >
       <img src={emoji} alt='' />
       <span>{heading}</span>
       <span>{detail}</span>

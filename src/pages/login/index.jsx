@@ -48,6 +48,7 @@ const Login = () => {
               placeholder='email'
               name='email'
               ref={emailRef}
+              autoComplete='off'
             />
           </div>
           <div className='login__container__field'>
@@ -56,6 +57,7 @@ const Login = () => {
               placeholder='password'
               name='password'
               ref={passwordRef}
+              autoComplete='off'
             />
           </div>
           <div className='login__container__button'>

@@ -8,7 +8,6 @@ import Card from '../Card';
 import Resume from './resume.pdf';
 
 const Services = ({ darkMode }) => {
-
   return (
     <div className='services' id='services'>
       {/* left side */}
@@ -45,6 +44,7 @@ const Services = ({ darkMode }) => {
             emoji={HeartEmoji}
             heading={'Design'}
             detail={'Figma, Sketch, Photoshop, Adobe xd'}
+            darkMode={darkMode}
           />
         </motion.div>
         {/* second card */}
@@ -59,6 +59,7 @@ const Services = ({ darkMode }) => {
             detail={
               '.Net, Laravel, JavaScript, React, Nodejs, Express, Typescript'
             }
+            darkMode={darkMode}
           />
         </motion.div>
         {/* 3rd */}
@@ -73,7 +74,7 @@ const Services = ({ darkMode }) => {
             detail={
               'There some project what i have designed and developed, and also some of the project i have worked on.'
             }
-            color='rgba(252, 166, 31, 0.45)'
+            darkMode={darkMode}
           />
         </motion.div>
         <div
