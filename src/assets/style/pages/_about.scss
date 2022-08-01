@@ -84,7 +84,7 @@
                 height: 300px;
                 position: absolute;
                 top: 0;
-                left: 12px;
+                left: 2px;
                 z-index: 5;
                 border-radius: 10px;
                 cursor: pointer;
@@ -97,8 +97,8 @@
             }
 
             .border {
-                width: 270px;
-                height: 280px;
+                width: 250px;
+                height: 279px;
                 border: 2px solid var(--orange);
                 border-radius: 5px;
                 position: absolute;
@@ -107,8 +107,9 @@
                 cursor: pointer;
 
                 @include mobile {
-                    width: 250px;
-                    height: 240px;
+                    width: 208px;
+                    height: 228px;
+                    left: 1.75rem;
                 }
             }
         }
