@@ -1,18 +1,18 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { AiOutlineArrowUp } from 'react-icons/ai';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
 import AdminLayout from './components/Layout/AdminLayout';
 import AppLayout from './components/Layout/AppLayout';
 import { themeContext } from './context/Context';
-import About from './pages/about';
-import Dashboard from './pages/admin';
-import Contact from './pages/contact';
-import Home from './pages/home';
+import About from './pages/app/about';
+import Contact from './pages/app/contact';
+import Home from './pages/app/home';
+import Portfolio from './pages/app/portfolio';
 import Login from './pages/login';
-import Portfolio from './pages/portfolio';
 
 const App = () => {
+  const location = useLocation();
   const [showGoTop, setshowGoTop] = useState(false);
   const theme = useContext(themeContext);
   const darkMode = theme.state.darkMode;
@@ -26,14 +26,18 @@ const App = () => {
       return setshowGoTop(false);
     }
   };
-
   //SCROLL LISTENER
   useEffect(() => {
-    if (ref?.current.clientHeight < 300) {
+    if (
+      !location.pathname.startsWith('/admin') &&
+      ref?.current.clientHeight < 300
+    ) {
       setshowGoTop(false);
     }
     window.addEventListener('scroll', handleVisibleButton);
-  }, [ref]);
+  }, [location.pathname, ref]);
+  if (location.pathname.startsWith('/admin'))
+    return <AdminLayout />;
   return (
     <div
       className='App'
@@ -53,10 +57,7 @@ const App = () => {
           />
           <Route path='about' element={<About darkMode={darkMode} />} />
           <Route path='contact' element={<Contact darkMode={darkMode} />} />
-          <Route path='admin/login' element={<Login darkMode={darkMode} />} />
-        </Route>
-        <Route path='/admin' element={<AdminLayout darkMode={darkMode} />}>
-          <Route path='dashboard' element={<Dashboard darkMode={darkMode} />} />
+          <Route path='login' element={<Login darkMode={darkMode} />} />
         </Route>
       </Routes>
       <div

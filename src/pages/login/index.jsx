@@ -12,9 +12,9 @@ const Login = () => {
     const checkAuth = async () => {
       const token = localStorage.getItem('accessToken');
       if (!token) {
-        navigate('/admin/login');
+        navigate('/login');
       } else {
-        navigate('/admin/dashboard');
+        navigate('/admin');
       }
     };
     checkAuth();
