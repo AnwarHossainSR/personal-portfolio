@@ -25,10 +25,7 @@ const Sidebar = (props) => {
   const activeItem = sidebar_items.findIndex(
     (item) => item.route === props.location.pathname
   );
-  const logOut = () => {
-    localStorage.removeItem('accessToken');
-    props.navigate('/');
-  };
+
   return (
     <div className='sidebar'>
       <div className='sidebar__logo'>
@@ -43,11 +40,6 @@ const Sidebar = (props) => {
           />
         </Link>
       ))}
-      <SidebarItem
-        title='Logout'
-        icon='bx bx-log-in-circle'
-        handleEvent={logOut}
-      />
     </div>
   );
 };
