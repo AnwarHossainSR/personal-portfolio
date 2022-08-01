@@ -1,13 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   isLoading: false,
-  error: '',
+  error: "",
   user: {},
 };
 
 export const userSlice = createSlice({
-  name: 'users',
+  name: "users",
   initialState,
   reducers: {
     userPending: (state) => {
