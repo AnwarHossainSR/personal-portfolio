@@ -29,7 +29,7 @@ const renderUserToggle = (user) => (
 );
 
 const renderUserMenu = (item, index, logOut) => (
-  <Link to='/' key={index} onClick={logOut}>
+  <Link to='/' key={index} onClick={item.content === 'Logout' ? logOut : ''}>
     <div className='notification-item'>
       <i className={item.icon}></i>
       <span>{item.content}</span>
