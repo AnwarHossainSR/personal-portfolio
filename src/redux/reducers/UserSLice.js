@@ -1,13 +1,14 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoading: false,
-  error: "",
+  error: '',
   user: {},
+  unAuthenticated: false,
 };
 
 export const userSlice = createSlice({
-  name: "users",
+  name: 'users',
   initialState,
   reducers: {
     userPending: (state) => {
@@ -15,13 +16,17 @@ export const userSlice = createSlice({
     },
     userSuccess: (state, { payload }) => {
       state.isLoading = false;
+      state.user = payload;
+      state.unAuthenticated = false;
     },
-    userFailure: (state, { payload }) => {
+    userFailure: (state) => {
       state.isLoading = false;
+      state.user = {};
+      state.unAuthenticated = true;
     },
     clearuser: (state) => {
-      state.users = [];
-      state.unitCost = 0;
+      state.isLoading = false;
+      state.user = {};
     },
   },
 });

@@ -4,6 +4,7 @@ const Table = (props) => {
   const initDataShow =
     props.limit && props.bodyData
       ? props.bodyData.slice(0, Number(props.limit))
+
       : props.bodyData;
 
   const [dataShow, setDataShow] = useState(initDataShow);
@@ -54,9 +55,8 @@ const Table = (props) => {
           {range.map((item, index) => (
             <div
               key={index}
-              className={`table__pagination-item ${
-                currPage === index ? 'active' : ''
-              }`}
+              className={`table__pagination-item ${currPage === index ? 'active' : ''
+                }`}
               onClick={() => selectPage(index)}
             >
               {item + 1}
