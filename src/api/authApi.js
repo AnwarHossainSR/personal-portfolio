@@ -1,8 +1,10 @@
-import axiosClient from './axiosClient';
-
-const authApi = {
-  login: (params) => axiosClient.post('auth/login', params),
-  verifyToken: () => axiosClient.post('auth/verify-token'),
-};
-
-export default authApi;
+// export const getPlatformsData = () => {
+//   return new Promise(async (resolve, reject) => {
+//     try {
+//       const res = await axios.get("platforms");
+//       resolve(res.data.data);
+//     } catch (error) {
+//       reject(error.response.data);
+//     }
+//   });
+// };

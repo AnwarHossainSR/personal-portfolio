@@ -1,25 +1,29 @@
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React, { useEffect, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { getAuthUserAction } from '../../redux/actions/UserAction';
+import { userSuccess } from '../../redux/reducers/UserSLice';
 import { auth } from '../../utils/firebase';
 
 const Login = () => {
+  const { unAuthenticated, user } = useSelector((state) => state.users);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState(false);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
+
   useEffect(() => {
-    const checkAuth = async () => {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        navigate('/login');
-      } else {
-        navigate('/admin');
-      }
-    };
-    checkAuth();
-  }, [navigate]);
+    if (user && user.id) return navigate('/admin');
+    if (unAuthenticated) {
+      navigate('/login');
+    } else {
+      dispatch(getAuthUserAction());
+    }
+  }, [dispatch, navigate, unAuthenticated, user]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     signInWithEmailAndPassword(
@@ -28,7 +32,13 @@ const Login = () => {
       passwordRef.current.value
     )
       .then((userCredential) => {
-        localStorage.setItem('accessToken', userCredential.user.accessToken);
+        dispatch(
+          userSuccess({
+            accessToken: userCredential.user.accessToken,
+            email: userCredential.user.email,
+            id: userCredential.user.uid,
+          })
+        );
         navigate('/admin');
       })
       .catch((error) => {
