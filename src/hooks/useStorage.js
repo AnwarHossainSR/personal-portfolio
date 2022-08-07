@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import {useCallback, useEffect, useState} from 'react';
 
 export function useLocalStorage(key, defaultValue) {
   return useStorage(key, defaultValue, window.localStorage);
@@ -11,7 +11,8 @@ export function useSessionStorage(key, defaultValue) {
 function useStorage(key, defaultValue, storageObject) {
   const [value, setValue] = useState(() => {
     const jsonValue = storageObject.getItem(key);
-    if (jsonValue != null) return JSON.parse(jsonValue);
+    if (jsonValue != null)
+      return JSON.parse(jsonValue);
 
     if (typeof defaultValue === 'function') {
       return defaultValue();
@@ -21,13 +22,12 @@ function useStorage(key, defaultValue, storageObject) {
   });
 
   useEffect(() => {
-    if (value === undefined) return storageObject.removeItem(key);
+    if (value === undefined)
+      return storageObject.removeItem(key);
     storageObject.setItem(key, JSON.stringify(value));
-  }, [key, value, storageObject]);
+  }, [ key, value, storageObject ]);
 
-  const remove = useCallback(() => {
-    setValue(undefined);
-  }, []);
+  const remove = useCallback(() => { setValue(undefined); }, []);
 
-  return [value, setValue, remove];
+  return [ value, setValue, remove ];
 }
