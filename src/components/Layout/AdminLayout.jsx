@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { getAuthUserAction } from '../../redux/actions/UserAction';
-import Routes from '../admin/Routes';
-import Sidebar from '../admin/Sidebar';
-import TopNav from '../admin/TopNav';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { getAuthUserAction } from "../../redux/actions/UserAction";
+import Routes from "../admin/Routes";
+import Sidebar from "../admin/Sidebar";
+import TopNav from "../admin/TopNav";
 
 const AdminLayout = () => {
   const { unAuthenticated, loading, user } = useSelector(
@@ -17,18 +17,18 @@ const AdminLayout = () => {
   useEffect(() => {
     if (user.id === undefined) dispatch(getAuthUserAction());
     if (unAuthenticated) {
-      navigate('/login');
+      navigate("/login");
     }
   }, [dispatch, navigate, unAuthenticated, user.id]);
 
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className='layout'>
+    <div className="layout">
       <Sidebar location={location} navigate={navigate} />
-      <div className='layout__content'>
+      <div className="layout__content">
         <TopNav />
-        <div className='layout__content-main'>
+        <div className="layout__content-main">
           <Routes />
         </div>
       </div>
