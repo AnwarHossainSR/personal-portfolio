@@ -29,3 +29,28 @@
         padding: 10px 26px;
     }
 }
+
+.tags {
+    position: relative;
+    width: fit-content;
+    gap: .5rem;
+    margin-bottom: .5rem;
+    background: var(--main-bg-light);
+    color: var(--txt-dark);
+    padding: .5rem;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: normal;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+
+    &::after {
+        content: "\00d7";
+        display: block;
+        color: red;
+        position: absolute;
+        top: -17px;
+        right: -8px;
+        font-size: 1.7rem;
+        cursor: pointer;
+    }
+}
