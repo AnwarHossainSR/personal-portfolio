@@ -1,29 +1,27 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-  isLoading: false,
-  error: '',
-  message: '',
+  isLoading : false,
+  error : '',
+  message : '',
 };
 
 export const portfolioSlice = createSlice({
-  name: 'portfolios',
+  name : 'portfolios',
   initialState,
-  reducers: {
-    portfolioPending: (state) => {
-      state.isLoading = true;
-    },
-    portfolioSuccess: (state, { payload }) => {
+  reducers : {
+    portfolioPending : (state) => { state.isLoading = true;},
+    portfolioSuccess : (state, {payload}) => {
       state.error = '';
       state.isLoading = false;
       state.message = payload;
     },
-    portfolioFailure: (state, { payload }) => {
+    portfolioFailure : (state, {payload}) => {
       state.isLoading = false;
       state.error = payload;
       state.message = '';
     },
-    clearPortfolio: (state) => {
+    clearPortfolio : (state) => {
       state.error = '';
       state.isLoading = false;
       state.message = '';
@@ -31,7 +29,7 @@ export const portfolioSlice = createSlice({
   },
 });
 
-const { reducer, actions } = portfolioSlice;
+const {reducer, actions} = portfolioSlice;
 export const {
   portfolioPending,
   portfolioSuccess,

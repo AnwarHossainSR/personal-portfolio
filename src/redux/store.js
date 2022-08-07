@@ -1,11 +1,11 @@
-import { configureStore } from "@reduxjs/toolkit";
+import {configureStore} from "@reduxjs/toolkit";
 
-import UserReducer from "./reducers/UserSLice";
 import PortfolioReducer from "./reducers/PortfolioSlice";
+import UserReducer from "./reducers/UserSLice";
 
 export default configureStore({
-  reducer: {
-    users: UserReducer,
-    portfolios: PortfolioReducer,
+  reducer : {
+    users : UserReducer,
+    portfolios : PortfolioReducer,
   },
 });
