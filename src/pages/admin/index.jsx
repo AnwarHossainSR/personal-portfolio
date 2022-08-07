@@ -17,10 +17,8 @@ const latestOrders = {
 };
 
 const orderStatus = {
-  shipping: 'primary',
-  pending: 'warning',
-  paid: 'success',
-  refund: 'danger',
+  active: 'success',
+  inactive: 'danger',
 };
 
 const renderOrderHead = (item, index) => <th key={index}>{item}</th>;
@@ -32,7 +30,7 @@ const renderOrderBody = (item, index) => (
     <td>{item.image}</td>
     <td>{item.date}</td>
     <td>
-      <Badge type={orderStatus[item.status]} content={item.status} />
+      <Badge type={orderStatus['active']} content={item.status} />
     </td>
   </tr>
 );
@@ -54,9 +52,6 @@ const Dashboard = () => {
                 bodyData={latestOrders.body}
                 renderBody={(item, index) => renderOrderBody(item, index)}
               />
-            </div>
-            <div className='admin-card__footer'>
-              <Link to='/'>view all</Link>
             </div>
           </div>
         </div>

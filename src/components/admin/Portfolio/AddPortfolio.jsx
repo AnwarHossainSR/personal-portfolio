@@ -8,11 +8,17 @@ const AddPortFolio = () => {
   );
   const dispatch = useDispatch();
   const [file, setfile] = useState(null);
+  const [tags, setTags] = useState([]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const inputObject = Object.fromEntries(formData);
+    inputObject.tags = tags;
+    inputObject.status = 'active';
     dispatch(createPortfolioAction(inputObject, file));
+    e.target.reset();
+    setfile(null);
+    setTags([]);
   };
   const handleCHange = (e) => {
     if (!e.target.files.length > 0) return;
@@ -21,6 +27,19 @@ const AddPortFolio = () => {
     reader.onload = (readerEvent) => {
       setfile(readerEvent.target.result);
     };
+  };
+  const handleKeyDown = (e) => {
+    if (e.key !== 'Enter') return;
+    const value = e.target.value;
+    if (!value.trim()) return;
+    setTags([...tags, value]);
+    e.target.value = '';
+    e.target.focus();
+  };
+  const removeTag = (index) => {
+    const newTags = [...tags];
+    newTags.splice(index, 1);
+    setTags(newTags);
   };
   return (
     <>
@@ -68,13 +87,43 @@ const AddPortFolio = () => {
                       className='form-control'
                       placeholder='github link..'
                     />
-                    <input
-                      type='text'
-                      required
-                      name='tags'
-                      className='form-control'
-                      placeholder='tags'
-                    />
+                    <div
+                      style={{
+                        width: '95.5%',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: '95.5%',
+                          display: 'flex',
+                          justifyContent: 'flex-start',
+                          alignItems: 'center',
+                          flexWrap: 'wrap',
+                          gap: '.5rem',
+                        }}
+                      >
+                        {tags &&
+                          tags.length > 0 &&
+                          tags.map((tag, index) => (
+                            <div
+                              key={index}
+                              className='tags'
+                              onClick={removeTag}
+                            >
+                              {tag}
+                            </div>
+                          ))}
+                      </div>
+                      <input
+                        type='text'
+                        {...(tags && tags.length <= 0 && { required: true })}
+                        name='tags'
+                        className='form-control'
+                        placeholder='tags'
+                        onKeyDown={handleKeyDown}
+                        style={{ width: '100%' }}
+                      />
+                    </div>
                     <textarea
                       className='form-control'
                       name='description'
@@ -88,7 +137,7 @@ const AddPortFolio = () => {
                     </div>
                   </div>
                   <div className='admin-col-6'>
-                    {file ? (
+                    {file !== null ? (
                       <img src={file} alt='' width={550} height={300} />
                     ) : (
                       <input
