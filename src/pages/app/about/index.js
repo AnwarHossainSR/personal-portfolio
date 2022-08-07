@@ -1,11 +1,11 @@
-import {motion} from "framer-motion";
-import {useState} from "react";
-import {Helmet} from "react-helmet-async";
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { Helmet } from "react-helmet-async";
 
 import AnwarImage from "../../../assets/img/anwar.svg";
 import Technology from "../../../components/app/Technology";
-import {workData} from "../../../constant/About";
-import {transition} from "../../../constant/FramerMotion";
+import { workData } from "../../../constant/About";
+import { transition } from "../../../constant/FramerMotion";
 
 const About = () => {
   const [active, setactive] = useState(0);
