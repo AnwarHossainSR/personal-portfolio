@@ -1,14 +1,17 @@
-import React, { useEffect, useRef } from 'react';
-import { Helmet } from 'react-helmet-async';
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useRef } from "react";
+import { Helmet } from "react-helmet-async";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import {
   getAuthUserAction,
   GetSignInAction,
-} from '../../redux/actions/UserAction';
+} from "../../redux/actions/UserAction";
 
 const Login = () => {
-  console.log('🚀 ~ file: Login.js ~ line 8 ~ Login',process.env.REACT_APP_API_KEY);
+  console.log(
+    "🚀 ~ file: Login.js ~ line 8 ~ Login",
+    process.env.REACT_APP_API_KEY
+  );
   const { isLoading, unAuthenticated, user, error } = useSelector(
     (state) => state.users
   );
@@ -18,9 +21,9 @@ const Login = () => {
   const passwordRef = useRef(null);
 
   useEffect(() => {
-    if (user && user.id) return navigate('/admin');
+    if (user && user.id) return navigate("/admin");
     if (unAuthenticated) {
-      navigate('/login');
+      navigate("/login");
     } else {
       dispatch(getAuthUserAction());
     }
@@ -38,33 +41,33 @@ const Login = () => {
       <Helmet>
         <title>Login | Anwar Hossain | Portfolio</title>
       </Helmet>
-      <div className='login'>
-        <div className='login__container'>
+      <div className="login">
+        <div className="login__container">
           <h1>Sign In</h1>
-          {error && <div className='error'>Wrong credentials</div>}
+          {error && <div className="error">Wrong credentials</div>}
 
           <form onSubmit={handleSubmit}>
-            <div className='login__container__field'>
+            <div className="login__container__field">
               <input
-                type='email'
-                placeholder='email'
-                name='email'
+                type="email"
+                placeholder="email"
+                name="email"
                 ref={emailRef}
-                autoComplete='off'
+                autoComplete="off"
               />
             </div>
-            <div className='login__container__field'>
+            <div className="login__container__field">
               <input
-                type='password'
-                placeholder='password'
-                name='password'
+                type="password"
+                placeholder="password"
+                name="password"
                 ref={passwordRef}
-                autoComplete='off'
+                autoComplete="off"
               />
             </div>
-            <div className='login__container__button'>
-              <button className='button'>
-                {isLoading === true ? 'loading..' : 'Sign In'}
+            <div className="login__container__button">
+              <button className="button">
+                {isLoading === true ? "loading.." : "Sign In"}
               </button>
             </div>
           </form>
