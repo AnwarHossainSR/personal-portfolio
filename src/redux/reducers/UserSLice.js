@@ -15,23 +15,27 @@ export const userSlice = createSlice({
       state.isLoading = true;
     },
     userSuccess: (state, { payload }) => {
+      state.error = '';
       state.isLoading = false;
       state.user = payload;
       state.unAuthenticated = false;
     },
-    userFailure: (state) => {
+    userFailure: (state, { payload }) => {
+      state.error = payload;
       state.isLoading = false;
       state.user = {};
       state.unAuthenticated = true;
     },
-    clearuser: (state) => {
+    clearUser: (state) => {
       state.isLoading = false;
       state.user = {};
+      state.error = '';
+      state.unAuthenticated = false;
     },
   },
 });
 
 const { reducer, actions } = userSlice;
-export const { userPending, userSuccess, userFailure, clearuser } = actions;
+export const { userPending, userSuccess, userFailure, clearUser } = actions;
 
 export default reducer;

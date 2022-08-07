@@ -1,4 +1,4 @@
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../utils/firebase';
 import { userFailure, userPending, userSuccess } from '../reducers/UserSLice';
 
@@ -19,6 +19,26 @@ export const getAuthUserAction = () => async (dispatch) => {
       }
     });
   } catch (error) {
-    //dispatch(platformFailure(error));
+    dispatch(userFailure());
+  }
+};
+
+export const GetSignInAction = (email, password) => async (dispatch) => {
+  dispatch(userPending());
+  try {
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    dispatch(
+      userSuccess({
+        accessToken: userCredential.user.accessToken,
+        email: userCredential.user.email,
+        id: userCredential.user.uid,
+      })
+    );
+  } catch (error) {
+    dispatch(userFailure('Invalid email or password'));
   }
 };

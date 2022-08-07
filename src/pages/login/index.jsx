@@ -1,17 +1,18 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getAuthUserAction } from '../../redux/actions/UserAction';
-import { userSuccess } from '../../redux/reducers/UserSLice';
-import { auth } from '../../utils/firebase';
+import {
+  getAuthUserAction,
+  GetSignInAction,
+} from '../../redux/actions/UserAction';
 
 const Login = () => {
-  const { unAuthenticated, user } = useSelector((state) => state.users);
+  const { isLoading, unAuthenticated, user, error } = useSelector(
+    (state) => state.users
+  );
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [error, setError] = useState(false);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
@@ -26,25 +27,9 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    signInWithEmailAndPassword(
-      auth,
-      emailRef.current.value,
-      passwordRef.current.value
-    )
-      .then((userCredential) => {
-        dispatch(
-          userSuccess({
-            accessToken: userCredential.user.accessToken,
-            email: userCredential.user.email,
-            id: userCredential.user.uid,
-          })
-        );
-        navigate('/admin');
-      })
-      .catch((error) => {
-        console.log('catch', error);
-        setError(true);
-      });
+    dispatch(
+      GetSignInAction(emailRef.current.value, passwordRef.current.value)
+    );
   };
   return (
     <>
@@ -76,7 +61,9 @@ const Login = () => {
               />
             </div>
             <div className='login__container__button'>
-              <button className='button'>Sign In</button>
+              <button className='button'>
+                {isLoading === true ? 'loading..' : 'Sign In'}
+              </button>
             </div>
           </form>
         </div>
