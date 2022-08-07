@@ -1,0 +1,48 @@
+
+* {
+    font-family: 'Gumela';
+    font-weight: normal;
+    font-size: 20px;
+}
+
+body {
+    margin: 0;
+    -ms-overflow-style: none;
+    /* Internet Explorer 10+ */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul,
+li {
+    list-style-type: none;
+}
+
+ul {
+    display: block;
+    list-style-type: disc;
+    margin-block-start: 1em;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0px;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:autofill,
+input:autofill:hover,
+input:autofill:focus {
+    -webkit-text-fill-color: none;
+    -text-fill-color: none;
+    background: none;
+}
