@@ -36,8 +36,8 @@ const App = () => {
     }
     window.addEventListener('scroll', handleVisibleButton);
   }, [location.pathname, ref]);
-  if (location.pathname.startsWith('/admin'))
-    return <AdminLayout />;
+
+  if (location.pathname.startsWith('/admin')) return <AdminLayout />;
   return (
     <div
       className='App'
