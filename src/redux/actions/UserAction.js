@@ -39,6 +39,11 @@ export const GetSignInAction = (email, password) => async (dispatch) => {
       })
     );
   } catch (error) {
+    console.log(
+      '🚀 ~ file: UserAction.js ~ line 42 ~ GetSignInAction ~ error',
+      error
+    );
+
     dispatch(userFailure('Invalid email or password'));
   }
 };

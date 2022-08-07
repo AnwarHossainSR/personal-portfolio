@@ -8,6 +8,7 @@ import {
 } from '../../redux/actions/UserAction';
 
 const Login = () => {
+  console.log('🚀 ~ file: Login.js ~ line 8 ~ Login',process.env.REACT_APP_API_KEY);
   const { isLoading, unAuthenticated, user, error } = useSelector(
     (state) => state.users
   );
@@ -27,6 +28,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     dispatch(
       GetSignInAction(emailRef.current.value, passwordRef.current.value)
     );
