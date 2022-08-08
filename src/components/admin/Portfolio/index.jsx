@@ -1,14 +1,14 @@
-import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
-import Moment from 'react-moment';
-import { Link } from 'react-router-dom';
-import { db } from '../../../utils/firebase';
-import Badge from '../Badge';
-import Table from '../Table';
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import React, { useEffect, useState } from "react";
+import Moment from "react-moment";
+import { Link } from "react-router-dom";
+import { db } from "../../../utils/firebase";
+import Badge from "../Badge";
+import Table from "../Table";
 
 const portfolioStatus = {
-  active: 'success',
-  inactive: 'danger',
+  active: "success",
+  inactive: "danger",
 };
 
 const renderOrderHead = (item, index) => <th key={index}>{item}</th>;
@@ -20,11 +20,20 @@ const renderOrderBody = (item, index) => {
       <td>{item.data().title}</td>
       <td>
         {item.data().tags.map((tag, index) => (
-          <span key={index} style={{display:'flex',justifyContent:'flex-start',gap:'10px' }}>{tag}</span>
+          <span
+            key={index}
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              gap: "10px",
+            }}
+          >
+            {tag}
+          </span>
         ))}
       </td>
       <td>
-        <img src={item.data().image} width={100} height={70} alt='' />
+        <img src={item.data().image} width={100} height={70} alt="" />
       </td>
       <td>
         <Moment fromNow>{item.data().date?.toDate()}</Moment>
@@ -45,7 +54,7 @@ const Portfolio = () => {
   useEffect(
     () =>
       onSnapshot(
-        query(collection(db, 'portfolios'), orderBy('timestamp', 'desc')),
+        query(collection(db, "portfolios"), orderBy("timestamp", "desc")),
         (snapshot) => {
           setPortfolios(snapshot.docs);
         }
@@ -54,17 +63,17 @@ const Portfolio = () => {
   );
   return (
     <>
-      <div className='admin-row'>
-        <div className='admin-col-12'>
-          <div className='admin-card'>
-            <div className='admin-card__header'>
+      <div className="admin-row">
+        <div className="admin-col-12">
+          <div className="admin-card">
+            <div className="admin-card__header">
               <h3>Portfolios</h3>
-              <Link to='../add'>Add Portfolio</Link>
+              <Link to="../add">Add Portfolio</Link>
             </div>
-            <div className='admin-card__body'>
+            <div className="admin-card__body">
               {portfolios && portfolios.length > 0 && (
                 <Table
-                  headData={['Title', 'Tags', 'Image', 'Date', 'status']}
+                  headData={["Title", "Tags", "Image", "Date", "status"]}
                   renderHead={(item, index) => renderOrderHead(item, index)}
                   bodyData={portfolios && portfolios}
                   renderBody={(item, index) => renderOrderBody(item, index)}
