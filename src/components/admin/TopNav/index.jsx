@@ -1,10 +1,10 @@
-import { signOut } from 'firebase/auth';
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import user_image from '../../../assets/images/tuat.png';
 import notifications from '../../../assets/JsonData/notification.json';
 import user_menu from '../../../assets/JsonData/user_menus.json';
-import { auth } from '../../../utils/firebase';
+import { GetLogoutAction } from '../../../redux/actions/UserAction';
 import Dropdown from '../Dropdown';
 
 const curr_user = {
@@ -38,10 +38,9 @@ const renderUserMenu = (item, index, logOut) => (
 );
 
 const TopNav = (props) => {
+  const dispatch = useDispatch();
   const logOut = () => {
-    signOut(auth);
-    localStorage.removeItem('accessToken');
-    props.navigate('/');
+    dispatch(GetLogoutAction());
   };
   return (
     <div className='topnav'>

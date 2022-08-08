@@ -29,7 +29,7 @@ const Table = (props) => {
 
     setCurrPage(page);
   };
-
+console.log(dataShow);
   return (
     <div>
       <div className='table-wrapper'>
