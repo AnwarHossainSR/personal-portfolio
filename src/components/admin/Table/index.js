@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 
 const Table = (props) => {
-  const initDataShow =
-    props.limit && props.bodyData
-      ? props.bodyData.slice(0, Number(props.limit))
+  const initDataShow = props.limit && props.bodyData
+                           ? props.bodyData.slice(0, Number(props.limit))
 
-      : props.bodyData;
+                           : props.bodyData;
 
   const [dataShow, setDataShow] = useState(initDataShow);
 
@@ -16,7 +15,7 @@ const Table = (props) => {
   if (props.limit !== undefined) {
     let page = Math.floor(props.bodyData.length / Number(props.limit));
     pages = props.bodyData.length % Number(props.limit) === 0 ? page : page + 1;
-    range = [...Array(pages).keys()];
+    range = [...Array(pages).keys() ];
   }
 
   const [currPage, setCurrPage] = useState(0);
@@ -29,27 +28,21 @@ const Table = (props) => {
 
     setCurrPage(page);
   };
-console.log(dataShow);
-  return (
-    <div>
-      <div className='table-wrapper'>
-        <table>
-          {props.headData && props.renderHead ? (
-            <thead>
-              <tr>
-                {props.headData.map((item, index) =>
-                  props.renderHead(item, index)
-                )}
-              </tr>
-            </thead>
-          ) : null}
-          {props.bodyData && props.renderBody ? (
-            <tbody>
-              {dataShow.map((item, index) => props.renderBody(item, index))}
-            </tbody>
+  console.log(dataShow);
+  return (<div><div className = 'table-wrapper'><table>{
+      props.headData && props.renderHead
+          ? (<thead><tr>{props.headData.map(
+                (item, index) =>
+                    props.renderHead(item, index))}</tr>
+            </thead>)
+          : null} {
+      props.bodyData && props.renderBody
+      ? (<tbody>{dataShow.map(
+            (item, index) => props.renderBody(
+                item, index))}</tbody>
           ) : null}
         </table>
-      </div>
+         </div>
       {pages > 1 ? (
         <div className='table__pagination'>
           {range.map((item, index) => (
@@ -60,12 +53,10 @@ console.log(dataShow);
               onClick={() => selectPage(index)}
             >
               {item + 1}
-            </div>
-          ))}
-        </div>
+            </div>))}<
+      /div>
       ) : null}
-    </div>
-  );
+    </div>);
 };
 
 export default Table;
