@@ -1,5 +1,10 @@
 [
   {
+    "display_name": "Home",
+    "route": "/",
+    "icon": "bx bxs-home-heart"
+  },
+  {
     "display_name": "Dashboard",
     "route": "/admin",
     "icon": "bx bx-category-alt"
@@ -10,9 +15,9 @@
     "icon": "bx bx-package"
   },
   {
-    "display_name": "Add Portfolio",
-    "route": "/admin/add-portfolio",
-    "icon": "bx bx-user-pin"
+    "display_name": "Portfolio",
+    "route": "/admin/portfolio",
+    "icon": "bx bx-package"
   },
   {
     "display_name": "settings",

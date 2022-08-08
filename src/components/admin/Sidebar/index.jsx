@@ -1,8 +1,7 @@
-import { signOut } from 'firebase/auth';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import logo from '../../../assets/images/logo.png';
 import sidebar_items from '../../../assets/JsonData/sidebar_routes.json';
-import { auth } from '../../../utils/firebase';
+import { GetLogoutAction } from '../../../redux/actions/UserAction';
 
 const SidebarItem = (props) => {
   const active = props.active ? 'active' : '';
@@ -23,19 +22,16 @@ const SidebarItem = (props) => {
   );
 };
 const Sidebar = (props) => {
+  const dispatch = useDispatch();
   const activeItem = sidebar_items.findIndex(
     (item) => item.route === props.location.pathname
   );
   const logOut = () => {
-    signOut(auth);
-    localStorage.removeItem('accessToken');
-    props.navigate('/');
+    dispatch(GetLogoutAction());
   };
   return (
     <div className='sidebar'>
-      <div className='sidebar__logo'>
-        <img src={logo} alt='company logo' />
-      </div>
+      <div style={{ paddingBottom: 65 }} />
       {sidebar_items.map((item, index) => (
         <Link
           to={item.route}

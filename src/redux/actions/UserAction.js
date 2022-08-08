@@ -1,6 +1,15 @@
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  signOut,
+} from 'firebase/auth';
 import { auth } from '../../utils/firebase';
-import { userFailure, userPending, userSuccess } from '../reducers/UserSLice';
+import {
+  clearUser,
+  userFailure,
+  userPending,
+  userSuccess,
+} from '../reducers/UserSLice';
 
 export const getAuthUserAction = () => async (dispatch) => {
   dispatch(userPending());
@@ -40,10 +49,24 @@ export const GetSignInAction = (email, password) => async (dispatch) => {
     );
   } catch (error) {
     console.log(
-      '🚀 ~ file: UserAction.js ~ line 42 ~ GetSignInAction ~ error',
+      '🚀 ~ file: UserAction.js ~ line 43 ~ GetSignInAction ~ error',
       error
     );
-
     dispatch(userFailure('Invalid email or password'));
+  }
+};
+
+export const GetLogoutAction = () => async (dispatch) => {
+  dispatch(userPending());
+  try {
+    signOut(auth);
+    localStorage.clear();
+    dispatch(clearUser());
+  } catch (error) {
+    console.log(
+      '🚀 ~ file: UserAction.js ~ line 55 ~ GetLogoutAction ~ error',
+      error
+    );
+    dispatch(userFailure(error.message));
   }
 };
