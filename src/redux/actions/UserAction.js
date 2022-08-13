@@ -1,9 +1,10 @@
+import { addDoc, collection, serverTimestamp } from '@firebase/firestore';
 import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
-import { auth } from '../../utils/firebase';
+import { auth, db } from '../../utils/firebase';
 import {
   clearUser,
   userFailure,
@@ -68,5 +69,33 @@ export const GetLogoutAction = () => async (dispatch) => {
       error
     );
     dispatch(userFailure(error.message));
+  }
+};
+
+export const GetCountVisitors = () => async (dispatch) => {
+  const count = sessionStorage.getItem('count');
+  if (count) return;
+
+  if (navigator.geolocation) {
+    console.log('🚀 ~ file: UserAction.js ~ line 69 ~ GetCountVisitors');
+    navigator.geolocation.getCurrentPosition(async (position) => {
+      sessionStorage.setItem('count', 1);
+      const { latitude, longitude } = position.coords;
+      const visitor = {
+        latitude,
+        longitude,
+        timestamp: serverTimestamp(),
+      };
+      await addDoc(collection(db, 'visitors'), visitor);
+    });
+  } else {
+    console.log('Geolocation is not supported by this browser.');
+    sessionStorage.setItem('count', 1);
+    const visitor = {
+      latitude: 0,
+      longitude: 0,
+      timestamp: serverTimestamp(),
+    };
+    await addDoc(collection(db, 'visitors'), visitor);
   }
 };
