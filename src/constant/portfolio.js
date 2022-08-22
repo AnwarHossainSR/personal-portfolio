@@ -1,8 +1,9 @@
-import {GiCutDiamond} from 'react-icons/gi';
-import { MdOutlineMobileFriendly,MdComputer } from 'react-icons/md';
+import { GiCutDiamond } from 'react-icons/gi';
+import { MdComputer, MdOutlineMobileFriendly } from 'react-icons/md';
 import Blog from '../assets/img/blog_app.png';
 import AdminDashboard from '../assets/img/dashboard.png';
 import Dev from '../assets/img/dev.png';
+import Doctor from '../assets/img/doctor.png';
 import EcommerceApp from '../assets/img/ecommerce-app.png';
 import Ecommerce from '../assets/img/ecommerce.png';
 import MovieApp from '../assets/img/movie_app.png';
@@ -10,10 +11,28 @@ import PortfolioApp from '../assets/img/portfolio.png';
 import Reservation from '../assets/img/reservation.png';
 import SocialMedia from '../assets/img/social_media.png';
 import SocialSite from '../assets/img/social_site.png';
+import Spotify from '../assets/img/spotify.png';
 import TwitterClone from '../assets/img/twitter-clone.png';
 import YoutubeApp from '../assets/img/youtube-app.png';
 
 export const projects = [
+  {
+    img: Doctor,
+    title: 'Doctor Appointment',
+    description: 'Doctor Appointment application with full featured',
+    link: 'https://doccure-appointment.vercel.app/',
+    tags: ['react', 'redux', 'sass', 'nodejs', 'express', 'mongodb'],
+    github: 'https://github.com/AnwarHossainSR/doccure-doctor-appointment',
+  },
+  {
+    img: Spotify,
+    title: 'Spotify clone',
+    description: 'A clone of Spotify app',
+    link: 'https://nextjs-spotify-clone-v1.vercel.app/',
+    tags: ['react', 'nextjs', 'recoil', 'tailwindcss'],
+    github: 'https://github.com/AnwarHossainSR/nextjs-spotify-clone',
+  },
+
   {
     img: EcommerceApp,
     title: 'Ecommerce Application',
