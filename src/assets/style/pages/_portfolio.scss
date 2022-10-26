@@ -141,10 +141,11 @@
                                 font-size: .7rem;
                                 width: fit-content;
                                 background: linear-gradient(180deg, #fdc50f 26.71%, #fb982f 99.36%);
-                                padding: 0 2px 0 2px;
+                                padding: 3px;
                                 color: #020202;
                                 transition: all .5s cubic-bezier(.8, .5, .2, 1.4);
                                 text-transform: capitalize;
+                                border-radius: 2px;
                             }
                         }
 

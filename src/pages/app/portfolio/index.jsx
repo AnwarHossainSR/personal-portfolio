@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import PortfolioCard from "../../../components/app/Card/PortfolioCard";
 import Tab from "../../../components/app/Tab";
+import WhiteSpace from "../../../components/app/whitespace/WhiteSpace";
 import { projects, tags } from "../../../constant/portfolio";
 
 const Portfolio = ({ darkMode }) => {
@@ -57,6 +58,7 @@ const Portfolio = ({ darkMode }) => {
                 "No projects found under " + filter + " tag"}
             </div>
           </motion.div>
+          <WhiteSpace height={200} />
         </div>
       </div>
     </>
