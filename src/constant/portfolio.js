@@ -21,7 +21,7 @@ export const projects = [
     img: AdminPro,
     title: 'Admin Pro Dashboard',
     description: 'Admin Pro Dashboard application with full functionality',
-    link: 'https://doccure-appointment.vercel.app/',
+    link: 'https://admin-dashboard-pro.vercel.app/',
     tags: ['react', 'redux', 'sass', 'material ui', 'data-grid', 'mongodb','formik','yup','chartjs','calender'],
     github: 'https://github.com/AnwarHossainSR/admin-dashboard-pro',
   },
