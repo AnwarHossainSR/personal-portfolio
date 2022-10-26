@@ -6,8 +6,8 @@ import Tab from "../../../components/app/Tab";
 import { projects, tags } from "../../../constant/portfolio";
 
 const Portfolio = ({ darkMode }) => {
-  const [filter, setfilter] = useState("all");
-  const [portfolioProjects, setportfolioProjects] = useState(projects);
+  const [filter, setFilter] = useState("all");
+  const [portfolioProjects, setPortfolioProjects] = useState(projects);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -18,7 +18,7 @@ const Portfolio = ({ darkMode }) => {
       }
       return projects.filter((project) => project.tags.includes(filter));
     };
-    setportfolioProjects(filteredProjects);
+    setPortfolioProjects(filteredProjects);
   }, [filter]);
 
   return (
@@ -42,7 +42,7 @@ const Portfolio = ({ darkMode }) => {
                 key={index}
                 className={`${filter === tag.name ? "active" : ""}`}
                 text={tag.name}
-                handleEvent={() => setfilter(tag.name)}
+                handleEvent={() => setFilter(tag.name)}
               />
             ))}
           </div>

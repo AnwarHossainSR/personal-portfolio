@@ -14,8 +14,17 @@ import SocialSite from '../assets/img/social_site.png';
 import Spotify from '../assets/img/spotify.png';
 import TwitterClone from '../assets/img/twitter-clone.png';
 import YoutubeApp from '../assets/img/youtube-app.png';
+import AdminPro from '../assets/img/react-admin-pro.png';
 
 export const projects = [
+  {
+    img: AdminPro,
+    title: 'Admin Pro Dashboard',
+    description: 'Admin Pro Dashboard application with full functionality',
+    link: 'https://doccure-appointment.vercel.app/',
+    tags: ['react', 'redux', 'sass', 'material ui', 'data-grid', 'mongodb','formik','yup','chartjs','calender'],
+    github: 'https://github.com/AnwarHossainSR/admin-dashboard-pro',
+  },
   {
     img: Doctor,
     title: 'Doctor Appointment',
