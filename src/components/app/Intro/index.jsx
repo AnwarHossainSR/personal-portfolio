@@ -2,12 +2,12 @@
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
 import { Link } from 'react-scroll';
-import boy from '../../../assets/img/boy.png';
 import crown from '../../../assets/img/crown.png';
 import Github from '../../../assets/img/github.png';
 import glassesimoji from '../../../assets/img/glassesimoji.png';
 import Instagram from '../../../assets/img/instagram.png';
 import LinkedIn from '../../../assets/img/linkedin.png';
+import me from '../../../assets/img/me.svg';
 import thumbup from '../../../assets/img/thumbup.png';
 import Vector1 from '../../../assets/img/Vector1.png';
 import Vector2 from '../../../assets/img/Vector2.png';
@@ -64,7 +64,7 @@ const Intro = () => {
       <div className='i-right'>
         <img src={Vector1} alt='' />
         <img src={Vector2} alt='' />
-        <img src={boy} alt='' />
+        <img src={me} alt='' width={200} height={350} />
         {/* animation */}
         <motion.img
           initial={{ left: '-36%' }}
