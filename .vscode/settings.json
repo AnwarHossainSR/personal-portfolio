@@ -4,11 +4,13 @@
     "contextapi",
     "Ecommerce",
     "formik",
+    "iconscout",
     "masterplans",
     "Mateal",
     "matrialui",
     "Multivendor",
     "nextjs",
-    "tailwindcss"
+    "tailwindcss",
+    "unicons"
   ]
 }

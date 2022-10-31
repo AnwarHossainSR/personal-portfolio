@@ -67,16 +67,6 @@ const Navbar = ({ darkMode }) => {
                 About Me
               </Link>
             </li>
-            <li>
-              <Link
-                style={{ color: darkMode ? 'var(--gray)' : '' }}
-                to='/login'
-                className={`${pathname === '/login' && 'active'}`}
-                onClick={() => setOpen(false)}
-              >
-                Sign In
-              </Link>
-            </li>
 
             <div className='navbar-cross'>
               <motion.div
