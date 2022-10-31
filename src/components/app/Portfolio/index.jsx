@@ -5,6 +5,7 @@ import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { projects } from '../../../constant/portfolio';
 import { themeContext } from '../../../context/Context';
+import Image from '../Image/Image';
 
 const Portfolio = () => {
   const theme = useContext(themeContext);
@@ -29,10 +30,9 @@ const Portfolio = () => {
         {projects.length > 0 &&
           projects.map((project, index) => (
             <SwiperSlide key={index}>
-              <img
-                src={project.img}
-                alt={project.title}
-                onClick={() => window.open(project.link, '_blank')}
+              <Image
+                project={project}
+                handleEvent={() => window.open(project.link, '_blank')}
               />
             </SwiperSlide>
           ))}
