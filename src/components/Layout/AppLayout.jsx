@@ -1,7 +1,7 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
-import Footer from '../app/Footer';
-import Navbar from '../app/Navbar';
+import React from "react";
+import { Outlet } from "react-router-dom";
+import Footer from "../app/Footer";
+import Navbar from "../app/Navbar";
 
 const AppLayout = ({ darkMode }) => {
   return (
