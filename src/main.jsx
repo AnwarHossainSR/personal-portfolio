@@ -1,7 +1,6 @@
 import './assets/boxicons-2.0.7/css/boxicons.min.css';
 import './assets/style/main.scss';
 
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';

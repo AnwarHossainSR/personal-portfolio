@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { AiOutlineArrowUp } from 'react-icons/ai';
 import { Route, Routes } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
@@ -32,7 +32,7 @@ const App = () => {
   console.log(ref?.current?.clientHeight);
   return (
     <div
-      className='App'
+      className="App"
       style={{
         background: darkMode ? 'var(--black)' : '',
         color: darkMode ? 'white' : '',
@@ -40,15 +40,15 @@ const App = () => {
       ref={ref}
     >
       <Routes>
-        <Route path='/' element={<AppLayout darkMode={darkMode} />}>
+        <Route path="/" element={<AppLayout darkMode={darkMode} />}>
           <Route index element={<Home darkMode={darkMode} />} />
-          <Route path='portfolio' element={<Portfolio darkMode={darkMode} />} />
+          <Route path="portfolio" element={<Portfolio darkMode={darkMode} />} />
           <Route
-            path='portfolio/:id'
+            path="portfolio/:id"
             element={<Portfolio darkMode={darkMode} />}
           />
-          <Route path='about' element={<About darkMode={darkMode} />} />
-          <Route path='contact' element={<Contact darkMode={darkMode} />} />
+          <Route path="about" element={<About darkMode={darkMode} />} />
+          <Route path="contact" element={<Contact darkMode={darkMode} />} />
         </Route>
       </Routes>
       <div
