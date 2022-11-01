@@ -111,7 +111,7 @@
       border-radius: 100%;
       /* darkMode */
       z-index: 1;
-      @include mobile{
+      @include mobile {
         left: 8rem !important;
       }
     }
@@ -131,5 +131,3 @@
 .w-mainCircle > * {
   position: absolute;
 }
-
-

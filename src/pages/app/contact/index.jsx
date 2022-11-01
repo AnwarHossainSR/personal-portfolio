@@ -1,6 +1,5 @@
-import React from "react";
-import { Helmet } from "react-helmet-async";
-import ContactComponnet from "../../../components/app/Contact";
+import { Helmet } from 'react-helmet-async';
+import ContactComponent from '../../../components/app/Contact';
 
 const Contact = () => {
   return (
@@ -8,7 +7,7 @@ const Contact = () => {
       <Helmet>
         <title>Contact | Anwar Hossain | Portfolio</title>
       </Helmet>
-      <ContactComponnet />
+      <ContactComponent />
     </div>
   );
 };

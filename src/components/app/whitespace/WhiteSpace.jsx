@@ -1,7 +1,5 @@
-import React from 'react';
-
 const WhiteSpace = ({ height }) => {
-  return <div style={{ height: `${height}px` }}></div>;
+  return <div style={{ height: `${height}px` }} />;
 };
 
 export default WhiteSpace;

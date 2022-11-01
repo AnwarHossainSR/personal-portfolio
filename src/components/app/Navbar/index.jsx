@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GiCrossMark } from 'react-icons/gi';
 import { GoThreeBars } from 'react-icons/go';
 import { Link, NavLink, useLocation } from 'react-router-dom';
@@ -19,12 +19,12 @@ const Navbar = ({ darkMode }) => {
   }, [open]);
 
   return (
-    <div className='n-wrapper' id='Navbar'>
+    <div className="n-wrapper" id="Navbar">
       {/* left */}
-      <div className='n-left'>
+      <div className="n-left">
         <NavLink
-          to='/'
-          className='n-name'
+          to="/"
+          className="n-name"
           style={{
             color: 'var(--orange)',
           }}
@@ -34,13 +34,13 @@ const Navbar = ({ darkMode }) => {
         <Toggle />
       </div>
       {/* right */}
-      <div className='n-right'>
-        <div className='n-list' style={{ display: open && 'block' }}>
+      <div className="n-right">
+        <div className="n-list" style={{ display: open && 'block' }}>
           <ul style={{ listStyleType: 'none' }}>
             <li>
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
-                to='/'
+                to="/"
                 className={`${pathname === '/' && 'active'}`}
                 onClick={() => setOpen(false)}
               >
@@ -50,7 +50,7 @@ const Navbar = ({ darkMode }) => {
             <li>
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
-                to='/portfolio'
+                to="/portfolio"
                 className={`${pathname === '/portfolio' && 'active'}`}
                 onClick={() => setOpen(false)}
               >
@@ -60,7 +60,7 @@ const Navbar = ({ darkMode }) => {
             <li>
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
-                to='/about'
+                to="/about"
                 className={`${pathname === '/about' && 'active'}`}
                 onClick={() => setOpen(false)}
               >
@@ -68,7 +68,7 @@ const Navbar = ({ darkMode }) => {
               </Link>
             </li>
 
-            <div className='navbar-cross'>
+            <div className="navbar-cross">
               <motion.div
                 whileHover={{
                   scale: 1.1,
@@ -93,10 +93,10 @@ const Navbar = ({ darkMode }) => {
             </div>
           </ul>
         </div>
-        <Link to='contact' className='top-contact'>
-          <button className='button n-button'>Contact</button>
+        <Link to="contact" className="top-contact">
+          <button className="button n-button">Contact</button>
         </Link>
-        <div className='navbar-icon'>
+        <div className="navbar-icon">
           <motion.div
             whileHover={{
               scale: 1.1,
