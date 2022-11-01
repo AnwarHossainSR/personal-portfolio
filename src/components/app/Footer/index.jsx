@@ -9,7 +9,14 @@ const Footer = () => {
   };
   return (
     <div className="footer">
-      <img src={Wave} alt="" style={{ width: '100%' }} />
+      <img
+        src={Wave}
+        alt=""
+        style={{
+          width: '100%',
+          height: window.innerWidth <= 480 ? '15rem' : undefined,
+        }}
+      />
       <div className="f-content">
         <span>anwarmahedisr@gmail.com</span>
         <div className="f-icons">
