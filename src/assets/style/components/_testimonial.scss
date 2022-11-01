@@ -34,7 +34,7 @@
   }
 }
 
-.t-heading>* {
+.t-heading > * {
   font-size: 2rem;
   font-weight: bold;
 }
@@ -81,7 +81,6 @@
   justify-content: center;
   margin-left: 1rem;
 }
-
 
 .t-wrapper .swiper-pagination-bullet-active {
   background: var(--orange);

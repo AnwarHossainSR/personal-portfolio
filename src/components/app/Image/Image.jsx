@@ -3,7 +3,7 @@ const Image = ({ project, handleEvent }) => {
   return (
     <LazyLoadImage
       alt={project.title}
-      effect='blur'
+      effect="blur"
       src={project.img}
       onClick={handleEvent}
     />

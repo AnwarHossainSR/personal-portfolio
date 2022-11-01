@@ -1,12 +1,12 @@
-.description{
-    &-heading{
-        font-size: 1rem;
-        margin: 1rem 0;
+.description {
+  &-heading {
+    font-size: 1rem;
+    margin: 1rem 0;
+  }
+  &-content {
+    font-size: 0.1rem;
+    p:nth-child(2) {
+      margin-top: -1rem;
     }
-    &-content{
-        font-size: .1rem;
-        p:nth-child(2){
-            margin-top: -1rem;
-        }
-    }
+  }
 }

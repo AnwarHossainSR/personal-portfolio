@@ -1,20 +1,20 @@
-import { motion } from "framer-motion";
-import React, { useEffect, useState } from "react";
-import { Helmet } from "react-helmet-async";
-import PortfolioCard from "../../../components/app/Card/PortfolioCard";
-import Tab from "../../../components/app/Tab";
-import WhiteSpace from "../../../components/app/whitespace/WhiteSpace";
-import { projects, tags } from "../../../constant/portfolio";
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import PortfolioCard from '../../../components/app/Card/PortfolioCard';
+import Tab from '../../../components/app/Tab';
+import WhiteSpace from '../../../components/app/whitespace/WhiteSpace';
+import { projects, tags } from '../../../constant/portfolio';
 
 const Portfolio = ({ darkMode }) => {
-  const [filter, setFilter] = useState("all");
+  const [filter, setFilter] = useState('all');
   const [portfolioProjects, setPortfolioProjects] = useState(projects);
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
   useEffect(() => {
     const filteredProjects = () => {
-      if (filter === "all") {
+      if (filter === 'all') {
         return projects;
       }
       return projects.filter((project) => project.tags.includes(filter));
@@ -32,7 +32,7 @@ const Portfolio = ({ darkMode }) => {
           <p
             className="portfolio-page__header--text"
             style={{
-              color: darkMode ? "white" : "",
+              color: darkMode ? 'white' : '',
             }}
           >
             Some of my spare time tinkering.
@@ -41,7 +41,7 @@ const Portfolio = ({ darkMode }) => {
             {tags.map((tag, index) => (
               <Tab
                 key={index}
-                className={`${filter === tag.name ? "active" : ""}`}
+                className={`${filter === tag.name ? 'active' : ''}`}
                 text={tag.name}
                 handleEvent={() => setFilter(tag.name)}
               />
@@ -55,7 +55,7 @@ const Portfolio = ({ darkMode }) => {
                 <PortfolioCard key={index} project={project} />
               ))}
               {portfolioProjects.length === 0 &&
-                "No projects found under " + filter + " tag"}
+                `No projects found under ${filter} tag`}
             </div>
           </motion.div>
           <WhiteSpace height={200} />
