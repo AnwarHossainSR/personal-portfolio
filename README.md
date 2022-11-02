@@ -1,4 +1,4 @@
-# react-vite-eslint-prettier-husky-template
+# AnwarPortfolio
 
 > Template for React JS projects + Vite
 
@@ -11,8 +11,8 @@
 ### Clone to local
 
 ```bash
-git clone https://github.com/AnwarHossainSR/react-vite-eslint-prettier-husky-template.git
-cd my-app
+git clone https://github.com/AnwarHossainSR/portfolio-2022.git
+cd portfolio-2022
 yarn install # If you don't have yarn installed, run: npm install -g yarn
 ```
 
@@ -21,7 +21,7 @@ yarn install # If you don't have yarn installed, run: npm install -g yarn
 ### Development
 
 ```bash
-yarn dev
+yarn run dev
 ```
 
 ### Build
