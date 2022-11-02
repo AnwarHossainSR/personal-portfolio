@@ -29,7 +29,7 @@ const App = () => {
     window.addEventListener('scroll', handleVisibleButton);
     return () => window.removeEventListener('scroll', handleVisibleButton);
   }, []);
-  console.log(ref?.current?.clientHeight);
+
   return (
     <div
       className="App"
