@@ -1,19 +1,13 @@
 import 'swiper/css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
-import { useEffect, useState } from 'react';
 import { Pagination } from 'swiper';
 import 'swiper/css/pagination';
 import { clients } from '../../../constant/Clients';
+import useWindowSize from '../../../hooks/useWindowSize';
 
 const Testimonial = () => {
-  const [mobileScreen, setMobileScreen] = useState(false);
-
-  useEffect(() => {
-    if (window.innerWidth <= 480) {
-      setMobileScreen(true);
-    }
-  }, []);
+  const { width } = useWindowSize();
 
   return (
     <div className="t-wrapper" id="testimonial">
@@ -26,7 +20,7 @@ const Testimonial = () => {
       </div>
       <Swiper
         modules={[Pagination]}
-        slidesPerView={mobileScreen === true ? 1 : 3}
+        slidesPerView={width <= 480 ? 1 : 3}
         pagination={{ clickable: true }}
       >
         {clients.map((client, index) => {
