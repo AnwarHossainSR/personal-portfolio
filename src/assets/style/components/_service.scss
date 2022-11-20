@@ -7,6 +7,7 @@
   margin-bottom: 13rem;
   /* scroll view */
   padding-top: 3rem;
+
   @include mobile {
     margin-top: 0;
     flex-direction: column;
@@ -14,11 +15,13 @@
     height: 66rem;
     padding: 0;
   }
+
   /* left side */
   .awesome {
     display: flex;
     flex-direction: column;
     position: relative;
+
     /* gap: 20px; */
     span {
       &:nth-child(1) {
@@ -26,36 +29,43 @@
         font-size: 2.5rem;
         font-weight: bold;
       }
+
       &:nth-child(2) {
         color: var(--orange);
         font-size: 2.5rem;
         font-weight: bold;
       }
+
       &:nth-child(3) {
         color: var(--gray);
         font-size: 14px;
         margin-top: 1rem;
       }
     }
+
     .s-button {
-      width: 8rem;
+      width: 9rem;
       height: 2rem;
       margin-top: 1rem;
     }
+
     /* blur */
     .s-blur1 {
       top: 13rem;
       left: -18rem;
     }
   }
+
   /* right sided */
   .cards {
     position: relative;
+
     @include mobile {
       display: flex;
       flex-direction: column;
       gap: 17rem;
     }
+
     /* blur */
     .s-blur2 {
       left: 14rem;
@@ -64,8 +74,9 @@
   }
 }
 
-.cards > * {
+.cards>* {
   position: absolute;
+
   @include mobile {
     position: static;
   }

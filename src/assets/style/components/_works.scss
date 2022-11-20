@@ -6,35 +6,41 @@
 
   /* scroll */
   align-items: center;
+
   @include mobile {
     flex-direction: column;
     height: 55rem;
     padding: 0;
     gap: 5rem;
   }
+
   /* left side */
   .w-left {
     .awesome {
       display: flex;
       flex-direction: column;
       position: relative;
+
       span {
         &:nth-child(1) {
           color: var(--black);
           font-size: 2.5rem;
           font-weight: bold;
         }
+
         &:nth-child(2) {
           color: var(--orange);
           font-size: 2.5rem;
           font-weight: bold;
         }
+
         &:nth-child(3) {
           color: var(--gray);
           font-size: 14px;
           margin-top: 1rem;
         }
       }
+
       .s-button {
         width: 8rem;
         height: 2rem;
@@ -42,15 +48,18 @@
       }
     }
   }
+
   /* right side */
   .w-right {
     position: relative;
+
     @include mobile {
       display: flex;
       align-items: flex-start;
       justify-content: flex-start;
       transform: scale(0.7);
     }
+
     .w-mainCircle {
       left: 9rem;
       position: relative;
@@ -62,31 +71,38 @@
       background: white;
       /* darkMode */
       z-index: 2;
+
       @include mobile {
         position: static;
       }
+
       div {
         &:nth-child(1) {
           top: -3rem;
           left: 6rem;
         }
+
         &:nth-child(2) {
           left: -3rem;
           top: 5rem;
         }
+
         &:nth-child(3) {
           left: 6rem;
           top: 5rem;
         }
+
         &:nth-child(4) {
           left: 15rem;
           top: 5rem;
         }
+
         &:nth-child(5) {
           left: 6rem;
           top: 13rem;
         }
       }
+
       .w-secCircle {
         width: 6rem;
         height: 6rem;
@@ -99,11 +115,13 @@
         background: 'none';
         box-shadow: var(--smboxShadow);
         background: white;
+
         img {
           transform: scale(0.6);
         }
       }
     }
+
     .w-backCircle {
       position: absolute;
       height: 13rem;
@@ -111,15 +129,18 @@
       border-radius: 100%;
       /* darkMode */
       z-index: 1;
+
       @include mobile {
         left: 8rem !important;
       }
     }
+
     .blueCircle {
       background: #1949b8;
       left: 18rem;
       top: 0rem;
     }
+
     .yellowCircle {
       background: #f5c32c;
       left: 18rem;
@@ -128,6 +149,6 @@
   }
 }
 
-.w-mainCircle > * {
+.w-mainCircle>* {
   position: absolute;
 }

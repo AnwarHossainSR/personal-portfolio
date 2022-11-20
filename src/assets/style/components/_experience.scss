@@ -5,15 +5,19 @@
   gap: 5rem;
   height: 30vh;
   margin-bottom: 8rem;
+
   @include mobile {
     transform: scale(0.7);
   }
+
   /* darkmode */
   color: var(--black);
+
   .achievement {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .circle {
       width: 4rem;
       height: 4rem;
@@ -26,6 +30,7 @@
       font-size: 1.5rem;
       font-weight: bold;
       margin-bottom: 2rem;
+
       &::before {
         border-radius: 100%;
         content: '';
@@ -39,6 +44,7 @@
         box-shadow: var(--boxShadow);
       }
     }
+
     span:nth-of-type(2) {
       color: var(--orange);
     }
