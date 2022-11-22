@@ -5,18 +5,21 @@
   margin-top: 4rem;
   /* scroll */
   padding-top: 3rem;
+
   /* left side */
   .w-left {
     .awesome {
       display: flex;
       flex-direction: column;
       position: relative;
+
       span {
         &:nth-child(1) {
           color: var(--black);
           font-size: 2.5rem;
           font-weight: bold;
         }
+
         &:nth-child(2) {
           color: var(--orange);
           font-size: 2.5rem;
@@ -25,17 +28,20 @@
       }
     }
   }
+
   .c-right {
     display: flex;
     justify-content: center;
     position: relative;
     flex: 1;
+
     form {
       display: flex;
       flex-direction: column;
       gap: 2rem;
       align-items: center;
     }
+
     .user {
       width: 20rem;
       height: 2rem;
@@ -44,13 +50,16 @@
       border: 2px solid var(--orange);
       border-radius: 8px;
       font-size: 16px;
+
       @include mobile {
         width: 16rem;
       }
     }
+
     textarea {
       height: 4rem !important;
     }
+
     .c-blur1 {
       top: 1rem;
       left: 8rem;

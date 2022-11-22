@@ -27,5 +27,6 @@
     "unicons",
     "Upstatement",
     "Upwork"
-  ]
+  ],
+  "files.autoSave": "afterDelay"
 }
