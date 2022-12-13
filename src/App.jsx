@@ -8,6 +8,7 @@ import About from './pages/app/about';
 import Contact from './pages/app/contact';
 import Home from './pages/app/home';
 import Portfolio from './pages/app/portfolio';
+import PlayList from './pages/app/youtubePlaylist';
 
 const App = () => {
   const [showGoTop, setShowGoTop] = useState(false);
@@ -43,6 +44,7 @@ const App = () => {
         <Route path="/" element={<AppLayout darkMode={darkMode} />}>
           <Route index element={<Home darkMode={darkMode} />} />
           <Route path="portfolio" element={<Portfolio darkMode={darkMode} />} />
+          <Route path="play-list" element={<PlayList darkMode={darkMode} />} />
           <Route
             path="portfolio/:id"
             element={<Portfolio darkMode={darkMode} />}
