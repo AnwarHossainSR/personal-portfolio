@@ -6,7 +6,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import Toggle from '../Toggle';
 
 const Navbar = ({ darkMode }) => {
-  let { pathname } = useLocation();
+  const { pathname } = useLocation();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
