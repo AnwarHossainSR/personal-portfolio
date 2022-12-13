@@ -60,6 +60,16 @@ const Navbar = ({ darkMode }) => {
             <li>
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
+                to="/play-list"
+                className={`${pathname === '/play-list' && 'active'}`}
+                onClick={() => setOpen(false)}
+              >
+                Playlist
+              </Link>
+            </li>
+            <li>
+              <Link
+                style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to="/about"
                 className={`${pathname === '/about' && 'active'}`}
                 onClick={() => setOpen(false)}

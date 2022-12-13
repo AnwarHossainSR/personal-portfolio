@@ -1,4 +1,4 @@
-.i-right>* {
+.i-right > * {
   position: absolute;
   z-index: 1;
 }
@@ -60,7 +60,7 @@
       gap: 0rem;
     }
 
-    .i-icons>* {
+    .i-icons > * {
       transform: scale(0.5);
 
       &:hover {
@@ -79,7 +79,7 @@
       left: -3rem;
     }
 
-    &>img {
+    & > img {
       &:nth-child(1) {
         transform: scale(0.69);
         left: -15%;
