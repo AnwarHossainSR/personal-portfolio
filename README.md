@@ -2,7 +2,7 @@
 
 > Template for React JS projects + Vite
 
-## Try it
+## Try it now
 
 ### Github template
 
