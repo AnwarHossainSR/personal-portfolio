@@ -1,5 +1,9 @@
 export const YoutubePlaylistLink = [
   {
+    link:'videoseries?list=PLOUudhWYmRUPiYuBqXooqu3C9v_jSLXbH',
+    title:'ReactJS'
+  },
+  {
     link: '0hf0xKnWhT8',
     title: 'ReactJS',
   },
