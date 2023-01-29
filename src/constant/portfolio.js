@@ -82,9 +82,9 @@ export const projects = [
     title: 'Video Streaming App',
     description:
       'A React app that allows users to search for videos and save them to their own personal library.',
-    link: 'https://youtube-streaming.netlify.app/',
+    link: 'https://youtube-clone-v007.netlify.app/',
     tags: ['react', 'redux', 'nodeJS', 'express', 'mongodb'],
-    github: 'https://github.com/AnwarHossainSR/react-video-streaming-app',
+    github: 'https://github.com/AnwarHossainSR/youtube-clone-yt',
   },
   {
     img: SocialMedia,
