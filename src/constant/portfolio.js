@@ -1,6 +1,7 @@
 import { GiCutDiamond } from 'react-icons/gi';
 import { MdComputer, MdOutlineMobileFriendly } from 'react-icons/md';
 import Blog from '../assets/img/blog_app.png';
+import Chat from '../assets/img/chat.png';
 import Course from '../assets/img/course.png';
 import AdminDashboard from '../assets/img/dashboard.png';
 import Dev from '../assets/img/dev.png';
@@ -18,6 +19,15 @@ import TwitterClone from '../assets/img/twitter-clone.png';
 import YoutubeApp from '../assets/img/youtube-app.png';
 
 export const projects = [
+  {
+    img: Chat,
+    title: 'Chatvia - Chatting platform',
+    description: 'Chatting platform with full featured',
+    link: 'https://react-firebase-chat-application.vercel.app/',
+    tags: ['react', 'redux', 'material ui', 'firebase', 'vite', 'nodejs'],
+    github:
+      'https://github.com/AnwarHossainSR/mern-course-platform-frontend-yt',
+  },
   {
     img: Course,
     title: 'Subscription Course Platform',
