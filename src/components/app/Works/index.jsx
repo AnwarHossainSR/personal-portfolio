@@ -25,14 +25,18 @@ const Works = () => {
           </span>
           <span>Brands & Clients</span>
           <span>
-            Lorem ispum is simpley dummy text of printing of printing Lorem
+            As a software engineer, I developed and maintained complex software
+            systems using various
+            <br /> programming languages, frameworks, and tools. I collaborated
             <br />
-            ispum is simpley dummy text of printingLorem ispum is simpley dummy
-            text
-            <br />
-            y dummy text of printingLorem
-            <br />
-            ispum is simpley dummy text of printing
+            with cross-functional teams to identify and solve technical
+            challenges,
+            <br /> ensuring timely delivery of high-quality software products.
+            My work experience
+            <br /> involved designing scalable architectures, implementing
+            robust solutions,
+            <br /> and continuously improving code quality through code reviews
+            and testing.
           </span>
           <Link to="contact" smooth spy>
             <button className="button s-button">Hire Me</button>
