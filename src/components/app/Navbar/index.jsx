@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
+import { FaBars } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
-import { GoThreeBars } from 'react-icons/go';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import Toggle from '../Toggle';
 
@@ -41,7 +41,7 @@ const Navbar = ({ darkMode }) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to="/"
-                className={`${pathname === '/' && 'active'}`}
+                className={pathname === '/' && 'active'}
                 onClick={() => setOpen(false)}
               >
                 Home
@@ -51,7 +51,7 @@ const Navbar = ({ darkMode }) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to="/portfolio"
-                className={`${pathname === '/portfolio' && 'active'}`}
+                className={pathname === '/portfolio' && 'active'}
                 onClick={() => setOpen(false)}
               >
                 Protfolio
@@ -61,7 +61,7 @@ const Navbar = ({ darkMode }) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to="/play-list"
-                className={`${pathname === '/play-list' && 'active'}`}
+                className={pathname === '/play-list' && 'active'}
                 onClick={() => setOpen(false)}
               >
                 Playlist
@@ -71,7 +71,7 @@ const Navbar = ({ darkMode }) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 to="/about"
-                className={`${pathname === '/about' && 'active'}`}
+                className={pathname === '/about' && 'active'}
                 onClick={() => setOpen(false)}
               >
                 About Me
@@ -123,8 +123,8 @@ const Navbar = ({ darkMode }) => {
               },
             }}
           >
-            <GoThreeBars
-              style={{ fontSize: '2rem' }}
+            <FaBars
+              style={{ fontSize: '1.5rem' }}
               onClick={() => setOpen(true)}
             />
           </motion.div>
