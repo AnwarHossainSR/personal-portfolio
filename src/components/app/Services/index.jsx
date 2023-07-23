@@ -23,7 +23,7 @@ const Services = ({ darkMode }) => {
           to create digital products for both business and consumer use. I am
           quietly confident,
           <br />
-          naturally curious, and perpetually working on improving my work at a
+          naturally curious, and perpetually working on improving my work all a
           time.
         </span>
         <a href={Resume} target="_blank" download rel="noreferrer">
