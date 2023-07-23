@@ -15,7 +15,7 @@ const Services = ({ darkMode }) => {
         <span style={{ color: darkMode ? 'white' : '' }}>My Awesome</span>
         <span>services</span>
         <span>
-          Since beginning my journey as a freelance designer over 11 years,
+          Since beginning my journey as a freelance designer over 5 years,
           <br />
           I have done remote work for agencies, consulted for startups, and
           collaborated with talented people

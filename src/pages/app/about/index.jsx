@@ -23,11 +23,10 @@ const About = () => {
         </div>
         <div className="about__description">
           <div className="about__description-left">
-            Hello! My name is Brittany and I enjoy creating things that live on
-            the internet. My interest in web development started back in 2019
-            when I decided to try editing custom Tumblr themes — turns out
-            hacking together a custom reblog button taught me a lot about HTML &
-            CSS!
+            Hello! My name is Anwar and I enjoy creating things that live on the
+            internet. My interest in web development started back in 2019 when I
+            decided to try editing custom Tumblr themes — turns out hacking
+            together a custom reblog button taught me a lot about HTML & CSS!
             <br />
             <br />
             Fast-forward to today, and I have had the privilege of working at an
@@ -47,6 +46,7 @@ const About = () => {
               </div>
               <div className="right">
                 <Technology technology="Php" />
+                <Technology technology="Python" />
                 <Technology technology="Mongodb" />
                 <Technology technology="Firebase" />
                 <Technology technology="Laravel" />
@@ -79,13 +79,13 @@ const About = () => {
           <div className="about__work-body">
             <div className="about__work-body-left">
               <li
-                className={`${active === 0 && 'active'}`}
+                className={active === 0 && 'active'}
                 onClick={() => setActive(0)}
               >
                 BJIT
               </li>
               <li
-                className={`${active === 1 && 'active'}`}
+                className={active === 1 && 'active'}
                 onClick={() => setActive(1)}
               >
                 Annon Lab
@@ -113,7 +113,7 @@ const About = () => {
                           ))}
                         </div>
                       </div>
-                    )
+                    ),
                 )}
               </motion.div>
             </div>
