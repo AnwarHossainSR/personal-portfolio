@@ -5,7 +5,7 @@ export const workData = [
     duration: 'Aug 2021 - Present',
     description: [
       'Write modern, performant, maintainable code for a diverse array of client and internal projects',
-      'Work with a variety of different languages, platforms, frameworks, and content management systems such as JavaScript, TypeScript, React, Craft, Prismic, and Netlify',
+      'Work with a variety of different languages, platforms, frameworks, and content management systems such as JavaScript, TypeScript, React, Php, Laravel, Python, Django, Craft, Prismic, Vercel, AWS and Netlify',
       'Communicate with multi-disciplinary teams of engineers, designers, producers, and clients on a daily basis',
     ],
   },
