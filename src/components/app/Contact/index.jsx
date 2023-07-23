@@ -14,7 +14,7 @@ const Contact = () => {
         'service_psafvyf',
         'template_9td2zv8',
         form.current,
-        'aBmlK_uW6eFlu2K9e'
+        'aBmlK_uW6eFlu2K9e',
       )
       .then(
         () => {
@@ -23,7 +23,7 @@ const Contact = () => {
         },
         (error) => {
           console.log(error.text);
-        }
+        },
       );
   };
   return (

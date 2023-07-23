@@ -79,13 +79,13 @@ const About = () => {
           <div className="about__work-body">
             <div className="about__work-body-left">
               <li
-                className={`${active === 0 && 'active'}`}
+                className={active === 0 && 'active'}
                 onClick={() => setActive(0)}
               >
                 BJIT
               </li>
               <li
-                className={`${active === 1 && 'active'}`}
+                className={active === 1 && 'active'}
                 onClick={() => setActive(1)}
               >
                 Annon Lab
@@ -113,7 +113,7 @@ const About = () => {
                           ))}
                         </div>
                       </div>
-                    )
+                    ),
                 )}
               </motion.div>
             </div>
