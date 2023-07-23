@@ -11,7 +11,7 @@
 ### Clone to local
 
 ```bash
-git clone https://github.com/AnwarHossainSR/portfolio-2022.git
+git clone https://github.com/AnwarHossainSR/personal-portfolio.git
 cd portfolio-2022
 yarn install # If you don't have yarn installed, run: npm install -g yarn
 ```
