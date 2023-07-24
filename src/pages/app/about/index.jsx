@@ -23,10 +23,11 @@ const About = () => {
         </div>
         <div className="about__description">
           <div className="about__description-left">
-            Hello! My name is Anwar and I enjoy creating things that live on the
-            internet. My interest in web development started back in 2019 when I
-            decided to try editing custom Tumblr themes — turns out hacking
-            together a custom reblog button taught me a lot about HTML & CSS!
+            Hello! My name is Anwar, and I enjoy creating things that live on
+            the internet. My interest in web development started back in 2019
+            when I decided to try editing custom Tumblr themes. It turns out
+            that hacking together a custom reblog button taught me a lot about
+            HTML & CSS!
             <br />
             <br />
             Fast-forward to today, and I have had the privilege of working at an
