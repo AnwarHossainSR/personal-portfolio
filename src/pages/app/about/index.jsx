@@ -114,7 +114,7 @@ const About = () => {
                           ))}
                         </div>
                       </div>
-                    ),
+                    )
                 )}
               </motion.div>
             </div>

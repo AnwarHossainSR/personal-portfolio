@@ -29,7 +29,7 @@ const Services = ({ darkMode }) => {
         <a href={Resume} target="_blank" download rel="noreferrer">
           <button className="button s-button">Download CV</button>
         </a>
-        <div className="blur s-blur1" style={{ background: '#ABF1FF94' }} />
+        <div className="s-blur1 blur" style={{ background: '#ABF1FF94' }} />
       </div>
       {/* right */}
       <div className="cards">
@@ -72,7 +72,7 @@ const Services = ({ darkMode }) => {
             darkMode={darkMode}
           />
         </motion.div>
-        <div className="blur s-blur2" style={{ background: 'var(--purple)' }} />
+        <div className="s-blur2 blur" style={{ background: 'var(--purple)' }} />
       </div>
     </div>
   );
