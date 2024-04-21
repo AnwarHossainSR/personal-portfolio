@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-14-template",
+  "name": "portfolio-anwar",
   "version": "1.0.0",
   "author": "Anwar Hossain",
   "license": "MIT",
@@ -17,8 +17,7 @@
     "prettier": "prettier --write .",
     "lint": "yarn eslint && yarn prettier",
     "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
-    "postbuild": "next-sitemap && yarn prisma generate",
-    "postinstall": "yarn prisma generate"
+    "postbuild": "next-sitemap"
   },
   "lint-staged": {
     "*.{js,jsx,md,ts,tsx,html,css,scss}": "yarn prettier",
@@ -58,7 +57,6 @@
     "lint-staged": "^15.2.2",
     "postcss": "^8.4.35",
     "prettier": "^3.2.5",
-    "typescript": "^5.4.3",
-    "prisma": "^5.11.0"
+    "typescript": "^5.4.3"
   }
 }
