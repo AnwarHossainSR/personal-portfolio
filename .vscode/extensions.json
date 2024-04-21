@@ -1,9 +1,8 @@
 {
   "recommendations": [
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode",
-    "EditorConfig.EditorConfig",
-    "mikestead.dotenv"
-    //"antfu.vite"
+    "formulahendry.auto-rename-tag",
+    "mgmcdermott.vscode-language-babel",
+    "vunguyentuan.vscode-css-variables"
   ]
 }
