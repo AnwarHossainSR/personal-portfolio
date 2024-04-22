@@ -15,7 +15,7 @@ const MainFooter = () => {
   useEffect(() => {
     return setHeight(window.innerWidth <= 480 ? '15rem' : undefined);
   }, []);
-    
+
   return (
     <div className="footer">
       <Image src={Wave} alt="wave"  style={{
