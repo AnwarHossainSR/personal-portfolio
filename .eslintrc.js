@@ -54,6 +54,12 @@ module.exports = {
         ],
       },
     ],
+    'prettier/prettier': [
+      'error',
+      {
+        endOfLine: 'auto',
+      },
+    ],
     'import/prefer-default-export': 'off',
     'jsx-a11y/anchor-is-valid': [
       'error',

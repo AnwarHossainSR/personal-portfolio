@@ -1,0 +1,348 @@
+.about {
+  padding: 4rem 8.5rem;
+  padding-bottom: 5rem;
+
+  @include mobile {
+    padding: 2rem 0;
+  }
+
+  &-heading {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 1rem;
+    //color: #64FFDA;
+    color: var(--orange);
+
+    @include mobile {
+      gap: 0.4rem;
+    }
+
+    &__serial {
+      font-size: 1.2rem;
+
+      @include mobile {
+        font-size: 1rem;
+      }
+    }
+
+    &__title {
+      font-size: 2rem;
+      width: fit-content;
+      color: #abb6d4;
+
+      @include mobile {
+        font-size: 1.2rem;
+      }
+    }
+
+    .hr {
+      width: 170px;
+      height: 1px;
+      background: var(--orange);
+
+      @include mobile {
+        width: 7rem;
+      }
+    }
+  }
+
+  &__description {
+    @include flexDefine(flex-start);
+    gap: 5rem;
+
+    @include mobile {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    &-left {
+      max-width: 50%;
+      color: #7b86a4;
+
+      @include mobile {
+        max-width: 100%;
+      }
+
+      ul {
+        @include flexDefine(flex-start);
+        flex-wrap: wrap;
+        gap: 4rem;
+
+        @include mobile {
+          gap: 1rem;
+        }
+      }
+    }
+
+    &-right {
+      position: relative;
+
+      img {
+        width: 300px;
+        height: 300px;
+        position: absolute;
+        top: 0;
+        left: 2px;
+        z-index: 5;
+        border-radius: 10px;
+        cursor: pointer;
+
+        @include mobile {
+          width: 250px;
+          height: 250px;
+          left: 20px;
+        }
+      }
+
+      .border {
+        width: 250px;
+        height: 279px;
+        border: 2px solid var(--orange);
+        border-radius: 5px;
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        cursor: pointer;
+
+        @include mobile {
+          width: 208px;
+          height: 228px;
+          left: 1.75rem;
+        }
+      }
+    }
+  }
+
+  &__work {
+    margin-top: 10rem;
+    @include flexDefine(center, center);
+    flex-direction: column;
+
+    @include mobile {
+      margin-top: 17rem;
+    }
+
+    &-heading {
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
+      color: var(--orange);
+
+      @include mobile {
+        gap: 0.4rem;
+      }
+
+      &__serial {
+        font-size: 1.2rem;
+
+        @include mobile {
+          font-size: 1rem;
+        }
+      }
+
+      &__title {
+        font-size: 2rem;
+        width: fit-content;
+        color: #abb6d4;
+
+        @include mobile {
+          font-size: 1.2rem;
+        }
+      }
+
+      .hr {
+        width: 200px;
+        height: 1px;
+        background: var(--orange);
+
+        @include mobile {
+          width: 4rem;
+        }
+      }
+    }
+
+    &-body {
+      @include flexDefine(flex-start);
+      gap: 5rem;
+      max-width: 100%;
+      margin-top: 5rem;
+      margin-bottom: 3rem;
+      color: #7b86a4;
+      font-size: 1rem;
+      border-left: 1px solid #7b86a4;
+
+      @include mobile {
+        margin-top: 0;
+        margin-bottom: 5rem;
+        border-left: none;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      &-left {
+        width: 50%;
+
+        //margin: 0 0 1rem 1rem;
+        @include mobile {
+          width: 100%;
+          @include flexDefine(flex-start, center);
+          margin: 1rem 0 1rem 0;
+          width: 100%;
+          gap: 0.5rem;
+        }
+
+        li {
+          padding: 0.2rem 0.5rem;
+          cursor: pointer;
+
+          @include mobile {
+            overflow-x: auto;
+            padding: 0 0.5rem 0 0;
+            text-align: center;
+          }
+
+          &.active {
+            border-left: 2px solid var(--orange);
+
+            @include mobile {
+              border-left: none;
+              border-bottom: 2px solid var(--orange);
+            }
+          }
+        }
+      }
+
+      &-right {
+        max-width: 100%;
+        line-height: 1.5rem;
+
+        @include mobile {
+          //display: none;
+        }
+
+        &__heading {
+          font-size: 1.1rem;
+          width: fit-content;
+          color: #abb6d4;
+
+          span {
+            color: var(--orange);
+          }
+        }
+
+        &__duration {
+          font-size: 0.8rem;
+          width: fit-content;
+        }
+
+        &__description {
+          font-size: 1rem;
+          width: fit-content;
+        }
+      }
+    }
+  }
+}
+
+// .about {
+//     padding: 0 1.5rem;
+//     padding-bottom: 5rem;
+
+//     &-content {
+
+//         &__specialization {
+//             margin-top: 2rem;
+
+//             h1 {
+//                 font-size: 2.5rem;
+//                 font-weight: 700;
+//                 margin-bottom: 2rem;
+//                 text-align: center;
+
+//                 span {
+//                     font-size: 2.5rem;
+//                     font-weight: 700;
+//                     color: var(--orange);
+//                 }
+//             }
+
+//             &--content {
+//                 display: flex;
+//                 justify-content: space-between;
+//                 align-items: center;
+//                 overflow: hidden;
+//                 margin-bottom: 1.5rem;
+
+//                 gap: 1rem;
+
+//                 .specialization--card {
+//                     min-width: 300px;
+//                     min-height: 220px;
+//                     display: flex;
+//                     justify-content: center;
+//                     align-items: flex-start;
+//                     flex-direction: column;
+//                     background-color: #2C2C38;
+//                     padding: 1rem;
+//                     box-shadow: rgba(0, 0, 0, 0.09) 0px 2px 1px, rgba(0, 0, 0, 0.09) 0px 4px 2px, rgba(0, 0, 0, 0.09) 0px 8px 4px, rgba(0, 0, 0, 0.09) 0px 16px 8px, rgba(0, 0, 0, 0.09) 0px 32px 16px;
+
+//                     &--heading {
+//                         font-size: 1.5rem;
+//                         font-weight: 700;
+//                         margin: 1.5rem 0;
+//                     }
+
+//                     &--body {
+//                         overflow: hidden;
+//                         margin-bottom: 1.5rem;
+//                         font-size: 1rem;
+//                         color: rgb(117, 115, 113)
+//                     }
+//                 }
+//             }
+
+//             &__info {
+//                 display: flex;
+//                 justify-content: space-between;
+//                 align-items: center;
+//                 margin: 2rem 0;
+//                 gap: 1.5rem;
+
+//                 &-left {
+//                     width: 32rem;
+//                     height: auto;
+//                     background-color: #2C2C38;
+//                     padding: 3rem 4rem;
+//                     position: relative;
+
+//                     .title {
+//                         position: absolute;
+//                         top: -1.5rem;
+//                         color: #ffffff !important;
+//                         font-size: 2rem;
+//                     }
+//                 }
+
+//                 &-right {
+//                     width: 32rem;
+//                     height: auto;
+//                     background-color: #2C2C38;
+//                     padding: 3rem 4rem;
+//                     position: relative;
+//                     margin-top: 10rem;
+
+//                     .title {
+//                         position: absolute;
+//                         top: -1.5rem;
+//                         color: #ffffff !important;
+//                         font-size: 2rem;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }

@@ -1,0 +1,114 @@
+.n-wrapper {
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  top: 0;
+  position: relative;
+}
+
+.n-left {
+  flex: 1;
+  align-items: center;
+  justify-content: left;
+  display: flex;
+  gap: 2rem;
+}
+
+.n-name {
+  font-size: 1.3rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--black);
+}
+
+.n-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-weight: 400;
+
+  .top-contact {
+    @include mobile {
+      display: none;
+    }
+  }
+
+  .navbar-icon {
+    color: var(--orange);
+    cursor: pointer;
+    display: none;
+
+    @include mobile {
+      display: block;
+    }
+  }
+}
+
+.n-list {
+  flex: 10;
+}
+
+.n-list > ul {
+  display: flex;
+  gap: 2rem;
+  margin-right: 4rem;
+}
+
+.n-list > ul {
+  .navbar-cross {
+    display: none;
+  }
+
+  li {
+    a {
+      color: var(--gray);
+
+      &:hover {
+        color: var(--orange);
+        cursor: pointer;
+      }
+
+      &.active {
+        color: var(--orange) !important;
+      }
+    }
+  }
+}
+
+.n-button {
+  flex: 2;
+}
+
+@media screen and (max-width: 480px) {
+  .n-list {
+    position: fixed;
+    z-index: 111;
+    display: none;
+
+    ul {
+      position: fixed;
+      top: -20px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      flex-direction: column;
+      //gap:1rem;
+      width: 100vw !important;
+      height: 100vh !important;
+      background: var(--black);
+      padding: 2rem;
+      color: aliceblue !important;
+
+      .navbar-cross {
+        display: block;
+        position: absolute;
+        top: 1.5rem;
+        right: 5.5rem;
+        cursor: pointer;
+      }
+    }
+  }
+}
