@@ -3,6 +3,7 @@ import '@/styles/main.scss';
 import { Inter } from 'next/font/google';
 
 import MainFooter from '@/components/Footer';
+import { ThemeProvider } from '@/providers/Context';
 import type { ChildrenProps } from '@/types';
 
 export const metadata = {
@@ -21,10 +22,12 @@ const inter = Inter({ subsets: ['latin'] });
 export default async function RootLayout({ children }: ChildrenProps) {
   return (
     <html lang="en">
+      <ThemeProvider>
       <body className={`${inter.className}`}>
         <section className="">{children}</section>
         <MainFooter />
       </body>
+      </ThemeProvider>
     </html>
   );
 }
