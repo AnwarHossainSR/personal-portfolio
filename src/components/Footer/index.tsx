@@ -1,5 +1,3 @@
-'use client';
-
 import Wave from '@/assets/img/wave.png';
 // import Facebook from '@iconscout/react-unicons/icons/uil-facebook';
 // import Gitub from '@iconscout/react-unicons/icons/uil-github';

@@ -1,5 +1,7 @@
 "use client";
 
+import MainFooter from '@/components/Footer';
+import Header from '@/components/Header';
 import { themeContext } from '@/providers/context/Context';
 import type { ChildrenProps } from '@/types';
 import { useContext, useEffect, useRef, useState } from 'react';
@@ -31,13 +33,14 @@ export default function MainLayout({ children }: ChildrenProps) {
 
   return (
     <div
-      className="App"
+    className='App'
       style={{
         background: darkMode ? 'var(--black)' : '',
         color: darkMode ? 'white' : '',
       }}
       ref={ref}
     >
+      <Header darkMode={darkMode} />
       {children}
       <div
         className={`${showGoTop ? 'scroll-top-visible' : 'scroll-top-hidden'}`}
@@ -45,6 +48,7 @@ export default function MainLayout({ children }: ChildrenProps) {
       >
         <AiOutlineArrowUp />
       </div>
+      <MainFooter />
     </div>
   );
 }
