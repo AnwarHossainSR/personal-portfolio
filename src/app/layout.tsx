@@ -1,10 +1,5 @@
-import '@/styles/main.scss';
-
-import { Inter } from 'next/font/google';
-
-import MainFooter from '@/components/Footer';
-import Header from '@/components/Header';
 import { ThemeProvider } from '@/providers/context/Context';
+import '@/styles/main.scss';
 import type { ChildrenProps } from '@/types';
 
 export const metadata = {
@@ -18,17 +13,14 @@ export const metadata = {
   },
 };
 
-const inter = Inter({ subsets: ['latin'] });
 
 export default async function RootLayout({ children }: ChildrenProps) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>
+       <body>
       <ThemeProvider>
-        <Header />
-        <section className="">{children}</section>
-        <MainFooter />
-        </ThemeProvider>
+        {children}
+      </ThemeProvider>
       </body>
     </html>
   );

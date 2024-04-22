@@ -1,19 +1,15 @@
-/* eslint-disable simple-import-sort/imports */
-
-'use client';
-
 import Toggle from '@/components/common/Toggle';
-import { themeContext } from '@/providers/context/Context';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
 
-const Header = () => {
+type HeaderProps = {
+  darkMode: boolean;
+};
+const Header = ({darkMode}:HeaderProps) => {
   const [open, setOpen] = useState(false);
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
   useEffect(() => {
     if (open === true && window.innerWidth < 481) {
       document.body.style.overflow = 'hidden';
