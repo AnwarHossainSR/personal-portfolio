@@ -1,6 +1,6 @@
 'use client';
 
-import { themeContext } from '@/providers/Context';
+import { themeContext } from '@/providers/context/Context';
 // import Moon from '@iconscout/react-unicons/icons/uil-moon';
 // import Sun from '@iconscout/react-unicons/icons/uil-sun';
 import { useContext } from 'react';
