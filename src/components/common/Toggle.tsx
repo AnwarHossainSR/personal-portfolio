@@ -11,7 +11,7 @@ const Toggle = () => {
   const handleClick = () => {
     theme.dispatch({ type: 'toggle' });
   };
-  
+
   return (
     <div className="toggle" onClick={handleClick}>
       {/* <Moon />
