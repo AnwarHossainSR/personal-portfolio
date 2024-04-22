@@ -1,6 +1,6 @@
 "use client";
 
-import { themeContext } from '@/providers/Context';
+import { themeContext } from '@/providers/context/Context';
 import type { ChildrenProps } from '@/types';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { AiOutlineArrowUp } from 'react-icons/ai';

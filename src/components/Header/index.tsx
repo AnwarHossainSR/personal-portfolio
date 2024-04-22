@@ -3,7 +3,7 @@
 'use client';
 
 import Toggle from '@/components/common/Toggle';
-import { themeContext } from '@/providers/Context';
+import { themeContext } from '@/providers/context/Context';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useContext, useEffect, useState } from 'react';

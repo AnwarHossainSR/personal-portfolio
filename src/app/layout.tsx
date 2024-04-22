@@ -4,7 +4,7 @@ import { Inter } from 'next/font/google';
 
 import MainFooter from '@/components/Footer';
 import Header from '@/components/Header';
-import { ThemeProvider } from '@/providers/Context';
+import { ThemeProvider } from '@/providers/context/Context';
 import type { ChildrenProps } from '@/types';
 
 export const metadata = {
