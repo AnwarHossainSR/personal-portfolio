@@ -31,7 +31,7 @@ const Services = () => {
           naturally curious, and perpetually working on improving my work all
           time.
         </span>
-        <a href="" target="_blank" download rel="noreferrer">
+        <a href="/resume.pdf" target="_blank" download rel="noreferrer">
           <button className="button s-button">Download CV</button>
         </a>
         <div className="blur s-blur1" style={{ background: '#ABF1FF94' }} />
