@@ -1,11 +1,9 @@
 'use client';
 
-import { useContext } from 'react';
-
-import { themeContext } from '@/providers/context/Context';
+import { useTheme } from '@/providers/context/Context';
 
 const Experience = () => {
-  const theme = useContext(themeContext);
+  const theme = useTheme();
   const { darkMode } = theme.state;
 
   return (

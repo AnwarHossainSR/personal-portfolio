@@ -75,7 +75,7 @@ const Intro = () => {
           initial={{ left: '-36%' }}
           whileInView={{ left: '-24%' }}
           transition={transition}
-          src={glassesimoji}
+          src={glassesimoji as any}
           alt=""
         />
 

@@ -7,8 +7,7 @@ export default async function middleware(req: NextRequest) {
 
   const authUser = true;
 
-  if (!authUser)
-    return NextResponse.redirect(new URL('/unauthorized', req.url), req);
+  if (!authUser) return NextResponse.redirect(new URL('/', req.url), req);
 
   return NextResponse.next();
 }
