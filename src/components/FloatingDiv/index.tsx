@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 type FloatinDivProps = {
   img: any;
   text1: string;

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from 'next/image';
 
 type ImgProps = {
   project: any;

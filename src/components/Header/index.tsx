@@ -1,14 +1,16 @@
-import Toggle from '@/components/common/Toggle';
+/* eslint-disable react/button-has-type */
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
 
+import Toggle from '@/components/common/Toggle';
+
 type HeaderProps = {
   darkMode: boolean;
 };
-const Header = ({darkMode}:HeaderProps) => {
+const Header = ({ darkMode }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (open === true && window.innerWidth < 481) {
@@ -23,7 +25,8 @@ const Header = ({darkMode}:HeaderProps) => {
     <div className="n-wrapper" id="Navbar">
       {/* left */}
       <div className="n-left">
-        <Link href="/"
+        <Link
+          href="/"
           className="n-name"
           style={{
             color: 'var(--orange)',
@@ -41,7 +44,7 @@ const Header = ({darkMode}:HeaderProps) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 href="/"
-                //className={pathname === '/' && 'active'}
+                // className={pathname === '/' && 'active'}
                 onClick={() => setOpen(false)}
               >
                 Home
@@ -51,7 +54,7 @@ const Header = ({darkMode}:HeaderProps) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 href="/portfolio"
-                //className={pathname === '/portfolio' && 'active'}
+                // className={pathname === '/portfolio' && 'active'}
                 onClick={() => setOpen(false)}
               >
                 Portfolio
@@ -61,7 +64,7 @@ const Header = ({darkMode}:HeaderProps) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 href="/play-list"
-                //className={pathname === '/play-list' && 'active'}
+                // className={pathname === '/play-list' && 'active'}
                 onClick={() => setOpen(false)}
               >
                 Playlist
@@ -71,7 +74,7 @@ const Header = ({darkMode}:HeaderProps) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 href="/about"
-                //className={pathname === '/about' && 'active'}
+                // className={pathname === '/about' && 'active'}
                 onClick={() => setOpen(false)}
               >
                 About Me

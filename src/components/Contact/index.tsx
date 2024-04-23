@@ -1,31 +1,35 @@
+/* eslint-disable no-console */
+
 'use client';
 
-import { themeContext } from '@/providers/context/Context';
 import emailjs from '@emailjs/browser';
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
+
+import { useTheme } from '@/providers/context/Context';
+
 const Contact = () => {
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
+  const theme = useTheme();
+  const { darkMode } = theme.state;
   const form = useRef<HTMLFormElement>(null);
   const [done, setDone] = useState(false);
-  const sendEmail = (e:any) => {
+  const sendEmail = (e: any) => {
     e.preventDefault();
 
     emailjs
       .sendForm(
         'service_psafvyf',
         'template_9td2zv8',
-        form?.current ??'',
-        'aBmlK_uW6eFlu2K9e',
+        form?.current ?? '',
+        'aBmlK_uW6eFlu2K9e'
       )
       .then(
         () => {
           setDone(true);
           form?.current?.reset();
         },
-        (error) => {
+        error => {
           console.log(error.text);
-        },
+        }
       );
   };
   return (

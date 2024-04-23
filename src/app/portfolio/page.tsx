@@ -1,17 +1,20 @@
+/* eslint-disable react/no-array-index-key */
+
 'use client';
+
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
 
 import PortfolioCard from '@/components/Card/PortfolioCard';
 import Tab from '@/components/Tab';
 import WhiteSpace from '@/components/whitespace/WhiteSpace';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { projects, tags } from '@/lib/const';
-import { themeContext } from '@/providers/context/Context';
-import { motion } from 'framer-motion';
-import { useContext, useEffect, useState } from 'react';
+import { useTheme } from '@/providers/context/Context';
 
 const Portfolio = () => {
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
+  const theme = useTheme();
+  const { darkMode } = theme.state;
   const [filter, setFilter] = useState('all');
   const [portfolioProjects, setPortfolioProjects] = useState(projects);
   useEffect(() => {
@@ -22,7 +25,7 @@ const Portfolio = () => {
       if (filter === 'all') {
         return projects;
       }
-      return projects.filter((project) => project.tags.includes(filter));
+      return projects.filter(project => project.tags.includes(filter));
     };
     setPortfolioProjects(filteredProjects);
   }, [filter]);

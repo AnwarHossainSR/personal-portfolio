@@ -1,16 +1,18 @@
+/* eslint-disable react/no-array-index-key */
+
 'use client';
+
+import { motion } from 'framer-motion';
 
 import PlaylistCard from '@/components/playlist/PlaylistCard';
 import WhiteSpace from '@/components/whitespace/WhiteSpace';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { YoutubePlaylistLink } from '@/lib/const';
-import { themeContext } from '@/providers/context/Context';
-import { motion } from 'framer-motion';
-import { useContext } from 'react';
+import { useTheme } from '@/providers/context/Context';
 
 const PlayList = () => {
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
+  const theme = useTheme();
+  const { darkMode } = theme.state;
   return (
     <MainLayout>
       <div className="portfolio-page">

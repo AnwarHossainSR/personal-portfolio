@@ -16,8 +16,7 @@
     "eslint": "next lint --fix --dir src",
     "prettier": "prettier --write .",
     "lint": "yarn eslint && yarn prettier",
-    "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
-    "postbuild": "next-sitemap"
+    "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore"
   },
   "lint-staged": {
     "*.{js,jsx,md,ts,tsx,html,css,scss}": "yarn prettier",

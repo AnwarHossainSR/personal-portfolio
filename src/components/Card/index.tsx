@@ -1,4 +1,5 @@
-import Image from "next/image";
+/* eslint-disable react/button-has-type */
+import Image from 'next/image';
 
 type CardProps = {
   emoji: any;
@@ -7,7 +8,7 @@ type CardProps = {
   darkMode: boolean;
 };
 
-const Card = ({ emoji, heading, detail, darkMode }:CardProps) => {
+const Card = ({ emoji, heading, detail, darkMode }: CardProps) => {
   return (
     <div
       className="card"

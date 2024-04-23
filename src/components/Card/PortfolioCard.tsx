@@ -1,7 +1,10 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import Image from 'next/image';
 import { BsGithub } from 'react-icons/bs';
 
-const PortfolioCard = ({ project }:any) => {
+const PortfolioCard = ({ project }: any) => {
   return (
     <div>
       <div className="card-wrapper">
@@ -20,7 +23,7 @@ const PortfolioCard = ({ project }:any) => {
             </p>
             <div>
               {project.tags &&
-                project?.tags.map((tag:string, index:number) => (
+                project?.tags.map((tag: string, index: number) => (
                   <span key={index}>#{tag}</span>
                 ))}
             </div>

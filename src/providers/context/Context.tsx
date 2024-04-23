@@ -1,6 +1,7 @@
-"use client";
+'use client';
 
-import React, { Dispatch, ReactNode, createContext, useReducer } from 'react';
+import type { ReactNode } from 'react';
+import { createContext, useContext, useMemo, useReducer } from 'react';
 
 // Define types
 interface State {
@@ -13,7 +14,7 @@ interface Action {
 
 interface ContextType {
   state: State;
-  dispatch: Dispatch<Action>;
+  dispatch: React.Dispatch<Action>;
 }
 
 // Initial state
@@ -30,10 +31,16 @@ const themeReducer = (state: State, action: Action): State => {
 };
 
 // Create context
-export const themeContext = createContext<ContextType>({
-  state: initialState,
-  dispatch: () => null,
-});
+export const ThemeContext = createContext<ContextType | undefined>(undefined);
+
+// Custom hook to consume the context
+export const useTheme = () => {
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
+};
 
 // Theme provider component
 interface ThemeProviderProps {
@@ -43,9 +50,12 @@ interface ThemeProviderProps {
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [state, dispatch] = useReducer(themeReducer, initialState);
 
+  // Memoize the context value
+  const contextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
+
   return (
-    <themeContext.Provider value={{ state, dispatch }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
-    </themeContext.Provider>
+    </ThemeContext.Provider>
   );
 };

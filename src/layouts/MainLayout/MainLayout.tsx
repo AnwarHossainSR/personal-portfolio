@@ -1,17 +1,21 @@
-"use client";
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 
-import MainFooter from '@/components/Footer';
-import Header from '@/components/Header';
-import { themeContext } from '@/providers/context/Context';
-import type { ChildrenProps } from '@/types';
-import { useContext, useEffect, useRef, useState } from 'react';
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
 import { AiOutlineArrowUp } from 'react-icons/ai';
 import { animateScroll as scroll } from 'react-scroll';
 
+import MainFooter from '@/components/Footer';
+import Header from '@/components/Header';
+import { useTheme } from '@/providers/context/Context';
+import type { ChildrenProps } from '@/types';
+
 export default function MainLayout({ children }: ChildrenProps) {
   const [showGoTop, setShowGoTop] = useState(false);
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
+  const theme = useTheme();
+  const { darkMode } = theme.state;
   const ref = useRef<HTMLDivElement>(null); // Specify the type of ref
 
   // DISPLAY HANDLER
@@ -26,14 +30,15 @@ export default function MainLayout({ children }: ChildrenProps) {
 
   // SCROLL LISTENER
   useEffect(() => {
-    if (ref?.current?.clientHeight && ref?.current?.clientHeight < 300) setShowGoTop(false);
+    if (ref?.current?.clientHeight && ref?.current?.clientHeight < 300)
+      setShowGoTop(false);
     window.addEventListener('scroll', handleVisibleButton);
     return () => window.removeEventListener('scroll', handleVisibleButton);
   }, []);
 
   return (
     <div
-    className='App'
+      className="App"
       style={{
         background: darkMode ? 'var(--black)' : '',
         color: darkMode ? 'white' : '',
