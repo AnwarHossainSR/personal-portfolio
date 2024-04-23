@@ -1,3 +1,4 @@
+import Contact from '@/components/Contact';
 import Experience from '@/components/Experience';
 import Intro from '@/components/Intro';
 import Portfolio from '@/components/Portfolio';
@@ -13,6 +14,8 @@ export default function Home() {
       <Experience />
       <Works />
       <Portfolio />
+      {/* <Testimonial /> */}
+      <Contact />
     </MainLayout>
   );
 }

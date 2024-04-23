@@ -24,6 +24,7 @@
     "*.{js,jsx,ts,tsx}": "eslint --cache --fix --cache-location ./node_modules/.cache/.eslintcache"
   },
   "dependencies": {
+    "@emailjs/browser": "^4.3.3",
     "@iconscout/react-unicons": "^2.0.2",
     "@next/bundle-analyzer": "^14.2.2",
     "axios": "^1.6.8",
