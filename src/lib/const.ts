@@ -241,7 +241,7 @@ export const transition = {
     duration: 1,
     type: 'spring',
   };
-  
+
 export const YoutubePlaylistLink = [
     {
       link: 'JuKYmB1zB18',
@@ -288,7 +288,7 @@ export const YoutubePlaylistLink = [
       title: 'ReactJS',
     },
 ];
-  
+
 export const workData = [
   {
     position: 'Software Engineer',
