@@ -1,14 +1,13 @@
+import Image from 'next/image';
 import { BsGithub } from 'react-icons/bs';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-const PortfolioCard = ({ project }) => {
+const PortfolioCard = ({ project }:any) => {
   return (
     <div>
       <div className="card-wrapper">
         <div className="project-card">
-          <LazyLoadImage
+          <Image
             alt={project?.title}
-            effect="blur"
             src={project?.img}
             className="project-card-image"
           />
@@ -21,7 +20,7 @@ const PortfolioCard = ({ project }) => {
             </p>
             <div>
               {project.tags &&
-                project?.tags.map((tag, index) => (
+                project?.tags.map((tag:string, index:number) => (
                   <span key={index}>#{tag}</span>
                 ))}
             </div>
