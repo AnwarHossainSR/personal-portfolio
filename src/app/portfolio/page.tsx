@@ -1,73 +1,20 @@
-/* eslint-disable react/no-array-index-key */
+import type { Metadata } from 'next';
 
-'use client';
+import Portfolio from './portfolio';
 
-import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
-
-import PortfolioCard from '@/components/Card/PortfolioCard';
-import Tab from '@/components/Tab';
-import WhiteSpace from '@/components/whitespace/WhiteSpace';
-import MainLayout from '@/layouts/MainLayout/MainLayout';
-import { projects, tags } from '@/lib/const';
-import { useTheme } from '@/providers/context/Context';
-
-const Portfolio = () => {
-  const theme = useTheme();
-  const { darkMode } = theme.state;
-  const [filter, setFilter] = useState('all');
-  const [portfolioProjects, setPortfolioProjects] = useState(projects);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-  useEffect(() => {
-    const filteredProjects = () => {
-      if (filter === 'all') {
-        return projects;
-      }
-      return projects.filter(project => project.tags.includes(filter));
-    };
-    setPortfolioProjects(filteredProjects);
-  }, [filter]);
-
-  return (
-    <MainLayout>
-      <div className="portfolio-page">
-        <div className="portfolio-page__header">
-          <p
-            className="portfolio-page__header--text"
-            style={{
-              color: darkMode ? 'white' : '',
-            }}
-          >
-            Some of my spare time tinkering.
-          </p>
-          <div className="portfolio-page__header--filter">
-            {tags.map((tag, index) => (
-              <Tab
-                key={index}
-                className={`${filter === tag.name ? 'active' : ''}`}
-                text={tag.name}
-                handleEvent={() => setFilter(tag.name)}
-              />
-            ))}
-          </div>
-        </div>
-        <div className="portfolio-page__body">
-          <motion.div layoutId="underline">
-            <div className="portfolio-page__body--content">
-              {portfolioProjects.map((project, index) => (
-                <PortfolioCard key={index} project={project} />
-              ))}
-              {portfolioProjects.length === 0 &&
-                `No projects found under ${filter} tag`}
-            </div>
-          </motion.div>
-          <WhiteSpace height={200} />
-        </div>
-      </div>
-    </MainLayout>
-  );
+export const metadata: Metadata = {
+  description:
+    'Portfolio of Anwar Hossain, a software engineer who loves to build web applications with modern technologies.',
+  keywords:
+    'Anwar Hossain, Portfolio Anwar, Software Engineer, Web Developer, Portfolio, Blog, Next.js, React, TypeScript, Tailwind CSS, Node.js, JavaScript, HTML, CSS, Web Development, Frontend Development, Backend Development, Full Stack Development, Software Development, Software Engineering, Web Applications, Modern Technologies, Open Source, GitHub, GitLab, Bitbucket, LinkedIn, Twitter, Facebook, Instagram, YouTube, Pinterest, Behance, Dribbble, CodePen, Stack Overflow, HackerRank, LeetCode, Dev.to, Medium, WordPress, Blogger, Tumblr, Ghost, Gatsby, Hugo, Jekyll, Nuxt.js, Vue.js, Angular, Svelte, Ember.js, Meteor, Express.js, Koa, Nest.js, Sails.js, LoopBack, Strapi, KeystoneJS, Prisma, GraphQL, Apollo, Relay, REST API, WebSockets, WebRTC, Progressive Web Apps, PWA, Accelerated Mobile Pages, AMP, Server-Side Rendering, SSR, Static Site Generation, SSG, Jamstack, Headless CMS, Content Management System, CMS, eCommerce, Online Store, Blogging Platform, Portfolio Website, Personal Website, Business Website, Corporate Website, Landing Page, Web Design, Web Development, Frontend Development, Backend Development, Full Stack Development, Software Development, Software Engineering, Web Applications, Modern Technologies, Open Source, GitHub, GitLab, Bitbucket, LinkedIn, Twitter, Facebook, Instagram, YouTube, Pinterest, Behance, Dribbble, CodePen, Stack Overflow, HackerRank, LeetCode, Dev.to, Medium, WordPress, Blogger, Tumblr, Ghost, Gatsby, Hugo, Jekyll, Nuxt.js, Vue.js, Angular, Svelte, Ember.js, Meteor, Express.js, Koa, Nest.js, Sails.js, LoopBack, Strapi, KeystoneJS, Prisma, GraphQL, Apollo, Relay, REST API, WebSockets, WebRTC, Progressive Web Apps, PWA, Accelerated Mobile Pages, AMP, Server-Side Rendering, SSR, Static Site Generation, SSG, Jamstack, Headless CMS, Content Management System, CMS, eCommerce, Online Store, Blogging Platform, Portfolio Website, Personal Website, Business Website, Corporate Website, Landing Page, Web Design, Web Development, Frontend Development, Backend Development, Full Stack Development, Software Development, Software Engineering, Web Applications, Modern Technologies, Open Source, GitHub, GitLab, Bitbucket, LinkedIn, Twitter, Facebook, Instagram, YouTube',
+  title: 'Portfolio - Anwar Hossain',
+  icons: {
+    icon: '/favicon.png',
+  },
 };
 
-export default Portfolio;
+const PortfolioPage = () => {
+  return <Portfolio />;
+};
+
+export default PortfolioPage;
