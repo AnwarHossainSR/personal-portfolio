@@ -1,17 +1,19 @@
+/* eslint-disable react/button-has-type */
+
 'use client';
+
+import { motion } from 'framer-motion';
 
 import Glasses from '@/assets/img/glasses.png';
 import HeartEmoji from '@/assets/img/heartemoji.png';
 import Humble from '@/assets/img/humble.png';
 import Card from '@/components/Card';
 import { transition } from '@/lib/const';
-import { themeContext } from '@/providers/context/Context';
-import { motion } from 'framer-motion';
-import { useContext } from 'react';
+import { useTheme } from '@/providers/context/Context';
 
 const Services = () => {
-    const theme = useContext(themeContext);
-    const darkMode = theme.state.darkMode;
+  const theme = useTheme();
+  const { darkMode } = theme.state;
   return (
     <div className="services" id="services">
       {/* left side */}

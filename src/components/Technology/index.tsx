@@ -1,6 +1,6 @@
 import { GoTriangleRight } from 'react-icons/go';
 
-const Technology = ({ technology }:{technology:string}) => {
+const Technology = ({ technology }: { technology: string }) => {
   return (
     <li>
       <span>

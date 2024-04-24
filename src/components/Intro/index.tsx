@@ -1,4 +1,10 @@
+/* eslint-disable react/button-has-type */
+
 'use client';
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { Link } from 'react-scroll';
 
 import Vector1 from '@/assets/img/Vector1.png';
 import Vector2 from '@/assets/img/Vector2.png';
@@ -10,19 +16,16 @@ import LinkedIn from '@/assets/img/linkedin.png';
 import me from '@/assets/img/me.svg';
 import thumbup from '@/assets/img/thumbup.png';
 import FloatinDiv from '@/components/FloatingDiv';
-import { themeContext } from '@/providers/context/Context';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useContext } from 'react';
-import { Link } from 'react-scroll';
+import { useTheme } from '@/providers/context/Context';
+
 const Intro = () => {
   // Transition
   const transition = { duration: 2, type: 'spring' };
 
   // context
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
-  const openInNewTab = (url:string) => {
+  const theme = useTheme();
+  const { darkMode } = theme.state;
+  const openInNewTab = (url: string) => {
     window.open(url, '_blank', 'noopener,noreferrer');
   };
   return (
@@ -68,13 +71,13 @@ const Intro = () => {
         <Image src={Vector2} alt="" />
         <Image src={me} alt="" width={200} height={350} />
         {/* animation */}
-        <motion.img
+        <motion.div
           initial={{ left: '-36%' }}
           whileInView={{ left: '-24%' }}
           transition={transition}
-          src={glassesimoji}
-          alt=""
-        />
+        >
+          <Image src={glassesimoji} alt="" width={158} height={145} />
+        </motion.div>
 
         <motion.div
           initial={{ top: '-4%', left: '74%' }}

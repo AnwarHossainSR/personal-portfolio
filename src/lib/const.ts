@@ -1,3 +1,6 @@
+import { GiCutDiamond } from 'react-icons/gi';
+import { MdComputer, MdOutlineMobileFriendly } from 'react-icons/md';
+
 import Blog from '@/assets/img/blog_app.png';
 import Chat from '@/assets/img/chat.png';
 import Course from '@/assets/img/course.png';
@@ -16,8 +19,6 @@ import SocialSite from '@/assets/img/social_site.png';
 import Spotify from '@/assets/img/spotify.png';
 import TwitterClone from '@/assets/img/twitter-clone.png';
 import YoutubeApp from '@/assets/img/youtube-app.png';
-import { GiCutDiamond } from 'react-icons/gi';
-import { MdComputer, MdOutlineMobileFriendly } from 'react-icons/md';
 
 export const projects = [
   {
@@ -235,60 +236,59 @@ export const specializationData = [
   },
 ];
 
-
 // transition
 export const transition = {
-    duration: 1,
-    type: 'spring',
-  };
-  
+  duration: 1,
+  type: 'spring',
+};
+
 export const YoutubePlaylistLink = [
-    {
-      link: 'JuKYmB1zB18',
-      title: 'ReactJS',
-    },
-    {
-      link: 'videoseries?list=PLOUudhWYmRUPiYuBqXooqu3C9v_jSLXbH',
-      title: 'ReactJS',
-    },
-    {
-      link: '0hf0xKnWhT8',
-      title: 'ReactJS',
-    },
-    {
-      link: 'ahvLe-wpSIw',
-      title: 'ReactJS',
-    },
-    {
-      link: 'rmKawwRTThM',
-      title: 'ReactJS',
-    },
-    {
-      link: 'videoseries?list=PLOUudhWYmRUPV7JTSeK9g__8j1YSGSAIn',
-      title: 'ReactJS',
-    },
-    {
-      link: 'videoseries?list=PLOUudhWYmRUNP7au7idLIZwFjD_Li_nsO',
-      title: 'ReactJS',
-    },
-    {
-      link: 'videoseries?list=PLOUudhWYmRUNlox-ZRSmhfrYsqe1o1p1a',
-      title: 'ReactJS',
-    },
-    {
-      link: 'videoseries?list=PLOUudhWYmRUO3StdD2VWubQ23Ps2-EHt2',
-      title: 'ReactJS',
-    },
-    {
-      link: 'videoseries?list=PLOUudhWYmRUOB5MODA2_NZ_meW_EssMOy',
-      title: 'ReactJS',
-    },
-    {
-      link: 'videoseries?list=PLOUudhWYmRUOQgdGkqjA7_T0biWQsbK38',
-      title: 'ReactJS',
-    },
+  {
+    link: 'JuKYmB1zB18',
+    title: 'ReactJS',
+  },
+  {
+    link: 'videoseries?list=PLOUudhWYmRUPiYuBqXooqu3C9v_jSLXbH',
+    title: 'ReactJS',
+  },
+  {
+    link: '0hf0xKnWhT8',
+    title: 'ReactJS',
+  },
+  {
+    link: 'ahvLe-wpSIw',
+    title: 'ReactJS',
+  },
+  {
+    link: 'rmKawwRTThM',
+    title: 'ReactJS',
+  },
+  {
+    link: 'videoseries?list=PLOUudhWYmRUPV7JTSeK9g__8j1YSGSAIn',
+    title: 'ReactJS',
+  },
+  {
+    link: 'videoseries?list=PLOUudhWYmRUNP7au7idLIZwFjD_Li_nsO',
+    title: 'ReactJS',
+  },
+  {
+    link: 'videoseries?list=PLOUudhWYmRUNlox-ZRSmhfrYsqe1o1p1a',
+    title: 'ReactJS',
+  },
+  {
+    link: 'videoseries?list=PLOUudhWYmRUO3StdD2VWubQ23Ps2-EHt2',
+    title: 'ReactJS',
+  },
+  {
+    link: 'videoseries?list=PLOUudhWYmRUOB5MODA2_NZ_meW_EssMOy',
+    title: 'ReactJS',
+  },
+  {
+    link: 'videoseries?list=PLOUudhWYmRUOQgdGkqjA7_T0biWQsbK38',
+    title: 'ReactJS',
+  },
 ];
-  
+
 export const workData = [
   {
     position: 'Software Engineer',

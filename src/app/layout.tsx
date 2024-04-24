@@ -13,14 +13,11 @@ export const metadata = {
   },
 };
 
-
 export default async function RootLayout({ children }: ChildrenProps) {
   return (
     <html lang="en">
-       <body>
-      <ThemeProvider>
-        {children}
-      </ThemeProvider>
+      <body>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

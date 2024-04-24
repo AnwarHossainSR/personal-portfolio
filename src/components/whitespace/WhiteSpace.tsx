@@ -1,4 +1,4 @@
-const WhiteSpace = ({ height }:{height:string | number}) => {
+const WhiteSpace = ({ height }: { height: string | number }) => {
   return <div style={{ height: `${height}px` }} />;
 };
 

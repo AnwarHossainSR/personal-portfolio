@@ -1,12 +1,17 @@
+/* eslint-disable react/no-array-index-key */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 'use client';
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { useState } from 'react';
 
 import AnwarImage from '@/assets/img/anwar.svg';
 import Technology from '@/components/Technology';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { transition, workData } from '@/lib/const';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useState } from 'react';
 
 const About = () => {
   const [active, setActive] = useState(0);
@@ -59,10 +64,7 @@ const About = () => {
           >
             <div className="about__description-right-item">
               <Image src={AnwarImage} alt="" />
-              <Image
-                src={AnwarImage}
-                alt="Anwar Hossain"
-              />
+              <Image src={AnwarImage} alt="" />
               <div className="border" />
             </div>
           </motion.div>
@@ -105,12 +107,12 @@ const About = () => {
                           {work.duration}
                         </div>
                         <div className="about__work-body-right__description">
-                          {work.description.map((desc, index) => (
-                            <Technology key={index} technology={desc} />
+                          {work.description.map((desc, indx) => (
+                            <Technology key={indx} technology={desc} />
                           ))}
                         </div>
                       </div>
-                    ),
+                    )
                 )}
               </motion.div>
             </div>
@@ -122,4 +124,3 @@ const About = () => {
 };
 
 export default About;
-

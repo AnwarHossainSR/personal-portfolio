@@ -1,20 +1,22 @@
+/* eslint-disable react/button-has-type */
+
 'use client';
+
+import { motion } from 'framer-motion';
+import Image from 'next/image';
+import { Link } from 'react-scroll';
 
 import Facebook from '@/assets/img/Facebook.png';
 import Shopify from '@/assets/img/Shopify.png';
 import Upwork from '@/assets/img/Upwork.png';
 import Amazon from '@/assets/img/amazon.png';
 import Fiverr from '@/assets/img/fiverr.png';
-import { themeContext } from '@/providers/context/Context';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useContext } from 'react';
-import { Link } from 'react-scroll';
+import { useTheme } from '@/providers/context/Context';
 
 const Works = () => {
   // context
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
+  const theme = useTheme();
+  const { darkMode } = theme.state;
 
   // transition
   return (

@@ -1,21 +1,24 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+
 'use client';
 
-import { themeContext } from '@/providers/context/Context';
-// import Moon from '@iconscout/react-unicons/icons/uil-moon';
-// import Sun from '@iconscout/react-unicons/icons/uil-sun';
-import { useContext } from 'react';
+import { FaMoon } from 'react-icons/fa';
+import { MdSunny } from 'react-icons/md';
+
+import { useTheme } from '@/providers/context/Context';
 
 const Toggle = () => {
-  const theme = useContext(themeContext);
-  const darkMode = theme.state.darkMode;
+  const theme = useTheme();
+  const { darkMode } = theme.state;
   const handleClick = () => {
     theme.dispatch({ type: 'toggle' });
   };
-  
+
   return (
     <div className="toggle" onClick={handleClick}>
-      {/* <Moon />
-      <Sun /> */}
+      <FaMoon />
+      <MdSunny />
       <div
         className="t-button"
         style={darkMode ? { left: '2px' } : { right: '2px' }}
