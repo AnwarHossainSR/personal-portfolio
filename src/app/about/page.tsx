@@ -64,7 +64,7 @@ const About = () => {
           >
             <div className="about__description-right-item">
               <Image src={AnwarImage} alt="" />
-              <Image src={AnwarImage} alt="Anwar Hossain" />
+              <Image src={AnwarImage} alt="" />
               <div className="border" />
             </div>
           </motion.div>

@@ -71,13 +71,13 @@ const Intro = () => {
         <Image src={Vector2} alt="" />
         <Image src={me} alt="" width={200} height={350} />
         {/* animation */}
-        <motion.img
+        <motion.div
           initial={{ left: '-36%' }}
           whileInView={{ left: '-24%' }}
           transition={transition}
-          src={glassesimoji as any}
-          alt=""
-        />
+        >
+          <Image src={glassesimoji} alt="" width={158} height={145} />
+        </motion.div>
 
         <motion.div
           initial={{ top: '-4%', left: '74%' }}

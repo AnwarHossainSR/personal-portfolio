@@ -12,6 +12,8 @@ const PortfolioCard = ({ project }: any) => {
           <Image
             alt={project?.title}
             src={project?.img}
+            width={350}
+            height={200}
             className="project-card-image"
           />
           {/* <img className='project-card-image' src={project?.img} alt='' /> */}

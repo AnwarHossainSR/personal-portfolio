@@ -3,9 +3,10 @@
 
 'use client';
 
+import { FaMoon } from 'react-icons/fa';
+import { MdSunny } from 'react-icons/md';
+
 import { useTheme } from '@/providers/context/Context';
-// import Moon from '@iconscout/react-unicons/icons/uil-moon';
-// import Sun from '@iconscout/react-unicons/icons/uil-sun';
 
 const Toggle = () => {
   const theme = useTheme();
@@ -16,8 +17,8 @@ const Toggle = () => {
 
   return (
     <div className="toggle" onClick={handleClick}>
-      {/* <Moon />
-      <Sun /> */}
+      <FaMoon />
+      <MdSunny />
       <div
         className="t-button"
         style={darkMode ? { left: '2px' } : { right: '2px' }}
