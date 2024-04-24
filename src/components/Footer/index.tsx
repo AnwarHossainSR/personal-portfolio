@@ -3,6 +3,8 @@
 // import Insta from '@iconscout/react-unicons/icons/uil-instagram';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { FaFacebook, FaGithub } from 'react-icons/fa';
+import { RiInstagramFill } from 'react-icons/ri';
 
 import Wave from '@/assets/img/wave.png';
 
@@ -13,7 +15,7 @@ const MainFooter = () => {
     window.open(value, '_blank');
   };
   useEffect(() => {
-    return setHeight(window.innerWidth <= 480 ? '15rem' : undefined);
+    return setHeight(window.innerWidth <= 480 ? '10rem' : undefined);
   }, []);
 
   return (
@@ -29,23 +31,23 @@ const MainFooter = () => {
       <div className="f-content">
         <span>anwarmahedisr@gmail.com</span>
         <div className="f-icons">
-          {/* <Insta
+          <RiInstagramFill
             color="var(--dark)"
             size="3rem"
             onClick={() =>
               handleClick('https://www.instagram.com/mahedi_hasan_sr/?hl=en')
             }
           />
-          <Facebook
+          <FaFacebook
             color="var(--dark)"
             size="3rem"
             onClick={() => handleClick('https://www.facebook.com/MahediSR007')}
           />
-          <Gitub
+          <FaGithub
             color="var(--dark)"
             size="3rem"
             onClick={() => handleClick('https://github.com/AnwarHossainSR')}
-          /> */}
+          />
         </div>
       </div>
     </div>
