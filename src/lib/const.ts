@@ -9,7 +9,6 @@ import Dev from '@/assets/img/dev.png';
 import Doctor from '@/assets/img/doctor.png';
 import EcommerceApp from '@/assets/img/ecommerce-app.png';
 import Ecommerce from '@/assets/img/ecommerce.png';
-import OpenAIKeywordExtract from '@/assets/img/keywordExtraction.png';
 import MovieApp from '@/assets/img/movie_app.png';
 import PortfolioApp from '@/assets/img/portfolio.png';
 import AdminPro from '@/assets/img/react-admin-pro.png';
@@ -19,15 +18,23 @@ import SocialSite from '@/assets/img/social_site.png';
 import Spotify from '@/assets/img/spotify.png';
 import TwitterClone from '@/assets/img/twitter-clone.png';
 import YoutubeApp from '@/assets/img/youtube-app.png';
+import ZoomClone from '@/assets/img/zoom-clone.png';
 
 export const projects = [
   {
-    img: OpenAIKeywordExtract,
-    title: 'Open AI Keyword Extract',
-    description: 'Open AI Keyword Extract with full featured',
-    link: 'https://ai-keyword-extractor-eight.vercel.app/',
-    tags: ['Next JS', 'Open AI', 'Txt Extraction'],
-    github: 'https://github.com/AnwarHossainSR/ai-keyword-extractor',
+    img: ZoomClone,
+    title: 'Zoom Clone App',
+    description: 'A clone of Zoom app with full featured',
+    link: 'https://next-zoom-clone-rosy.vercel.app/',
+    tags: [
+      'Next JS',
+      'Tailwind CSS',
+      'Clark auth',
+      'video call',
+      'chat',
+      'streaming',
+    ],
+    github: 'https://github.com/AnwarHossainSR/next-zoom-clone',
   },
   {
     img: Chat,
