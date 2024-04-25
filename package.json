@@ -5,7 +5,8 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=20.0.0",
+    "npm": "please-use-yarn"
   },
   "scripts": {
     "dev": "next dev",
@@ -16,7 +17,8 @@
     "eslint": "next lint --fix --dir src",
     "prettier": "prettier --write .",
     "lint": "yarn eslint && yarn prettier",
-    "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore"
+    "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
+    "postbuild": "next-sitemap"
   },
   "lint-staged": {
     "*.{js,jsx,md,ts,tsx,html,css,scss}": "yarn prettier",
@@ -31,6 +33,7 @@
     "date-fns": "^3.6.0",
     "framer-motion": "^11.1.7",
     "next": "14.2.2",
+    "next-sitemap": "^4.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
