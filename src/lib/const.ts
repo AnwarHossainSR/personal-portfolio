@@ -308,7 +308,7 @@ export const YoutubePlaylistLink = [
 export const workData = [
   {
     position: 'Software Development Engineer II',
-    company: 'Craftsmen LTD',
+    company: 'Craftsmen Ltd',
     duration: 'May 2024 - Present',
     description: [
       'Write modern, performant, maintainable code for a diverse array of client and internal projects',
@@ -318,7 +318,7 @@ export const workData = [
   },
   {
     position: 'Software Engineer',
-    company: 'BJIT',
+    company: 'BJIT Group Ltd',
     duration: 'Aug 2021 - April 2024',
     description: [
       'Write modern, performant, maintainable code for a diverse array of client and internal projects',
