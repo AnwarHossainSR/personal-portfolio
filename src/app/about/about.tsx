@@ -81,11 +81,17 @@ const About = () => {
                 className={active === 0 ? 'active' : ''}
                 onClick={() => setActive(0)}
               >
-                BJIT
+                Craftsmen LTD
               </li>
               <li
                 className={active === 1 ? 'active' : ''}
                 onClick={() => setActive(1)}
+              >
+                BJIT Group LTD
+              </li>
+              <li
+                className={active === 2 ? 'active' : ''}
+                onClick={() => setActive(2)}
               >
                 Annon Lab
               </li>

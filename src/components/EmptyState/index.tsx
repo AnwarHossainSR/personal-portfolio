@@ -24,20 +24,24 @@ const EmptyState: React.FC<EmptyStateProps> = ({
 
   return (
     <div
-      className="
-        h-[60vh]
-        flex 
-        flex-col 
-        gap-2 
-        justify-center 
-        items-center 
-      "
+      style={{
+        height: '60vh',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '2rem',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
     >
       <Heading center title={title} subtitle={subtitle} />
       <div
-        className="w-48 mt-4 flex 
-        flex-row 
-        gap-2 "
+        style={{
+          width: '12rem',
+          marginTop: '1rem',
+          display: 'flex',
+          flexDirection: 'row',
+          gap: '0.5rem',
+        }}
       >
         {showReset && (
           <Button

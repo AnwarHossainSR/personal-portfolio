@@ -307,9 +307,19 @@ export const YoutubePlaylistLink = [
 
 export const workData = [
   {
+    position: 'Software Development Engineer II',
+    company: 'Craftsmen LTD',
+    duration: 'May 2024 - Present',
+    description: [
+      'Write modern, performant, maintainable code for a diverse array of client and internal projects',
+      'Work with a variety of different languages, platforms, frameworks, and content management systems such as JavaScript, TypeScript, React, Python, Django, AWS, Video streaming, Serverless',
+      'Communicate with multi-disciplinary teams of engineers, designers, producers, and clients on a daily basis',
+    ],
+  },
+  {
     position: 'Software Engineer',
     company: 'BJIT',
-    duration: 'Aug 2021 - Present',
+    duration: 'Aug 2021 - April 2024',
     description: [
       'Write modern, performant, maintainable code for a diverse array of client and internal projects',
       'Work with a variety of different languages, platforms, frameworks, and content management systems such as JavaScript, TypeScript, React, Php, Laravel, Python, Django, Craft, Prismic, Vercel, AWS and Netlify',
