@@ -83,6 +83,16 @@ const Header = ({ darkMode }: HeaderProps) => {
                 About Me
               </Link>
             </li>
+            <li>
+              <Link
+                style={{ color: darkMode ? 'var(--gray)' : '' }}
+                href="/blogs"
+                className={pathname === '/blogs' ? 'active' : ''}
+                onClick={() => setOpen(false)}
+              >
+                Blogs
+              </Link>
+            </li>
 
             <div className="navbar-cross">
               <motion.div
