@@ -18,9 +18,11 @@ export const metadata: Metadata = {
 const PortfolioPage = () => {
   return (
     <MainLayout>
-      {[...Array(10)].map((_, index) => (
-        <BlogCard key={index} />
-      ))}
+      <div className="blogs">
+        {[...Array(10)].map((_, index) => (
+          <BlogCard key={index} />
+        ))}
+      </div>
     </MainLayout>
   );
 };
