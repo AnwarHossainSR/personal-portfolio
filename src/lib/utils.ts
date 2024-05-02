@@ -9,3 +9,9 @@ export const myLoader = ({ src }: any) => {
 // display numbers with comma (form string)
 export const displayNumbers = (num: number): string =>
   num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+// blog_tag-purple blog_tag-pink blog_tag-teal generate random class from this 3
+export const randomTagColorClass = () => {
+  const colors = ['purple', 'pink', 'teal', 'orange'];
+  return `blog_tag-${colors[Math.floor(Math.random() * colors.length)]}`;
+};

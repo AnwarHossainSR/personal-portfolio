@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import anwar from '@/assets/img/anwar.svg';
+import { randomTagColorClass } from '@/lib/utils';
 
 /* eslint-disable @next/next/no-img-element */
 const BlogCard = ({ darkMode }: { darkMode: boolean }) => {
@@ -21,7 +22,9 @@ const BlogCard = ({ darkMode }: { darkMode: boolean }) => {
           />
         </div>
         <div className="blog_card-body">
-          <span className="blog_tag blog_tag-teal">Technology</span>
+          <span className={`blog_tag ${randomTagColorClass()}`}>
+            Technology
+          </span>
           <Link
             href="/blog/tesla-cybertruck"
             style={{
