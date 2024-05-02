@@ -337,3 +337,24 @@ export const workData = [
     ],
   },
 ];
+
+export const blogTags = [
+  {
+    name: 'all',
+  },
+  {
+    name: 'react',
+  },
+  {
+    name: 'nextjs',
+  },
+  {
+    name: 'nodejs',
+  },
+  {
+    name: 'laravel',
+  },
+  {
+    name: 'native',
+  },
+];
