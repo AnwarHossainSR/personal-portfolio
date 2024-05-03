@@ -32,7 +32,7 @@ const LoginPage = () => {
       setValue({ accessToken, refreshToken });
       setMessage(message);
       setTimeout(() => {
-        router.push('/');
+        router.push('/admin/dashboard');
       }, 1000);
     } else {
       setError(response.data.message);
