@@ -3,8 +3,7 @@
 // for example if you were using Sanity as your CMS you might want to add:
 // sanity.ts -> methods to interact with Sanity CMS
 import { getDateCompare } from './date';
-import { logError, logInfo } from './logger';
 import { prisma } from './prismaDB';
 import { displayNumbers } from './utils';
 
-export { displayNumbers, getDateCompare, logError, logInfo, prisma };
+export { displayNumbers, getDateCompare, prisma };
