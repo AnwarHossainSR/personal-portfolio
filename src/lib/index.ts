@@ -4,6 +4,7 @@
 // sanity.ts -> methods to interact with Sanity CMS
 import { getDateCompare } from './date';
 import { logError, logInfo } from './logger';
+import { prismaDB } from './prismaDB';
 import { displayNumbers } from './utils';
 
-export { displayNumbers, getDateCompare, logError, logInfo };
+export { displayNumbers, getDateCompare, logError, logInfo, prismaDB };
