@@ -87,7 +87,7 @@ const Header = ({ darkMode }: HeaderProps) => {
               <Link
                 style={{ color: darkMode ? 'var(--gray)' : '' }}
                 href="/blogs"
-                className={pathname === '/blogs' ? 'active' : ''}
+                className={pathname.startsWith('/blogs') ? 'active' : ''}
                 onClick={() => setOpen(false)}
               >
                 Blogs
