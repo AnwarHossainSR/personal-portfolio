@@ -80,7 +80,7 @@ const Header = ({ darkMode }: HeaderProps) => {
                 className={pathname === '/about' ? 'active' : ''}
                 onClick={() => setOpen(false)}
               >
-                About Me
+                About
               </Link>
             </li>
             <li>
@@ -91,6 +91,16 @@ const Header = ({ darkMode }: HeaderProps) => {
                 onClick={() => setOpen(false)}
               >
                 Blogs
+              </Link>
+            </li>
+            <li>
+              <Link
+                style={{ color: darkMode ? 'var(--gray)' : '' }}
+                href="/login"
+                className={pathname === '/login' ? 'active' : ''}
+                onClick={() => setOpen(false)}
+              >
+                Auth
               </Link>
             </li>
 

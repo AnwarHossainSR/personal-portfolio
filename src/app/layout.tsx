@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@/providers/context/Context';
-import '@/styles/main.scss';
+import '@/styles/index.scss';
 import type { ChildrenProps } from '@/types';
 
 export default async function RootLayout({ children }: ChildrenProps) {
