@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['themewagon.github.io'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'themewagon.github.io',
+        port: '',
+      },
+    ],
   },
 };
 
