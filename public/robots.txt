@@ -3,8 +3,8 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://anwarportfolio.vercel.app
+Host: http://locxalhost:3000
 
 # Sitemaps
-Sitemap: https://anwarportfolio.vercel.app/sitemap.xml
-Sitemap: https://anwarportfolio.vercel.app/server-sitemap.xml
+Sitemap: http://locxalhost:3000/sitemap.xml
+Sitemap: http://locxalhost:3000/server-sitemap.xml

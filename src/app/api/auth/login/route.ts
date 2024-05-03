@@ -16,24 +16,29 @@ export async function POST(req: Request) {
     });
 
     if (!user) {
-      return Response.json({ message: 'User Not Found' });
+      return Response.json({ message: 'User not found', status: 401 });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return Response.json({ message: 'Invalid Credentials' });
+      return Response.json({ message: 'Invalid Credentials', status: 401 });
     }
 
     const accessToken = createAccessToken({ userId: user.id });
     const refreshToken = createRefreshToken({ userId: user.id });
 
     return Response.json({
+      status: 200,
       message: 'Login Successful',
       accessToken,
       refreshToken,
     });
   } catch (error) {
-    return Response.json({ message: 'Internal Server Error', error });
+    return Response.json({
+      status: 500,
+      message: 'Internal Server Error',
+      error,
+    });
   }
 }
