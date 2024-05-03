@@ -18,7 +18,8 @@
     "prettier": "prettier --write .",
     "lint": "yarn eslint && yarn prettier",
     "format": "next lint --fix && prettier '**/*.{json,yaml}' --write --ignore-path .gitignore",
-    "postbuild": "next-sitemap"
+    "postbuild": "next-sitemap && yarn prisma generate",
+    "postinstall": "yarn prisma generate"
   },
   "lint-staged": {
     "*.{js,jsx,md,ts,tsx,html,css,scss}": "yarn prettier",
@@ -26,14 +27,18 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.3.3",
-    "@iconscout/react-unicons": "^2.0.2",
+    "@next-auth/prisma-adapter": "^0.4.4-canary.81",
     "@next/bundle-analyzer": "^14.2.2",
+    "@prisma/client": "^5.13.0",
     "autoprefixer": "^10.4.19",
+    "bcrypt": "^5.1.1",
     "config": "^3.3.11",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.1.7",
     "next": "14.2.2",
+    "next-auth": "^4.24.7",
     "next-sitemap": "^4.2.3",
+    "prisma": "^5.13.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
@@ -49,6 +54,7 @@
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",
     "@commitlint/config-conventional": "^19.2.2",
+    "@types/bcrypt": "^5.0.2",
     "@types/node": "^20.12.7",
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",

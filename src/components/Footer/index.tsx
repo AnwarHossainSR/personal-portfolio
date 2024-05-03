@@ -1,6 +1,3 @@
-// import Facebook from '@iconscout/react-unicons/icons/uil-facebook';
-// import Gitub from '@iconscout/react-unicons/icons/uil-github';
-// import Insta from '@iconscout/react-unicons/icons/uil-instagram';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { FaFacebook, FaGithub } from 'react-icons/fa';
