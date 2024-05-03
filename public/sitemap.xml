@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<sitemap><loc>https://anwarportfolio.vercel.app/sitemap-0.xml</loc></sitemap>
-<sitemap><loc>https://anwarportfolio.vercel.app/server-sitemap.xml</loc></sitemap>
-<sitemap><loc>https://anwarportfolio.vercel.app/server-sitemap.xml</loc></sitemap>
+<sitemap><loc>http://locxalhost:3000/sitemap-0.xml</loc></sitemap>
+<sitemap><loc>http://locxalhost:3000/server-sitemap.xml</loc></sitemap>
+<sitemap><loc>http://locxalhost:3000/server-sitemap.xml</loc></sitemap>
 </sitemapindex>
