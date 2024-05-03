@@ -26,7 +26,7 @@ const BlogCard = ({ darkMode }: { darkMode: boolean }) => {
             Technology
           </span>
           <Link
-            href="/blog/tesla-cybertruck"
+            href="/blogs/tesla-cybertruck"
             style={{
               color: darkMode ? '#f3f4f6' : '#1e293b',
             }}
