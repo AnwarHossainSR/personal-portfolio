@@ -30,11 +30,13 @@ const LoginPage = () => {
     if (response.data.status === 200) {
       const { message, accessToken, refreshToken } = response.data;
       setValue({ accessToken, refreshToken });
+      setError('');
       setMessage(message);
       setTimeout(() => {
         router.push('/admin/dashboard');
       }, 1000);
     } else {
+      setMessage('');
       setError(response.data.message);
     }
   };
