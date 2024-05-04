@@ -5,39 +5,35 @@
 import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 
-import { useLocalStorage } from '@/hooks';
 import { api } from '@/lib/apiConfig';
 
 const LoginPage = () => {
   const router = useRouter();
-  const [, setValue] = useLocalStorage('token', {
-    accessToken: '',
-    refreshToken: '',
-  });
   const [resMessage, setMessage] = useState('');
   const emailRef = useRef<any>(null);
   const passwordRef = useRef<any>(null);
   const [error, setError] = useState('');
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const email = emailRef.current.value;
-    const password = passwordRef.current.value;
-    const response: any = await api.post('/api/auth/login', {
-      email,
-      password,
-    });
+    try {
+      const email = emailRef.current.value;
+      const password = passwordRef.current.value;
+      const response: any = await api.post('/api/auth/login', {
+        email,
+        password,
+      });
 
-    if (response.data.status === 200) {
-      const { message, accessToken, refreshToken } = response.data;
-      setValue({ accessToken, refreshToken });
+      const { message } = response.data;
       setError('');
       setMessage(message);
       setTimeout(() => {
         router.push('/admin/dashboard');
       }, 1000);
-    } else {
+    } catch (err: any) {
+      // eslint-disable-next-line no-console
+      console.log('error', err);
       setMessage('');
-      setError(response.data.message);
+      setError(err.response.data.message);
     }
   };
 
