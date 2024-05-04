@@ -1,27 +1,24 @@
-import jwt from 'jsonwebtoken';
+import type { JWTPayload } from 'jose';
+import { SignJWT, jwtVerify } from 'jose';
 
-import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from '@/env';
+import { JWT_SECRET_KEY } from '@/env';
 
-interface TokenPayload {
-  userId: string;
-}
-
-export const createAccessToken = (payload: TokenPayload) => {
-  return jwt.sign(payload, ACCESS_TOKEN_SECRET, {
-    expiresIn: '15m',
-  });
+export const createJwtToken = async (payload: JWTPayload) => {
+  const secret = new TextEncoder().encode(JWT_SECRET_KEY);
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' }) // Algorithm for token signing
+    .setIssuedAt() // Set token issuance time
+    .setExpirationTime('7d') // Set token expiration time
+    .sign(secret);
 };
 
-export const createRefreshToken = (payload: TokenPayload) => {
-  return jwt.sign(payload, REFRESH_TOKEN_SECRET, {
-    expiresIn: '7d',
-  });
-};
-
-export const verifyAccessToken = (token: string) => {
+export const tokenVerify = async (accessToken: string) => {
   try {
-    return jwt.verify(token, ACCESS_TOKEN_SECRET);
-  } catch (error: any) {
+    const secret = new TextEncoder().encode(JWT_SECRET_KEY);
+    const { payload } = await jwtVerify(accessToken, secret);
+
+    return payload;
+  } catch (error) {
     return null;
   }
 };

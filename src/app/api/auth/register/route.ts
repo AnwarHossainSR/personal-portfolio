@@ -1,15 +1,18 @@
 import bcrypt from 'bcrypt';
+import { NextResponse, type NextRequest } from 'next/server';
 
 import { SALT_WORK_FACTOR } from '@/config';
 import { prisma } from '@/lib';
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     // write registration logic here
     const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
-      return Response.json({ message: 'Please Enter Name, Email & Password' });
+      return NextResponse.json({
+        message: 'Please Enter Name, Email & Password',
+      });
     }
 
     const existingUser = await prisma.user.findUnique({
@@ -17,7 +20,7 @@ export async function POST(req: Request) {
     });
 
     if (existingUser) {
-      return Response.json({ message: 'User Already Exists' });
+      return NextResponse.json({ message: 'User Already Exists' });
     }
 
     // hash password
@@ -35,11 +38,11 @@ export async function POST(req: Request) {
     });
 
     if (!user) {
-      return Response.json({ message: 'Failed to Create User' });
+      return NextResponse.json({ message: 'Failed to Create User' });
     }
 
-    return Response.json({ message: 'User Created Successfully' });
+    return NextResponse.json({ message: 'User Created Successfully' });
   } catch (error) {
-    return Response.json({ message: 'Internal Server Error', error });
+    return NextResponse.json({ message: 'Internal Server Error', error });
   }
 }

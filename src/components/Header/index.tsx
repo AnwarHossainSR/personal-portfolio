@@ -1,3 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable react/button-has-type */
 
 import { motion } from 'framer-motion';
@@ -8,6 +12,7 @@ import { FaBars } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
 
 import Toggle from '@/components/common/Toggle';
+import { getAuthenticatedUser } from '@/lib/cookie';
 
 type HeaderProps = {
   darkMode: boolean;
@@ -15,6 +20,7 @@ type HeaderProps = {
 const Header = ({ darkMode }: HeaderProps) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const [user, setUser] = useState<any>(null);
   useEffect(() => {
     if (open === true && window.innerWidth < 481) {
       document.body.style.overflow = 'hidden';
@@ -23,6 +29,14 @@ const Header = ({ darkMode }: HeaderProps) => {
       document.body.style.overflow = 'auto';
     };
   }, [open]);
+  useEffect(() => {
+    getAuthenticatedUser().then(data => setUser(data));
+  }, []);
+
+  const handleLogout = () => {
+    // eslint-disable-next-line no-console
+    console.log('logout');
+  };
 
   return (
     <div className="n-wrapper" id="Navbar">
@@ -93,16 +107,40 @@ const Header = ({ darkMode }: HeaderProps) => {
                 Blogs
               </Link>
             </li>
-            <li>
-              <Link
-                style={{ color: darkMode ? 'var(--gray)' : '' }}
-                href="/login"
-                className={pathname === '/login' ? 'active' : ''}
-                onClick={() => setOpen(false)}
-              >
-                Auth
-              </Link>
-            </li>
+
+            {user && user.isAdmin ? (
+              <>
+                <li>
+                  <Link
+                    style={{ color: darkMode ? 'var(--gray)' : '' }}
+                    href="/admin/dashboard"
+                    className={pathname.startsWith('/admin') ? 'active' : ''}
+                    onClick={() => setOpen(false)}
+                  >
+                    Dashboard
+                  </Link>
+                </li>
+                <li onClick={handleLogout}>
+                  <a
+                    style={{ color: darkMode ? 'var(--gray)' : '' }}
+                    onClick={() => setOpen(false)}
+                  >
+                    Logout
+                  </a>
+                </li>
+              </>
+            ) : (
+              <li>
+                <Link
+                  style={{ color: darkMode ? 'var(--gray)' : '' }}
+                  href="/login"
+                  className={pathname === '/login' ? 'active' : ''}
+                  onClick={() => setOpen(false)}
+                >
+                  Auth
+                </Link>
+              </li>
+            )}
 
             <div className="navbar-cross">
               <motion.div
