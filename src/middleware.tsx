@@ -14,14 +14,16 @@ export default async function middleware(req: NextRequest) {
   const authUser = await tokenVerify(accessToken?.value);
 
   if (!authUser) return NextResponse.redirect(new URL('/', req.url), req);
-
-  const user: any = await (
-    await fetch(`${SITE_URL}/api/user/${authUser.userId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-  ).json();
+  let user: any = null;
+  try {
+    user = await (
+      await fetch(`${SITE_URL}/api/user/${authUser?.userId}`)
+    ).json();
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('error', error);
+    return NextResponse.redirect(new URL('/', req.url), req);
+  }
 
   if (!user) return NextResponse.redirect(new URL('/', req.url), req);
 
