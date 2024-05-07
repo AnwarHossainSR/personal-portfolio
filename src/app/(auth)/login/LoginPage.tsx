@@ -3,9 +3,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import Loader from '@/components/common/Loader';
 import { api } from '@/lib/apiConfig';
+import { getAuthenticatedUser } from '@/lib/cookie';
 
 const LoginPage = () => {
   const router = useRouter();
@@ -13,6 +15,8 @@ const LoginPage = () => {
   const emailRef = useRef<any>(null);
   const passwordRef = useRef<any>(null);
   const [error, setError] = useState('');
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
@@ -36,6 +40,23 @@ const LoginPage = () => {
       setError(err.response.data.message);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
+    !user &&
+      getAuthenticatedUser()
+        .then(data => {
+          setUser(data);
+          if (data) {
+            router.push('/admin/dashboard');
+          }
+        })
+        .then(() => {
+          setLoading(false);
+        });
+  }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <div className="login">

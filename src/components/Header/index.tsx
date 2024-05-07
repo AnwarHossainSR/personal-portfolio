@@ -6,18 +6,20 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { FaBars } from 'react-icons/fa';
 import { GiCrossMark } from 'react-icons/gi';
 
 import Toggle from '@/components/common/Toggle';
+import { SITE_URL } from '@/env';
 import { getAuthenticatedUser } from '@/lib/cookie';
 
 type HeaderProps = {
   darkMode: boolean;
 };
 const Header = ({ darkMode }: HeaderProps) => {
+  const { push } = useRouter();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const [user, setUser] = useState<any>(null);
@@ -33,9 +35,24 @@ const Header = ({ darkMode }: HeaderProps) => {
     getAuthenticatedUser().then(data => setUser(data));
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     // eslint-disable-next-line no-console
-    console.log('logout');
+    try {
+      const response = await fetch(`${SITE_URL}/api/auth/logout`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        setUser(null);
+        push('/');
+      }
+      return '';
+    } catch (error: any) {
+      return new Error(error.message);
+    }
   };
 
   return (
