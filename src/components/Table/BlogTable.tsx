@@ -1,7 +1,10 @@
+import { useRouter } from 'next/navigation';
+
 /* eslint-disable no-console */
 const BlogTable = ({ posts }: { posts: any }) => {
+  const { push } = useRouter();
   const onEdit = (id: number) => {
-    console.log('Edit Post', id);
+    push(`/admin/blogs/${id}`);
   };
 
   const onDelete = (id: number) => {
