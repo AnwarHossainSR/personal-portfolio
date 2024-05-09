@@ -1,0 +1,65 @@
+.admin_blog {
+    &__create {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: transparent;      
+    }
+  
+    &__title {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+  
+    &__form {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    &__form-group {
+      margin-bottom: 20px;
+    }
+  
+    &__label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+  
+    &__input,
+    &__textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 97%;
+      resize: vertical;
+      &:focus {
+        outline: none;
+        border-color: #007bff;
+      }
+
+      &::placeholder {
+        color: #d67171;
+      }
+    }
+  
+    &__textarea {
+      min-height: 150px;
+    }
+  
+    &__submit-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+  
+    &__submit-btn:hover {
+      background-color: #0056b3;
+    }
+  }
+  
