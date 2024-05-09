@@ -1,7 +1,7 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { prisma } from '@/lib';
+import { prisma, uploadToCloudinary } from '@/lib';
 
 export async function GET() {
   return NextResponse.json({ message: 'Hello from the API!' });
@@ -9,9 +9,12 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, content, mainImage } = await req.json();
+    const formData = await req.formData();
+    const title = formData.get('title') as string;
+    const content = formData.get('content') as string;
+    const file = formData.get('file') as File;
 
-    if (!title || !content || !mainImage) {
+    if (!title || !content || !file) {
       return NextResponse.json(
         {
           message: 'Please enter title, content and mainImage.',
@@ -20,16 +23,30 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Save to database
+    const fileBuffer = await file.arrayBuffer();
+    const mimeType = file.type;
+    const encoding = 'base64';
+    const base64Data = Buffer.from(fileBuffer).toString('base64');
+
+    // this will be used to upload the file
+    const fileUri = `data:${mimeType};${encoding},${base64Data}`;
+
     const authorId = JSON.parse(req.cookies.get('user')?.value ?? '').id;
-    const blog = await prisma.post.create({
-      data: {
-        title,
-        content,
-        mainImage,
-        author: { connect: { id: authorId } }, // Replace 'authorId' with the actual ID of the author
-      },
-    });
+
+    const res = await uploadToCloudinary(fileUri, file.name, 'blogs');
+
+    let blog = null;
+
+    if (res.success && res.result) {
+      blog = await prisma.post.create({
+        data: {
+          title,
+          content,
+          image_url: res.result.secure_url,
+          author: { connect: { id: authorId } },
+        },
+      });
+    }
 
     return NextResponse.json({
       message: 'Blog created successfully',
