@@ -3,8 +3,37 @@ import { NextResponse } from 'next/server';
 
 import { prisma, uploadToCloudinary } from '@/lib';
 
-export async function GET() {
-  return NextResponse.json({ message: 'Hello from the API!' });
+export async function GET(req: NextRequest) {
+  try {
+    const url = new URL(req.url, 'http://localhost:3000');
+    let category = null;
+    if (url.searchParams.get('category')) {
+      category = url.searchParams.get('category');
+    }
+
+    let blogs = [];
+    if (category) {
+      blogs = await prisma.post.findMany({
+        where: { category },
+        orderBy: { createdAt: 'desc' },
+        include: { author: { select: { name: true, id: true } } },
+      });
+    } else {
+      blogs = await prisma.post.findMany({
+        orderBy: { createdAt: 'desc' },
+        include: { author: { select: { name: true, id: true } } },
+      });
+    }
+    return NextResponse.json({
+      message: 'Blogs fetched successfully',
+      data: blogs,
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { message: 'An error occurred', error },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {
