@@ -1,3 +1,38 @@
+.blog_header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .blog_header h1 {
+    font-size: 24px;
+    margin: 0;
+  }
+  
+  .blog_header a {
+    padding: 10px 20px;
+    background-color: #007bff; /* Blue color for add button */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+  }
+  
+  .blog_header a:hover {
+    opacity: 0.8; /* Reduce opacity on hover */
+  }
+  
+  .blog_header a:disabled {
+    background-color: #6c757d; /* Gray color for disabled button */
+    cursor: not-allowed;
+  }
+  
+  .blog_header a:disabled:hover {
+    opacity: 1; /* Keep opacity same on hover for disabled button */
+  }
+
+
 .blog-post-table {
     width: 100%;
     border-collapse: collapse;

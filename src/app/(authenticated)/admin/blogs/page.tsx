@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable no-console */
 
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import BlogTable from '@/components/Table/BlogTable';
@@ -32,7 +34,12 @@ const AdminBlogPage = () => {
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
-        <h1>Welcome to the Admin Blog Page</h1>
+        <div className="blog_header">
+          <h1>Welcome to the Admin Blog Page</h1>
+          <Link href="/admin/blogs/create" type="button" className="add-btn">
+            Add Post
+          </Link>
+        </div>
         <BlogTable posts={posts} />
       </AdminLayout>
     </MainLayout>
