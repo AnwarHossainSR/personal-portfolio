@@ -1,8 +1,15 @@
 import type { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary';
-import { cloudinary } from './cloudinaryConfig';
+import { v2 as cloudinary } from 'cloudinary';
 type UploadResponse =
   | { success: true; result?: UploadApiResponse }
   | { success: false; error: UploadApiErrorResponse };
+
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export const uploadToCloudinary = (
     fileUri: string,
