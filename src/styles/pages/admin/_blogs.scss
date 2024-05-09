@@ -1,0 +1,43 @@
+.blog-post-table {
+    width: 100%;
+    border-collapse: collapse;
+  
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+    }
+  
+    th {
+      background-color: transparent;
+      font-weight: bold;
+      text-align: left;
+    }
+  
+    tr:hover {
+      background-color: #bab1b1;
+    }
+
+    button.edit-btn {
+        padding: 5px 10px;
+        margin-right: 5px;
+        background-color: #28a745; /* Green color for edit button */
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    
+      button.delete-btn {
+        padding: 5px 10px;
+        background-color: #dc3545; /* Red color for delete button */
+        color: white;
+        border: none;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+    
+      button:hover {
+        opacity: 0.8; /* Reduce opacity on hover for both buttons */
+      }
+  }
+  

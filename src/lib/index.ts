@@ -9,10 +9,8 @@ import { prisma } from './prismaDB';
 import { displayNumbers } from './utils';
 
 export {
-    createJwtToken,
-    tokenVerify,
-    displayNumbers,
+    createJwtToken, displayNumbers,
     getDateCompare,
-    prisma,
+    prisma, tokenVerify
 };
 

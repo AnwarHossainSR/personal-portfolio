@@ -28,7 +28,8 @@ model Post {
   title       String    @unique
   content     String
   published   Boolean   @default(false)
-  mainImage   String?
+  image_url   String?
+  category    String?
   author      User      @relation(fields: [authorId], references: [id])
   authorId    String @db.ObjectId
   createdAt   DateTime  @default(now())
