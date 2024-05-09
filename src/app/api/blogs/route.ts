@@ -1,8 +1,14 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+import { v2 as cloudinary } from 'cloudinary';
 
-import { prisma, uploadToCloudinary } from '@/lib';
+import { prisma } from '@/lib';
 
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 export async function GET(req: NextRequest) {
   try {
     const url = new URL(req.url, 'http://localhost:3000');
@@ -62,7 +68,9 @@ export async function POST(req: NextRequest) {
 
     const authorId = JSON.parse(req.cookies.get('user')?.value ?? '').id;
 
-    const res = await uploadToCloudinary(fileUri, file.name, 'blogs');
+    const res = await cloudinary.uploader.upload(fileUri, {
+      folder: 'blog_images',
+    });
 
     let blog = null;
 
