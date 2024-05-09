@@ -4,28 +4,23 @@ import { FallingLines } from 'react-loader-spinner';
 
 import { useTheme } from '@/providers/context/Context';
 
-const Loader = () => {
+const Loader = ({ text = 'Loading...' }: { text: string }) => {
   const theme = useTheme();
   const { darkMode } = theme.state;
 
   return (
     <div
       style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         background: darkMode ? 'var(--black)' : 'var(--main-bg-light)',
       }}
     >
-      <div style={{ width: '100px' }}>
+      <div style={{ width: '60px' }}>
         <FallingLines
           color="var(--main-color-orange)"
-          width="100"
+          width="50"
           visible
           // ariaLabel="falling-circles-loading"
         />
@@ -37,7 +32,7 @@ const Loader = () => {
             marginTop: '10px',
           }}
         >
-          Loading...
+          {text}
         </p>
       </div>
     </div>

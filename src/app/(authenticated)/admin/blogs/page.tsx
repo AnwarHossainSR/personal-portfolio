@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import BlogTable from '@/components/Table/BlogTable';
+import Loader from '@/components/common/Loader';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { useTheme } from '@/providers/context/Context';
@@ -15,14 +16,17 @@ const AdminBlogPage = () => {
   const theme = useTheme();
   const { darkMode } = theme.state;
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const fetchPosts = async () => {
     try {
       const res = await fetch('/api/blogs');
       const data = await res.json();
       setPosts(data.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
       setPosts([]);
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -35,12 +39,21 @@ const AdminBlogPage = () => {
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
         <div className="blog_header">
-          <h1>Welcome to the Admin Blog Page</h1>
-          <Link href="/admin/blogs/create" type="button" className="add-btn">
-            Add Post
-          </Link>
+          {!loading && (
+            <>
+              <h1>Welcome to the Admin Blog Page</h1>
+              <Link
+                href="/admin/blogs/create"
+                type="button"
+                className="add-btn"
+              >
+                Add Post
+              </Link>
+            </>
+          )}
         </div>
-        <BlogTable posts={posts} />
+        {loading && <Loader text="featching..." />}
+        {!loading && <BlogTable posts={posts} />}
       </AdminLayout>
     </MainLayout>
   );
