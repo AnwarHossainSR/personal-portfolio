@@ -1,12 +1,12 @@
+/* eslint-disable no-console */
+const BlogTable = ({ posts }: { posts: any }) => {
+  const onEdit = (id: number) => {
+    console.log('Edit Post', id);
+  };
 
-const BlogTable = ({posts}:{posts:any}) => {
-    const onEdit = (id:number) => {
-        console.log('Edit Post', id);
-    }
-
-    const onDelete = (id:number) => {
-        console.log('Delete Post', id);
-    }
+  const onDelete = (id: number) => {
+    console.log('Delete Post', id);
+  };
   return (
     <table className="blog-post-table">
       <thead>
@@ -19,21 +19,33 @@ const BlogTable = ({posts}:{posts:any}) => {
         </tr>
       </thead>
       <tbody>
-        {posts.map((post:any) => (
+        {posts.map((post: any) => (
           <tr key={post.id}>
             <td>{post.title}</td>
             <td>{post.author.name}</td>
             <td>{post.createdAt}</td>
             <td>{post.category ?? 'No Category'}</td>
             <td>
-              <button className="edit-btn" onClick={() => onEdit(post.id)}>Edit</button>
-              <button className="delete-btn" onClick={() => onDelete(post.id)}>Delete</button>
+              <button
+                type="button"
+                className="edit-btn"
+                onClick={() => onEdit(post.id)}
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                className="delete-btn"
+                onClick={() => onDelete(post.id)}
+              >
+                Delete
+              </button>
             </td>
           </tr>
         ))}
       </tbody>
     </table>
-  )
-}
+  );
+};
 
-export default BlogTable
+export default BlogTable;
