@@ -4,7 +4,7 @@ import { FallingLines } from 'react-loader-spinner';
 
 import { useTheme } from '@/providers/context/Context';
 
-const Loader = ({ text = 'Loading...' }: { text: string }) => {
+const Loader = ({ text = 'Loading...' }: { text?: string }) => {
   const theme = useTheme();
   const { darkMode } = theme.state;
 
