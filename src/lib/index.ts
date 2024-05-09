@@ -3,7 +3,6 @@
 
 // for example if you were using Sanity as your CMS you might want to add:
 // sanity.ts -> methods to interact with Sanity CMS
-import { uploadToCloudinary } from './cloudinaryConfig';
 import { getDateCompare } from './date';
 import { createJwtToken, tokenVerify } from './jwtToken';
 import { prisma } from './prismaDB';
@@ -12,6 +11,6 @@ import { displayNumbers } from './utils';
 export {
     createJwtToken, displayNumbers,
     getDateCompare,
-    prisma, tokenVerify, uploadToCloudinary
+    prisma, tokenVerify
 };
 
