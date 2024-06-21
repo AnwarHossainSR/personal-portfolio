@@ -2,6 +2,7 @@
 
 'use client';
 
+import type { ChangeEvent } from 'react';
 import { useState } from 'react';
 
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
@@ -11,49 +12,59 @@ import { useTheme } from '@/providers/context/Context';
 const CreateBlog = () => {
   const theme = useTheme();
   const { darkMode } = theme.state;
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState('');
-  const [published, setPublished] = useState(false);
-  const [image, setImage] = useState(null);
 
-  const handleTitleChange = (e: any) => {
-    setTitle(e.target.value);
+  const [formData, setFormData] = useState({
+    title: '',
+    content: '',
+    category: '',
+    published: false,
+    image: null,
+  });
+
+  const handleChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value, type } = e.target;
+
+    if (type === 'checkbox') {
+      setFormData(prevState => ({
+        ...prevState,
+        [name]: (e.target as HTMLInputElement).checked, // type assertion to HTMLInputElement
+      }));
+    } else if (type === 'file') {
+      const { files } = e.target as HTMLInputElement; // type assertion to HTMLInputElement
+      if (files && files.length > 0) {
+        setFormData(prevState => ({
+          ...prevState,
+          [name]: files[0],
+        }));
+      }
+    } else {
+      setFormData(prevState => ({
+        ...prevState,
+        [name]: value,
+      }));
+    }
   };
 
-  const handleCategoryChange = (e: any) => {
-    setCategory(e.target.value);
-  };
-
-  const handlePublishedChange = (e: any) => {
-    setPublished(e.target.checked);
-  };
-
-  const handleImageChange = (e: any) => {
-    // Assuming only one image is selected
-    setImage(e.target.files[0]);
-  };
-
-  const handleSubmit = (e: any) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Add logic to handle form submission (e.g., sending data to backend)
-    console.log('Title:', title);
-    console.log('Content:', content);
-    console.log('Category:', category);
-    console.log('Published:', published);
-    console.log('Image:', image);
-    // Clear form fields
-    setTitle('');
-    setContent('');
-    setCategory('');
-    setPublished(false);
-    setImage(null);
+    console.log('Form Data:', formData);
+
+    // Reset form data
+    setFormData({
+      title: '',
+      content: '',
+      category: '',
+      published: false,
+      image: null,
+    });
   };
 
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
-        <div className="admin_blog__create">
+        <div className={`admin_blog__create ${darkMode ? 'dark-mode' : ''}`}>
           <h2 className="admin_blog__title">Create Blog</h2>
           <form className="admin_blog__form" onSubmit={handleSubmit}>
             <div className="admin_blog__form-group">
@@ -63,9 +74,10 @@ const CreateBlog = () => {
               <input
                 type="text"
                 id="title"
-                className="admin_blog__input"
-                value={title}
-                onChange={handleTitleChange}
+                name="title"
+                className={`admin_blog__input ${darkMode ? 'dark-mode' : ''}`}
+                value={formData.title}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -76,9 +88,10 @@ const CreateBlog = () => {
               <input
                 type="text"
                 id="category"
-                className="admin_blog__input"
-                value={category}
-                onChange={handleCategoryChange}
+                name="category"
+                className={`admin_blog__input ${darkMode ? 'dark-mode' : ''}`}
+                value={formData.category}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -86,9 +99,11 @@ const CreateBlog = () => {
               <label className="admin_blog__label">Published:</label>
               <input
                 type="checkbox"
-                className="admin_blog__checkbox"
-                checked={published}
-                onChange={handlePublishedChange}
+                id="published"
+                name="published"
+                className={`admin_blog__checkbox ${darkMode ? 'dark-mode' : ''}`}
+                checked={formData.published}
+                onChange={handleChange}
               />
             </div>
             <div className="admin_blog__form-group">
@@ -98,9 +113,10 @@ const CreateBlog = () => {
               <input
                 type="file"
                 id="image"
-                className="admin_blog__file-input"
+                name="image"
+                className={`admin_blog__file-input ${darkMode ? 'dark-mode' : ''}`}
                 accept="image/*"
-                onChange={handleImageChange}
+                onChange={handleChange}
               />
             </div>
             <button type="submit" className="admin_blog__submit-btn">
