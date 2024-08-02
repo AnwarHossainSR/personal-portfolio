@@ -6,7 +6,7 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import BlogTable from '@/components/Table/BlogTable';
+import AdminBlogCard from '@/components/Card/AdminBlogCard';
 import Loader from '@/components/common/Loader';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
@@ -53,7 +53,7 @@ const AdminBlogPage = () => {
           )}
         </div>
         {loading && <Loader text="featching..." />}
-        {!loading && <BlogTable posts={posts} />}
+        {!loading && <AdminBlogCard posts={posts} />}
       </AdminLayout>
     </MainLayout>
   );

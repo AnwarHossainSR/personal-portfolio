@@ -96,17 +96,6 @@ const CreateBlog = () => {
               />
             </div>
             <div className="admin_blog__form-group">
-              <label className="admin_blog__label">Published:</label>
-              <input
-                type="checkbox"
-                id="published"
-                name="published"
-                className={`admin_blog__checkbox ${darkMode ? 'dark-mode' : ''}`}
-                checked={formData.published}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="admin_blog__form-group">
               <label htmlFor="image" className="admin_blog__label">
                 Image:
               </label>
@@ -116,6 +105,17 @@ const CreateBlog = () => {
                 name="image"
                 className={`admin_blog__file-input ${darkMode ? 'dark-mode' : ''}`}
                 accept="image/*"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="admin_blog__form-group checkbox-div">
+              <label className="admin_blog__label">Published:</label>
+              <input
+                type="checkbox"
+                id="published"
+                name="published"
+                className={`admin_blog__checkbox ${darkMode ? 'dark-mode' : ''}`}
+                checked={formData.published}
                 onChange={handleChange}
               />
             </div>
