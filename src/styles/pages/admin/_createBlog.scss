@@ -3,14 +3,14 @@
   border-radius: 8px;
   background-color: #f8f9fa;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  max-width: 600px;
+  max-width: 60rem;
   margin: 0 auto;
 }
 
 .admin_blog__title {
   font-size: 2rem;
   margin-bottom: 1rem;
-  color: #cfdfee;
+  color: #343638;
   text-align: center;
 }
 
@@ -85,7 +85,8 @@
 .dark-mode .admin_blog__label,
 .dark-mode .admin_blog__input,
 .dark-mode .admin_blog__file-input,
-.dark-mode .admin_blog__checkbox {
+.dark-mode .admin_blog__checkbox,
+.dark-mode .admin_blog__title {
   color: #f8f9fa;
 }
 
@@ -110,4 +111,44 @@
 #published{
   margin-top: -6px;
   margin-left: 20px;
+}
+
+.admin_blog__editor {
+  min-height: 200px;
+}
+
+.admin_blog__editor.dark-mode {
+  color: #fff;
+}
+
+.admin_blog__editor .ql-toolbar {
+  background-color: #c5c7cb;
+}
+
+.admin_blog__editor .ql-container {
+  height: 200px; /* Adjust the height as needed */
+}
+
+.admin_blog__editor.dark-mode .ql-toolbar {
+  background-color: transparent;
+  color: #fff!important;
+}
+
+.admin_blog__editor.dark-mode .ql-container {
+  background-color: transparent;
+  color: #fff;
+}
+
+.admin_blog__editor.dark-mode .ql-snow {
+  .ql-stroke {
+    stroke: #fcf8f8!important;
+  }
+
+  .ql-picker {
+    stroke: #fcf8f8!important;
+    color:#fcf8f8!important;
+  }
+  .ql-fill, .ql-snow .ql-stroke.ql-fill{
+    stroke: #fcf8f8!important;
+  }
 }

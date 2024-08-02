@@ -4,9 +4,12 @@
 
 import type { ChangeEvent } from 'react';
 import { useState } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
+import { formats, modules } from '@/lib/editor';
 import { useTheme } from '@/providers/context/Context';
 
 const CreateBlog = () => {
@@ -45,6 +48,13 @@ const CreateBlog = () => {
         [name]: value,
       }));
     }
+  };
+
+  const handleEditorChange = (value: string) => {
+    setFormData(prevState => ({
+      ...prevState,
+      content: value,
+    }));
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -106,6 +116,18 @@ const CreateBlog = () => {
                 className={`admin_blog__file-input ${darkMode ? 'dark-mode' : ''}`}
                 accept="image/*"
                 onChange={handleChange}
+              />
+            </div>
+            <div className="admin_blog__form-group">
+              <label htmlFor="content" className="admin_blog__label">
+                Content:
+              </label>
+              <ReactQuill
+                value={formData.content}
+                onChange={handleEditorChange}
+                modules={modules}
+                formats={formats}
+                className={`admin_blog__editor ${darkMode ? 'dark-mode' : ''}`}
               />
             </div>
             <div className="admin_blog__form-group checkbox-div">
