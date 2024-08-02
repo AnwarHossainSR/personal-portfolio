@@ -32,7 +32,7 @@ export const modules = {
     [{ font: [] }],
     [{ align: [] }],
 
-    ['clean'], // remove formatting button
+    ['clean'],
   ],
 };
 export const formats = [

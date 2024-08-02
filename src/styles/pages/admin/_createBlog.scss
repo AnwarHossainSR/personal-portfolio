@@ -1,3 +1,5 @@
+/* Existing CSS content */
+
 .admin_blog__create {
   padding: 2rem;
   border-radius: 8px;
@@ -73,6 +75,8 @@
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5);
 }
 
+/* Dark mode styles */
+
 .dark-mode {
   background-color: #343a40;
   color: #f8f9fa;
@@ -104,18 +108,17 @@
   background-color: #0056b3;
 }
 
-.checkbox-div{
+.checkbox-div {
   display: flex;
   flex-direction: row;
 }
-#published{
+
+#published {
   margin-top: -6px;
   margin-left: 20px;
 }
 
-.admin_blog__editor {
-  min-height: 200px;
-}
+/* Editor styles */
 
 .admin_blog__editor.dark-mode {
   color: #fff;
@@ -126,7 +129,8 @@
 }
 
 .admin_blog__editor .ql-container {
-  height: 200px; /* Adjust the height as needed */
+  min-height: 250px;
+  max-height: 100rem;
 }
 
 .admin_blog__editor.dark-mode .ql-toolbar {
@@ -146,9 +150,61 @@
 
   .ql-picker {
     stroke: #fcf8f8!important;
-    color:#fcf8f8!important;
+    color: #fcf8f8!important;
   }
-  .ql-fill, .ql-snow .ql-stroke.ql-fill{
+  
+  .ql-fill, .ql-snow .ql-stroke.ql-fill {
     stroke: #fcf8f8!important;
   }
+}
+
+/* Tab styles */
+
+.tab-buttons {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1rem;
+}
+
+.tab-button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  background-color: #f3f3f3;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-right: 1rem;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.tab-button.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.tab-button:hover {
+  background-color: #005bb5;
+  color: #fff;
+}
+
+.admin_blog__preview {
+  background-color: transparent;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.admin_blog__preview-title {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.admin_blog__preview-category {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #666;
+}
+
+.admin_blog__preview-content {
+  font-size: 1rem;
+  line-height: 1.6;
 }

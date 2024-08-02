@@ -1,6 +1,6 @@
+import { v2 as cloudinary } from 'cloudinary';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import { v2 as cloudinary } from 'cloudinary';
 
 import { prisma } from '@/lib';
 
@@ -11,7 +11,7 @@ cloudinary.config({
 });
 export async function GET(req: NextRequest) {
   try {
-    const url = new URL(req.url, 'http://localhost:3000');
+    const url = new URL(req.url, process.env.SITE_URL);
     let category = null;
     if (url.searchParams.get('category')) {
       category = url.searchParams.get('category');
@@ -46,8 +46,9 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const title = formData.get('title') as string;
-    const content = formData.get('content') as string;
-    const file = formData.get('file') as File;
+    const content = formData.get('content') as any;
+    const file = formData.get('file') as any;
+    const published = formData.get('published') as any;
 
     if (!title || !content || !file) {
       return NextResponse.json(
@@ -74,16 +75,24 @@ export async function POST(req: NextRequest) {
 
     let blog = null;
 
-    if (res.success && res.result) {
-      blog = await prisma.post.create({
-        data: {
-          title,
-          content,
-          image_url: res.result.secure_url,
-          author: { connect: { id: authorId } },
+    if (!res || !res.secure_url) {
+      return NextResponse.json(
+        {
+          message: 'file could not upload, please try again letter.',
         },
-      });
+        { status: 400 }
+      );
     }
+
+    blog = await prisma.post.create({
+      data: {
+        title,
+        content,
+        published,
+        image_url: res.secure_url,
+        author: { connect: { id: authorId } },
+      },
+    });
 
     return NextResponse.json({
       message: 'Blog created successfully',
