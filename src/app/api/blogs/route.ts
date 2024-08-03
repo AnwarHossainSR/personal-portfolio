@@ -42,14 +42,14 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  try {
-    await connectToDatabase(); // Ensure database connection
+  await connectToDatabase(); // Ensure database connection
 
+  try {
     const formData = await req.formData();
     const title = formData.get('title') as string;
     const content = formData.get('content') as string;
     const file = formData.get('file') as File;
-    const published = formData.get('published') === 'true';
+    const published = formData.get('published') as any;
 
     if (!title || !content || !file) {
       return NextResponse.json(

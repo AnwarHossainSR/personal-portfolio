@@ -1,7 +1,6 @@
 /* eslint-disable func-names */
-
 import type { Document } from 'mongoose';
-import { Schema, model } from 'mongoose';
+import { Schema, model, models } from 'mongoose';
 
 import type { IUser } from './IUser';
 
@@ -58,6 +57,6 @@ postSchema.pre<IPost>('save', function (next) {
   next();
 });
 
-const Post = model<IPost>('Post', postSchema);
+const Post = models.Post || model<IPost>('Post', postSchema);
 
 export default Post;
