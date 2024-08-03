@@ -10,9 +10,7 @@ export default async function middleware(req: NextRequest) {
   const accessToken = cookies().get('token');
 
   if (!accessToken) return NextResponse.redirect(new URL('/', req.url), req);
-
   const authUser = await tokenVerify(accessToken?.value);
-
   if (!authUser) return NextResponse.redirect(new URL('/', req.url), req);
   let user: any = null;
   try {
