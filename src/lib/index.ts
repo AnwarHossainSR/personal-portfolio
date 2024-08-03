@@ -5,12 +5,10 @@
 // sanity.ts -> methods to interact with Sanity CMS
 import { getDateCompare } from './date';
 import { createJwtToken, tokenVerify } from './jwtToken';
-import { prisma } from './prismaDB';
 import { displayNumbers } from './utils';
 
 export {
     createJwtToken, displayNumbers,
-    getDateCompare,
-    prisma, tokenVerify
+    getDateCompare, tokenVerify
 };
 
