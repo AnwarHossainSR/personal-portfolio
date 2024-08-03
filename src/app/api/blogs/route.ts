@@ -2,34 +2,33 @@ import { v2 as cloudinary } from 'cloudinary';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { prisma } from '@/lib';
+import { connectToDatabase } from '@/lib/mongodb';
+import Post from '@/models/Post';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
 export async function GET(req: NextRequest) {
   try {
+    await connectToDatabase(); // Ensure database connection
+
     const url = new URL(req.url, process.env.SITE_URL);
-    let category = null;
-    if (url.searchParams.get('category')) {
-      category = url.searchParams.get('category');
-    }
+    const category = url.searchParams.get('category');
 
     let blogs = [];
     if (category) {
-      blogs = await prisma.post.findMany({
-        where: { category },
-        orderBy: { createdAt: 'desc' },
-        include: { author: { select: { name: true, id: true } } },
-      });
+      blogs = await Post.find({ category })
+        .sort({ createdAt: -1 })
+        .populate('author', 'name id');
     } else {
-      blogs = await prisma.post.findMany({
-        orderBy: { createdAt: 'desc' },
-        include: { author: { select: { name: true, id: true } } },
-      });
+      blogs = await Post.find()
+        .sort({ createdAt: -1 })
+        .populate('author', 'name id');
     }
+
     return NextResponse.json({
       message: 'Blogs fetched successfully',
       data: blogs,
@@ -43,29 +42,26 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  await connectToDatabase(); // Ensure database connection
+
   try {
     const formData = await req.formData();
     const title = formData.get('title') as string;
-    const content = formData.get('content') as any;
-    const file = formData.get('file') as any;
+    const content = formData.get('content') as string;
+    const file = formData.get('file') as File;
     const published = formData.get('published') as any;
 
     if (!title || !content || !file) {
       return NextResponse.json(
-        {
-          message: 'Please enter title, content and mainImage.',
-        },
+        { message: 'Please enter title, content, and mainImage.' },
         { status: 400 }
       );
     }
 
     const fileBuffer = await file.arrayBuffer();
     const mimeType = file.type;
-    const encoding = 'base64';
     const base64Data = Buffer.from(fileBuffer).toString('base64');
-
-    // this will be used to upload the file
-    const fileUri = `data:${mimeType};${encoding},${base64Data}`;
+    const fileUri = `data:${mimeType};base64,${base64Data}`;
 
     const authorId = JSON.parse(req.cookies.get('user')?.value ?? '').id;
 
@@ -73,25 +69,19 @@ export async function POST(req: NextRequest) {
       folder: 'blog_images',
     });
 
-    let blog = null;
-
     if (!res || !res.secure_url) {
       return NextResponse.json(
-        {
-          message: 'file could not upload, please try again letter.',
-        },
+        { message: 'File could not upload, please try again later.' },
         { status: 400 }
       );
     }
 
-    blog = await prisma.post.create({
-      data: {
-        title,
-        content,
-        published,
-        image_url: res.secure_url,
-        author: { connect: { id: authorId } },
-      },
+    const blog = await Post.create({
+      title,
+      content,
+      published,
+      image_url: res.secure_url,
+      author: authorId, // Assuming authorId is a string
     });
 
     return NextResponse.json({

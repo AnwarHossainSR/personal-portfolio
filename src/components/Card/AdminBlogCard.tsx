@@ -1,7 +1,7 @@
 import { useRouter } from 'next/navigation';
 
 /* eslint-disable no-console */
-const BlogTable = ({ posts }: { posts: any }) => {
+const AdminBlogCard = ({ posts }: { posts: any }) => {
   const { push } = useRouter();
   const onView = (id: number) => {
     push(`/admin/blogs/${id}`);
@@ -18,7 +18,7 @@ const BlogTable = ({ posts }: { posts: any }) => {
   return (
     <div className="blog-cards-container">
       {posts.map((post: any) => (
-        <div key={post.id} className="blog-card">
+        <div key={post._id} className="blog-card">
           <div className="blog-card-header">
             <h2>{post.title}</h2>
             <p>
@@ -31,21 +31,21 @@ const BlogTable = ({ posts }: { posts: any }) => {
             <button
               type="button"
               className="view-btn"
-              onClick={() => onView(post.id)}
+              onClick={() => onView(post._id)}
             >
               View
             </button>
             <button
               type="button"
               className="edit-btn"
-              onClick={() => onEdit(post.id)}
+              onClick={() => onEdit(post._id)}
             >
               Edit
             </button>
             <button
               type="button"
               className="delete-btn"
-              onClick={() => onDelete(post.id)}
+              onClick={() => onDelete(post._id)}
             >
               Delete
             </button>
@@ -56,4 +56,4 @@ const BlogTable = ({ posts }: { posts: any }) => {
   );
 };
 
-export default BlogTable;
+export default AdminBlogCard;

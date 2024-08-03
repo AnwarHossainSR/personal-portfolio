@@ -1,12 +1,24 @@
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { prisma } from '@/lib';
+import { connectToDatabase } from '@/lib/mongodb';
+import User from '@/models/User';
 
-export async function GET(req: NextRequest, context: any) {
+export async function GET(req: NextRequest) {
   try {
-    const { id } = context.params;
+    await connectToDatabase();
+    // Extract user ID from the request URL
+    const url = new URL(req.url);
+    const id = url.searchParams.get('id');
 
-    const user = await prisma.user.findUnique({
+    if (!id) {
+      return NextResponse.json(
+        { message: 'User ID is required' },
+        { status: 400 }
+      );
+    }
+
+    // Fetch user data from the database
+    const user = await User.findOne({
       where: { id },
       select: {
         id: true,
@@ -18,14 +30,11 @@ export async function GET(req: NextRequest, context: any) {
       },
     });
 
-    if (!user)
-      return NextResponse.json(
-        {
-          message: 'User not found',
-        },
-        { status: 404 }
-      );
+    if (!user) {
+      return NextResponse.json({ message: 'User not found' }, { status: 404 });
+    }
 
+    // Prepare response
     const response = NextResponse.json(
       {
         message: 'User found',
@@ -34,6 +43,7 @@ export async function GET(req: NextRequest, context: any) {
       { status: 200 }
     );
 
+    // Set user cookie
     const modifiedUser = {
       id: user.id,
       email: user.email,
@@ -47,13 +57,11 @@ export async function GET(req: NextRequest, context: any) {
       sameSite: 'strict',
       path: '/',
     });
+
     return response;
   } catch (error) {
     return NextResponse.json(
-      {
-        message: 'Internal Server Error',
-        error,
-      },
+      { message: 'Internal Server Error', error },
       { status: 500 }
     );
   }

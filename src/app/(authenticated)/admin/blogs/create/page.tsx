@@ -4,9 +4,9 @@
 
 'use client';
 
+import dynamic from 'next/dynamic';
 import type { ChangeEvent } from 'react';
-import { useState } from 'react';
-import ReactQuill from 'react-quill';
+import { useMemo, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
@@ -15,6 +15,11 @@ import { formats, modules } from '@/lib/editor';
 import { useTheme } from '@/providers/context/Context';
 
 const CreateBlog = () => {
+  const ReactQuill = useMemo(
+    () => dynamic(() => import('react-quill'), { ssr: false }),
+    []
+  );
+
   const theme = useTheme();
   const { darkMode } = theme.state;
 

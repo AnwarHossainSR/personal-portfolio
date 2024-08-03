@@ -1,12 +1,12 @@
-import bcrypt from 'bcrypt';
 import { NextResponse, type NextRequest } from 'next/server';
 
-import { SALT_WORK_FACTOR } from '@/config';
-import { prisma } from '@/lib';
+import { connectToDatabase } from '@/lib/mongodb';
+import User from '@/models/User'; // Import your User model
 
 export async function POST(req: NextRequest) {
   try {
-    // write registration logic here
+    await connectToDatabase();
+    // Write registration logic here
     const { name, email, password } = await req.json();
 
     if (!name || !email || !password) {
@@ -15,26 +15,18 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    const existingUser = await prisma.user.findUnique({
-      where: { email },
-    });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       return NextResponse.json({ message: 'User Already Exists' });
     }
 
-    // hash password
-    const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    // create user
-    const user = await prisma.user.create({
-      data: {
-        name,
-        email,
-        password: hashedPassword, // password
-        isAdmin: true,
-      },
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password, // Password will be hashed by the model's pre-save hook
+      isAdmin: true,
     });
 
     if (!user) {
