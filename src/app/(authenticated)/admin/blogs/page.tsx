@@ -32,16 +32,18 @@ const AdminBlogPage = () => {
   useEffect(() => {
     fetchPosts();
   }, []);
-
-  console.log(posts);
-
+  console.log('posts?.length', posts?.length);
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
         <div className="blog_header">
           {!loading && (
             <>
-              <h1>Welcome to the Admin Blog Page</h1>
+              <h1>
+                {posts?.length > 0
+                  ? `Posts found ${posts?.length}`
+                  : 'No posts Found'}
+              </h1>
               <Link
                 href="/admin/blogs/create"
                 type="button"
