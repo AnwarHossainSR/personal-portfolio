@@ -1,6 +1,5 @@
 /* eslint-disable react/no-danger */
 /* eslint-disable react/button-has-type */
-/* eslint-disable no-console */
 
 'use client';
 
@@ -79,7 +78,6 @@ const CreateBlog = () => {
     setSuccess(null);
 
     const formDataToSend = new FormData();
-    console.log('formData ', formData);
     formDataToSend.append('title', formData.title);
     formDataToSend.append('content', formData.content);
     formDataToSend.append('category', formData.category);
@@ -87,7 +85,6 @@ const CreateBlog = () => {
     formDataToSend.append('file', formData.file);
 
     try {
-      console.log('entering');
       const response = await fetch('/api/blogs', {
         method: 'POST',
         body: formDataToSend,
@@ -95,7 +92,6 @@ const CreateBlog = () => {
 
       const result = await response.json();
       if (!response.ok) {
-        console.log('API Response:', result);
         setError(result.message);
         return;
       }
@@ -110,7 +106,6 @@ const CreateBlog = () => {
       });
       setSuccess('Blog created successfully!');
     } catch (err: any) {
-      console.log('err >>> ', err);
       setError((err as Error).message);
     } finally {
       setLoading(false);
@@ -120,67 +115,89 @@ const CreateBlog = () => {
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
-        <div className={`admin_blog__create ${darkMode ? 'dark-mode' : ''}`}>
-          <h2 className="admin_blog__title">Create Blog</h2>
-          <div className="tab-buttons">
+        <div className={`p-4 ${darkMode ? 'dark-mode' : ''}`}>
+          <h2 className="text-2xl mb-4 text-center text-gray-800 dark:text-gray-200">
+            Create Blog
+          </h2>
+          <div className="flex mb-4">
             <button
-              className={`tab-button ${selectedTab === 'editor' ? 'active' : ''}`}
+              className={`${
+                selectedTab === 'editor'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-800'
+              } px-4 py-2 rounded-lg`}
               onClick={() => setSelectedTab('editor')}
             >
               Editor
             </button>
             <button
-              className={`tab-button ${selectedTab === 'preview' ? 'active' : ''}`}
+              className={`${
+                selectedTab === 'preview'
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-200 text-gray-800'
+              } px-4 py-2 rounded-lg ml-2`}
               onClick={() => setSelectedTab('preview')}
             >
               Preview
             </button>
           </div>
           {selectedTab === 'editor' && (
-            <form className="admin_blog__form" onSubmit={handleSubmit}>
-              <div className="admin_blog__form-group">
-                <label htmlFor="title" className="admin_blog__label">
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="title"
+                  className="text-gray-800 dark:text-gray-200"
+                >
                   Title:
                 </label>
                 <input
                   type="text"
                   id="title"
                   name="title"
-                  className={`admin_blog__input ${darkMode ? 'dark-mode' : ''}`}
+                  className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
                   value={formData.title}
                   onChange={handleChange}
                   required
                 />
               </div>
-              <div className="admin_blog__form-group">
-                <label htmlFor="category" className="admin_blog__label">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="category"
+                  className="text-gray-800 dark:text-gray-200"
+                >
                   Category:
                 </label>
                 <input
                   type="text"
                   id="category"
                   name="category"
-                  className={`admin_blog__input ${darkMode ? 'dark-mode' : ''}`}
+                  className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
                   value={formData.category}
                   onChange={handleChange}
                   required
                 />
               </div>
-              <div className="admin_blog__form-group">
-                <label htmlFor="file" className="admin_blog__label">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="file"
+                  className="text-gray-800 dark:text-gray-200"
+                >
                   Image:
                 </label>
                 <input
                   type="file"
                   id="file"
                   name="file"
-                  className={`admin_blog__file-input ${darkMode ? 'dark-mode' : ''}`}
+                  className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
                   accept="image/*"
                   onChange={handleChange}
                 />
               </div>
-              <div className="admin_blog__form-group">
-                <label htmlFor="content" className="admin_blog__label">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="content"
+                  className="text-gray-800 dark:text-gray-200"
+                >
                   Content:
                 </label>
                 <ReactQuill
@@ -188,40 +205,43 @@ const CreateBlog = () => {
                   onChange={handleEditorChange}
                   modules={modules}
                   formats={formats}
-                  className={`admin_blog__editor ${darkMode ? 'dark-mode' : ''}`}
+                  className="dark-mode"
                   placeholder="Write your thoughts!"
                 />
               </div>
-              <div className="admin_blog__form-group checkbox-div">
-                <label className="admin_blog__label">Published:</label>
+              <div className="flex items-center">
+                <label
+                  htmlFor="published"
+                  className="text-gray-800 dark:text-gray-200 mr-2"
+                >
+                  Published:
+                </label>
                 <input
                   type="checkbox"
                   id="published"
                   name="published"
-                  className={`admin_blog__checkbox ${darkMode ? 'dark-mode' : ''}`}
+                  className="form-checkbox text-blue-600"
                   checked={formData.published}
                   onChange={handleChange}
                 />
               </div>
               <button
                 type="submit"
-                className="admin_blog__submit-btn"
+                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
                 disabled={loading}
               >
                 {loading ? 'Submitting...' : 'Create'}
               </button>
-              {error && <p className="error">{error}</p>}
-              {success && <p className="success">{success}</p>}
+              {error && <p className="text-red-500">{error}</p>}
+              {success && <p className="text-green-500">{success}</p>}
             </form>
           )}
           {selectedTab === 'preview' && (
-            <div className="admin_blog__preview">
-              <h2 className="admin_blog__preview-title">{formData.title}</h2>
-              <p className="admin_blog__preview-category">
-                {formData.category}
-              </p>
+            <div className="bg-transparent p-4 rounded-lg">
+              <h2 className="text-2xl mb-4">{formData.title}</h2>
+              <p className="text-lg text-gray-600 mb-4">{formData.category}</p>
               <div
-                className="admin_blog__preview-content"
+                className="text-base leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: formData.content }}
               />
             </div>
