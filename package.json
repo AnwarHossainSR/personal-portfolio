@@ -50,7 +50,8 @@
     "react-scroll": "^1.9.0",
     "sass": "^1.75.0",
     "sharp": "^0.33.3",
-    "swiper": "^11.1.1"
+    "swiper": "^11.1.1",
+    "tailwindcss": "^3.4.7"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.3.0",

@@ -1,20 +1,12 @@
 const StateCard = ({ darkMode }: { darkMode: boolean }) => {
   return (
     <div
-      className="stats-card"
-      style={{
-        backgroundColor: darkMode ? '#1E293B' : 'var(--light)',
-        color: darkMode ? 'white' : '',
-      }}
+      className={`p-5 rounded text-center ${
+        darkMode ? 'bg-gray-800 text-white' : 'bg-gray-200 text-gray-900'
+      }`}
     >
-      <h2>Total Visits</h2>
-      <p
-        style={{
-          color: darkMode ? 'white' : '',
-        }}
-      >
-        545
-      </p>
+      <h2 className="text-lg mb-2">Total Visits</h2>
+      <p className="text-2xl font-bold">545</p>
     </div>
   );
 };
