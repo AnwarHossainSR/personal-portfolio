@@ -36,10 +36,10 @@ const AdminBlogPage = () => {
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
-        <div className="blog_header">
+        <div className="flex justify-between items-center mb-5 p-5 bg-gray-800 rounded shadow-lg">
           {!loading && (
             <>
-              <h1>
+              <h1 className="text-white text-2xl">
                 {posts?.length > 0
                   ? `Posts found ${posts?.length}`
                   : 'No posts Found'}
@@ -47,14 +47,14 @@ const AdminBlogPage = () => {
               <Link
                 href="/admin/blogs/create"
                 type="button"
-                className="add-btn"
+                className="px-4 py-2 bg-blue-500 text-white rounded transition-opacity hover:opacity-80 transform hover:scale-105 disabled:bg-gray-500 disabled:cursor-not-allowed"
               >
                 Add Post
               </Link>
             </>
           )}
         </div>
-        {loading && <Loader text="featching..." />}
+        {loading && <Loader text="Fetching..." />}
         {!loading && <AdminBlogCard posts={posts} />}
       </AdminLayout>
     </MainLayout>

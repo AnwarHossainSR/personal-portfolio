@@ -10,9 +10,21 @@ const AdminLayout = ({
   darkMode: boolean;
 }) => {
   return (
-    <div className="admin-main">
+    <div
+      className="flex"
+      style={{
+        marginBottom: '7rem',
+      }}
+    >
       <Sidebar darkMode={darkMode} />
-      <div className="main-content">{children}</div>
+      <div
+        className="flex-1"
+        style={{
+          marginLeft: '1.25rem',
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 };
