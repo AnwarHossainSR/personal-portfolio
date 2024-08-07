@@ -30,9 +30,7 @@ const LoginPage = () => {
       const { message } = response.data;
       setError('');
       setMessage(message);
-      setTimeout(() => {
-        router.push('/admin/dashboard');
-      }, 1000);
+      router.push('/admin/dashboard');
     } catch (err: any) {
       // eslint-disable-next-line no-console
       console.log('error', err);
