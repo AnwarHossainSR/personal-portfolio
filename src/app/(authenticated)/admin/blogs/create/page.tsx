@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/button-has-type */
 
@@ -5,7 +6,7 @@
 
 import dynamic from 'next/dynamic';
 import type { ChangeEvent } from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
@@ -37,6 +38,21 @@ const CreateBlog = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (formData.file) {
+      const fileURL = URL.createObjectURL(formData.file);
+      setImagePreview(fileURL);
+
+      // Cleanup URL object when the component unmounts or the file changes
+      return () => {
+        URL.revokeObjectURL(fileURL);
+      };
+    }
+    setImagePreview(null);
+    return () => {};
+  }, [formData.file]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -105,6 +121,7 @@ const CreateBlog = () => {
         file: null,
       });
       setSuccess('Blog created successfully!');
+      setImagePreview(null);
     } catch (err: any) {
       setError((err as Error).message);
     } finally {
@@ -240,6 +257,13 @@ const CreateBlog = () => {
             <div className="bg-transparent p-4 rounded-lg">
               <h2 className="text-2xl mb-4">{formData.title}</h2>
               <p className="text-lg text-gray-600 mb-4">{formData.category}</p>
+              {imagePreview && (
+                <img
+                  src={imagePreview}
+                  alt="Preview"
+                  className="mb-4 max-w-full h-auto"
+                />
+              )}
               <div
                 className="text-base leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: formData.content }}
