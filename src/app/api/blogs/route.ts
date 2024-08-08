@@ -85,7 +85,7 @@ export async function POST(req: NextRequest) {
       published,
       category,
       image_url: res.secure_url,
-      author: authorId, // Assuming authorId is a string
+      author: authorId,
     });
 
     return NextResponse.json({

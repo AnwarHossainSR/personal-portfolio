@@ -24,7 +24,7 @@ const BlogCard = ({ darkMode, post }: { darkMode: boolean; post: any }) => {
             {post?.category}
           </span>
           <Link
-            href="/blogs/tesla-cybertruck"
+            href={`/blogs/${post?._id}`}
             style={{
               color: darkMode ? '#f3f4f6' : '#1e293b',
             }}
@@ -35,7 +35,7 @@ const BlogCard = ({ darkMode, post }: { darkMode: boolean; post: any }) => {
           <div className="blog_user">
             <Image src={post?.image || anwar} alt="user" />
             <div className="blog_user-info">
-              <h5>Anwar Hossain</h5>
+              <h5>{post?.author?.name}</h5>
               <small>{getDateCompare(post?.createdAt)}</small>
             </div>
           </div>
