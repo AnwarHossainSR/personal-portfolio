@@ -9,15 +9,8 @@ const Loader = ({ text = 'Loading...' }: { text?: string }) => {
   const { darkMode } = theme.state;
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: darkMode ? 'var(--black)' : 'var(--main-bg-light)',
-      }}
-    >
-      <div style={{ width: '60px' }}>
+    <div className="flex justify-center items-center h-screen w-screen">
+      <div className="w-16">
         <FallingLines
           color="var(--main-color-orange)"
           width="50"
@@ -26,10 +19,9 @@ const Loader = ({ text = 'Loading...' }: { text?: string }) => {
         />
         {/* Optional: Loader text */}
         <p
+          className="text-center mt-2"
           style={{
-            textAlign: 'center',
-            color: 'var(--main-bg-light)',
-            marginTop: '10px',
+            color: darkMode ? 'var(--main-bg-light)' : 'var(--black)',
           }}
         >
           {text}

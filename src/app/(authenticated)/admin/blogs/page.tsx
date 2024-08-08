@@ -36,6 +36,7 @@ const AdminBlogPage = () => {
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
+        {loading && <Loader text="Fetching..." />}
         <div className="flex justify-between items-center mb-5 p-5 bg-gray-800 rounded shadow-lg">
           {!loading && (
             <>
@@ -54,7 +55,6 @@ const AdminBlogPage = () => {
             </>
           )}
         </div>
-        {loading && <Loader text="Fetching..." />}
         {!loading && <AdminBlogCard posts={posts} />}
       </AdminLayout>
     </MainLayout>
