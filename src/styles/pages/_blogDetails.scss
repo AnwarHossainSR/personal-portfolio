@@ -2,6 +2,9 @@
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+  @include mobile{
+    margin-bottom: 4rem;
+  }
 
   .blog-details_image {
     width: 85%;
@@ -127,7 +130,7 @@
                 border: 1px solid #d1d5db;
                 border-radius: 0.5rem;
                 margin-top: 0.5rem;
-                background-color: #FFFFFF;
+                background-color: #e5eaef;
             }
             textarea {
                 padding: 0.5rem;
@@ -135,7 +138,7 @@
                 border: 1px solid #d1d5db;
                 border-radius: 0.5rem;
                 margin-top: 0.5rem;
-                background-color: #FFFFFF;
+                background-color: #e5eaef;
             }
             .button {
                 background: linear-gradient(180deg, #fdc50f 26.71%, #fb982f 99.36%);

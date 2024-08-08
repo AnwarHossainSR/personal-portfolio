@@ -1,9 +1,11 @@
+/* eslint-disable global-require */
 import { v2 as cloudinary } from 'cloudinary';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-import { connectToDatabase } from '@/lib/mongodb';
+import connectToDatabase from '@/lib/mongodb';
 import Post from '@/models/Post';
+import User from '@/models/User';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -14,7 +16,6 @@ cloudinary.config({
 export async function GET(req: NextRequest) {
   try {
     await connectToDatabase(); // Ensure database connection
-
     const url = new URL(req.url, process.env.SITE_URL);
     const category = url.searchParams.get('category');
 
@@ -22,11 +23,11 @@ export async function GET(req: NextRequest) {
     if (category) {
       blogs = await Post.find({ category })
         .sort({ createdAt: -1 })
-        .populate('author', 'name image id');
+        .populate('author', 'name image id', User);
     } else {
       blogs = await Post.find()
         .sort({ createdAt: -1 })
-        .populate('author', 'name image id');
+        .populate('author', 'name image id', User);
     }
 
     return NextResponse.json({
@@ -34,6 +35,7 @@ export async function GET(req: NextRequest) {
       data: blogs,
     });
   } catch (error) {
+    console.log('error', error);
     return NextResponse.json(
       { message: 'An error occurred', error },
       { status: 500 }
@@ -87,6 +89,10 @@ export async function POST(req: NextRequest) {
       image_url: res.secure_url,
       author: authorId,
     });
+
+    if (blog) {
+      await User.updateOne({ _id: authorId }, { $push: { posts: blog._id } });
+    }
 
     return NextResponse.json({
       message: 'Blog created successfully',
