@@ -7,6 +7,11 @@ const nextConfig = {
         hostname: 'themewagon.github.io',
         port: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        port: '',
+      },
     ],
   },
 };

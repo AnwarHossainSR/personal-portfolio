@@ -1,8 +1,10 @@
-'use client';
+/* eslint-disable jsx-a11y/img-redundant-alt */
 
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/button-has-type */
+
+'use client';
 
 import dynamic from 'next/dynamic';
 import type { ChangeEvent } from 'react';
@@ -14,7 +16,8 @@ import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { formats, modules } from '@/lib/editor';
 import { useTheme } from '@/providers/context/Context';
 
-const CreateBlog = () => {
+const EditBlog = ({ params }: { params: { slug: string } }) => {
+  const { slug } = params;
   const ReactQuill = useMemo(
     () => dynamic(() => import('react-quill'), { ssr: false }),
     []
@@ -41,27 +44,33 @@ const CreateBlog = () => {
   const [success, setSuccess] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const categories = [
-    'Technology',
-    'Health',
-    'Lifestyle',
-    'Finance',
-    'Education',
-  ];
+  const fetchBlogData = async () => {
+    try {
+      const response = await fetch(`/api/blogs/${slug}`);
+      const { data } = await response.json();
+      if (response.ok) {
+        setFormData({
+          title: data.title || '',
+          short_content: data.short_content || '',
+          content: data.content || '',
+          category: data.category || '',
+          published: data.published || false,
+          file: null,
+        });
+        setImagePreview(data.image_url || null);
+      } else {
+        setError(data.message || 'Failed to load blog data');
+      }
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
 
   useEffect(() => {
-    if (formData.file) {
-      const fileURL = URL.createObjectURL(formData.file);
-      setImagePreview(fileURL);
-
-      // Cleanup URL object when the component unmounts or the file changes
-      return () => {
-        URL.revokeObjectURL(fileURL);
-      };
+    if (slug) {
+      fetchBlogData();
     }
-    setImagePreview(null);
-    return () => {};
-  }, [formData.file]);
+  }, [slug]);
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -71,15 +80,17 @@ const CreateBlog = () => {
     if (type === 'checkbox') {
       setFormData((prevState: any) => ({
         ...prevState,
-        [name]: (e.target as HTMLInputElement).checked, // type assertion to HTMLInputElement
+        [name]: (e.target as HTMLInputElement).checked,
       }));
     } else if (type === 'file') {
-      const { files } = e.target as HTMLInputElement; // type assertion to HTMLInputElement
+      const { files } = e.target as HTMLInputElement;
       if (files && files.length > 0) {
         setFormData((prevState: any) => ({
           ...prevState,
           [name]: files[0],
         }));
+        const fileURL = URL.createObjectURL(files[0]);
+        setImagePreview(fileURL);
       }
     } else {
       setFormData((prevState: any) => ({
@@ -107,12 +118,14 @@ const CreateBlog = () => {
     formDataToSend.append('short_content', formData.short_content);
     formDataToSend.append('content', formData.content);
     formDataToSend.append('category', formData.category);
-    formDataToSend.append('published', formData.published);
-    formDataToSend.append('file', formData.file);
+    formDataToSend.append('published', formData.published.toString());
+    if (formData.file) {
+      formDataToSend.append('file', formData.file);
+    }
 
     try {
-      const response = await fetch('/api/blogs', {
-        method: 'POST',
+      const response = await fetch(`/api/blogs/${slug}`, {
+        method: 'PUT',
         body: formDataToSend,
       });
 
@@ -122,19 +135,9 @@ const CreateBlog = () => {
         return;
       }
 
-      // Reset form data
-      setFormData({
-        title: '',
-        short_content: '',
-        content: '',
-        category: '',
-        published: false,
-        file: null,
-      });
-      setSuccess('Blog created successfully!');
-      setImagePreview(null);
+      setSuccess('Blog updated successfully!');
     } catch (err: any) {
-      setError((err as Error).message);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -145,7 +148,7 @@ const CreateBlog = () => {
       <AdminLayout darkMode={darkMode}>
         <div className={`p-4 ${darkMode ? 'dark-mode' : ''}`}>
           <h2 className="text-2xl mb-4 text-center text-gray-800 dark:text-gray-200">
-            Create Blog
+            Edit Blog
           </h2>
           <div className="flex mb-4">
             <button
@@ -183,7 +186,7 @@ const CreateBlog = () => {
                   id="title"
                   name="title"
                   className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                  value={formData.title}
+                  value={formData.title || ''}
                   onChange={handleChange}
                   required
                 />
@@ -199,7 +202,7 @@ const CreateBlog = () => {
                   id="short_content"
                   name="short_content"
                   className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                  value={formData.short_content}
+                  value={formData.short_content || ''}
                   onChange={handleChange}
                   required
                 />
@@ -215,12 +218,18 @@ const CreateBlog = () => {
                   id="category"
                   name="category"
                   className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                  value={formData.category}
+                  value={formData.category || ''}
                   onChange={handleChange}
                   required
                 >
                   <option value="">Select a category</option>
-                  {categories.map(cat => (
+                  {[
+                    'Technology',
+                    'Health',
+                    'Lifestyle',
+                    'Finance',
+                    'Education',
+                  ].map(cat => (
                     <option key={cat} value={cat}>
                       {cat}
                     </option>
@@ -242,6 +251,13 @@ const CreateBlog = () => {
                   accept="image/*"
                   onChange={handleChange}
                 />
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Image Preview"
+                    className="mt-2 max-w-full h-auto rounded-lg"
+                  />
+                )}
               </div>
               <div className="flex flex-col">
                 <label
@@ -251,7 +267,7 @@ const CreateBlog = () => {
                   Content:
                 </label>
                 <ReactQuill
-                  value={formData.content}
+                  value={formData.content || ''}
                   onChange={handleEditorChange}
                   modules={modules}
                   formats={formats}
@@ -270,35 +286,41 @@ const CreateBlog = () => {
                   type="checkbox"
                   id="published"
                   name="published"
-                  className="form-checkbox text-blue-600"
+                  className="form-checkbox text-blue-500 h-5 w-5 dark:bg-gray-700 dark:border-gray-600"
                   checked={formData.published}
                   onChange={handleChange}
                 />
               </div>
               <button
                 type="submit"
-                className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
+                className={`${
+                  loading
+                    ? 'bg-blue-400 cursor-not-allowed'
+                    : 'bg-blue-500 hover:bg-blue-600'
+                } text-white font-bold py-2 px-4 rounded-lg`}
                 disabled={loading}
               >
-                {loading ? 'Submitting...' : 'Create'}
+                {loading ? 'Updating...' : 'Update Blog'}
               </button>
               {error && <p className="text-red-500">{error}</p>}
               {success && <p className="text-green-500">{success}</p>}
             </form>
           )}
           {selectedTab === 'preview' && (
-            <div className="bg-transparent p-4 rounded-lg">
-              <h2 className="text-2xl mb-4">{formData.title}</h2>
-              <p className="text-lg text-gray-600 mb-4">{formData.category}</p>
+            <div className="p-4 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200">
+              <h2 className="text-2xl font-bold mb-4">{formData.title}</h2>
               {imagePreview && (
                 <img
                   src={imagePreview}
-                  alt="Preview"
-                  className="mb-4 max-w-full h-auto"
+                  alt="Preview Image"
+                  className="max-w-full h-auto mb-4 rounded-lg"
                 />
               )}
+              <p className="text-gray-800 dark:text-gray-200 mb-4">
+                {formData.short_content}
+              </p>
               <div
-                className="text-base leading-relaxed"
+                className="blog-content"
                 dangerouslySetInnerHTML={{ __html: formData.content }}
               />
             </div>
@@ -309,4 +331,4 @@ const CreateBlog = () => {
   );
 };
 
-export default CreateBlog;
+export default EditBlog;

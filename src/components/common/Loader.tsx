@@ -1,38 +1,27 @@
-'use client';
-
+import React from 'react';
 import { FallingLines } from 'react-loader-spinner';
 
 import { useTheme } from '@/providers/context/Context';
 
-const Loader = ({ text = 'Loading...' }: { text?: string }) => {
+type LoaderProps = {
+  text?: string;
+};
+
+const Loader: React.FC<LoaderProps> = ({ text }) => {
   const theme = useTheme();
   const { darkMode } = theme.state;
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        background: darkMode ? 'var(--black)' : 'var(--main-bg-light)',
-      }}
-    >
-      <div style={{ width: '60px' }}>
-        <FallingLines
-          color="var(--main-color-orange)"
-          width="50"
-          visible
-          // ariaLabel="falling-circles-loading"
-        />
-        {/* Optional: Loader text */}
+    <div className="flex justify-center items-center h-screen w-screen">
+      <div className="w-16">
+        <FallingLines color="var(--main-color-orange)" width="50" visible />
         <p
+          className="text-center mt-2"
           style={{
-            textAlign: 'center',
-            color: 'var(--main-bg-light)',
-            marginTop: '10px',
+            color: darkMode ? 'var(--main-bg-light)' : 'var(--black)',
           }}
         >
-          {text}
+          {text || 'Loading...'}
         </p>
       </div>
     </div>

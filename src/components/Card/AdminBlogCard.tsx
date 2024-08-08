@@ -1,3 +1,6 @@
+'use client';
+
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 /* eslint-disable no-console */
@@ -5,10 +8,6 @@ const AdminBlogCard = ({ posts }: { posts: any }) => {
   const { push } = useRouter();
   const onView = (id: number) => {
     push(`/admin/blogs/${id}`);
-  };
-
-  const onEdit = (id: number) => {
-    push(`/admin/blogs/edit/${id}`);
   };
 
   const onDelete = (id: number) => {
@@ -40,13 +39,12 @@ const AdminBlogCard = ({ posts }: { posts: any }) => {
             >
               View
             </button>
-            <button
-              type="button"
+            <Link
+              href={`/admin/blogs/${post?._id}`}
               className="px-3 py-2 bg-green-500 text-white rounded transition-opacity hover:opacity-80"
-              onClick={() => onEdit(post._id)}
             >
               Edit
-            </button>
+            </Link>
             <button
               type="button"
               className="px-3 py-2 bg-red-500 text-white rounded transition-opacity hover:opacity-80"

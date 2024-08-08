@@ -41,6 +41,7 @@ module.exports = {
     'import/extensions': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     'react/require-default-props': 'off',
+    'no-console': 'off',
     'import/order': [
       'warn',
       {
@@ -70,7 +71,6 @@ module.exports = {
       },
     ],
     'jsx-a11y/label-has-associated-control': 'off',
-    'no-console': 'warn',
     'no-underscore-dangle': 'off',
     'no-use-before-define': 'error',
     'react/jsx-filename-extension': [1, { extensions: ['.ts', '.tsx'] }],
