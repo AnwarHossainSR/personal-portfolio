@@ -7,7 +7,6 @@ import { randomTagColorClass } from '@/lib/utils';
 
 /* eslint-disable @next/next/no-img-element */
 const BlogCard = ({ darkMode, post }: { darkMode: boolean; post: any }) => {
-  console.log('post', post);
   return (
     <div className="blog_container">
       <div
@@ -22,7 +21,7 @@ const BlogCard = ({ darkMode, post }: { darkMode: boolean; post: any }) => {
         </div>
         <div className="blog_card-body">
           <span className={`blog_tag ${randomTagColorClass()}`}>
-            Technology
+            {post?.category}
           </span>
           <Link
             href="/blogs/tesla-cybertruck"
@@ -32,7 +31,7 @@ const BlogCard = ({ darkMode, post }: { darkMode: boolean; post: any }) => {
           >
             <h4>{post?.title}</h4>
           </Link>
-          <p>An exploration into the truck's polarising design</p>
+          <p>{post?.short_content?.substring(0, 100)}</p>
           <div className="blog_user">
             <Image src={post?.image || anwar} alt="user" />
             <div className="blog_user-info">

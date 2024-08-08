@@ -13,6 +13,7 @@ export interface IPost extends Document {
   author: IUser['_id'];
   createdAt: Date;
   updatedAt: Date;
+  short_content: string;
 }
 
 const postSchema = new Schema<IPost>({
@@ -24,6 +25,10 @@ const postSchema = new Schema<IPost>({
   content: {
     type: String,
     required: true,
+  },
+  short_content: {
+    type: String,
+    required: false,
   },
   published: {
     type: Boolean,

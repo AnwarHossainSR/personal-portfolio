@@ -1,8 +1,8 @@
+'use client';
+
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-danger */
 /* eslint-disable react/button-has-type */
-
-'use client';
 
 import dynamic from 'next/dynamic';
 import type { ChangeEvent } from 'react';
@@ -25,6 +25,7 @@ const CreateBlog = () => {
 
   const [formData, setFormData] = useState<any>({
     title: '',
+    short_content: '',
     content: '',
     category: '',
     published: false,
@@ -39,6 +40,14 @@ const CreateBlog = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const categories = [
+    'Technology',
+    'Health',
+    'Lifestyle',
+    'Finance',
+    'Education',
+  ];
 
   useEffect(() => {
     if (formData.file) {
@@ -95,6 +104,7 @@ const CreateBlog = () => {
 
     const formDataToSend = new FormData();
     formDataToSend.append('title', formData.title);
+    formDataToSend.append('short_content', formData.short_content);
     formDataToSend.append('content', formData.content);
     formDataToSend.append('category', formData.category);
     formDataToSend.append('published', formData.published);
@@ -115,6 +125,7 @@ const CreateBlog = () => {
       // Reset form data
       setFormData({
         title: '',
+        short_content: '',
         content: '',
         category: '',
         published: false,
@@ -179,20 +190,42 @@ const CreateBlog = () => {
               </div>
               <div className="flex flex-col">
                 <label
+                  htmlFor="short_content"
+                  className="text-gray-800 dark:text-gray-200"
+                >
+                  Short Content:
+                </label>
+                <textarea
+                  id="short_content"
+                  name="short_content"
+                  className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
+                  value={formData.short_content}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
                   htmlFor="category"
                   className="text-gray-800 dark:text-gray-200"
                 >
                   Category:
                 </label>
-                <input
-                  type="text"
+                <select
                   id="category"
                   name="category"
                   className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
                   value={formData.category}
                   onChange={handleChange}
                   required
-                />
+                >
+                  <option value="">Select a category</option>
+                  {categories.map(cat => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="flex flex-col">
                 <label

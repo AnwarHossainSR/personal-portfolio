@@ -51,6 +51,7 @@ export async function POST(req: NextRequest) {
     const file = formData.get('file') as File;
     const published = formData.get('published') as any;
     const category = formData.get('category') as string;
+    const shortContent = formData.get('short_content') as string;
 
     if (!title || !content || !file || !category) {
       return NextResponse.json(
@@ -79,6 +80,7 @@ export async function POST(req: NextRequest) {
 
     const blog = await Post.create({
       title,
+      short_content: shortContent,
       content,
       published,
       category,
