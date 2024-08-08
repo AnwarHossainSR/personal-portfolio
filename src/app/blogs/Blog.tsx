@@ -1,3 +1,5 @@
+/* eslint-disable no-nested-ternary */
+
 'use client';
 
 /* eslint-disable react/no-array-index-key */
@@ -14,10 +16,36 @@ const Blogs = () => {
   const theme = useTheme();
   const { darkMode } = theme.state;
   const [filter, setFilter] = useState('all');
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  const fetchPosts = async () => {
+    try {
+      const res = await fetch('/api/blogs');
+      if (!res.ok) {
+        throw new Error('Failed to fetch posts');
+      }
+      const data = await res.json();
+      setPosts(data.data); // Assuming the data is in `data.data`
+    } catch (err: any) {
+      // eslint-disable-next-line no-console
+      console.error(err);
+      setError('Failed to load blogs. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
+    fetchPosts();
     window.scrollTo(0, 0);
   }, []);
+
+  const filteredPosts =
+    filter === 'all'
+      ? posts
+      : posts.filter(post => post?.tags.includes(filter));
 
   return (
     <MainLayout>
@@ -46,10 +74,19 @@ const Blogs = () => {
           ))}
         </div>
       </div>
+
       <div className="blogs">
-        {[...Array(10)].map((_, index) => (
-          <BlogCard key={index} darkMode={darkMode} />
-        ))}
+        {loading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p className="text-red-500">{error}</p>
+        ) : filteredPosts.length > 0 ? (
+          filteredPosts.map((post: any) => (
+            <BlogCard key={post._id} post={post} darkMode={darkMode} />
+          ))
+        ) : (
+          <p>No blogs found for the selected tag.</p>
+        )}
       </div>
     </MainLayout>
   );

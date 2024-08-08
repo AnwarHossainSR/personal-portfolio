@@ -22,11 +22,11 @@ export async function GET(req: NextRequest) {
     if (category) {
       blogs = await Post.find({ category })
         .sort({ createdAt: -1 })
-        .populate('author', 'name id');
+        .populate('author', 'name image id');
     } else {
       blogs = await Post.find()
         .sort({ createdAt: -1 })
-        .populate('author', 'name id');
+        .populate('author', 'name image id');
     }
 
     return NextResponse.json({
