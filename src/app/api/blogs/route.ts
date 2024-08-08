@@ -50,8 +50,9 @@ export async function POST(req: NextRequest) {
     const content = formData.get('content') as string;
     const file = formData.get('file') as File;
     const published = formData.get('published') as any;
+    const category = formData.get('category') as string;
 
-    if (!title || !content || !file) {
+    if (!title || !content || !file || !category) {
       return NextResponse.json(
         { message: 'Please enter title, content, and mainImage.' },
         { status: 400 }
@@ -80,6 +81,7 @@ export async function POST(req: NextRequest) {
       title,
       content,
       published,
+      category,
       image_url: res.secure_url,
       author: authorId, // Assuming authorId is a string
     });

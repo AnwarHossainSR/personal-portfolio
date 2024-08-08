@@ -45,7 +45,7 @@ const Blogs = () => {
   const filteredPosts =
     filter === 'all'
       ? posts
-      : posts.filter(post => post?.tags.includes(filter));
+      : posts.filter((post: any) => post.category === filter);
 
   return (
     <MainLayout>
