@@ -8,7 +8,9 @@ export async function GET(req: NextRequest) {
     await connectToDatabase();
     // Extract user ID from the request URL
     const url = new URL(req.url);
-    const id = url.searchParams.get('id');
+    const id = url.pathname.split('/').pop() ?? '';
+
+    console.log('id', id);
 
     if (!id) {
       return NextResponse.json(
@@ -18,17 +20,9 @@ export async function GET(req: NextRequest) {
     }
 
     // Fetch user data from the database
-    const user = await User.findOne({
-      where: { id },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        isAdmin: true,
-        createdAt: true,
-        updatedAt: true,
-      },
-    });
+    const user = await User.findOne({ _id: id }).select(
+      '_id name email isAdmin'
+    );
 
     if (!user) {
       return NextResponse.json({ message: 'User not found' }, { status: 404 });

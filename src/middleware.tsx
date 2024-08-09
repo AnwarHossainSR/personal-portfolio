@@ -14,12 +14,15 @@ export default async function middleware(req: NextRequest) {
   if (!authUser) return NextResponse.redirect(new URL('/', req.url), req);
   let user: any = null;
   try {
-    user = await (
-      await fetch(`${SITE_URL}/api/user/${authUser?.userId}`)
-    ).json();
+    const response = await fetch(`${SITE_URL}/api/user/${authUser?.userId}`);
+    if (!response.ok) {
+      console.log('error >>', response);
+      return NextResponse.redirect(new URL('/', req.url), req);
+    }
+    user = await response.json();
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log('error', error);
+    console.log('error >>', error);
     return NextResponse.redirect(new URL('/', req.url), req);
   }
 
