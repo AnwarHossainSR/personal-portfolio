@@ -37,24 +37,24 @@ const AdminBlogPage = () => {
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
         {loading && <Loader text="Fetching..." />}
-        <div className="flex justify-between items-center mb-5 p-5 bg-gray-800 rounded shadow-lg">
-          {!loading && (
-            <>
-              <h1 className="text-white text-2xl">
-                {posts?.length > 0
-                  ? `Posts found ${posts?.length}`
-                  : 'No posts Found'}
-              </h1>
-              <Link
-                href="/admin/blogs/create"
-                type="button"
-                className="px-4 py-2 bg-blue-500 text-white rounded transition-opacity hover:opacity-80 transform hover:scale-105 disabled:bg-gray-500 disabled:cursor-not-allowed"
-              >
-                Add Post
-              </Link>
-            </>
-          )}
-        </div>
+        {!loading && (
+          <div
+            className="flex justify-between items-center mb-5 w-full" // Use w-full
+          >
+            <h1 className="text-white text-2xl">
+              {posts?.length > 0
+                ? `Posts found ${posts?.length}`
+                : 'No posts Found'}
+            </h1>
+            <Link
+              href="/admin/blogs/create"
+              type="button"
+              className="px-4 py-2 bg-blue-500 text-white rounded transition-opacity hover:opacity-80 transform hover:scale-105 disabled:bg-gray-500 disabled:cursor-not-allowed"
+            >
+              Add Post
+            </Link>
+          </div>
+        )}
         {!loading && <AdminBlogCard posts={posts} />}
       </AdminLayout>
     </MainLayout>

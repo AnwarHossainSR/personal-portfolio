@@ -2,12 +2,29 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { FaBlog, FaBriefcase, FaTachometerAlt } from 'react-icons/fa';
 
 const Sidebar = ({ darkMode }: { darkMode: boolean }) => {
   const { push } = useRouter();
+  const pathname = usePathname();
+
   const handleNavigate = (path: string) => {
     push(`/admin/${path}`);
+  };
+
+  const getMenuItemClass = (path: string) => {
+    const baseClass = darkMode
+      ? 'text-white hover:text-yellow-400'
+      : 'text-gray-800 hover:text-yellow-700';
+
+    const activeClass = darkMode
+      ? 'bg-yellow-500 text-gray-800'
+      : 'bg-gray-800 text-white';
+
+    return pathname === `/admin/${path}`
+      ? `${baseClass} ${activeClass}`
+      : baseClass;
   };
 
   return (
@@ -22,7 +39,9 @@ const Sidebar = ({ darkMode }: { darkMode: boolean }) => {
         <li
           role="button"
           tabIndex={0}
-          className="mb-2 cursor-pointer hover:underline"
+          className={`mb-2 cursor-pointer flex items-center ${getMenuItemClass(
+            'dashboard'
+          )} p-2 rounded`}
           onClick={() => handleNavigate('dashboard')}
           onKeyDown={e => {
             if (e.key === 'Enter') {
@@ -30,12 +49,15 @@ const Sidebar = ({ darkMode }: { darkMode: boolean }) => {
             }
           }}
         >
+          <FaTachometerAlt className="mr-2" />
           Dashboard
         </li>
         <li
           role="button"
           tabIndex={0}
-          className="mb-2 cursor-pointer hover:underline"
+          className={`mb-2 cursor-pointer flex items-center ${getMenuItemClass(
+            'blogs'
+          )} p-2 rounded`}
           onClick={() => handleNavigate('blogs')}
           onKeyDown={e => {
             if (e.key === 'Enter') {
@@ -43,12 +65,15 @@ const Sidebar = ({ darkMode }: { darkMode: boolean }) => {
             }
           }}
         >
+          <FaBlog className="mr-2" />
           Blogs
         </li>
         <li
           role="button"
           tabIndex={0}
-          className="mb-2 cursor-pointer hover:underline"
+          className={`mb-2 cursor-pointer flex items-center ${getMenuItemClass(
+            'portfolio'
+          )} p-2 rounded`}
           onClick={() => handleNavigate('portfolio')}
           onKeyDown={e => {
             if (e.key === 'Enter') {
@@ -56,6 +81,7 @@ const Sidebar = ({ darkMode }: { darkMode: boolean }) => {
             }
           }}
         >
+          <FaBriefcase className="mr-2" />
           Portfolio
         </li>
       </ul>

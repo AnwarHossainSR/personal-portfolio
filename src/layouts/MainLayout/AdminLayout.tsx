@@ -18,10 +18,7 @@ const AdminLayout = ({
     >
       <Sidebar darkMode={darkMode} />
       <div
-        className="flex-1"
-        style={{
-          marginLeft: '1.25rem',
-        }}
+        className="p-5 w-full" // Added padding instead of marginLeft
       >
         {children}
       </div>
