@@ -234,7 +234,7 @@ const CreateBlog = () => {
                   {categories &&
                     categories.length > 0 &&
                     categories.map((cat: any) => (
-                      <option key={cat._id} value={cat.name}>
+                      <option key={cat._id} value={cat._id}>
                         {cat.name}
                       </option>
                     ))}

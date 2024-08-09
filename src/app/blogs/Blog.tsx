@@ -9,14 +9,14 @@ import { useEffect, useState } from 'react';
 import BlogCard from '@/components/Card/BlogCard';
 import Tab from '@/components/Tab';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
-import { blogTags } from '@/lib/const';
 import { useTheme } from '@/providers/context/Context';
 
 const Blogs = () => {
   const theme = useTheme();
   const { darkMode } = theme.state;
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('All');
   const [posts, setPosts] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -28,6 +28,13 @@ const Blogs = () => {
       }
       const data = await res.json();
       setPosts(data.data); // Assuming the data is in `data.data`
+
+      const res2 = await fetch('/api/categories');
+      if (!res2.ok) {
+        throw new Error('Failed to fetch categories');
+      }
+      const data2 = await res2.json();
+      setCategories(data2.data);
     } catch (err: any) {
       // eslint-disable-next-line no-console
       console.error(err);
@@ -41,11 +48,6 @@ const Blogs = () => {
     fetchPosts();
     window.scrollTo(0, 0);
   }, []);
-
-  const filteredPosts =
-    filter === 'all'
-      ? posts
-      : posts.filter((post: any) => post.category === filter);
 
   return (
     <MainLayout>
@@ -64,14 +66,24 @@ const Blogs = () => {
             marginBottom: '2rem',
           }}
         >
-          {blogTags.map((tag, index) => (
+          {!loading && (
             <Tab
-              key={index}
-              className={`${filter === tag.name ? 'active' : ''}`}
-              text={tag.name}
-              handleEvent={() => setFilter(tag.name)}
+              key="All"
+              className={`${filter === 'All' ? 'active' : ''}`}
+              text="All"
+              handleEvent={() => setFilter('All')}
             />
-          ))}
+          )}
+
+          {categories?.length > 0 &&
+            categories?.map((category: any) => (
+              <Tab
+                key={category._id}
+                className={`${filter === category.name ? 'active' : ''}`}
+                text={category.name}
+                handleEvent={() => setFilter(category.name)}
+              />
+            ))}
         </div>
       </div>
 
@@ -80,8 +92,8 @@ const Blogs = () => {
           <p>Loading...</p>
         ) : error ? (
           <p className="text-red-500">{error}</p>
-        ) : filteredPosts.length > 0 ? (
-          filteredPosts.map((post: any) => (
+        ) : posts.length > 0 ? (
+          posts.map((post: any) => (
             <BlogCard key={post._id} post={post} darkMode={darkMode} />
           ))
         ) : (
