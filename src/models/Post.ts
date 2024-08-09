@@ -39,8 +39,9 @@ const postSchema = new Schema<IPost>({
     required: false,
   },
   category: {
-    type: String,
-    required: false,
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
   },
   author: {
     type: Schema.Types.ObjectId,

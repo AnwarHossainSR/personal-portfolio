@@ -40,14 +40,25 @@ const CreateBlog = () => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [categories, setCategories] = useState([]);
 
-  const categories = [
-    'Technology',
-    'Health',
-    'Lifestyle',
-    'Finance',
-    'Education',
-  ];
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/categories');
+      const { data } = await response.json();
+      if (response.ok) {
+        setCategories(data);
+      } else {
+        setError(data.message);
+      }
+    } catch (err: any) {
+      setError(err.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     if (formData.file) {
@@ -220,11 +231,13 @@ const CreateBlog = () => {
                   required
                 >
                   <option value="">Select a category</option>
-                  {categories.map(cat => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
+                  {categories &&
+                    categories.length > 0 &&
+                    categories.map((cat: any) => (
+                      <option key={cat._id} value={cat.name}>
+                        {cat.name}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="flex flex-col">
