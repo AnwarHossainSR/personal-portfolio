@@ -1,6 +1,8 @@
 import { Schema, model, models } from 'mongoose';
 
-const categorySchema = new Schema({
+import type { ICategory } from './ICategory';
+
+const categorySchema = new Schema<ICategory>({
   name: {
     type: String,
     unique: true,
@@ -12,6 +14,7 @@ const categorySchema = new Schema({
   },
 });
 
-const Category = models.Category || model('Category', categorySchema);
+const Category =
+  models.Category || model<ICategory>('Category', categorySchema);
 
 export default Category;

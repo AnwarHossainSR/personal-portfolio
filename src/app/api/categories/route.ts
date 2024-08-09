@@ -38,18 +38,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const blog = await Category.create({
+    const category = await Category.create({
       name,
       color,
     });
 
     return NextResponse.json({
       message: 'Category created successfully',
-      data: blog,
+      data: category,
     });
-  } catch (error) {
+  } catch (error: any) {
+    // Send only the error message in the response
     return NextResponse.json(
-      { message: 'An error occurred', error },
+      { message: 'An error occurred', error: error.message },
       { status: 500 }
     );
   }
