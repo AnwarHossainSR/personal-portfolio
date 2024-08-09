@@ -12,7 +12,7 @@ const Loader: React.FC<LoaderProps> = ({ text }) => {
   const { darkMode } = theme.state;
 
   return (
-    <div className="flex justify-center items-center h-screen w-screen">
+    <div className="flex justify-center items-center h-full w-full">
       <div className="w-16">
         <FallingLines color="var(--main-color-orange)" width="50" visible />
         <p
