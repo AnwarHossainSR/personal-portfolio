@@ -3,7 +3,7 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { FaBlog, FaBriefcase, FaTachometerAlt } from 'react-icons/fa';
+import { FaBlog, FaBriefcase, FaTachometerAlt, FaTags } from 'react-icons/fa';
 
 const Sidebar = ({ darkMode }: { darkMode: boolean }) => {
   const { push } = useRouter();
@@ -83,6 +83,22 @@ const Sidebar = ({ darkMode }: { darkMode: boolean }) => {
         >
           <FaBriefcase className="mr-2" />
           Portfolio
+        </li>
+        <li
+          role="button"
+          tabIndex={0}
+          className={`mb-2 cursor-pointer flex items-center ${getMenuItemClass(
+            'categories'
+          )} p-2 rounded`}
+          onClick={() => handleNavigate('categories')}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              handleNavigate('categories');
+            }
+          }}
+        >
+          <FaTags className="mr-2" />
+          Categories
         </li>
       </ul>
     </div>
