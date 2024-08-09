@@ -1,15 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 /* eslint-disable no-console */
 const AdminBlogCard = ({ posts }: { posts: any }) => {
-  const { push } = useRouter();
-  const onView = (id: number) => {
-    push(`/admin/blogs/${id}`);
-  };
-
   const onDelete = (id: number) => {
     console.log('Delete Post', id);
   };
@@ -32,13 +26,6 @@ const AdminBlogCard = ({ posts }: { posts: any }) => {
             </p>
           </div>
           <div className="flex justify-between">
-            <button
-              type="button"
-              className="px-3 py-2 bg-blue-500 text-white rounded transition-opacity hover:opacity-80"
-              onClick={() => onView(post._id)}
-            >
-              View
-            </button>
             <Link
               href={`/admin/blogs/${post?._id}`}
               className="px-3 py-2 bg-green-500 text-white rounded transition-opacity hover:opacity-80"
