@@ -23,7 +23,7 @@ const AdminCategoryCard = ({
               {category.name}
             </h2>
             <p className="text-gray-400">
-              {category.description ?? 'No Description Available'}
+              Seleced color is {category.color ?? 'No color Available'}
             </p>
           </div>
           <div className="flex justify-between items-center">

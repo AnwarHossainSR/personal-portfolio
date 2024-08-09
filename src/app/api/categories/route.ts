@@ -9,7 +9,7 @@ export async function GET() {
   await connectToDatabase(); // Ensure database connection
 
   try {
-    const categories = Category.find();
+    const categories = await Category.find().lean();
     return NextResponse.json({
       message: 'Categories fetched successfully',
       data: categories,

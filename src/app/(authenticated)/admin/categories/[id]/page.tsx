@@ -20,7 +20,8 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
       try {
         const res = await fetch(`/api/categories/${params.id}`);
         const data = await res.json();
-        setName(data.name);
+        setName(data.data.name);
+        setColor(data.data.color);
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -37,12 +38,13 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
 
   const handleSave = async () => {
     try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('color', color);
+      formData.append('id', params.id);
       await fetch(`/api/categories/${params.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, color, id: params.id }),
+        body: formData,
       });
       router.push('/admin/categories');
     } catch (error) {
