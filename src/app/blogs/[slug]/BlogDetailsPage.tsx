@@ -5,7 +5,7 @@
 
 /* eslint-disable react/no-danger */
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Loader from '@/components/common/Loader';
 import { getDateCompare } from '@/lib';
@@ -17,6 +17,7 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
   const [blogData, setBlogData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const newComment = useRef<any>(null);
   const fetchBlogData = async () => {
     try {
       const response = await fetch(`/api/blogs/${slug}`);
@@ -34,6 +35,32 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
   useEffect(() => {
     fetchBlogData();
   }, [slug]);
+
+  const handleCommentSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      const comment = newComment.current?.value;
+      if (!comment) return;
+
+      const formData = new FormData();
+      formData.append('postId', blogData?._id);
+      formData.append('comment', comment);
+
+      const response = await fetch('/api/comments', {
+        method: 'POST',
+        body: formData,
+      });
+      if (!response.ok) {
+        throw new Error('Failed to submit comment');
+      }
+      const data = await response.json();
+      console.log(data);
+      newComment.current.value = '';
+      fetchBlogData();
+    } catch (err: any) {
+      console.log(err.message);
+    }
+  };
 
   if (loading) {
     return <Loader text="fetching blogs..." />;
@@ -98,28 +125,29 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
               <div className="left">
                 <Image
                   src={
-                    comment.authorImage ||
+                    comment?.author?.image ||
                     'https://themewagon.github.io/pinwheel/images/comment-author-1.png'
                   }
-                  className="comment-image"
                   alt="author"
                   width={50}
                   height={50}
                 />
               </div>
               <div className="right">
-                <h3>{comment.authorName}</h3>
-                <p>{new Date(comment.date).toLocaleDateString()}</p>
-                <p>{comment.text}</p>
+                <div className="upper">
+                  <h3>{comment?.author?.name || 'Anonymous'}</h3>
+                  <p>{getDateCompare(comment?.updatedAt)}</p>
+                </div>
+                <p>{comment?.comment}</p>
               </div>
             </div>
           ))}
         <div className="comment-form">
           <h2>Leave a Comment</h2>
-          <form>
+          <form onSubmit={handleCommentSubmit}>
             <div className="form-group">
               <label htmlFor="comment">Comment</label>
-              <textarea id="comment" rows={5} />
+              <textarea id="comment" ref={newComment} rows={5} />
             </div>
             <button className="button" type="submit">
               Submit

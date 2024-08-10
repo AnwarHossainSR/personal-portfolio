@@ -83,7 +83,9 @@
     }
 
     .comment {
+        width: 100%;
         display: flex;
+        align-items: center;
         margin: 1rem 0;
         .left {
             display: flex;
@@ -91,6 +93,7 @@
             margin-top: 1rem;
             img {
                 width: 3rem;
+                max-width: 3rem;
                 height: 3rem;
                 border-radius: 50%;
                 object-fit: cover;
@@ -98,11 +101,16 @@
             }
         }
         .right{
+            .upper{
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
             h3{
-                font-size: 1rem;
+                font-size: .8rem;
             }
             p{
-                font-size: 0.8rem;
+                font-size: .8rem;
                 color:#9ca3af;
             }
         }
