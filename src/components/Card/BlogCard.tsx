@@ -32,7 +32,12 @@ const BlogCard = ({ darkMode, post }: { darkMode: boolean; post: any }) => {
           </Link>
           <p>{post?.short_content?.substring(0, 100)}</p>
           <div className="blog_user">
-            <Image src={post?.image || anwar} alt="user" />
+            <Image
+              width={40}
+              height={40}
+              src={post?.author?.image || anwar}
+              alt="user"
+            />{' '}
             <div className="blog_user-info">
               <h5>{post?.author?.name}</h5>
               <small>{getDateCompare(post?.createdAt)}</small>
