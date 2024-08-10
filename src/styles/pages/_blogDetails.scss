@@ -7,10 +7,11 @@
   }
 
   .blog-details_image {
-    width: 85%;
-    height: 80%;
+    max-width: 75%;
     object-fit: cover;
-
+    border: 1px solid #9ca3af;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     @include mobile{
         width: 100%;
     }
@@ -72,6 +73,7 @@
   .blog-details_comments {
     margin: 1rem 0;
     width: 75%;
+    margin-bottom: 5rem;
     @include mobile{
         width: 100%;
     }

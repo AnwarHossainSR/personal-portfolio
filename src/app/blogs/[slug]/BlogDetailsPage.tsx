@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable no-console */
 
 'use client';
@@ -16,28 +17,26 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
   const [blogData, setBlogData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchBlogData = async () => {
-      try {
-        const response = await fetch(`/api/blogs/${slug}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch blog data');
-        }
-        const data = await response.json();
-        setBlogData(data.data);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
+  const fetchBlogData = async () => {
+    try {
+      const response = await fetch(`/api/blogs/${slug}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch blog data');
       }
-    };
-
+      const data = await response.json();
+      setBlogData(data.data);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
     fetchBlogData();
   }, [slug]);
 
   if (loading) {
-    return <Loader text="fetching..." />;
+    return <Loader text="fetching blogs..." />;
   }
 
   if (error) {
@@ -48,8 +47,6 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
     return <p>No blog data available</p>;
   }
 
-  console.log('blogData ', blogData);
-
   return (
     <div
       className="blog-details_container"
@@ -57,15 +54,13 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
         color: darkMode ? '#c0c6d1' : '',
       }}
     >
-      <Image
+      <img
         src={
           blogData?.image_url ||
           'https://themewagon.github.io/pinwheel/images/blog-single.png'
         }
         className="blog-details_image"
-        alt={blogData?.title}
-        width={1200}
-        height={800}
+        alt=""
       />
       <div className="blog-details_title">
         <h1>{blogData?.title}</h1>
@@ -122,14 +117,6 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
         <div className="comment-form">
           <h2>Leave a Comment</h2>
           <form>
-            <div className="form-group">
-              <label htmlFor="name">Name</label>
-              <input type="text" id="name" />
-            </div>
-            <div className="form-group">
-              <label htmlFor="email">Email</label>
-              <input type="email" id="email" />
-            </div>
             <div className="form-group">
               <label htmlFor="comment">Comment</label>
               <textarea id="comment" rows={5} />
