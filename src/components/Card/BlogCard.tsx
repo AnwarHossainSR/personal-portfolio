@@ -3,7 +3,6 @@ import Link from 'next/link';
 
 import anwar from '@/assets/img/anwar.svg';
 import { getDateCompare } from '@/lib';
-import { randomTagColorClass } from '@/lib/utils';
 
 /* eslint-disable @next/next/no-img-element */
 const BlogCard = ({ darkMode, post }: { darkMode: boolean; post: any }) => {
@@ -20,8 +19,8 @@ const BlogCard = ({ darkMode, post }: { darkMode: boolean; post: any }) => {
           <img src={post?.image_url} alt={post?.title} />
         </div>
         <div className="blog_card-body">
-          <span className={`blog_tag ${randomTagColorClass()}`}>
-            {post?.category}
+          <span className={`blog_tag blog_tag-${post?.category?.color}`}>
+            {post?.category?.name}
           </span>
           <Link
             href={`/blogs/${post?._id}`}

@@ -43,8 +43,9 @@ const EditBlog = ({ params }: { params: { slug: string } }) => {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [categories, setCategories] = useState([]);
 
-  const fetchBlogData = async () => {
+  const fetchData = async () => {
     try {
       const response = await fetch(`/api/blogs/${slug}`);
       const { data } = await response.json();
@@ -61,6 +62,13 @@ const EditBlog = ({ params }: { params: { slug: string } }) => {
       } else {
         setError(data.message || 'Failed to load blog data');
       }
+      const response2 = await fetch('/api/categories');
+      const { data: cats } = await response2.json();
+      if (response2.ok) {
+        setCategories(cats);
+      } else {
+        setError('Failed to load categories');
+      }
     } catch (err: any) {
       setError(err.message);
     }
@@ -68,7 +76,7 @@ const EditBlog = ({ params }: { params: { slug: string } }) => {
 
   useEffect(() => {
     if (slug) {
-      fetchBlogData();
+      fetchData();
     }
   }, [slug]);
 
@@ -223,17 +231,13 @@ const EditBlog = ({ params }: { params: { slug: string } }) => {
                   required
                 >
                   <option value="">Select a category</option>
-                  {[
-                    'Technology',
-                    'Health',
-                    'Lifestyle',
-                    'Finance',
-                    'Education',
-                  ].map(cat => (
-                    <option key={cat} value={cat}>
-                      {cat}
-                    </option>
-                  ))}
+                  {categories &&
+                    categories.length > 0 &&
+                    categories.map((cat: any) => (
+                      <option key={cat._id} value={cat._id}>
+                        {cat.name}
+                      </option>
+                    ))}
                 </select>
               </div>
               <div className="flex flex-col">

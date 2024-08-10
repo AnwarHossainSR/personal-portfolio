@@ -28,7 +28,7 @@ const AdminBlogCard = ({ posts }: { posts: any }) => {
             <p className="text-gray-400">
               Category:{' '}
               <span className="text-gray-200">
-                {post.category ?? 'No Category'}
+                {post?.category?.name ?? 'No Category'}
               </span>
             </p>
           </div>

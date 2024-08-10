@@ -14,6 +14,7 @@ export interface IPost extends Document {
   createdAt: Date;
   updatedAt: Date;
   short_content: string;
+  comments: [];
 }
 
 const postSchema = new Schema<IPost>({
@@ -39,8 +40,9 @@ const postSchema = new Schema<IPost>({
     required: false,
   },
   category: {
-    type: String,
-    required: false,
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
   },
   author: {
     type: Schema.Types.ObjectId,
@@ -55,6 +57,12 @@ const postSchema = new Schema<IPost>({
     type: Date,
     default: Date.now,
   },
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
 });
 
 postSchema.pre<IPost>('save', function (next) {

@@ -4,6 +4,7 @@ import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
 import connectToDatabase from '@/lib/mongodb';
+import Category from '@/models/Category';
 import Post from '@/models/Post';
 import User from '@/models/User';
 
@@ -23,11 +24,13 @@ export async function GET(req: NextRequest) {
     if (category) {
       blogs = await Post.find({ category })
         .sort({ createdAt: -1 })
-        .populate('author', 'name image id', User);
+        .populate('author', 'name image id', User)
+        .populate('category', 'name color', Category);
     } else {
       blogs = await Post.find()
         .sort({ createdAt: -1 })
-        .populate('author', 'name image id', User);
+        .populate('author', 'name image id', User)
+        .populate('category', 'name color', Category);
     }
 
     return NextResponse.json({
