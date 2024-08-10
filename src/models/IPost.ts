@@ -9,7 +9,8 @@ export interface IPost extends Document {
   image_url?: string;
   category?: string;
   author: IUser['_id'];
-  short_content: string;
   createdAt: Date;
   updatedAt: Date;
+  short_content: string;
+  comments: [];
 }
