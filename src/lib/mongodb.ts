@@ -1,7 +1,7 @@
 /* eslint-disable no-multi-assign */
 import mongoose from 'mongoose';
 
-const { MONGODB_URI } = process.env;
+import { MONGODB_URI } from '@/env';
 
 if (!MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"');
