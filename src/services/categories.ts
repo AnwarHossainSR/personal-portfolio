@@ -15,7 +15,7 @@ export const getCategories = async () => {
 export const createPost = async (data: unknown) => {
   try {
     const response = await axios.post(
-      API_ENDPOINTS.CATEGORIES.CREATE_CATEGORIES,
+      API_ENDPOINTS.CATEGORIES.GET_CATEGORIES,
       data
     );
     return response;
