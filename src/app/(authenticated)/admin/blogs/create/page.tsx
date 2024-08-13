@@ -11,11 +11,14 @@ import type { ChangeEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 
+import { QUERY_KEY } from '@/config/query-key';
 import { useFetch, usePost } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { formats, modules } from '@/lib/editor';
 import { useTheme } from '@/providers/context/Context';
+import { getCategories } from '@/services/categories';
+import { createPost } from '@/services/posts';
 
 const CreateBlog = () => {
   const ReactQuill = useMemo(
@@ -42,13 +45,7 @@ const CreateBlog = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   // Fetch categories using useFetch hook
-  const { data: categories } = useFetch(['categories'], async () => {
-    const response = await fetch('/api/categories');
-    if (!response.ok) {
-      throw new Error('Failed to fetch categories');
-    }
-    return response.json();
-  });
+  const { data: categories } = useFetch([QUERY_KEY.CATEGORIES], getCategories);
 
   // Use the usePost hook for form submission
   const {
@@ -57,16 +54,7 @@ const CreateBlog = () => {
     isLoading: isSubmitting,
     error: submitError,
     isSuccess,
-  } = usePost(async (formDataToSend: FormData) => {
-    const response = await fetch('/api/blogs', {
-      method: 'POST',
-      body: formDataToSend,
-    });
-    if (!response.ok) {
-      throw new Error('Failed to create blog');
-    }
-    return response.json();
-  });
+  } = usePost(data => createPost(data)); // Use createPost method
 
   useEffect(() => {
     if (formData.file) {
@@ -115,7 +103,7 @@ const CreateBlog = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
@@ -127,6 +115,17 @@ const CreateBlog = () => {
     formDataToSend.append('file', formData.file);
 
     createBlog(formDataToSend);
+
+    if (isSuccess) {
+      setFormData({
+        title: '',
+        short_content: '',
+        content: '',
+        category: '',
+        published: false,
+        file: null,
+      });
+    }
   };
 
   return (
@@ -209,9 +208,9 @@ const CreateBlog = () => {
                   required
                 >
                   <option value="">Select a category</option>
-                  {categories?.data &&
-                    categories.data.length > 0 &&
-                    categories.data.map((cat: any) => (
+                  {categories &&
+                    categories.length > 0 &&
+                    categories.map((cat: any) => (
                       <option key={cat._id} value={cat._id}>
                         {cat.name}
                       </option>

@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 
 import AdminBlogCard from '@/components/Card/AdminBlogCard';
 import Loader from '@/components/common/Loader';
+import { QUERY_KEY } from '@/config/query-key';
 import { useFetch } from '@/hooks/useAPiCall'; // Import useFetch hook
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
@@ -29,7 +30,7 @@ const AdminBlogPage = () => {
     data: postsData,
     isLoading,
     isError,
-  } = useFetch(['posts'], fetchPostsApi);
+  } = useFetch([QUERY_KEY.POSTS], fetchPostsApi);
 
   useEffect(() => {
     if (isError) {
