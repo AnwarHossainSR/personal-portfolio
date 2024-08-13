@@ -91,6 +91,7 @@ export async function POST(req: NextRequest) {
       category,
       image_url: res.secure_url,
       author: authorId,
+      comments: [],
     });
 
     if (blog) {

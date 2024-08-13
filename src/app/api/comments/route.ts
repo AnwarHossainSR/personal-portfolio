@@ -46,8 +46,6 @@ export async function POST(req: NextRequest) {
     post.comments.push(createPost._id); // Push the new comment to the post's comments array
     await post.save(); // Save the updated post document
 
-    console.log('createPost', createPost);
-
     return NextResponse.json(
       { message: 'Comment created successfully' },
       { status: 201 }
