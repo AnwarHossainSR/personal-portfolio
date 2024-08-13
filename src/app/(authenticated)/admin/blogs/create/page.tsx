@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
+
 'use client';
 
 /* eslint-disable @next/next/no-img-element */
@@ -9,10 +11,14 @@ import type { ChangeEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 
+import { QUERY_KEY } from '@/config/query-key';
+import { useFetch, usePost } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { formats, modules } from '@/lib/editor';
 import { useTheme } from '@/providers/context/Context';
+import { getCategories } from '@/services/categories';
+import { createPost } from '@/services/posts';
 
 const CreateBlog = () => {
   const ReactQuill = useMemo(
@@ -36,29 +42,19 @@ const CreateBlog = () => {
     'editor'
   );
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [categories, setCategories] = useState([]);
 
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch('/api/categories');
-      const { data } = await response.json();
-      if (response.ok) {
-        setCategories(data);
-      } else {
-        setError(data.message);
-      }
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
+  // Fetch categories using useFetch hook
+  const { data: categories } = useFetch([QUERY_KEY.CATEGORIES], getCategories);
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  // Use the usePost hook for form submission
+  const {
+    mutate: createBlog,
+    // @ts-ignore
+    isLoading: isSubmitting,
+    error: submitError,
+    isSuccess,
+  } = usePost(data => createPost(data)); // Use createPost method
 
   useEffect(() => {
     if (formData.file) {
@@ -109,9 +105,6 @@ const CreateBlog = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
 
     const formDataToSend = new FormData();
     formDataToSend.append('title', formData.title);
@@ -121,19 +114,9 @@ const CreateBlog = () => {
     formDataToSend.append('published', formData.published);
     formDataToSend.append('file', formData.file);
 
-    try {
-      const response = await fetch('/api/blogs', {
-        method: 'POST',
-        body: formDataToSend,
-      });
+    createBlog(formDataToSend);
 
-      const result = await response.json();
-      if (!response.ok) {
-        setError(result.message);
-        return;
-      }
-
-      // Reset form data
+    if (isSuccess) {
       setFormData({
         title: '',
         short_content: '',
@@ -142,12 +125,6 @@ const CreateBlog = () => {
         published: false,
         file: null,
       });
-      setSuccess('Blog created successfully!');
-      setImagePreview(null);
-    } catch (err: any) {
-      setError((err as Error).message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -291,29 +268,39 @@ const CreateBlog = () => {
               <button
                 type="submit"
                 className="p-2 bg-blue-500 text-white rounded-lg hover:bg-blue-700 transition duration-300"
-                disabled={loading}
+                disabled={isSubmitting}
               >
-                {loading ? 'Submitting...' : 'Create'}
+                {isSubmitting ? 'Submitting...' : 'Create'}
               </button>
-              {error && <p className="text-red-500">{error}</p>}
-              {success && <p className="text-green-500">{success}</p>}
+              {submitError && (
+                <p className="text-red-500">{submitError.message}</p>
+              )}
+              {isSuccess && (
+                <p className="text-green-500">Blog created successfully!</p>
+              )}
             </form>
           )}
           {selectedTab === 'preview' && (
             <div className="bg-transparent p-4 rounded-lg">
-              <h2 className="text-2xl mb-4">{formData.title}</h2>
-              <p className="text-lg text-gray-600 mb-4">{formData.category}</p>
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Preview"
-                  className="mb-4 max-w-full h-auto"
-                />
-              )}
-              <div
-                className="text-base leading-relaxed"
+              <h2 className="text-2xl font-bold mb-2 text-gray-800 dark:text-gray-200">
+                {formData.title}
+              </h2>
+              <p className="mb-4 text-gray-800 dark:text-gray-200">
+                {formData.short_content}
+              </p>
+              <p
+                className="content text-gray-800 dark:text-gray-200"
                 dangerouslySetInnerHTML={{ __html: formData.content }}
               />
+              {imagePreview && (
+                <div className="mt-4">
+                  <img
+                    src={imagePreview}
+                    alt="Selected Image"
+                    className="max-w-full h-auto rounded-lg"
+                  />
+                </div>
+              )}
             </div>
           )}
         </div>
