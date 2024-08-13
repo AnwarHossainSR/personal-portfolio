@@ -4,46 +4,50 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import AdminBlogCard from '@/components/Card/AdminBlogCard';
 import Loader from '@/components/common/Loader';
+import { useFetch } from '@/hooks/useAPiCall'; // Import useFetch hook
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { useTheme } from '@/providers/context/Context';
 
+const fetchPostsApi = async () => {
+  const res = await fetch('/api/blogs');
+  if (!res.ok) {
+    throw new Error('Failed to fetch posts');
+  }
+  return res.json();
+};
+
 const AdminBlogPage = () => {
   const theme = useTheme();
   const { darkMode } = theme.state;
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const fetchPosts = async () => {
-    try {
-      const res = await fetch('/api/blogs');
-      const data = await res.json();
-      setPosts(data.data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setPosts([]);
-      setLoading(false);
-    }
-  };
+
+  const {
+    data: postsData,
+    isLoading,
+    isError,
+  } = useFetch(['posts'], fetchPostsApi);
+
   useEffect(() => {
-    fetchPosts();
-  }, []);
-  console.log('posts?.length', posts?.length);
+    if (isError) {
+      console.log('Error fetching posts');
+    }
+  }, [isError]);
+
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
-        {loading && <Loader text="Fetching..." />}
-        {!loading && (
+        {isLoading && <Loader text="Fetching..." />}
+        {!isLoading && (
           <div
             className="flex justify-between items-center mb-5 w-full" // Use w-full
           >
             <h1 className="text-white text-2xl">
-              {posts?.length > 0
-                ? `Posts found ${posts?.length}`
+              {postsData?.data?.length > 0
+                ? `Posts found ${postsData?.data?.length}`
                 : 'No posts Found'}
             </h1>
             <Link
@@ -55,7 +59,9 @@ const AdminBlogPage = () => {
             </Link>
           </div>
         )}
-        {!loading && <AdminBlogCard posts={posts} />}
+        {!isLoading && postsData?.data && (
+          <AdminBlogCard posts={postsData.data} />
+        )}
       </AdminLayout>
     </MainLayout>
   );
