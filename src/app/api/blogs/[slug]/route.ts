@@ -28,6 +28,7 @@ export async function GET(req: NextRequest) {
     const blog = await Post.findOne({ _id: slug })
       .populate('author', 'name image id', User)
       .populate('category', 'name color', Category)
+      // .populate('comments', 'comment updatedAt', Comment);
       .populate({
         path: 'comments',
         select: 'comment updatedAt',
