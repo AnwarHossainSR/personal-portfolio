@@ -8,44 +8,31 @@ import { useEffect, useState } from 'react';
 
 import BlogCard from '@/components/Card/BlogCard';
 import Tab from '@/components/Tab';
+import { QUERY_KEY } from '@/config/query-key';
+import { useFetch } from '@/hooks/useAPiCall';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { useTheme } from '@/providers/context/Context';
+import { getCategories } from '@/services/categories';
+import { getPosts } from '@/services/posts';
 
 const Blogs = () => {
+  const {
+    data: posts,
+    isLoading: isLoadingPosts,
+    isError: isErrorPosts,
+  } = useFetch([QUERY_KEY.POSTS], getPosts);
+
+  const {
+    data: categories,
+    isLoading: isLoadingCategories,
+    isError: isErrorCategories,
+  } = useFetch([QUERY_KEY.CATEGORIES], getCategories);
+
   const theme = useTheme();
   const { darkMode } = theme.state;
   const [filter, setFilter] = useState('All');
-  const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  const fetchPosts = async () => {
-    try {
-      const res = await fetch('/api/blogs');
-      if (!res.ok) {
-        throw new Error('Failed to fetch posts');
-      }
-      const data = await res.json();
-      setPosts(data.data); // Assuming the data is in `data.data`
-
-      const res2 = await fetch('/api/categories');
-      if (!res2.ok) {
-        throw new Error('Failed to fetch categories');
-      }
-      const data2 = await res2.json();
-      setCategories(data2.data);
-    } catch (err: any) {
-      // eslint-disable-next-line no-console
-      console.error(err);
-      setError('Failed to load blogs. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   useEffect(() => {
-    fetchPosts();
     window.scrollTo(0, 0);
   }, []);
 
@@ -66,7 +53,11 @@ const Blogs = () => {
             marginBottom: '2rem',
           }}
         >
-          {!loading && (
+          {isLoadingCategories && <p>Loading categories...</p>}
+          {isErrorCategories && (
+            <p className="text-red-500">{isErrorCategories}</p>
+          )}
+          {!isLoadingCategories && !isErrorCategories && (
             <Tab
               key="All"
               className={`${filter === 'All' ? 'active' : ''}`}
@@ -88,10 +79,10 @@ const Blogs = () => {
       </div>
 
       <div className="blogs">
-        {loading ? (
+        {isLoadingPosts ? (
           <p>Loading...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
+        ) : isErrorPosts ? (
+          <p className="text-red-500">{isErrorPosts}</p>
         ) : posts.length > 0 ? (
           posts.map((post: any) => (
             <BlogCard key={post._id} post={post} darkMode={darkMode} />
