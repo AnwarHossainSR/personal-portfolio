@@ -5,69 +5,57 @@
 
 /* eslint-disable react/no-danger */
 import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 
 import Loader from '@/components/common/Loader';
+import { useFetch, usePost } from '@/hooks/useAPiCall';
 import { getDateCompare } from '@/lib';
 import { useTheme } from '@/providers/context/Context';
+import { getBlogDetails, submitComment } from '@/services/posts';
 
 const BlogDetailsPage = ({ slug }: { slug: string }) => {
   const theme = useTheme();
   const { darkMode } = theme.state;
-  const [blogData, setBlogData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const newComment = useRef<any>(null);
-  const fetchBlogData = async () => {
-    try {
-      const response = await fetch(`/api/blogs/${slug}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch blog data');
-      }
-      const data = await response.json();
-      setBlogData(data.data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchBlogData();
-  }, [slug]);
+
+  // Fetch blog details using useFetch
+  const {
+    data: blogData,
+    isLoading,
+    isError,
+    refetch: refetchBlogData, // We'll use this to refetch data after submitting a comment
+  } = useFetch([`blogDetails-${slug}`], () => getBlogDetails(slug));
+
+  // Submit comment using usePost
+  const {
+    post: submitCommentPost,
+    // @ts-ignore
+    isLoading: isSubmitting,
+    isError: isSubmitError,
+  } = usePost(formData => submitComment(formData));
 
   const handleCommentSubmit = async (e: any) => {
     e.preventDefault();
     try {
       const comment = newComment.current?.value;
       if (!comment) return;
-
       const formData = new FormData();
       formData.append('postId', blogData?._id);
       formData.append('comment', comment);
-
-      const response = await fetch('/api/comments', {
-        method: 'POST',
-        body: formData,
-      });
-      if (!response.ok) {
-        throw new Error('Failed to submit comment');
-      }
-      const data = await response.json();
-      console.log(data);
+      await submitCommentPost(formData);
       newComment.current.value = '';
-      fetchBlogData();
+      refetchBlogData(); // Refetch blog data to show the new comment
     } catch (err: any) {
       console.log(err.message);
     }
   };
 
-  if (loading) {
+  if (isLoading) {
     return <Loader text="fetching blogs..." />;
   }
 
-  if (error) {
-    return <p>Error: {error}</p>;
+  if (isError) {
+    return <p>Error: Failed to load blog data</p>;
   }
 
   if (!blogData) {
@@ -149,8 +137,9 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
               <label htmlFor="comment">Comment</label>
               <textarea id="comment" ref={newComment} rows={5} />
             </div>
-            <button className="button" type="submit">
-              Submit
+            {isSubmitError && <p className="error">Failed to submit comment</p>}
+            <button className="button" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Submit'}
             </button>
           </form>
         </div>

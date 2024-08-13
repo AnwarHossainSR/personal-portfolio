@@ -2,6 +2,7 @@
 import type {
   QueryKey,
   UseMutationOptions,
+  UseMutationResult,
   UseQueryOptions,
 } from '@tanstack/react-query';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -20,16 +21,23 @@ export const useFetch = (
 
 export const usePost = (
   createFn: (data: any) => Promise<any>,
-  options?: Omit<UseMutationOptions<any>, 'mutationFn'>
-) => {
+  options?: Omit<UseMutationOptions<any, Error, any, unknown>, 'mutationFn'>
+): UseMutationResult<any, Error, any, unknown> & {
+  post: (data: any) => Promise<void>;
+} => {
   const mutation = useMutation({
     mutationFn: createFn,
     ...options,
   });
+
   const post = async (data: any) => {
     await mutation.mutateAsync(data);
   };
-  return { ...mutation, post };
+
+  return {
+    ...mutation, // This includes all the mutation states like isLoading, isError, etc.
+    post,
+  };
 };
 
 export const usePut = (
