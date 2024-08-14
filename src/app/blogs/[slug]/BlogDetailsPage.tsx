@@ -18,15 +18,13 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
   const { darkMode } = theme.state;
   const newComment = useRef<any>(null);
 
-  // Fetch blog details using useFetch
   const {
     data: blogData,
     isLoading,
     isError,
-    refetch: refetchBlogData, // We'll use this to refetch data after submitting a comment
+    refetch: refetchBlogData,
   } = useFetch([`blogDetails-${slug}`], () => getBlogDetails(slug));
 
-  // Submit comment using usePost
   const {
     post: submitCommentPost,
     // @ts-ignore

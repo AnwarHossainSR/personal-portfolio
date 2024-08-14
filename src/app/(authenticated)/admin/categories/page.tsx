@@ -1,35 +1,30 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import AdminCategoryCard from '@/components/Card/AdminCategoryCard';
 import Loader from '@/components/common/Loader';
+import { QUERY_KEY } from '@/config/query-key';
+import { useFetch } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { useTheme } from '@/providers/context/Context';
+import { getCategories } from '@/services/categories';
 
 const AdminCategoryPage = () => {
   const theme = useTheme();
   const { darkMode } = theme.state;
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchCategories = async () => {
-    try {
-      const res = await fetch('/api/categories');
-      const data = await res.json();
-      setCategories(data.data);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-      setCategories([]);
-      setLoading(false);
-    }
-  };
+  const {
+    data: categories,
+    isLoading,
+    isError,
+  } = useFetch([QUERY_KEY.CATEGORIES], getCategories);
 
   useEffect(() => {
-    fetchCategories();
+    if (isError) {
+      console.log(isError);
+    }
   }, []);
 
   const handleDelete = (id: number) => {
@@ -40,8 +35,8 @@ const AdminCategoryPage = () => {
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
-        {loading && <Loader text="Fetching Categories..." />}
-        {!loading && (
+        {isLoading && <Loader text="Fetching..." />}
+        {!isLoading && (
           <>
             <div
               className="flex justify-between items-center mb-5"
