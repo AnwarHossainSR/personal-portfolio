@@ -22,9 +22,7 @@ const Sidebar = ({ darkMode }: { darkMode: boolean }) => {
       ? 'bg-yellow-500 text-gray-800'
       : 'bg-gray-800 text-white';
 
-    return pathname === `/admin/${path}`
-      ? `${baseClass} ${activeClass}`
-      : baseClass;
+    return pathname.includes(path) ? `${baseClass} ${activeClass}` : baseClass;
   };
 
   return (

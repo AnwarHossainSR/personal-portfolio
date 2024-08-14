@@ -91,31 +91,3 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
-
-export async function DELETE(req: NextRequest) {
-  await connectToDatabase(); // Ensure database connection
-
-  try {
-    const url = new URL(req.url);
-    const id = url.pathname.split('/').pop() ?? '';
-
-    if (!id) {
-      return NextResponse.json(
-        { message: 'Please enter name and color.' },
-        { status: 400 }
-      );
-    }
-
-    const blog = await Category.findOneAndDelete({ _id: id });
-
-    return NextResponse.json({
-      message: 'Category deleted successfully',
-      data: blog,
-    });
-  } catch (error) {
-    return NextResponse.json(
-      { message: 'An error occurred', error },
-      { status: 500 }
-    );
-  }
-}
