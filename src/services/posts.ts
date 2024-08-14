@@ -11,6 +11,18 @@ export const createPost = async (data: unknown) => {
     throw error;
   }
 };
+
+export const updatePost = async (id: string, data: unknown) => {
+  try {
+    const response = await axios.put(
+      `${API_ENDPOINTS.POSTS.GET_POSTS}/${id}`,
+      data
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
 export const getPosts = async () => {
   try {
     const response = await axios.get(API_ENDPOINTS.POSTS.GET_POSTS);

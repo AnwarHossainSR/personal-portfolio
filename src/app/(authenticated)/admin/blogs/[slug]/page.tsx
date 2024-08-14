@@ -1,32 +1,35 @@
+/* eslint-disable no-nested-ternary */
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-use-before-define */
+/* eslint-disable import/order */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-danger */
-/* eslint-disable react/button-has-type */
+// @ts-nocheck
 
 'use client';
 
-import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
 import type { ChangeEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import 'react-quill/dist/quill.snow.css';
 
+import Loader from '@/components/common/Loader';
+import { QUERY_KEY } from '@/config/query-key';
+import { useFetch, usePost } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { formats, modules } from '@/lib/editor';
 import { useTheme } from '@/providers/context/Context';
+import { getCategories } from '@/services/categories';
+import { getBlogDetails, updatePost } from '@/services/posts';
+import dynamic from 'next/dynamic';
 
-const EditBlog = ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
-  const ReactQuill = useMemo(
-    () => dynamic(() => import('react-quill'), { ssr: false }),
-    []
-  );
-
-  const theme = useTheme();
-  const { darkMode } = theme.state;
-
-  const [formData, setFormData] = useState<any>({
+const EditBlog = ({ params: { slug } }: { params: { slug: string } }) => {
+  const {
+    state: { darkMode },
+  } = useTheme();
+  const [formData, setFormData] = useState({
     title: '',
     short_content: '',
     content: '',
@@ -34,122 +37,93 @@ const EditBlog = ({ params }: { params: { slug: string } }) => {
     published: false,
     file: null,
   });
-
   const [selectedTab, setSelectedTab] = useState<'editor' | 'preview'>(
     'editor'
   );
-
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const router = useRouter();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [categories, setCategories] = useState([]);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`/api/blogs/${slug}`);
-      const { data } = await response.json();
-      if (response.ok) {
-        setFormData({
-          title: data.title || '',
-          short_content: data.short_content || '',
-          content: data.content || '',
-          category: data.category || '',
-          published: data.published || false,
-          file: null,
-        });
-        setImagePreview(data.image_url || null);
-      } else {
-        setError(data.message || 'Failed to load blog data');
-      }
-      const response2 = await fetch('/api/categories');
-      const { data: cats } = await response2.json();
-      if (response2.ok) {
-        setCategories(cats);
-      } else {
-        setError('Failed to load categories');
-      }
-    } catch (err: any) {
-      setError(err.message);
-    }
-  };
+  const {
+    data: blogData,
+    isLoading: isBlogLoading,
+    isError: isBlogError,
+  } = useFetch([`blogDetails-${slug}`], () => getBlogDetails(slug));
+  const {
+    data: categories,
+    isLoading: isCategoriesLoading,
+    isError: isCategoriesError,
+  } = useFetch([QUERY_KEY.CATEGORIES], getCategories);
 
-  useEffect(() => {
-    if (slug) {
-      fetchData();
-    }
-  }, [slug]);
+  const {
+    mutate: postUpdate,
+    isLoading,
+    error: isSubmitError,
+    isSuccess,
+  } = usePost(updatedData => updatePost(slug, updatedData));
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value, type } = e.target;
-
-    if (type === 'checkbox') {
-      setFormData((prevState: any) => ({
-        ...prevState,
-        [name]: (e.target as HTMLInputElement).checked,
-      }));
-    } else if (type === 'file') {
-      const { files } = e.target as HTMLInputElement;
-      if (files && files.length > 0) {
-        setFormData((prevState: any) => ({
-          ...prevState,
-          [name]: files[0],
-        }));
-        const fileURL = URL.createObjectURL(files[0]);
-        setImagePreview(fileURL);
-      }
-    } else {
-      setFormData((prevState: any) => ({
-        ...prevState,
-        [name]: value,
-      }));
-    }
-  };
-
-  const handleEditorChange = (value: string) => {
-    setFormData((prevState: any) => ({
+    const { name, value, type, files, checked } = e.target;
+    setFormData(prevState => ({
       ...prevState,
-      content: value,
+      [name]:
+        type === 'checkbox'
+          ? checked
+          : type === 'file' && files
+            ? files[0]
+            : value,
     }));
+
+    if (type === 'file' && files && files.length > 0) {
+      setImagePreview(URL.createObjectURL(files[0]));
+    }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditorChange = (value: string) =>
+    setFormData(prevState => ({ ...prevState, content: value }));
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
     const formDataToSend = new FormData();
-    formDataToSend.append('title', formData.title);
-    formDataToSend.append('short_content', formData.short_content);
-    formDataToSend.append('content', formData.content);
-    formDataToSend.append('category', formData.category);
-    formDataToSend.append('published', formData.published.toString());
-    if (formData.file) {
-      formDataToSend.append('file', formData.file);
-    }
 
-    try {
-      const response = await fetch(`/api/blogs/${slug}`, {
-        method: 'PUT',
-        body: formDataToSend,
-      });
-
-      const result = await response.json();
-      if (!response.ok) {
-        setError(result.message);
-        return;
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value) {
+        if (value instanceof File) {
+          formDataToSend.append(key, value, value.name);
+        } else {
+          formDataToSend.append(key, value as string);
+        }
       }
+    });
 
-      setSuccess('Blog updated successfully!');
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
+    postUpdate(formDataToSend);
   };
+
+  useEffect(() => {
+    if (blogData) {
+      setFormData({
+        title: blogData.title || '',
+        short_content: blogData.short_content || '',
+        content: blogData.content || '',
+        category: blogData.category || '',
+        published: blogData.published || false,
+        file: null,
+      });
+      setImagePreview(blogData.image_url || null);
+    }
+  }, [blogData]);
+
+  useEffect(() => {
+    if (isSuccess) router.push('/admin/blogs');
+    if (isSubmitError) console.log(isSubmitError);
+  }, [isSuccess, isSubmitError]);
+
+  if (isBlogLoading || isCategoriesLoading) return <Loader text="Loading..." />;
+  if (isBlogError || isCategoriesError)
+    return (
+      <p className="text-red-500">Error: {isBlogError || isCategoriesError}</p>
+    );
 
   return (
     <MainLayout>
@@ -159,175 +133,65 @@ const EditBlog = ({ params }: { params: { slug: string } }) => {
             Edit Blog
           </h2>
           <div className="flex mb-4">
-            <button
-              className={`${
-                selectedTab === 'editor'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-800'
-              } px-4 py-2 rounded-lg`}
-              onClick={() => setSelectedTab('editor')}
-            >
-              Editor
-            </button>
-            <button
-              className={`${
-                selectedTab === 'preview'
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-200 text-gray-800'
-              } px-4 py-2 rounded-lg ml-2`}
-              onClick={() => setSelectedTab('preview')}
-            >
-              Preview
-            </button>
-          </div>
-          {selectedTab === 'editor' && (
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-              <div className="flex flex-col">
-                <label
-                  htmlFor="title"
-                  className="text-gray-800 dark:text-gray-200"
-                >
-                  Title:
-                </label>
-                <input
-                  type="text"
-                  id="title"
-                  name="title"
-                  className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                  value={formData.title || ''}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor="short_content"
-                  className="text-gray-800 dark:text-gray-200"
-                >
-                  Short Content:
-                </label>
-                <textarea
-                  id="short_content"
-                  name="short_content"
-                  className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                  value={formData.short_content || ''}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor="category"
-                  className="text-gray-800 dark:text-gray-200"
-                >
-                  Category:
-                </label>
-                <select
-                  id="category"
-                  name="category"
-                  className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                  value={formData.category || ''}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select a category</option>
-                  {categories &&
-                    categories.length > 0 &&
-                    categories.map((cat: any) => (
-                      <option key={cat._id} value={cat._id}>
-                        {cat.name}
-                      </option>
-                    ))}
-                </select>
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor="file"
-                  className="text-gray-800 dark:text-gray-200"
-                >
-                  Image:
-                </label>
-                <input
-                  type="file"
-                  id="file"
-                  name="file"
-                  className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
-                  accept="image/*"
-                  onChange={handleChange}
-                />
-                {imagePreview && (
-                  <img
-                    src={imagePreview}
-                    alt="Image Preview"
-                    className="mt-2 max-w-full h-auto rounded-lg"
-                  />
-                )}
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor="content"
-                  className="text-gray-800 dark:text-gray-200"
-                >
-                  Content:
-                </label>
-                <ReactQuill
-                  value={formData.content || ''}
-                  onChange={handleEditorChange}
-                  modules={modules}
-                  formats={formats}
-                  className="dark-mode"
-                  placeholder="Write your thoughts!"
-                />
-              </div>
-              <div className="flex items-center">
-                <label
-                  htmlFor="published"
-                  className="text-gray-800 dark:text-gray-200 mr-2"
-                >
-                  Published:
-                </label>
-                <input
-                  type="checkbox"
-                  id="published"
-                  name="published"
-                  className="form-checkbox text-blue-500 h-5 w-5 dark:bg-gray-700 dark:border-gray-600"
-                  checked={formData.published}
-                  onChange={handleChange}
-                />
-              </div>
+            {['editor', 'preview'].map(tab => (
               <button
-                type="submit"
-                className={`${
-                  loading
-                    ? 'bg-blue-400 cursor-not-allowed'
-                    : 'bg-blue-500 hover:bg-blue-600'
-                } text-white font-bold py-2 px-4 rounded-lg`}
-                disabled={loading}
+                type="button"
+                key={tab}
+                className={`px-4 py-2 rounded-lg ${selectedTab === tab ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'} ml-2`}
+                onClick={() => setSelectedTab(tab as 'editor' | 'preview')}
               >
-                {loading ? 'Updating...' : 'Update Blog'}
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
               </button>
-              {error && <p className="text-red-500">{error}</p>}
-              {success && <p className="text-green-500">{success}</p>}
-            </form>
-          )}
-          {selectedTab === 'preview' && (
-            <div className="p-4 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200">
-              <h2 className="text-2xl font-bold mb-4">{formData.title}</h2>
-              {imagePreview && (
-                <img
-                  src={imagePreview}
-                  alt="Preview Image"
-                  className="max-w-full h-auto mb-4 rounded-lg"
-                />
-              )}
-              <p className="text-gray-800 dark:text-gray-200 mb-4">
-                {formData.short_content}
-              </p>
-              <div
-                className="blog-content"
-                dangerouslySetInnerHTML={{ __html: formData.content }}
+            ))}
+          </div>
+          {selectedTab === 'editor' ? (
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+              <InputField
+                label="Title:"
+                id="title"
+                type="text"
+                value={formData.title}
+                onChange={handleChange}
               />
-            </div>
+              <TextAreaField
+                label="Short Content:"
+                id="short_content"
+                value={formData.short_content}
+                onChange={handleChange}
+              />
+              <SelectField
+                label="Category:"
+                id="category"
+                value={formData.category}
+                onChange={handleChange}
+                options={categories}
+              />
+              <FileInputField
+                label="Image:"
+                id="file"
+                onChange={handleChange}
+                imagePreview={imagePreview}
+              />
+              <EditorField
+                label="Content:"
+                value={formData.content}
+                onChange={handleEditorChange}
+              />
+              <CheckboxField
+                label="Published:"
+                id="published"
+                checked={formData.published}
+                onChange={handleChange}
+              />
+              <SubmitButton isLoading={isLoading} />
+            </form>
+          ) : (
+            <PreviewField
+              title={formData.title}
+              imagePreview={imagePreview}
+              content={formData.content}
+              shortContent={formData.short_content}
+            />
           )}
         </div>
       </AdminLayout>
@@ -336,3 +200,151 @@ const EditBlog = ({ params }: { params: { slug: string } }) => {
 };
 
 export default EditBlog;
+
+const InputField = ({ label, id, type, value, onChange }: any) => (
+  <div className="flex flex-col">
+    <label htmlFor={id} className="text-gray-800 dark:text-gray-200">
+      {label}
+    </label>
+    <input
+      type={type}
+      id={id}
+      name={id}
+      value={value}
+      onChange={onChange}
+      className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
+      required
+    />
+  </div>
+);
+
+const TextAreaField = ({ label, id, value, onChange }: any) => (
+  <div className="flex flex-col">
+    <label htmlFor={id} className="text-gray-800 dark:text-gray-200">
+      {label}
+    </label>
+    <textarea
+      id={id}
+      name={id}
+      value={value}
+      onChange={onChange}
+      className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
+      required
+    />
+  </div>
+);
+
+const SelectField = ({ label, id, value, onChange, options }: any) => (
+  <div className="flex flex-col">
+    <label htmlFor={id} className="text-gray-800 dark:text-gray-200">
+      {label}
+    </label>
+    <select
+      id={id}
+      name={id}
+      value={value}
+      onChange={onChange}
+      className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
+      required
+    >
+      <option value="">Select a category</option>
+      {options &&
+        options.length > 0 &&
+        options.map((cat: any) => (
+          <option key={cat._id} value={cat._id}>
+            {cat.name}
+          </option>
+        ))}
+    </select>
+  </div>
+);
+
+const FileInputField = ({ label, id, onChange, imagePreview }: any) => (
+  <div className="flex flex-col">
+    <label htmlFor={id} className="text-gray-800 dark:text-gray-200">
+      {label}
+    </label>
+    <input
+      type="file"
+      id={id}
+      name={id}
+      className="p-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-gray-200"
+      accept="image/*"
+      onChange={onChange}
+    />
+    {imagePreview && (
+      <img
+        src={imagePreview}
+        alt="Image Preview"
+        className="mt-2 max-w-full h-auto rounded-lg"
+      />
+    )}
+  </div>
+);
+
+const EditorField = ({ label, value, onChange }: any) => {
+  const ReactQuill = useMemo(
+    () => dynamic(() => import('react-quill'), { ssr: false }),
+    []
+  );
+
+  return (
+    <div className="flex flex-col">
+      <label htmlFor="content" className="text-gray-800 dark:text-gray-200">
+        {label}
+      </label>
+      <ReactQuill
+        value={value}
+        onChange={onChange}
+        modules={modules}
+        formats={formats}
+        className="dark-mode"
+        placeholder="Write your thoughts!"
+      />
+    </div>
+  );
+};
+
+const CheckboxField = ({ label, id, checked, onChange }: any) => (
+  <div className="flex items-center">
+    <label htmlFor={id} className="text-gray-800 dark:text-gray-200 mr-2">
+      {label}
+    </label>
+    <input
+      type="checkbox"
+      id={id}
+      name={id}
+      checked={checked}
+      onChange={onChange}
+      className="form-checkbox text-blue-500"
+    />
+  </div>
+);
+
+const SubmitButton = ({ isLoading }: any) => (
+  <button
+    type="submit"
+    className={`px-4 py-2 rounded-lg text-white ${isLoading ? 'bg-gray-500' : 'bg-blue-500'} hover:bg-blue-600`}
+    disabled={isLoading}
+  >
+    {isLoading ? 'Submitting...' : 'Submit'}
+  </button>
+);
+
+const PreviewField = ({ title, imagePreview, content, shortContent }: any) => (
+  <div className="preview">
+    <h1 className="text-3xl mb-4 text-gray-800 dark:text-gray-200">{title}</h1>
+    {imagePreview && (
+      <img
+        src={imagePreview}
+        alt="Image Preview"
+        className="mb-4 max-w-full h-auto rounded-lg"
+      />
+    )}
+    <div
+      dangerouslySetInnerHTML={{ __html: content }}
+      className="mb-4 text-gray-800 dark:text-gray-200"
+    />
+    <p className="text-gray-800 dark:text-gray-200">{shortContent}</p>
+  </div>
+);
