@@ -32,3 +32,12 @@ export interface CurrentUserProps {
     isAdmin: boolean;
   } | null;
 }
+
+export interface ConfirmationOptions {
+  title?: string;
+  message?: string;
+  confirmButtonText?: string;
+  cancelButtonText?: string;
+  onConfirm?: () => void;
+  onCancel?: () => void;
+}

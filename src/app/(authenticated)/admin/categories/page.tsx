@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { useEffect } from 'react';
 
 import AdminCategoryCard from '@/components/Card/AdminCategoryCard';
+import ConfirmationDialog from '@/components/common/ConfirmationDialog';
 import Loader from '@/components/common/Loader';
 import { QUERY_KEY } from '@/config/query-key';
 import { useFetch } from '@/hooks/useAPiCall';
+import { useConfirmationDialog } from '@/hooks/useConfirmationDialog';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { useTheme } from '@/providers/context/Context';
@@ -14,22 +16,38 @@ import { getCategories } from '@/services/categories';
 
 const AdminCategoryPage = () => {
   const theme = useTheme();
+  const { isOpen, options, confirm, setIsOpen } = useConfirmationDialog();
+
   const { darkMode } = theme.state;
   const {
     data: categories,
     isLoading,
     isError,
+    refetch: refetchCategoryData,
   } = useFetch([QUERY_KEY.CATEGORIES], getCategories);
 
   useEffect(() => {
     if (isError) {
       console.log(isError);
     }
-  }, []);
+    refetchCategoryData();
+  }, [isError]);
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     console.log('Delete Category', id);
-    // Implement delete logic here
+    confirm({
+      title: 'Delete Item?',
+      message: 'This action cannot be undone!',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'No, keep it',
+      onConfirm: () => {
+        // Perform the delete action
+        console.log('Item deleted');
+      },
+      onCancel: () => {
+        console.log('Delete action canceled');
+      },
+    });
   };
 
   return (
@@ -63,6 +81,16 @@ const AdminCategoryPage = () => {
             />
           </>
         )}
+        <ConfirmationDialog
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          title={options.title}
+          message={options.message}
+          confirmButtonText={options.confirmButtonText}
+          cancelButtonText={options.cancelButtonText}
+          onConfirm={options.onConfirm}
+          onCancel={options.onCancel}
+        />
       </AdminLayout>
     </MainLayout>
   );
