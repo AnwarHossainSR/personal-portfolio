@@ -88,3 +88,34 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  await connectToDatabase(); // Ensure database connection
+
+  try {
+    const url = new URL(req.url);
+    const id = url.pathname.split('/').pop() ?? '';
+
+    if (!id) {
+      return NextResponse.json({ message: 'id is required' }, { status: 400 });
+    }
+
+    const category = await Category.findOneAndDelete({ _id: id });
+
+    if (!category) {
+      return NextResponse.json(
+        { message: 'Category not found' },
+        { status: 404 }
+      );
+    }
+
+    return NextResponse.json({
+      message: 'Category deleted successfully',
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { message: 'An error occurred', error },
+      { status: 500 }
+    );
+  }
+}

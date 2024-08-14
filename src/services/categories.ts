@@ -46,3 +46,14 @@ export const getCAtegoryDetails = async (slug: string) => {
     throw error;
   }
 };
+
+export const deleteCategory = async (id: string) => {
+  try {
+    const response = await axios.delete(
+      `${API_ENDPOINTS.CATEGORIES.GET_CATEGORIES}/${id}`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
