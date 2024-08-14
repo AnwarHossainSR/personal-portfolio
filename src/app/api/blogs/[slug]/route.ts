@@ -127,3 +127,29 @@ export async function PUT(req: NextRequest) {
     );
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  await connectToDatabase(); // Ensure database connection
+
+  try {
+    const url = new URL(req.url);
+    const slug = url.pathname.split('/').pop() ?? '';
+    if (!slug) {
+      return NextResponse.json({ message: 'id is required' }, { status: 400 });
+    }
+
+    const blog = await Post.findOneAndDelete({ _id: slug });
+    if (!blog) {
+      return NextResponse.json({ message: 'Blog not found' }, { status: 404 });
+    }
+
+    return NextResponse.json({
+      message: 'Blog deleted successfully',
+    });
+  } catch (error) {
+    return NextResponse.json(
+      { message: 'An error occurred', error },
+      { status: 500 }
+    );
+  }
+}

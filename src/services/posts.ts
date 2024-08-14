@@ -42,3 +42,14 @@ export const submitComment = async (data: unknown) => {
     throw error;
   }
 };
+
+export const deletePost = async (id: string) => {
+  try {
+    const response = await axios.delete(
+      `${API_ENDPOINTS.POSTS.GET_POSTS}/${id}`
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
