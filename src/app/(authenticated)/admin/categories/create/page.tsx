@@ -1,11 +1,13 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { usePost } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { useTheme } from '@/providers/context/Context';
+import { createCategory } from '@/services/categories';
 
 const CategoryFormCreatePage = () => {
   const theme = useTheme();
@@ -13,31 +15,34 @@ const CategoryFormCreatePage = () => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [color, setColor] = useState('');
-  const [loading, setLoading] = useState(false);
+
+  const {
+    mutate: categoryCreate,
+    // @ts-ignore
+    isLoading: isSubmitting,
+    error: submitError,
+    isSuccess,
+  } = usePost(data => createCategory(data));
 
   const handleSave = async () => {
-    setLoading(true);
     try {
       const formData = new FormData();
       formData.append('name', name);
       formData.append('color', color);
-      const response = await fetch('/api/categories', {
-        method: 'POST',
-        body: formData,
-      });
-      console.log(response);
-
-      if (!response.ok) {
-        setLoading(false);
-        return;
-      }
-      setLoading(false);
-      router.push('/admin/categories');
+      categoryCreate(formData);
     } catch (error) {
-      setLoading(false);
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push('/admin/categories');
+    }
+    if (submitError) {
+      console.log(submitError);
+    }
+  }, [isSuccess]);
 
   return (
     <MainLayout>
@@ -73,7 +78,7 @@ const CategoryFormCreatePage = () => {
             className="px-4 py-2 bg-blue-500 text-white rounded transition-opacity hover:opacity-80"
             onClick={handleSave}
           >
-            {loading ? 'Saving...' : 'Save'}
+            {isSubmitting ? 'Saving...' : 'Save'}
           </button>
         </div>
       </AdminLayout>

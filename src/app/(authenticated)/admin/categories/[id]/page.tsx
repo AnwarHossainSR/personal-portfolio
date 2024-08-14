@@ -3,9 +3,11 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { useFetch } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { useTheme } from '@/providers/context/Context';
+import { getBlogDetails } from '@/services/posts';
 
 const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
   const theme = useTheme();
@@ -13,28 +15,13 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [color, setColor] = useState('');
-  const [loading, setLoading] = useState(true);
 
-  const fetchCategory = async () => {
-    if (params.id) {
-      try {
-        const res = await fetch(`/api/categories/${params.id}`);
-        const data = await res.json();
-        setName(data.data.name);
-        setColor(data.data.color);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-        setLoading(false);
-      }
-    } else {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCategory();
-  }, [params.id]);
+  const {
+    data,
+    isLoading,
+    isError,
+    refetch: refetchBlogData,
+  } = useFetch([`blogDetails-${params.id}`], () => getBlogDetails(params.id));
 
   const handleSave = async () => {
     try {
@@ -47,15 +34,22 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
         body: formData,
       });
       router.push('/admin/categories');
+      refetchBlogData();
     } catch (error) {
       console.log(error);
     }
   };
 
+  useEffect(() => {
+    if (isError) {
+      console.log(isError);
+    }
+  }, [isError]);
+
   return (
     <MainLayout>
       <AdminLayout darkMode={darkMode}>
-        {loading ? (
+        {isLoading ? (
           <div>Loading...</div>
         ) : (
           <div className="max-w-lg mx-auto p-5 bg-gray-800 rounded">
@@ -68,7 +62,7 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
                 type="text"
                 id="name"
                 className="w-full px-4 py-2 rounded bg-gray-700 text-white"
-                value={name}
+                value={data.name}
                 onChange={e => setName(e.target.value)}
               />
             </div>
@@ -80,7 +74,7 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
                 type="text"
                 id="color"
                 className="w-full px-4 py-2 rounded bg-gray-700 text-white"
-                value={color}
+                value={data.color}
                 onChange={e => setColor(e.target.value)}
               />
             </div>
@@ -89,7 +83,7 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
               className="px-4 py-2 bg-blue-500 text-white rounded transition-opacity hover:opacity-80"
               onClick={handleSave}
             >
-              Update
+              {isLoading ? 'Saving...' : 'Save'}
             </button>
           </div>
         )}
