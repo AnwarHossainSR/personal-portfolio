@@ -42,8 +42,10 @@ export const usePost = (
 
 export const usePut = (
   updateFn: (data: any) => Promise<any>,
-  options?: Omit<UseMutationOptions<any>, 'mutationFn'>
-) => {
+  options?: Omit<UseMutationOptions<any, Error, any, unknown>, 'mutationFn'>
+): UseMutationResult<any, Error, any, unknown> & {
+  put: (data: any) => Promise<void>;
+} => {
   const mutation = useMutation({
     mutationFn: updateFn,
     ...options,

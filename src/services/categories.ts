@@ -23,3 +23,26 @@ export const createCategory = async (data: unknown) => {
     throw error;
   }
 };
+
+export const updateCategory = async (id: string, data: unknown) => {
+  try {
+    const response = await axios.put(
+      `${API_ENDPOINTS.CATEGORIES.GET_CATEGORIES}/${id}`,
+      data
+    );
+    return response;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getCAtegoryDetails = async (slug: string) => {
+  try {
+    const response = await axios.get(
+      `${API_ENDPOINTS.CATEGORIES.GET_CATEGORIES}/${slug}`
+    );
+    return response?.data?.data;
+  } catch (error) {
+    throw error;
+  }
+};

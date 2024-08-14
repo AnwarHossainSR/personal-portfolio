@@ -58,7 +58,6 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   await connectToDatabase(); // Ensure database connection
-
   try {
     const formData = await req.formData();
     const name = formData.get('name') as string;
@@ -85,6 +84,7 @@ export async function PUT(req: NextRequest) {
       data: blog,
     });
   } catch (error) {
+    // console.log('error', error);
     return NextResponse.json(
       { message: 'An error occurred', error },
       { status: 500 }
