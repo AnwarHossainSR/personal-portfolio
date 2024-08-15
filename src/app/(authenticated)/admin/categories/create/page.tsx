@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { useAlert } from '@/hooks/useAlert';
 import { usePost } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
@@ -15,6 +16,7 @@ const CategoryFormCreatePage = () => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [color, setColor] = useState('');
+  const { showAlert } = useAlert();
 
   const {
     mutate: categoryCreate,
@@ -37,9 +39,18 @@ const CategoryFormCreatePage = () => {
 
   useEffect(() => {
     if (isSuccess) {
+      showAlert({
+        message: 'Category created successfully!',
+        type: 'success',
+        duration: 3000,
+      });
       router.push('/admin/categories');
     }
     if (submitError) {
+      showAlert({
+        message: 'An error occurred while creating the category.',
+        type: 'error',
+      });
       console.log(submitError);
     }
   }, [isSuccess]);

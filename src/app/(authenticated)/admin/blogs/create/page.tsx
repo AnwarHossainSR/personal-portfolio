@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 
 'use client';
@@ -9,9 +10,13 @@
 import dynamic from 'next/dynamic';
 import type { ChangeEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
+
 import 'react-quill/dist/quill.snow.css';
 
+import { useRouter } from 'next/navigation';
+
 import { QUERY_KEY } from '@/config/query-key';
+import { useAlert } from '@/hooks/useAlert';
 import { useFetch, usePost } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
@@ -25,7 +30,8 @@ const CreateBlog = () => {
     () => dynamic(() => import('react-quill'), { ssr: false }),
     []
   );
-
+  const { showAlert } = useAlert();
+  const router = useRouter();
   const theme = useTheme();
   const { darkMode } = theme.state;
 
@@ -115,8 +121,15 @@ const CreateBlog = () => {
     formDataToSend.append('file', formData.file);
 
     createBlog(formDataToSend);
+  };
 
+  useEffect(() => {
     if (isSuccess) {
+      showAlert({
+        message: 'Blog created successfully',
+        type: 'success',
+        duration: 3000,
+      });
       setFormData({
         title: '',
         short_content: '',
@@ -125,8 +138,16 @@ const CreateBlog = () => {
         published: false,
         file: null,
       });
+      router.push('/admin/blogs');
     }
-  };
+    if (submitError) {
+      showAlert({
+        message: 'An error occurred while creating the blog',
+        type: 'error',
+      });
+      console.log('Error:', submitError);
+    }
+  }, [isSuccess, submitError]);
 
   return (
     <MainLayout>

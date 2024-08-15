@@ -4,24 +4,24 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import AdminBlogCard from '@/components/Card/AdminBlogCard';
-import Alert from '@/components/common/Alert';
-import ConfirmationDialog from '@/components/common/ConfirmationDialog';
 import Loader from '@/components/common/Loader';
 import { QUERY_KEY } from '@/config/query-key';
+import { useAlert } from '@/hooks/useAlert';
 import { useDelete, useFetch } from '@/hooks/useAPiCall';
-import { useConfirmationDialog } from '@/hooks/useConfirmationDialog';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { useTheme } from '@/providers/context/Context';
+import { useNotificationContext } from '@/providers/context/NotificationProvider';
 import { deletePost, getPosts } from '@/services/posts';
 
 const AdminBlogPage = () => {
   const theme = useTheme();
   const { darkMode } = theme.state;
-  const { isOpen, options, confirm, setIsOpen } = useConfirmationDialog();
+  const { showConfirmation } = useNotificationContext();
+  const { showAlert } = useAlert();
 
   const {
     data: postsData,
@@ -30,24 +30,22 @@ const AdminBlogPage = () => {
     refetch,
   } = useFetch([QUERY_KEY.POSTS], getPosts);
 
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState('');
-  const [alertType, setAlertType] = useState<'success' | 'error' | 'info'>(
-    'success'
-  );
-
   const { remove } = useDelete(deletePost, {
     onSuccess: () => {
       refetch(); // Refresh the posts data after deletion
-      setAlertMessage('Post deleted successfully!');
-      setAlertType('success');
-      setShowAlert(true);
+      showAlert({
+        message: 'Post deleted successfully!',
+        type: 'success',
+        duration: 3000,
+      });
     },
     onError: (error: any) => {
       console.error('Error deleting post:', error);
-      setAlertMessage('Failed to delete the post.');
-      setAlertType('error');
-      setShowAlert(true);
+      showAlert({
+        message: 'An error occurred while deleting the post.',
+        type: 'error',
+        duration: 3000,
+      });
     },
   });
 
@@ -57,13 +55,16 @@ const AdminBlogPage = () => {
     }
   }, [isError]);
   const handleDelete = async (id: number) => {
-    confirm({
-      onConfirm: () => remove(id), // Call the remove function with the category id
+    showConfirmation({
+      onConfirm: () => remove(id),
       onCancel: () => {
         console.log('Delete action canceled');
       },
     });
   };
+  useEffect(() => {
+    refetch();
+  }, [refetch]);
 
   return (
     <MainLayout>
@@ -73,8 +74,8 @@ const AdminBlogPage = () => {
           <>
             <div className="flex justify-between items-center mb-5 w-full">
               <h1 className="text-white text-2xl">
-                {postsData?.data?.length > 0
-                  ? `Posts found ${postsData?.data?.length}`
+                {postsData?.length > 0
+                  ? `Posts found ${postsData?.length}`
                   : 'No posts Found'}
               </h1>
               <Link
@@ -88,22 +89,6 @@ const AdminBlogPage = () => {
             <AdminBlogCard posts={postsData} onDelete={handleDelete} />
           </>
         )}
-        <ConfirmationDialog
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          title={options.title}
-          message={options.message}
-          confirmButtonText={options.confirmButtonText}
-          cancelButtonText={options.cancelButtonText}
-          onConfirm={options.onConfirm}
-          onCancel={options.onCancel}
-        />
-        <Alert
-          message={alertMessage}
-          type={alertType}
-          isVisible={showAlert}
-          onClose={() => setShowAlert(false)}
-        />
       </AdminLayout>
     </MainLayout>
   );

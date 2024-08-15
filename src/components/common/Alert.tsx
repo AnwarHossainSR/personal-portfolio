@@ -1,48 +1,32 @@
-import React, { useEffect } from 'react';
+'use client';
 
-interface AlertProps {
-  message: string;
-  type: 'success' | 'error' | 'info';
-  isVisible: boolean;
-  onClose?: () => void;
-  duration?: number;
-}
-const typeStyles = {
+import React from 'react';
+
+import { useNotificationContext } from '@/providers/context/NotificationProvider';
+
+const typeStyles: any = {
   success: 'bg-green-500',
   error: 'bg-red-500',
   info: 'bg-blue-500',
 };
 
-const Alert: React.FC<AlertProps> = ({
-  message,
-  type,
-  isVisible,
-  onClose,
-  duration = 3000,
-}) => {
-  useEffect(() => {
-    if (isVisible && onClose) {
-      const timer = setTimeout(onClose, duration);
-      return () => clearTimeout(timer);
-    }
+const Alert: React.FC = () => {
+  const { alert, closeAlert } = useNotificationContext();
 
-    return () => {};
-  }, [isVisible, onClose, duration]);
-
-  if (!isVisible) return null;
+  if (!alert) return null;
 
   return (
     <div
-      className={`fixed top-4 right-4 z-50 p-4 rounded shadow-lg transition-opacity duration-300 ${typeStyles[type]}`}
+      className={`fixed top-4 right-4 z-50 p-4 rounded shadow-lg transition-opacity duration-300 ${alert.type && typeStyles[alert.type]}`}
     >
       <div className="flex items-center">
         <div className="ml-3">
-          <p className="text-sm font-medium text-white">{message}</p>
+          <p className="text-sm font-medium text-white">{alert.message}</p>
         </div>
-        {onClose && (
+        {closeAlert && (
           <button
             type="button"
-            onClick={onClose}
+            onClick={closeAlert}
             className="ml-4 text-white hover:text-gray-200 focus:outline-none"
           >
             &times;

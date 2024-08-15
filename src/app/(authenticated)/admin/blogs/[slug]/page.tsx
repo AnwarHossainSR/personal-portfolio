@@ -15,6 +15,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import Loader from '@/components/common/Loader';
 import { QUERY_KEY } from '@/config/query-key';
+import { useAlert } from '@/hooks/useAlert';
 import { useFetch, usePut } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
@@ -41,6 +42,7 @@ const EditBlog = ({ params: { slug } }: { params: { slug: string } }) => {
   );
   const router = useRouter();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const { showAlert } = useAlert();
 
   const {
     data: blogData,
@@ -118,14 +120,41 @@ const EditBlog = ({ params: { slug } }: { params: { slug: string } }) => {
   }, [blogData]);
 
   useEffect(() => {
-    if (isSuccess) router.push('/admin/blogs');
-    if (isSubmitError) console.log(isSubmitError);
+    if (isSuccess) {
+      showAlert({
+        message: 'Post updated successfully.',
+        type: 'success',
+        duration: 3000,
+      });
+      router.push('/admin/blogs');
+    }
+    if (isSubmitError) {
+      showAlert({
+        message: 'An error occurred while updating the post.',
+        type: 'error',
+      });
+      console.log(isSubmitError);
+    }
   }, [isSuccess, isSubmitError]);
 
-  if (isBlogLoading || isCategoriesLoading) return <Loader text="Loading..." />;
+  if (isBlogLoading || isCategoriesLoading) {
+    return (
+      <MainLayout>
+        <AdminLayout darkMode={darkMode}>
+          <Loader text="Loading..." />
+        </AdminLayout>
+      </MainLayout>
+    );
+  }
   if (isBlogError || isCategoriesError)
     return (
-      <p className="text-red-500">Error: {isBlogError || isCategoriesError}</p>
+      <MainLayout>
+        <AdminLayout darkMode={darkMode}>
+          <p className="text-red-500">
+            Error: {isBlogError || isCategoriesError}
+          </p>
+        </AdminLayout>
+      </MainLayout>
     );
 
   return (

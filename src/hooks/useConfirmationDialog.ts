@@ -1,20 +1,11 @@
-import { useState } from 'react';
+import { useNotificationContext } from '@/providers/context/NotificationProvider';
 
-import type { ConfirmationOptions } from '@/types';
-
-export function useConfirmationDialog() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [options, setOptions] = useState<ConfirmationOptions>({});
-
-  const confirm = (newOptions: ConfirmationOptions) => {
-    setOptions(newOptions);
-    setIsOpen(true);
-  };
-
+export const useConfirmationDialog = () => {
+  const { confirmation, showConfirmation, closeConfirmation } =
+    useNotificationContext();
   return {
-    isOpen,
-    options,
-    confirm,
-    setIsOpen,
+    confirmation,
+    showConfirmation,
+    closeConfirmation,
   };
-}
+};
