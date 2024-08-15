@@ -83,9 +83,21 @@ export async function PUT(req: NextRequest) {
       );
     }
 
+    const existingBlog = await Post.findById({ _id: slug });
+
+    if (!existingBlog) {
+      return NextResponse.json({ message: 'Blog not found' }, { status: 404 });
+    }
+
     let res = null;
 
     if (file) {
+      // If there is a new image, delete the old one
+      if (existingBlog.image_url) {
+        const publicId = existingBlog.image_url.split('/').pop()?.split('.')[0];
+        await cloudinary.uploader.destroy(`blog_images/${publicId}`);
+      }
+
       const fileBuffer = await file.arrayBuffer();
       const mimeType = file.type;
       const base64Data = Buffer.from(fileBuffer).toString('base64');
@@ -112,10 +124,6 @@ export async function PUT(req: NextRequest) {
       new: true,
     });
 
-    if (!blog) {
-      return NextResponse.json({ message: 'Blog not found' }, { status: 404 });
-    }
-
     return NextResponse.json({
       message: 'Blog updated successfully',
       data: blog,
@@ -139,10 +147,17 @@ export async function DELETE(req: NextRequest) {
       return NextResponse.json({ message: 'id is required' }, { status: 400 });
     }
 
-    const blog = await Post.findOneAndDelete({ _id: slug });
+    const blog = await Post.findById({ _id: slug });
     if (!blog) {
       return NextResponse.json({ message: 'Blog not found' }, { status: 404 });
     }
+
+    if (blog.image_url) {
+      const publicId = blog.image_url.split('/').pop()?.split('.')[0];
+      await cloudinary.uploader.destroy(`blog_images/${publicId}`);
+    }
+
+    await Post.deleteOne({ _id: slug });
 
     return NextResponse.json({
       message: 'Blog deleted successfully',

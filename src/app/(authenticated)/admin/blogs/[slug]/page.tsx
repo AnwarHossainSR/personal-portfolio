@@ -5,7 +5,6 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/no-danger */
-// @ts-nocheck
 
 'use client';
 
@@ -16,7 +15,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import Loader from '@/components/common/Loader';
 import { QUERY_KEY } from '@/config/query-key';
-import { useFetch, usePost } from '@/hooks/useAPiCall';
+import { useFetch, usePut } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
 import { formats, modules } from '@/lib/editor';
@@ -56,14 +55,16 @@ const EditBlog = ({ params: { slug } }: { params: { slug: string } }) => {
 
   const {
     mutate: postUpdate,
-    isLoading,
+    // @ts-ignore
+    isLoading: isSubmitLoading,
     error: isSubmitError,
     isSuccess,
-  } = usePost(updatedData => updatePost(slug, updatedData));
+  } = usePut(updatedData => updatePost(slug, updatedData));
 
   const handleChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
+    // @ts-ignore
     const { name, value, type, files, checked } = e.target;
     setFormData(prevState => ({
       ...prevState,
@@ -89,6 +90,7 @@ const EditBlog = ({ params: { slug } }: { params: { slug: string } }) => {
 
     Object.entries(formData).forEach(([key, value]) => {
       if (value) {
+        // @ts-ignore
         if (value instanceof File) {
           formDataToSend.append(key, value, value.name);
         } else {
@@ -102,11 +104,12 @@ const EditBlog = ({ params: { slug } }: { params: { slug: string } }) => {
 
   useEffect(() => {
     if (blogData) {
+      console.log('blogData :', blogData);
       setFormData({
         title: blogData.title || '',
         short_content: blogData.short_content || '',
         content: blogData.content || '',
-        category: blogData.category || '',
+        category: blogData.category._id || '',
         published: blogData.published || false,
         file: null,
       });
@@ -183,7 +186,7 @@ const EditBlog = ({ params: { slug } }: { params: { slug: string } }) => {
                 checked={formData.published}
                 onChange={handleChange}
               />
-              <SubmitButton isLoading={isLoading} />
+              <SubmitButton isLoading={isSubmitLoading} />
             </form>
           ) : (
             <PreviewField
@@ -251,7 +254,7 @@ const SelectField = ({ label, id, value, onChange, options }: any) => (
       {options &&
         options.length > 0 &&
         options.map((cat: any) => (
-          <option key={cat._id} value={cat._id}>
+          <option key={cat._id} value={cat._id} selected={cat._id === value}>
             {cat.name}
           </option>
         ))}
@@ -321,15 +324,18 @@ const CheckboxField = ({ label, id, checked, onChange }: any) => (
   </div>
 );
 
-const SubmitButton = ({ isLoading }: any) => (
-  <button
-    type="submit"
-    className={`px-4 py-2 rounded-lg text-white ${isLoading ? 'bg-gray-500' : 'bg-blue-500'} hover:bg-blue-600`}
-    disabled={isLoading}
-  >
-    {isLoading ? 'Submitting...' : 'Submit'}
-  </button>
-);
+const SubmitButton = ({ isLoading }: any) => {
+  console.log(isLoading);
+  return (
+    <button
+      type="submit"
+      className={`px-4 py-2 rounded-lg text-white ${isLoading ? 'bg-gray-500' : 'bg-blue-500'} hover:bg-blue-600`}
+      disabled={isLoading}
+    >
+      {isLoading ? 'Submitting...' : 'Submit'}
+    </button>
+  );
+};
 
 const PreviewField = ({ title, imagePreview, content, shortContent }: any) => (
   <div className="preview">
