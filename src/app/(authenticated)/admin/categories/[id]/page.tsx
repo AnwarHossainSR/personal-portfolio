@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
+import { useAlert } from '@/hooks/useAlert';
 import { useFetch, usePut } from '@/hooks/useAPiCall';
 import AdminLayout from '@/layouts/MainLayout/AdminLayout';
 import MainLayout from '@/layouts/MainLayout/MainLayout';
@@ -15,6 +16,7 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const [name, setName] = useState('');
   const [color, setColor] = useState('');
+  const { showAlert } = useAlert();
 
   const { data, isLoading, isError, isSuccess } = useFetch(
     [`blogDetails-${params.id}`],
@@ -41,7 +43,12 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
   };
 
   useEffect(() => {
-    if (isError || isUpdated) {
+    if (isError || submitError) {
+      showAlert({
+        message: 'An error occurred while updating the category.',
+        type: 'error',
+        duration: 3000,
+      });
       console.log('isError >>', isError);
       console.log('submitError >>', submitError);
     }
@@ -50,6 +57,11 @@ const CategoryFormEditPage = ({ params }: { params: { id: string } }) => {
       setColor(data?.color);
     }
     if (isUpdated) {
+      showAlert({
+        message: 'Category updated successfully!',
+        type: 'success',
+        duration: 3000,
+      });
       router.push('/admin/categories');
     }
   }, [isError, isSuccess, isUpdated]);

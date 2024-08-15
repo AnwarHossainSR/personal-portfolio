@@ -19,11 +19,7 @@ const AdminLayout = ({
       }}
     >
       <Sidebar darkMode={darkMode} />
-      <div
-        className="p-5 w-full" // Added padding instead of marginLeft
-      >
-        {children}
-      </div>
+      <div className="p-5 w-full">{children}</div>
     </div>
   );
 };
