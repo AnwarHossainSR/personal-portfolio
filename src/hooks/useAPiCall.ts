@@ -50,9 +50,11 @@ export const usePut = (
     mutationFn: updateFn,
     ...options,
   });
+
   const put = async (data: any) => {
     await mutation.mutateAsync(data);
   };
+
   return { ...mutation, put };
 };
 
