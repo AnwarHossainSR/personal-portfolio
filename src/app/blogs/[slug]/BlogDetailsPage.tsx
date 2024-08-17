@@ -49,7 +49,7 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
   };
 
   if (isLoading) {
-    return <Loader text="fetching blogs..." />;
+    return <Loader text="fetching..." />;
   }
 
   if (isError) {
