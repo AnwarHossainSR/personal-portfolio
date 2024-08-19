@@ -1,10 +1,8 @@
-/* eslint-disable no-nested-ternary */
-
 'use client';
 
-/* eslint-disable react/no-array-index-key */
-
+/* eslint-disable no-nested-ternary */
 import { useEffect, useState } from 'react';
+import { useDebounce } from 'use-debounce';
 
 import BlogCard from '@/components/Card/BlogCard';
 import Tab from '@/components/Tab';
@@ -16,11 +14,19 @@ import { getCategories } from '@/services/categories';
 import { getPosts } from '@/services/posts';
 
 const Blogs = () => {
+  const theme = useTheme();
+  const { darkMode } = theme.state;
+  const [filter, setFilter] = useState('All');
+  const [debouncedFilter] = useDebounce(filter, 500); // 500ms debounce
+
   const {
     data: posts,
     isLoading: isLoadingPosts,
     isError: isErrorPosts,
-  } = useFetch([QUERY_KEY.POSTS], getPosts);
+    refetch: refetchPosts,
+  } = useFetch([QUERY_KEY.POSTS, debouncedFilter], () =>
+    getPosts(debouncedFilter)
+  );
 
   const {
     data: categories,
@@ -28,13 +34,13 @@ const Blogs = () => {
     isError: isErrorCategories,
   } = useFetch([QUERY_KEY.CATEGORIES], getCategories);
 
-  const theme = useTheme();
-  const { darkMode } = theme.state;
-  const [filter, setFilter] = useState('All');
-
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  useEffect(() => {
+    refetchPosts();
+  }, [debouncedFilter]);
 
   return (
     <MainLayout>

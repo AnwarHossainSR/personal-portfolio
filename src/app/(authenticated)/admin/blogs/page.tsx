@@ -28,7 +28,7 @@ const AdminBlogPage = () => {
     isLoading,
     isError,
     refetch,
-  } = useFetch([QUERY_KEY.POSTS], getPosts);
+  } = useFetch([QUERY_KEY.POSTS], () => getPosts('All'));
 
   const { remove } = useDelete(deletePost, {
     onSuccess: () => {
