@@ -37,7 +37,7 @@ const Loader = () => {
             marginTop: '10px',
           }}
         >
-          Loadingrtrtre...
+          Loading...
         </p>
       </div>
     </div>

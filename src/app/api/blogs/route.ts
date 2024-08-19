@@ -18,14 +18,22 @@ export async function GET(req: NextRequest) {
   try {
     await connectToDatabase(); // Ensure database connection
     const url = new URL(req.url, process.env.SITE_URL);
-    const category = url.searchParams.get('category');
-
+    const categoryName = url.searchParams.get('category');
     let blogs = [];
-    if (category) {
-      blogs = await Post.find({ category })
-        .sort({ createdAt: -1 })
-        .populate('author', 'name image id', User)
-        .populate('category', 'name color', Category);
+    console.log('categoryName', categoryName);
+    if (categoryName && categoryName !== 'All') {
+      // Find the category by name
+      const category = await Category.findOne({ name: categoryName });
+
+      if (category) {
+        // Use the category's ObjectId to filter posts
+        blogs = await Post.find({ category: category._id })
+          .sort({ createdAt: -1 })
+          .populate('author', 'name image id', User)
+          .populate('category', 'name color', Category);
+      } else {
+        return NextResponse.json({ message: 'Category not found', data: [] });
+      }
     } else {
       blogs = await Post.find()
         .sort({ createdAt: -1 })

@@ -55,6 +55,7 @@
     "sharp": "^0.33.4",
     "swiper": "^11.1.9",
     "tailwindcss": "^3.4.9",
+    "use-debounce": "^10.0.3",
     "yarn": "^1.22.22"
   },
   "devDependencies": {

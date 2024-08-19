@@ -23,9 +23,11 @@ export const updatePost = async (id: string, data: unknown) => {
     throw error;
   }
 };
-export const getPosts = async () => {
+export const getPosts = async (category: string | null = null) => {
   try {
-    const response = await axios.get(API_ENDPOINTS.POSTS.GET_POSTS);
+    const response = await axios.get(
+      `${API_ENDPOINTS.POSTS.GET_POSTS}?category=${category}`
+    );
     return response?.data?.data;
   } catch (error) {
     throw error;
