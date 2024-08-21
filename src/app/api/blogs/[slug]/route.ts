@@ -5,6 +5,7 @@ import { NextResponse } from 'next/server';
 
 import connectToDatabase from '@/lib/mongodb';
 import Category from '@/models/Category';
+import Comment from '@/models/Comment';
 import Post from '@/models/Post';
 import User from '@/models/User';
 
@@ -28,16 +29,16 @@ export async function GET(req: NextRequest) {
     const blog = await Post.findOne({ _id: slug })
       .populate('author', 'name image id', User)
       .populate('category', 'name color', Category)
-      // .populate('comments', 'comment updatedAt', Comment);
-      .populate({
-        path: 'comments',
-        select: 'comment updatedAt',
-        populate: {
-          path: 'author',
-          select: 'name image',
-          model: 'User',
-        },
-      });
+      .populate('comments', 'comment updatedAt', Comment);
+    // .populate({
+    //   path: 'comments',
+    //   select: 'comment updatedAt',
+    //   populate: {
+    //     path: 'author',
+    //     select: 'name image',
+    //     model: 'User',
+    //   },
+    // });
     if (!blog) {
       return NextResponse.json({ message: 'Blog not found' }, { status: 404 });
     }
