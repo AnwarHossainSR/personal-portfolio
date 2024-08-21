@@ -97,7 +97,7 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
         </div>
       </div>
       <div className="blog-details_content">
-        <p>{blogData.short_content}</p>
+        {/* <p>{blogData.short_content}</p> */}
         <div
           className="text-base leading-relaxed"
           dangerouslySetInnerHTML={{ __html: blogData.content }}
