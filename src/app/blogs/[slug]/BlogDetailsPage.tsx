@@ -12,6 +12,8 @@ import { useFetch, usePost } from '@/hooks/useAPiCall';
 import { getDateCompare } from '@/lib';
 import { useTheme } from '@/providers/context/Context';
 import { getBlogDetails, submitComment } from '@/services/posts';
+import 'react-quill/dist/quill.core.css';
+import 'react-quill/dist/quill.snow.css';
 
 const BlogDetailsPage = ({ slug }: { slug: string }) => {
   const theme = useTheme();
@@ -96,10 +98,10 @@ const BlogDetailsPage = ({ slug }: { slug: string }) => {
           <p>{getDateCompare(blogData?.createdAt)}</p>
         </div>
       </div>
-      <div className="blog-details_content">
+      <div className="blog-details_content ql-snow">
         {/* <p>{blogData.short_content}</p> */}
         <div
-          className="text-base leading-relaxed"
+          className="text-base leading-relaxed ql-editor"
           dangerouslySetInnerHTML={{ __html: blogData.content }}
         />
       </div>

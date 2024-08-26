@@ -8,11 +8,6 @@
 
 'use client';
 
-import { useRouter } from 'next/navigation';
-import type { ChangeEvent } from 'react';
-import { useEffect, useMemo, useState } from 'react';
-import 'react-quill/dist/quill.snow.css';
-
 import Loader from '@/components/common/Loader';
 import { QUERY_KEY } from '@/config/query-key';
 import { useAlert } from '@/hooks/useAlert';
@@ -24,6 +19,11 @@ import { useTheme } from '@/providers/context/Context';
 import { getCategories } from '@/services/categories';
 import { getBlogDetails, updatePost } from '@/services/posts';
 import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import type { ChangeEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import 'react-quill/dist/quill.core.css';
+import 'react-quill/dist/quill.snow.css';
 
 const EditBlog = ({ params: { slug } }: { params: { slug: string } }) => {
   const {
