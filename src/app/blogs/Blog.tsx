@@ -86,15 +86,34 @@ const Blogs = () => {
 
       <div className="blogs">
         {isLoadingPosts ? (
-          <p>Loading...</p>
+          <p
+            style={{
+              marginTop: '7rem',
+            }}
+          >
+            Loading...
+          </p>
         ) : isErrorPosts ? (
-          <p className="text-red-500">{isErrorPosts}</p>
+          <p
+            className="text-red-500"
+            style={{
+              marginTop: '7rem',
+            }}
+          >
+            {isErrorPosts}
+          </p>
         ) : posts.length > 0 ? (
           posts.map((post: any) => (
             <BlogCard key={post._id} post={post} darkMode={darkMode} />
           ))
         ) : (
-          <p>No blogs found for the selected tag.</p>
+          <p
+            style={{
+              marginTop: '7rem',
+            }}
+          >
+            No blogs found for the selected tag.
+          </p>
         )}
       </div>
     </MainLayout>
