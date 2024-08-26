@@ -11,6 +11,7 @@ import dynamic from 'next/dynamic';
 import type { ChangeEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
+import 'react-quill/dist/quill.core.css';
 import 'react-quill/dist/quill.snow.css';
 
 import { useRouter } from 'next/navigation';
@@ -268,6 +269,7 @@ const CreateBlog = () => {
                   formats={formats}
                   className="dark-mode"
                   placeholder="Write your thoughts!"
+                  theme="snow"
                 />
               </div>
               <div className="flex items-center">
