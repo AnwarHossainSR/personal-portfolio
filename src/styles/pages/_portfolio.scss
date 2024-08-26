@@ -28,10 +28,12 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      flex-wrap: wrap;
       gap: 0.4rem;
 
       @include mobile {
         gap: 0;
+        padding-top: .7rem;
       }
 
       span {
@@ -45,8 +47,9 @@
           rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
 
         @include mobile {
-          font-size: 0.5rem;
+          font-size: 0.7rem;
           cursor: pointer;
+          padding: 0.3rem;
         }
 
         &:hover {

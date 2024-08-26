@@ -1,4 +1,4 @@
-import Image from 'next/image';
+/* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
 import { FaFacebook, FaGithub } from 'react-icons/fa';
 import { RiInstagramFill } from 'react-icons/ri';
@@ -12,13 +12,14 @@ const MainFooter = () => {
     window.open(value, '_blank');
   };
   useEffect(() => {
+    setHeight(window.innerWidth <= 480 ? '10rem' : undefined);
     return setHeight(window.innerWidth <= 480 ? '10rem' : undefined);
   }, []);
 
   return (
     <div className="footer">
-      <Image
-        src={Wave}
+      <img
+        src={Wave.src}
         alt="wave"
         style={{
           width: '100%',
