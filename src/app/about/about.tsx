@@ -63,8 +63,8 @@ const About = () => {
             className="about__description-right"
           >
             <div className="about__description-right-item">
-              <Image src={AnwarImage} alt="" />
-              <Image src={AnwarImage} alt="" />
+              <Image src={AnwarImage} alt="" className="max-w-none h-auto" />
+              <Image src={AnwarImage} alt="" className="max-w-none h-auto" />
               <div className="border" />
             </div>
           </motion.div>

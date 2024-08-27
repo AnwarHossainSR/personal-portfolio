@@ -9,6 +9,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      maxWidth: {
+        none: 'none',
+      },
       screens: {
         sm: '500px',
         md: '800px',
