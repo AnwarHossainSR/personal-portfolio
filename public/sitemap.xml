@@ -1,6 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<sitemap><loc>http://localhost:3000/sitemap-0.xml</loc></sitemap>
-<sitemap><loc>http://localhost:3000/server-sitemap.xml</loc></sitemap>
-<sitemap><loc>http://localhost:3000/server-sitemap.xml</loc></sitemap>
-</sitemapindex>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Homepage -->
+  <url>
+    <loc>https://anwarportfolio.vercel.app/</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://anwarportfolio.vercel.app/og-image.jpg</image:loc>
+      <image:title>Md. Anwar Hossain - Senior Software Engineer</image:title>
+      <image:caption>Senior Software Engineer with 6+ years of AWS and full-stack experience</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About Page -->
+  <url>
+    <loc>https://anwarportfolio.vercel.app/about</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Experience Page -->
+  <url>
+    <loc>https://anwarportfolio.vercel.app/experience</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Projects Page -->
+  <url>
+    <loc>https://anwarportfolio.vercel.app/projects</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Skills Page -->
+  <url>
+    <loc>https://anwarportfolio.vercel.app/skills</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://anwarportfolio.vercel.app/contact</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- YouTube Page -->
+  <url>
+    <loc>https://anwarportfolio.vercel.app/youtube</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Blogs Page -->
+  <url>
+    <loc>https://anwarportfolio.vercel.app/blogs</loc>
+    <lastmod>2024-01-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
