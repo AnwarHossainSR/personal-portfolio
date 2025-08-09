@@ -1,0 +1,32 @@
+# Anwar Hossain Portfolio - Manifest
+{
+  "name": "Md. Anwar Hossain - Senior Software Engineer",
+  "short_name": "Anwar Portfolio",
+  "description": "Senior Software Engineer with 6+ years of experience in AWS cloud architecture, full-stack development, and DevOps",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#3498db",
+  "orientation": "portrait-primary",
+  "categories": ["portfolio", "developer", "technology"],
+  "lang": "en",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png", 
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,91 @@
+export const experience = [
+  {
+    id: "craftsmen-2023",
+    company: "Craftsmen Ltd.",
+    position: "Senior Software Engineer",
+    duration: "2023 - Present",
+    period: "1 year+",
+    location: "Dhaka, Bangladesh",
+    type: "Full-time",
+    description: "Leading full-stack development initiatives and architecting scalable cloud solutions. Spearheading the migration to microservices architecture and implementing DevOps best practices.",
+    achievements: [
+      "Architected and implemented microservices platform serving 50k+ daily users",
+      "Led team of 6 developers in adopting modern development practices",
+      "Reduced deployment time by 70% through CI/CD pipeline optimization",
+      "Designed fault-tolerant AWS infrastructure with 99.9% uptime",
+      "Mentored 3 junior developers, helping them advance to mid-level positions"
+    ],
+    technologies: [
+      "AWS", "Node.js", "React", "TypeScript", "Docker", "Kubernetes", 
+      "PostgreSQL", "Redis", "Terraform", "GitHub Actions"
+    ],
+    highlights: [
+      "System Architecture",
+      "Team Leadership",
+      "Cloud Migration",
+      "Performance Optimization"
+    ]
+  },
+  {
+    id: "bjit-2021",
+    company: "BJIT Group Ltd.",
+    position: "Software Engineer",
+    duration: "2021 - 2023",
+    period: "2 years",
+    location: "Dhaka, Bangladesh", 
+    type: "Full-time",
+    description: "Developed enterprise-grade applications and contributed to large-scale system designs. Focused on building robust APIs and implementing modern frontend architectures.",
+    achievements: [
+      "Built and maintained 15+ RESTful APIs handling millions of requests daily",
+      "Implemented real-time features using WebSocket and Server-Sent Events",
+      "Optimized database queries resulting in 40% performance improvement",
+      "Collaborated with international teams across 3 different time zones",
+      "Contributed to open-source projects and internal tooling"
+    ],
+    technologies: [
+      "Java", "Spring Boot", "React", "JavaScript", "MySQL", "MongoDB", 
+      "AWS EC2", "Docker", "Jenkins", "Git"
+    ],
+    highlights: [
+      "API Development",
+      "Database Optimization", 
+      "International Collaboration",
+      "Full-Stack Development"
+    ]
+  },
+  {
+    id: "annon-lab-2020",
+    company: "Annon Lab",
+    position: "Junior Software Developer",
+    duration: "2020 - 2021", 
+    period: "1 year",
+    location: "Dhaka, Bangladesh",
+    type: "Full-time",
+    description: "Started my professional journey focusing on frontend development and learning modern web technologies. Contributed to various client projects and internal tools.",
+    achievements: [
+      "Developed 8+ responsive web applications using modern frameworks",
+      "Collaborated with designers to implement pixel-perfect UI components",
+      "Participated in code reviews and adopted clean code practices",
+      "Learned and implemented automated testing strategies",
+      "Contributed to improving development workflow and documentation"
+    ],
+    technologies: [
+      "JavaScript", "React", "HTML5", "CSS3", "Bootstrap", "jQuery", 
+      "PHP", "MySQL", "Git", "npm"
+    ],
+    highlights: [
+      "Frontend Development",
+      "UI/UX Implementation", 
+      "Clean Code Practices",
+      "Team Collaboration"
+    ]
+  }
+];
+
+export const experienceStats = {
+  totalYears: "6+",
+  companiesWorked: 3,
+  projectsCompleted: "25+",
+  teamMembers: "10+",
+  technologies: "20+"
+};
