@@ -115,7 +115,7 @@ export function SEOHead({
               name: "Dhaka",
             },
             skills:
-              "AWS, React, Node.js, JavaScript, TypeScript, DevOps, Cloud Computing",
+              "AWS, DevOps, React, Node.js, JavaScript, TypeScript, PHP, Laravel, Next.js, Cloud Computing",
           },
         })}
       </script>
