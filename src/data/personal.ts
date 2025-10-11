@@ -34,7 +34,7 @@ Throughout my career, I've worked with companies like Craftsmen Ltd. and BJIT Gr
     "React, Next.js, and Node.js development",
     "DevOps automation and CI/CD",
   ],
-  lastUpdated: new Date("2025-10-10"),
+  lastUpdated: new Date("2025-10-11"),
 };
 
 export const socialLinks = [
