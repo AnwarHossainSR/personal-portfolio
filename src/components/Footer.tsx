@@ -1,15 +1,27 @@
-import { Github, Linkedin, Mail, Twitter, Heart, ExternalLink } from 'lucide-react';
-import { personalInfo, socialLinks } from '@/data/personal';
+import { personalInfo, socialLinks } from "@/data/personal";
+import {
+  ExternalLink,
+  Github,
+  Heart,
+  Linkedin,
+  Mail,
+  Twitter,
+} from "lucide-react";
+import React from "react";
 
 const iconMap = {
   Github,
-  Linkedin, 
+  Linkedin,
   Mail,
   ExternalLink,
-  Twitter
+  Twitter,
 };
 
-export function Footer() {
+export const Footer = React.memo(() => {
+  const lastUpdatedDate = personalInfo.lastUpdated;
+  const currentYear = new Date().getFullYear();
+  const lastUpdatedYear = lastUpdatedDate.getFullYear();
+
   return (
     <footer className="bg-card/30 backdrop-blur-xl border-t border-border/50 mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -20,10 +32,11 @@ export function Footer() {
               {personalInfo.name}
             </h3>
             <p className="text-muted-foreground mb-6 max-w-md">
-              Senior Software Engineer passionate about building scalable systems 
-              and leading development teams to deliver exceptional results.
+              Senior Software Engineer passionate about building scalable
+              systems and leading development teams to deliver exceptional
+              results.
             </p>
-            
+
             {/* Social Links */}
             <div className="flex space-x-4">
               {socialLinks.map((social) => {
@@ -51,13 +64,13 @@ export function Footer() {
             </h4>
             <ul className="space-y-3">
               {[
-                { name: 'About Me', href: '/about' },
-                { name: 'Experience', href: '/experience' },
-                { name: 'Projects', href: '/projects' },
-                { name: 'Skills', href: '/skills' }
+                { name: "About Me", href: "/about" },
+                { name: "Experience", href: "/experience" },
+                { name: "Projects", href: "/projects" },
+                { name: "Skills", href: "/skills" },
               ].map((link) => (
                 <li key={link.name}>
-                  <a 
+                  <a
                     href={link.href}
                     className="text-muted-foreground hover:text-primary transition-colors duration-200"
                   >
@@ -75,7 +88,7 @@ export function Footer() {
             </h4>
             <ul className="space-y-3 text-muted-foreground">
               <li>
-                <a 
+                <a
                   href={`mailto:${personalInfo.email}`}
                   className="hover:text-primary transition-colors duration-200"
                 >
@@ -83,16 +96,14 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a 
+                <a
                   href={`tel:${personalInfo.phone}`}
                   className="hover:text-primary transition-colors duration-200"
                 >
                   {personalInfo.phone}
                 </a>
               </li>
-              <li className="text-sm">
-                {personalInfo.location}
-              </li>
+              <li className="text-sm">{personalInfo.location}</li>
             </ul>
           </div>
         </div>
@@ -101,16 +112,19 @@ export function Footer() {
         <div className="mt-12 pt-8 border-t border-border/50">
           <div className="flex flex-col sm:flex-row justify-between items-center">
             <p className="text-sm text-muted-foreground flex items-center">
-              © 2024 {personalInfo.name}. Built with 
+              © {currentYear} {personalInfo.name}. Built with
               <Heart className="w-4 h-4 mx-1 text-red-500" />
               using React & Tailwind CSS
             </p>
             <p className="text-sm text-muted-foreground mt-2 sm:mt-0">
-              Last updated: {new Date().toLocaleDateString()}
+              Last updated:{" "}
+              {lastUpdatedYear === currentYear
+                ? lastUpdatedDate.toLocaleDateString()
+                : `Updated in ${lastUpdatedYear}`}
             </p>
           </div>
         </div>
       </div>
     </footer>
   );
-}
+});
