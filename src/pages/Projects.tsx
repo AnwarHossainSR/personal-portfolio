@@ -258,7 +258,7 @@ export default function Projects() {
               asChild
             >
               <a
-                href="https://github.com/anwar"
+                href="https://github.com/AnwarHossainSR"
                 target="_blank"
                 rel="noopener noreferrer"
               >

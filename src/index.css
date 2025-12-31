@@ -276,7 +276,7 @@
 
   .premium-card::before {
     content: "";
-    @apply absolute inset-0 rounded-2xl p-[1px] opacity-60;
+    @apply absolute inset-0 rounded-2xl p-[1px] opacity-60 pointer-events-none;
     background: linear-gradient(
       135deg,
       rgba(52, 152, 219, 0.3) 0%,
