@@ -1,5 +1,12 @@
 import { personalInfo, socialLinks } from "@/data/personal";
-import { ExternalLink, Github, Linkedin, Mail, Twitter } from "lucide-react";
+import {
+  ExternalLink,
+  Github,
+  Linkedin,
+  Mail,
+  Twitter,
+  Youtube,
+} from "lucide-react";
 import React from "react";
 
 const iconMap = {
@@ -8,6 +15,7 @@ const iconMap = {
   Mail,
   ExternalLink,
   Twitter,
+  Youtube,
 };
 
 export const Footer = React.memo(() => {

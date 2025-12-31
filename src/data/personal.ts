@@ -8,6 +8,7 @@ export const personalInfo = {
   linkedin: "https://www.linkedin.com/in/anwarsr/",
   github: "https://github.com/AnwarHossainSR",
   website: "https://anwarportfolio.vercel.app",
+  youtube: "https://www.youtube.com/@DevelopmentKit",
   avatar: "/images/profile.png",
 
   bio: {
@@ -53,6 +54,11 @@ export const socialLinks = [
     name: "Email",
     url: "mailto:anwarmahedisr@gmail.com",
     icon: "Mail",
+  },
+  {
+    name: "YouTube",
+    url: "https://www.youtube.com/@DevelopmentKit",
+    icon: "Youtube",
   },
   {
     name: "Portfolio",

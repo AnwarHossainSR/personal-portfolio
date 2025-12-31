@@ -11,6 +11,7 @@ import {
   Github,
   Linkedin,
   Mail,
+  Youtube,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -19,6 +20,7 @@ const iconMap = {
   Linkedin,
   Mail,
   ExternalLink,
+  Youtube,
   Twitter: Mail, // fallback
 };
 

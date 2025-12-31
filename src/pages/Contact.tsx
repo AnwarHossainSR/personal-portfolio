@@ -16,6 +16,7 @@ import {
   MapPin,
   Phone,
   Send,
+  Youtube,
 } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -36,6 +37,7 @@ const iconMap = {
   Linkedin,
   Mail,
   ExternalLink,
+  Youtube,
   Twitter: Mail,
 };
 
