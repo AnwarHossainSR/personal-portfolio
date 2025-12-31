@@ -39,9 +39,9 @@ export function Navigation() {
     <>
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          "fixed top-0 left-0 right-0 z-[100] transition-all duration-300",
           scrolled
-            ? "bg-background/80 backdrop-blur-xl border-b border-border/50"
+            ? "bg-background/80 backdrop-blur-xl border-b border-border/50 shadow-sm"
             : "bg-transparent"
         )}
       >
@@ -97,13 +97,13 @@ export function Navigation() {
             {/* Mobile menu button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 rounded-lg hover:bg-muted/50 transition-colors"
+              className="md:hidden p-2 -mr-2 rounded-lg hover:bg-muted/50 transition-colors z-[110]"
               aria-label="Toggle navigation menu"
             >
               {isOpen ? (
-                <X className="h-5 w-5" />
+                <X className="h-6 w-6 text-primary" />
               ) : (
-                <Menu className="h-5 w-5" />
+                <Menu className="h-6 w-6" />
               )}
             </button>
           </div>
@@ -113,10 +113,10 @@ export function Navigation() {
         <div
           className={cn(
             "md:hidden transition-all duration-300 ease-in-out overflow-hidden",
-            isOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+            isOpen ? "max-h-[90vh] opacity-100" : "max-h-0 opacity-0"
           )}
         >
-          <div className="px-4 pt-2 pb-6 bg-card/95 backdrop-blur-xl border-b border-border/50">
+          <div className="px-4 pt-2 pb-8 bg-background/95 backdrop-blur-2xl border-b border-border/50 shadow-2xl">
             <div className="space-y-3">
               {navigationItems.map((item) => (
                 <Link

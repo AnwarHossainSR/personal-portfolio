@@ -214,6 +214,11 @@
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
   body {
     @apply bg-background text-foreground font-inter;
     background-image: var(--bg-grid),
@@ -232,10 +237,7 @@
     font-feature-settings: "cv11", "ss01";
     font-variation-settings: "opsz" 32;
     overflow-x: hidden;
-  }
-
-  html {
-    scroll-behavior: smooth;
+    max-width: 100vw;
   }
 }
 
@@ -274,7 +276,7 @@
 
   .premium-card::before {
     content: "";
-    @apply absolute inset-0 rounded-2xl p-[1px] opacity-60;
+    @apply absolute inset-0 rounded-2xl p-[1px] opacity-60 pointer-events-none;
     background: linear-gradient(
       135deg,
       rgba(52, 152, 219, 0.3) 0%,

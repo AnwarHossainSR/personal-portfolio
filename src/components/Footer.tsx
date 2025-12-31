@@ -2,10 +2,10 @@ import { personalInfo, socialLinks } from "@/data/personal";
 import {
   ExternalLink,
   Github,
-  Heart,
   Linkedin,
   Mail,
   Twitter,
+  Youtube,
 } from "lucide-react";
 import React from "react";
 
@@ -15,6 +15,7 @@ const iconMap = {
   Mail,
   ExternalLink,
   Twitter,
+  Youtube,
 };
 
 export const Footer = React.memo(() => {
@@ -28,10 +29,10 @@ export const Footer = React.memo(() => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand Section */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-xl font-bold gradient-text mb-4">
+            <h3 className="text-lg sm:text-xl font-bold gradient-text mb-4">
               {personalInfo.name}
             </h3>
-            <p className="text-muted-foreground mb-6 max-w-md">
+            <p className="text-sm sm:text-base text-muted-foreground mb-6 max-w-md">
               Senior Software Engineer passionate about building scalable
               systems and leading development teams to deliver exceptional
               results.
@@ -109,14 +110,12 @@ export const Footer = React.memo(() => {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-12 pt-8 border-t border-border/50">
-          <div className="flex flex-col sm:flex-row justify-between items-center">
-            <p className="text-sm text-muted-foreground flex items-center">
-              © {currentYear} {personalInfo.name}. Built with
-              <Heart className="w-4 h-4 mx-1 text-red-500" />
-              using React & Tailwind CSS
+        <div className="mt-8 sm:mt-12 pt-8 border-t border-border/50">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
+            <p className="text-[10px] sm:text-sm text-muted-foreground flex items-center text-center sm:text-left">
+              © {currentYear} {personalInfo.name}
             </p>
-            <p className="text-sm text-muted-foreground mt-2 sm:mt-0">
+            <p className="text-[10px] sm:text-sm text-muted-foreground mt-0">
               Last updated:{" "}
               {lastUpdatedYear === currentYear
                 ? lastUpdatedDate.toLocaleDateString()
