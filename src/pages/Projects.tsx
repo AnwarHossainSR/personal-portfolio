@@ -252,7 +252,11 @@ export default function Projects() {
               These are just highlights. Visit my GitHub profile to explore my
               complete portfolio of projects and contributions.
             </p>
-            <Button size="lg" className="bg-gradient-primary" asChild>
+            <Button
+              size="lg"
+              className="bg-gradient-primary cursor-pointer"
+              asChild
+            >
               <a
                 href="https://github.com/anwar"
                 target="_blank"

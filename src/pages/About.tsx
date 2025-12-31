@@ -12,14 +12,15 @@ export default function About() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Profile Image */}
             <div className="relative group">
-              <div className="aspect-square rounded-2xl bg-gradient-surface overflow-hidden shadow-premium">
-                <div className="w-full h-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-                  <span className="text-6xl font-bold text-muted-foreground">
-                    A
-                  </span>
-                </div>
+              <div className="aspect-square rounded-2xl bg-muted overflow-hidden shadow-premium border-2 border-primary/20 relative z-10">
+                <img
+                  src={personalInfo.avatar}
+                  alt={personalInfo.name}
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
-              <div className="absolute -inset-4 bg-gradient-primary rounded-3xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-500" />
+              <div className="absolute -inset-4 bg-gradient-primary rounded-3xl blur-2xl opacity-15 group-hover:opacity-25 transition-opacity duration-500" />
             </div>
 
             {/* Content */}

@@ -115,7 +115,7 @@ export default function Experience() {
           </div>
 
           {/* CTA Section */}
-          <div className="text-center mt-20 premium-card p-8">
+          <div className="text-center mt-20 premium-card p-8 cursor-pointer">
             <h3 className="text-2xl font-bold mb-4">
               Interested in My <span className="gradient-text">Experience</span>
               ?
@@ -124,10 +124,14 @@ export default function Experience() {
               Download my full resume to learn more about my professional
               journey and technical expertise.
             </p>
-            <Button size="lg" className="bg-gradient-primary" asChild>
+            <Button
+              size="lg"
+              className="bg-gradient-primary cursor-pointer"
+              asChild
+            >
               <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-                Download Full Resume
-                <ExternalLink className="ml-2 w-4 h-4" />
+                <ExternalLink className="mr-2 w-4 h-4 group-hover:scale-110 transition-transform" />
+                Download Resume
               </a>
             </Button>
           </div>

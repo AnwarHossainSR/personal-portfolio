@@ -8,6 +8,7 @@ export const personalInfo = {
   linkedin: "https://www.linkedin.com/in/anwarsr/",
   github: "https://github.com/AnwarHossainSR",
   website: "https://anwarportfolio.vercel.app",
+  avatar: "/images/profile.png",
 
   bio: {
     short:
