@@ -1,10 +1,15 @@
-import { useState } from "react";
 import { SEOHead } from "@/components/SEO";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Play, Youtube } from "lucide-react";
+import { useState } from "react";
 
 interface VideoItem {
   id: string;
@@ -61,16 +66,20 @@ export default function YouTubePlaylist() {
       <header className="relative py-16 md:py-24">
         <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="premium-card p-8 md:p-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">YouTube Playlist</h1>
-            <p className="text-muted-foreground/90 text-lg max-w-3xl">
-              A handpicked collection of videos covering scalable cloud architecture, modern React, performance, and developer productivity.
+          <div className="premium-card p-6 sm:p-8 md:p-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              YouTube Playlist
+            </h1>
+            <p className="text-base sm:text-lg text-muted-foreground/90 max-w-3xl">
+              A handpicked collection of videos covering scalable cloud
+              architecture, modern React, performance, and developer
+              productivity.
             </p>
             <div className="mt-6">
               <Button size="sm" variant="secondary" asChild>
                 <a
-                  href="https://www.youtube.com/@anwar" 
-                  target="_blank" 
+                  href="https://www.youtube.com/@anwar"
+                  target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Visit my YouTube channel"
                 >
@@ -86,7 +95,10 @@ export default function YouTubePlaylist() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {videos.map((video) => (
-              <article key={video.id} className="group premium-card overflow-hidden">
+              <article
+                key={video.id}
+                className="group premium-card overflow-hidden"
+              >
                 <button
                   onClick={() => openVideo(video)}
                   className="w-full text-left"
@@ -108,9 +120,11 @@ export default function YouTubePlaylist() {
                     </div>
                   </AspectRatio>
                 </button>
-                <Card className="mt-4 bg-transparent border-none shadow-none p-0">
+                <Card className="mt-3 sm:mt-4 bg-transparent border-none shadow-none p-0">
                   <CardHeader className="p-0">
-                    <CardTitle className="text-xl leading-snug">{video.title}</CardTitle>
+                    <CardTitle className="text-lg sm:text-xl leading-snug">
+                      {video.title}
+                    </CardTitle>
                   </CardHeader>
                 </Card>
               </article>

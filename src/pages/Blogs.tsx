@@ -1,7 +1,13 @@
 import { SEOHead } from "@/components/SEO";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
 
 interface BlogPost {
@@ -84,10 +90,13 @@ export default function Blogs() {
       <header className="relative py-16 md:py-24">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-transparent to-accent/10" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="premium-card p-8 md:p-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Blogs</h1>
-            <p className="text-muted-foreground/90 text-lg max-w-3xl">
-              Practical deep‑dives and concise guides on building scalable, reliable, and elegant software.
+          <div className="premium-card p-6 sm:p-8 md:p-12">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+              Blogs
+            </h1>
+            <p className="text-base sm:text-lg text-muted-foreground/90 max-w-3xl">
+              Practical deep‑dives and concise guides on building scalable,
+              reliable, and elegant software.
             </p>
           </div>
         </div>
@@ -98,24 +107,48 @@ export default function Blogs() {
           {posts.map((post) => (
             <article key={post.title} className="premium-card interactive-card">
               <Card className="bg-transparent border-none shadow-none">
-                <CardHeader>
-                  <CardTitle className="text-2xl leading-snug">{post.title}</CardTitle>
-                  <CardDescription>
+                <CardHeader className="p-4 sm:p-6">
+                  <CardTitle className="text-xl sm:text-2xl leading-snug">
+                    {post.title}
+                  </CardTitle>
+                  <CardDescription className="text-xs sm:text-sm">
                     <time dateTime={post.date} className="mr-2">
-                      {new Date(post.date).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" })}
+                      {new Date(post.date).toLocaleDateString(undefined, {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
                     </time>
                     • {post.readingTime}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground/90 mb-4">{post.excerpt}</p>
-                  <div className="flex flex-wrap gap-2 mb-6">
+                <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+                  <p className="text-sm sm:text-base text-muted-foreground/90 mb-4">
+                    {post.excerpt}
+                  </p>
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-6">
                     {post.tags.map((tag) => (
-                      <Badge key={tag} variant="secondary">{tag}</Badge>
+                      <Badge
+                        key={tag}
+                        variant="secondary"
+                        className="text-[10px] sm:text-xs"
+                      >
+                        {tag}
+                      </Badge>
                     ))}
                   </div>
-                  <Button asChild variant="outline">
-                    <a href={post.url} target="_blank" rel="noopener noreferrer" aria-label={`Read article ${post.title}`}>
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="sm:h-10 sm:px-4 sm:py-2"
+                  >
+                    <a
+                      href={post.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Read article ${post.title}`}
+                    >
                       Read Article <ExternalLink className="ml-2 h-4 w-4" />
                     </a>
                   </Button>
