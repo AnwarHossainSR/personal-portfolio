@@ -1,17 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { experience } from "@/data/experience";
 import { personalInfo } from "@/data/personal";
 import { projects } from "@/data/projects";
 import { certifications, skillCategories, topSkills } from "@/data/skills";
-import { Bot, Loader2, Send, Sparkles, User } from "lucide-react";
-import { useCallback, useRef, useState } from "react";
+import {
+  AlertTriangle,
+  Bot,
+  Clock,
+  Key,
+  Loader2,
+  MessageSquare,
+  RefreshCw,
+  Send,
+  Settings,
+  Sparkles,
+  User,
+  X,
+  Zap,
+} from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 interface Message {
   role: "user" | "assistant";
   content: string;
+  isError?: boolean;
+  errorType?: "rate_limit" | "api_error" | "config_error";
 }
 
 // Build context about Anwar for the AI
@@ -91,28 +108,53 @@ INSTRUCTIONS:
 const SYSTEM_CONTEXT = buildSystemContext();
 
 const suggestedQuestions = [
-  "What is Anwar's experience with AWS?",
-  "Tell me about Anwar's recent projects",
-  "What programming languages does Anwar know?",
-  "How can I contact Anwar?",
+  { icon: Zap, text: "What is Anwar's expertise in AWS?" },
+  { icon: MessageSquare, text: "Tell me about his recent projects" },
+  { icon: Sparkles, text: "What tech stack does he specialize in?" },
+  { icon: Bot, text: "How can I get in touch with Anwar?" },
 ];
 
 export default function AskAi() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [retryCountdown, setRetryCountdown] = useState(0);
+  const [showSettings, setShowSettings] = useState(false);
+  const [customApiKey, setCustomApiKey] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("openai_api_key") || "";
+    }
+    return "";
+  });
+  const [tempApiKey, setTempApiKey] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  // Countdown timer for rate limiting
+  useEffect(() => {
+    if (retryCountdown > 0) {
+      const timer = setTimeout(
+        () => setRetryCountdown(retryCountdown - 1),
+        1000
+      );
+      return () => clearTimeout(timer);
+    }
+  }, [retryCountdown]);
+
   const scrollToBottom = useCallback(() => {
     if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+      const scrollContainer = scrollRef.current.querySelector(
+        "[data-radix-scroll-area-viewport]"
+      );
+      if (scrollContainer) {
+        scrollContainer.scrollTop = scrollContainer.scrollHeight;
+      }
     }
   }, []);
 
   const sendMessage = async (messageText?: string) => {
     const text = messageText || input.trim();
-    if (!text || isLoading) return;
+    if (!text || isLoading || retryCountdown > 0) return;
 
     const userMessage: Message = { role: "user", content: text };
     setMessages((prev) => [...prev, userMessage]);
@@ -120,7 +162,8 @@ export default function AskAi() {
     setIsLoading(true);
 
     try {
-      const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
+      // Use custom API key if set, otherwise fall back to env variable
+      const apiKey = customApiKey || import.meta.env.VITE_OPENAI_API_KEY;
 
       if (!apiKey) {
         setMessages((prev) => [
@@ -128,7 +171,9 @@ export default function AskAi() {
           {
             role: "assistant",
             content:
-              "⚠️ OpenAI API key is not configured. Please add `VITE_OPENAI_API_KEY` to your `.env.local` file.",
+              "OpenAI API key is not configured. Please add VITE_OPENAI_API_KEY to your .env.local file or set your own key in the API settings to enable the AI assistant.",
+            isError: true,
+            errorType: "config_error",
           },
         ]);
         setIsLoading(false);
@@ -147,7 +192,9 @@ export default function AskAi() {
             model: "gpt-4o-mini",
             messages: [
               { role: "system", content: SYSTEM_CONTEXT },
-              ...messages.map((m) => ({ role: m.role, content: m.content })),
+              ...messages
+                .filter((m) => !m.isError)
+                .map((m) => ({ role: m.role, content: m.content })),
               { role: "user", content: text },
             ],
             max_tokens: 500,
@@ -155,6 +202,25 @@ export default function AskAi() {
           }),
         }
       );
+
+      if (response.status === 429) {
+        // Rate limited - extract retry time if available
+        const retryAfter = response.headers.get("Retry-After");
+        const waitTime = retryAfter ? Number.parseInt(retryAfter, 10) : 30;
+        setRetryCountdown(waitTime);
+
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: "assistant",
+            content: `I'm receiving too many requests right now. Please wait ${waitTime} seconds before trying again. The countdown will show when you can send another message.`,
+            isError: true,
+            errorType: "rate_limit",
+          },
+        ]);
+        setIsLoading(false);
+        return;
+      }
 
       if (!response.ok) {
         throw new Error(`API request failed: ${response.status}`);
@@ -175,7 +241,9 @@ export default function AskAi() {
         {
           role: "assistant",
           content:
-            "Sorry, there was an error processing your request. Please try again.",
+            "Something went wrong while processing your request. Please check your internet connection and try again.",
+          isError: true,
+          errorType: "api_error",
         },
       ]);
     } finally {
@@ -191,136 +259,322 @@ export default function AskAi() {
     }
   };
 
+  const clearChat = () => {
+    setMessages([]);
+    setRetryCountdown(0);
+  };
+
+  const saveApiKey = () => {
+    if (tempApiKey.trim()) {
+      setCustomApiKey(tempApiKey.trim());
+      localStorage.setItem("openai_api_key", tempApiKey.trim());
+    }
+    setTempApiKey("");
+    setShowSettings(false);
+  };
+
+  const clearApiKey = () => {
+    setCustomApiKey("");
+    localStorage.removeItem("openai_api_key");
+    setTempApiKey("");
+  };
+
   return (
-    <div className="min-h-[calc(100vh-4rem)] py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-[calc(100vh-4rem)] py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-4">
-            <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-medium text-primary">
-              AI Assistant
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-purple-500/10 border border-primary/20 mb-6">
+            <div className="relative">
+              <Sparkles className="w-4 h-4 text-primary" />
+              <div className="absolute inset-0 animate-ping">
+                <Sparkles className="w-4 h-4 text-primary opacity-50" />
+              </div>
+            </div>
+            <span className="text-sm font-semibold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
+              AI-Powered Assistant
             </span>
           </div>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2">
+          <h1 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">
             Ask About{" "}
-            <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient">
               Anwar
             </span>
           </h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
-            Have questions about my experience, skills, or projects? Ask the AI
-            assistant below!
+          <p className="text-muted-foreground text-lg max-w-lg mx-auto leading-relaxed">
+            Curious about my experience, skills, or projects? Chat with my AI
+            assistant for instant answers.
           </p>
         </div>
 
         {/* Chat Container */}
-        <Card className="border border-border/50 bg-card/50 backdrop-blur-sm overflow-hidden">
-          {/* Messages Area */}
-          <ScrollArea
-            className="h-[400px] sm:h-[500px] p-4"
-            ref={scrollRef as any}
-          >
-            {messages.length === 0 ? (
-              <div className="h-full flex flex-col items-center justify-center text-center p-4">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center mb-4">
-                  <Bot className="w-8 h-8 text-primary" />
+        <Card className="relative overflow-hidden border-0 shadow-2xl shadow-primary/5">
+          {/* Gradient border effect */}
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/20 via-purple-500/10 to-pink-500/20 p-[1px]">
+            <div className="h-full w-full rounded-xl bg-background" />
+          </div>
+
+          <div className="relative">
+            {/* Messages Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b border-border/50 bg-muted/30">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-purple-500 flex items-center justify-center shadow-lg shadow-primary/25">
+                  <Bot className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-lg font-semibold mb-2">
-                  Start a Conversation
-                </h3>
-                <p className="text-muted-foreground text-sm mb-6 max-w-sm">
-                  Ask me anything about Anwar's professional background,
-                  technical skills, or projects.
-                </p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full max-w-md">
-                  {suggestedQuestions.map((q) => (
-                    <Button
-                      key={q}
-                      variant="outline"
-                      size="sm"
-                      className="text-left justify-start h-auto py-2 px-3 text-xs hover:bg-primary/5 hover:border-primary/30"
-                      onClick={() => sendMessage(q)}
-                    >
-                      {q}
-                    </Button>
-                  ))}
+                <div>
+                  <h3 className="font-semibold text-sm">Portfolio Assistant</h3>
+                  <p className="text-xs text-muted-foreground">
+                    {isLoading
+                      ? "Thinking..."
+                      : retryCountdown > 0
+                      ? `Available in ${retryCountdown}s`
+                      : "Online"}
+                  </p>
                 </div>
               </div>
-            ) : (
-              <div className="space-y-4">
-                {messages.map((message, i) => (
-                  <div
-                    key={i}
-                    className={`flex gap-3 ${
-                      message.role === "user" ? "justify-end" : "justify-start"
-                    }`}
+              <div className="flex items-center gap-2">
+                {messages.length > 0 && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={clearChat}
+                    className="text-muted-foreground hover:text-foreground"
                   >
-                    {message.role === "assistant" && (
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
-                        <Bot className="w-4 h-4 text-primary" />
-                      </div>
-                    )}
-                    <div
-                      className={`max-w-[80%] rounded-2xl px-4 py-2.5 ${
-                        message.role === "user"
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted/50 border border-border/50"
-                      }`}
-                    >
-                      <p className="text-sm whitespace-pre-wrap">
-                        {message.content}
-                      </p>
-                    </div>
-                    {message.role === "user" && (
-                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center flex-shrink-0">
-                        <User className="w-4 h-4 text-blue-500" />
-                      </div>
-                    )}
-                  </div>
-                ))}
-                {isLoading && (
-                  <div className="flex gap-3 justify-start">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center flex-shrink-0">
-                      <Bot className="w-4 h-4 text-primary" />
-                    </div>
-                    <div className="bg-muted/50 border border-border/50 rounded-2xl px-4 py-2.5">
-                      <Loader2 className="w-4 h-4 animate-spin text-primary" />
-                    </div>
-                  </div>
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Clear
+                  </Button>
                 )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => {
+                    setTempApiKey(customApiKey);
+                    setShowSettings(true);
+                  }}
+                  className="text-muted-foreground hover:text-foreground"
+                  title="API Settings"
+                >
+                  <Settings className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Settings Modal */}
+            {showSettings && (
+              <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-6">
+                <div className="w-full max-w-md p-6 bg-card border border-border rounded-xl shadow-2xl animate-in zoom-in-95 duration-200">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center gap-2">
+                      <Key className="w-5 h-5 text-primary" />
+                      <h3 className="font-semibold">API Settings</h3>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowSettings(false)}
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Provide your own OpenAI API key. If set, it will be used
+                    instead of the default configuration.
+                  </p>
+                  <div className="space-y-3">
+                    <Input
+                      type="password"
+                      placeholder="sk-..."
+                      value={tempApiKey}
+                      onChange={(e) => setTempApiKey(e.target.value)}
+                      className="font-mono text-sm"
+                    />
+                    {customApiKey && (
+                      <div className="flex items-center gap-2 text-xs text-green-600 dark:text-green-400">
+                        <div className="w-2 h-2 rounded-full bg-green-500" />
+                        Custom API key is active
+                      </div>
+                    )}
+                    <div className="flex gap-2">
+                      <Button
+                        onClick={saveApiKey}
+                        className="flex-1 bg-gradient-to-r from-primary to-purple-500"
+                        disabled={!tempApiKey.trim()}
+                      >
+                        Save Key
+                      </Button>
+                      {customApiKey && (
+                        <Button variant="outline" onClick={clearApiKey}>
+                          Remove
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
+                    Your key is stored locally in your browser and never sent to
+                    any server except directly to OpenAI.
+                  </p>
+                </div>
               </div>
             )}
-          </ScrollArea>
 
-          {/* Input Area */}
-          <div className="border-t border-border/50 p-4 bg-background/50">
-            <div className="flex gap-2">
-              <Textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Ask something about Anwar..."
-                className="min-h-[44px] max-h-32 resize-none bg-muted/30 border-border/50 focus:border-primary/50"
-                disabled={isLoading}
-              />
-              <Button
-                onClick={() => sendMessage()}
-                disabled={!input.trim() || isLoading}
-                size="icon"
-                className="h-[44px] w-[44px] bg-gradient-to-r from-primary to-purple-500 hover:opacity-90"
-              >
-                {isLoading ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
+            {/* Messages Area */}
+            <ScrollArea className="h-[420px]" ref={scrollRef}>
+              <div className="p-6">
+                {messages.length === 0 ? (
+                  <div className="h-[360px] flex flex-col items-center justify-center text-center">
+                    <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-primary/20 via-purple-500/20 to-pink-500/20 flex items-center justify-center mb-6 shadow-xl">
+                      <MessageSquare className="w-10 h-10 text-primary" />
+                    </div>
+                    <h3 className="text-xl font-bold mb-2">
+                      Start a Conversation
+                    </h3>
+                    <p className="text-muted-foreground text-sm mb-8 max-w-sm leading-relaxed">
+                      Ask me anything about Anwar's professional journey,
+                      technical expertise, or projects.
+                    </p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-lg">
+                      {suggestedQuestions.map((q, i) => (
+                        <Button
+                          key={i}
+                          variant="outline"
+                          className="group h-auto py-3 px-4 text-left justify-start gap-3 bg-muted/30 border-border/50 hover:bg-primary/5 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+                          onClick={() => sendMessage(q.text)}
+                          disabled={retryCountdown > 0}
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                            <q.icon className="w-4 h-4 text-primary" />
+                          </div>
+                          <span className="text-xs font-medium leading-tight">
+                            {q.text}
+                          </span>
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
                 ) : (
-                  <Send className="w-4 h-4" />
+                  <div className="space-y-6">
+                    {messages.map((message, i) => (
+                      <div
+                        key={i}
+                        className={`flex gap-4 ${
+                          message.role === "user"
+                            ? "justify-end"
+                            : "justify-start"
+                        } animate-in fade-in slide-in-from-bottom-2 duration-300`}
+                      >
+                        {message.role === "assistant" && (
+                          <div
+                            className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg ${
+                              message.isError
+                                ? "bg-gradient-to-br from-amber-500/20 to-orange-500/20"
+                                : "bg-gradient-to-br from-primary/20 to-purple-500/20"
+                            }`}
+                          >
+                            {message.isError ? (
+                              message.errorType === "rate_limit" ? (
+                                <Clock className="w-4 h-4 text-amber-500" />
+                              ) : (
+                                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                              )
+                            ) : (
+                              <Bot className="w-4 h-4 text-primary" />
+                            )}
+                          </div>
+                        )}
+                        <div
+                          className={`max-w-[75%] rounded-2xl px-5 py-3.5 shadow-sm ${
+                            message.role === "user"
+                              ? "bg-gradient-to-r from-primary to-purple-500 text-white"
+                              : message.isError
+                              ? "bg-amber-500/10 border border-amber-500/20"
+                              : "bg-muted/50 border border-border/50"
+                          }`}
+                        >
+                          <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                            {message.content}
+                          </p>
+                        </div>
+                        {message.role === "user" && (
+                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+                            <User className="w-4 h-4 text-white" />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {isLoading && (
+                      <div className="flex gap-4 justify-start animate-in fade-in duration-300">
+                        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center flex-shrink-0 shadow-lg">
+                          <Bot className="w-4 h-4 text-primary" />
+                        </div>
+                        <div className="bg-muted/50 border border-border/50 rounded-2xl px-5 py-4">
+                          <div className="flex gap-1.5">
+                            <div className="w-2 h-2 rounded-full bg-primary/60 animate-bounce [animation-delay:-0.3s]" />
+                            <div className="w-2 h-2 rounded-full bg-primary/60 animate-bounce [animation-delay:-0.15s]" />
+                            <div className="w-2 h-2 rounded-full bg-primary/60 animate-bounce" />
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 )}
-              </Button>
+              </div>
+            </ScrollArea>
+
+            {/* Rate Limit Warning Banner */}
+            {retryCountdown > 0 && (
+              <div className="mx-6 mb-4 p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center gap-3 animate-in fade-in duration-300">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-4 h-4 text-amber-500" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium text-amber-600 dark:text-amber-400">
+                    Rate limit reached
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Please wait {retryCountdown} seconds before sending another
+                    message
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Input Area */}
+            <div className="p-6 bg-gradient-to-t from-muted/50 to-transparent">
+              <div className="flex gap-3">
+                <div className="flex-1 relative">
+                  <Textarea
+                    ref={textareaRef}
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder={
+                      retryCountdown > 0
+                        ? `Please wait ${retryCountdown}s...`
+                        : "Ask something about Anwar..."
+                    }
+                    className="min-h-[52px] max-h-32 resize-none pr-4 bg-background border-border/50 focus:border-primary/50 rounded-xl shadow-sm"
+                    disabled={isLoading || retryCountdown > 0}
+                  />
+                </div>
+                <Button
+                  onClick={() => sendMessage()}
+                  disabled={!input.trim() || isLoading || retryCountdown > 0}
+                  size="icon"
+                  className="h-[52px] w-[52px] rounded-xl bg-gradient-to-r from-primary to-purple-500 hover:opacity-90 shadow-lg shadow-primary/25 transition-all duration-300 hover:shadow-xl hover:shadow-primary/30"
+                >
+                  {isLoading ? (
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                  ) : (
+                    <Send className="w-5 h-5" />
+                  )}
+                </Button>
+              </div>
+              <p className="text-xs text-muted-foreground mt-4 text-center">
+                Powered by{" "}
+                <span className="font-medium">OpenAI GPT-4o-mini</span> •
+                Responses are AI-generated
+              </p>
             </div>
-            <p className="text-xs text-muted-foreground mt-2 text-center">
-              Powered by OpenAI GPT-4o-mini • Responses are AI-generated
-            </p>
           </div>
         </Card>
       </div>
