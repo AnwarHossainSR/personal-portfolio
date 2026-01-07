@@ -4,7 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import About from "@/pages/About";
-import Blogs from "@/pages/Blogs";
+import AskAi from "@/pages/AskAi";
 import Contact from "@/pages/Contact";
 import Experience from "@/pages/Experience";
 import Home from "@/pages/Home";
@@ -32,7 +32,7 @@ const App = () => (
               <Route path="/projects" element={<Projects />} />
               <Route path="/skills" element={<Skills />} />
               <Route path="/youtube" element={<YouTube />} />
-              <Route path="/blogs" element={<Blogs />} />
+              <Route path="/ask-ai" element={<AskAi />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
