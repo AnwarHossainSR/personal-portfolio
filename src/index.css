@@ -67,7 +67,8 @@
       hsl(160 84% 39%) 0%,
       hsl(160 84% 50%) 100%
     );
-    --gradient-hero: radial-gradient(
+    --gradient-hero:
+      radial-gradient(
         ellipse at top,
         hsl(210 100% 56% / 0.3) 0%,
         transparent 50%
@@ -92,14 +93,15 @@
     --bg-grid-size: 32px 32px;
 
     /* Premium Shadows */
-    --shadow-premium: 0 20px 40px -12px rgba(0, 0, 0, 0.9),
-      0 8px 16px -8px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.05);
-    --shadow-glow: 0 0 60px rgba(52, 152, 219, 0.4),
-      0 0 120px rgba(52, 152, 219, 0.1);
-    --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.6),
+    --shadow-premium:
+      0 20px 40px -12px rgba(0, 0, 0, 0.9), 0 8px 16px -8px rgba(0, 0, 0, 0.4),
       0 0 0 1px rgba(255, 255, 255, 0.05);
-    --shadow-elevated: 0 25px 50px -12px rgba(0, 0, 0, 0.8),
-      0 0 0 1px rgba(255, 255, 255, 0.1);
+    --shadow-glow:
+      0 0 60px rgba(52, 152, 219, 0.4), 0 0 120px rgba(52, 152, 219, 0.1);
+    --shadow-card:
+      0 8px 32px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    --shadow-elevated:
+      0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.1);
 
     /* Animation Curves */
     --curve-smooth: cubic-bezier(0.4, 0, 0.2, 1);
@@ -221,7 +223,8 @@
 
   body {
     @apply bg-background text-foreground font-inter;
-    background-image: var(--bg-grid),
+    background-image:
+      var(--bg-grid),
       radial-gradient(
         ellipse 80% 50% at 50% -20%,
         rgba(52, 152, 219, 0.15) 0%,
@@ -232,7 +235,10 @@
         rgba(138, 43, 226, 0.1) 0%,
         transparent 70%
       );
-    background-size: var(--bg-grid-size), 100% 100%, 100% 100%;
+    background-size:
+      var(--bg-grid-size),
+      100% 100%,
+      100% 100%;
     background-attachment: fixed;
     font-feature-settings: "cv11", "ss01";
     font-variation-settings: "opsz" 32;
@@ -255,7 +261,9 @@
     content: "";
     @apply absolute inset-0 rounded-xl p-[1px] opacity-60;
     background: var(--gradient-primary);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     mask-composite: xor;
   }
 
@@ -282,7 +290,9 @@
       rgba(52, 152, 219, 0.3) 0%,
       rgba(138, 43, 226, 0.3) 100%
     );
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
     mask-composite: xor;
   }
 
@@ -403,4 +413,139 @@
   50% {
     opacity: 0.5;
   }
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(30px, -30px) rotate(120deg);
+  }
+  66% {
+    transform: translate(-20px, 20px) rotate(240deg);
+  }
+}
+
+/* Glassmorphism Utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-nav {
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Light mode glass navigation */
+.light .glass-nav {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.glass-panel {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Mesh Gradient Background */
+.mesh-gradient {
+  background:
+    radial-gradient(at 40% 20%, hsla(210, 100%, 56%, 0.3) 0px, transparent 50%),
+    radial-gradient(at 80% 0%, hsla(270, 95%, 60%, 0.3) 0px, transparent 50%),
+    radial-gradient(at 0% 50%, hsla(160, 84%, 39%, 0.3) 0px, transparent 50%),
+    radial-gradient(at 80% 50%, hsla(210, 100%, 56%, 0.2) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, hsla(270, 95%, 60%, 0.2) 0px, transparent 50%);
+}
+
+/* Scrollbar Styling */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.3);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.5);
+}
+
+/* Typing Cursor Animation */
+.typing-cursor {
+  display: inline-block;
+  animation: blink 1s infinite;
+}
+
+/* Animate Blink Utility */
+.animate-blink {
+  animation: blink 1s infinite;
+}
+
+/* Animate Float Slow */
+.animate-float-slow {
+  animation: float-slow 20s ease-in-out infinite;
+}
+
+/* Gradient Hover Effect */
+.gradient-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.gradient-hover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.gradient-hover:hover::before {
+  opacity: 0.1;
+}
+
+/* Stats Counter Animation */
+@keyframes countUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count-up {
+  animation: countUp 0.8s ease-out forwards;
 }
