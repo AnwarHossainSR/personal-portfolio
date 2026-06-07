@@ -1,3 +1,4 @@
+import { SEOHead } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -280,6 +281,13 @@ export default function AskAi() {
   };
 
   return (
+    <>
+    <SEOHead
+      title="Ask AI"
+      description="Chat with an AI assistant about Anwar Hossain's professional experience, skills, and projects. Powered by OpenAI GPT-4o-mini."
+      keywords="Ask AI, Anwar Hossain AI, Portfolio Assistant, AI Chatbot, OpenAI"
+      url="https://anwarportfolio.vercel.app/ask-ai"
+    />
     <div className="min-h-[calc(100vh-4rem)] py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
@@ -579,5 +587,6 @@ export default function AskAi() {
         </Card>
       </div>
     </div>
+    </>
   );
 }

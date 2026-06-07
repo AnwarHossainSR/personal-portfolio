@@ -65,29 +65,13 @@ export default function Contact() {
 
 	const copyToClipboard = async (text: string, type: string) => {
 		try {
-			// Simple fallback approach that works in all browsers
-			const textArea = document.createElement("textarea");
-			textArea.value = text;
-			textArea.style.position = "absolute";
-			textArea.style.left = "-9999px";
-			textArea.style.opacity = "0";
-			document.body.appendChild(textArea);
-			textArea.select();
-			textArea.setSelectionRange(0, 99999); // For mobile devices
-
-			const successful = document.execCommand("copy");
-			document.body.removeChild(textArea);
-
-			if (successful) {
-				setCopied(type);
-				toast({
-					title: "Copied!",
-					description: `${type} copied to clipboard`,
-				});
-				setTimeout(() => setCopied(null), 2000);
-			} else {
-				throw new Error("Copy command failed");
-			}
+			await navigator.clipboard.writeText(text);
+			setCopied(type);
+			toast({
+				title: "Copied!",
+				description: `${type} copied to clipboard`,
+			});
+			setTimeout(() => setCopied(null), 2000);
 		} catch (err) {
 			console.error("Failed to copy: ", err);
 			toast({
@@ -102,20 +86,20 @@ export default function Contact() {
 		setIsSubmitting(true);
 
 		try {
-			// Simulate form submission
-			await new Promise((resolve) => setTimeout(resolve, 1500));
+			const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(data),
+			});
 
-			// In a real application, you would send the data to your backend
-			console.log("Form Data:", data);
+			if (!response.ok) throw new Error("Submission failed");
 
 			toast({
 				title: "Message Sent! 🎉",
 				description: "Thank you for your message. I'll get back to you soon!",
 			});
-
-			// Reset form after successful submission
 			reset();
-		} catch (error) {
+		} catch {
 			toast({
 				title: "Error",
 				description: "Failed to send message. Please try again.",

@@ -1,9 +1,17 @@
 import { Award, Calendar, Code, Download, MapPin, Users } from "lucide-react";
+import { SEOHead } from "@/components/SEO";
 import { Button } from "@/components/ui/button";
 import { personalInfo } from "@/data/personal";
 
 export default function About() {
 	return (
+		<>
+		<SEOHead
+			title="About Me"
+			description="Learn about Md. Anwar Hossain — Senior Software Engineer with 6+ years of experience in AWS cloud architecture, full-stack development, and DevOps."
+			keywords="Anwar Hossain, About, Senior Software Engineer, AWS, Full Stack Developer, Background"
+			url="https://anwarportfolio.vercel.app/about"
+		/>
 		<div className="min-h-screen">
 			{/* Hero Section */}
 			<section className="relative py-20 overflow-hidden">
@@ -179,5 +187,6 @@ export default function About() {
 				</div>
 			</section>
 		</div>
+		</>
 	);
 }
