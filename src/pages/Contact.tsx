@@ -16,6 +16,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { SEOHead } from "@/components/SEO";
+import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -121,15 +122,17 @@ export default function Contact() {
 			<div className="min-h-screen py-20">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					{/* Header */}
-					<div className="text-center mb-10 sm:mb-16 slide-in-up">
-						<h1 className="text-3xl sm:text-5xl font-bold mb-4">
-							Get in <span className="gradient-text">Touch</span>
-						</h1>
-						<p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
-							Ready to discuss your next project? I'm always interested in new
-							opportunities, collaborations, and innovative challenges.
-						</p>
-					</div>
+					<SectionHeading
+						as="h1"
+						className="mb-10 sm:mb-16 slide-in-up"
+						eyebrow="Contact"
+						title={
+							<>
+								Get in <span className="gradient-text">Touch</span>
+							</>
+						}
+						subtitle="Ready to discuss your next project? I'm always interested in new opportunities, collaborations, and innovative challenges."
+					/>
 
 					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 						{/* Contact Information */}

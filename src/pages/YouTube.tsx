@@ -47,7 +47,13 @@ export default function YouTubePlaylist() {
 				<div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/10 to-primary/10" />
 				<div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					<div className="premium-card p-6 sm:p-8 md:p-12">
-						<h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+						<div className="inline-flex items-center gap-2 mb-4">
+							<span className="h-px w-6 bg-gradient-to-r from-transparent to-primary/60" />
+							<span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary/90">
+								Learn with me
+							</span>
+						</div>
+						<h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
 							YouTube <span className="gradient-text">Playlist</span>
 						</h1>
 						<p className="text-base sm:text-lg text-muted-foreground/90 max-w-3xl">

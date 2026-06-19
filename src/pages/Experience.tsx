@@ -1,5 +1,6 @@
 import { Award, Building, Calendar, ExternalLink } from "lucide-react";
 import { SEOHead } from "@/components/SEO";
+import { SectionHeading } from "@/components/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { experience as experiences } from "@/data/experience";
 
@@ -15,15 +16,17 @@ export default function Experience() {
 			<div className="min-h-screen py-20">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					{/* Header */}
-					<div className="text-center mb-10 sm:mb-16 slide-in-up">
-						<h1 className="text-3xl sm:text-5xl font-bold mb-4">
-							Professional <span className="gradient-text">Experience</span>
-						</h1>
-						<p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
-							A journey through impactful roles, innovative projects, and
-							continuous growth in software engineering
-						</p>
-					</div>
+					<SectionHeading
+						as="h1"
+						className="mb-10 sm:mb-16 slide-in-up"
+						eyebrow="Career"
+						title={
+							<>
+								Professional <span className="gradient-text">Experience</span>
+							</>
+						}
+						subtitle="A journey through impactful roles, innovative projects, and continuous growth in software engineering"
+					/>
 
 					{/* Timeline */}
 					<div className="relative">

@@ -1,8 +1,8 @@
 import React from "react";
+import { CustomCursor } from "./CustomCursor";
 import { Footer } from "./Footer";
 import { InteractiveBackground } from "./InteractiveBackground";
 import { Navigation } from "./Navigation";
-import { ParticleBackground } from "./ParticleBackground";
 
 interface LayoutProps {
 	children: React.ReactNode;
@@ -11,8 +11,8 @@ interface LayoutProps {
 export const Layout = React.memo(({ children }: LayoutProps) => {
 	return (
 		<div className="min-h-screen bg-background relative">
-			<ParticleBackground />
 			<InteractiveBackground />
+			<CustomCursor />
 			<div className="relative z-10">
 				<Navigation />
 				<main className="relative">{children}</main>

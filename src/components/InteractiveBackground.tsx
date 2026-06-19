@@ -1,255 +1,212 @@
 import { useEffect, useRef } from "react";
 
-interface FloatingElement {
+interface Particle {
 	x: number;
 	y: number;
-	size: number;
-	speedX: number;
-	speedY: number;
-	opacity: number;
-	hue: number;
-}
-
-interface TrailPoint {
-	x: number;
-	y: number;
-	life: number; // 0..1
 	vx: number;
 	vy: number;
+	size: number;
+	baseOpacity: number;
 	hue: number;
 }
 
+/**
+ * A single, cohesive ambient background inspired by Vercel / Linear:
+ *  - a soft cursor spotlight that *persists* and eases toward the pointer
+ *  - a dotted grid that subtly lights up around the cursor
+ *  - a lightweight, mouse-aware particle constellation for depth
+ *
+ * Theme-aware (dark/light) and respects `prefers-reduced-motion`.
+ */
 export function InteractiveBackground() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const mouseRef = useRef({
-		x: window.innerWidth / 2,
-		y: window.innerHeight / 2,
-	});
-	const lastMouseRef = useRef({ x: mouseRef.current.x, y: mouseRef.current.y });
-	const blobRef = useRef({ x: mouseRef.current.x, y: mouseRef.current.y });
-	const elementsRef = useRef<FloatingElement[]>([]);
-	const trailRef = useRef<TrailPoint[]>([]);
-	const dprRef = useRef<number>(Math.min(window.devicePixelRatio || 1, 2));
-	const reducedMotion = useRef<boolean>(
-		typeof window !== "undefined" && window.matchMedia
-			? window.matchMedia("(prefers-reduced-motion: reduce)").matches
-			: false,
-	);
+	const overlayRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		const canvas = canvasRef.current;
-		if (!canvas) return;
+		const overlay = overlayRef.current;
+		if (!canvas || !overlay) return;
 
 		const ctx = canvas.getContext("2d");
 		if (!ctx) return;
 
-		let animationId: number;
+		const prefersReduced =
+			window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+
+		let width = window.innerWidth;
+		let height = window.innerHeight;
+		let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+		const mouse = { x: width / 2, y: height / 2 };
+		const glow = { x: mouse.x, y: mouse.y };
+
+		const isLight = () => document.documentElement.classList.contains("light");
+		const rand = (a: number, b: number) => Math.random() * (b - a) + a;
 
 		const resize = () => {
-			const dpr = (dprRef.current = Math.min(window.devicePixelRatio || 1, 2));
-			const { innerWidth: w, innerHeight: h } = window;
-			canvas.width = Math.floor(w * dpr);
-			canvas.height = Math.floor(h * dpr);
-			canvas.style.width = `${w}px`;
-			canvas.style.height = `${h}px`;
+			width = window.innerWidth;
+			height = window.innerHeight;
+			dpr = Math.min(window.devicePixelRatio || 1, 2);
+			canvas.width = Math.floor(width * dpr);
+			canvas.height = Math.floor(height * dpr);
+			canvas.style.width = `${width}px`;
+			canvas.style.height = `${height}px`;
 			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 		};
 
-		const rand = (min: number, max: number) =>
-			Math.random() * (max - min) + min;
-
-		const createFloatingElement = (): FloatingElement => ({
-			x: Math.random() * window.innerWidth,
-			y: Math.random() * window.innerHeight,
-			size: rand(1.5, 4.5),
-			speedX: (Math.random() - 0.5) * 0.25,
-			speedY: (Math.random() - 0.5) * 0.25,
-			opacity: rand(0.15, 0.55),
-			hue: rand(200, 280), // brand range: blue -> purple
-		});
-
-		const init = () => {
-			elementsRef.current = [];
-			const count = reducedMotion.current ? 16 : 38;
-			for (let i = 0; i < count; i++)
-				elementsRef.current.push(createFloatingElement());
-		};
-
-		const addTrailPoint = (x: number, y: number) => {
-			const last = lastMouseRef.current;
-			// Interpolate points for smooth trail on fast moves
-			const dx = x - last.x;
-			const dy = y - last.y;
-			const dist = Math.hypot(dx, dy);
-			const steps = Math.ceil(dist / 12);
-			for (let i = 1; i <= steps; i++) {
-				const px = last.x + (dx * i) / steps;
-				const py = last.y + (dy * i) / steps;
-				trailRef.current.push({
-					x: px,
-					y: py,
-					life: 1,
-					vx: -dx * 0.02 + (Math.random() - 0.5) * 0.6,
-					vy: -dy * 0.02 + (Math.random() - 0.5) * 0.6,
-					hue: 210 + (i / Math.max(1, steps)) * 60, // 210->270
+		const particles: Particle[] = [];
+		const initParticles = () => {
+			particles.length = 0;
+			if (prefersReduced) return;
+			const count = Math.min(64, Math.floor((width * height) / 28000));
+			for (let i = 0; i < count; i++) {
+				particles.push({
+					x: Math.random() * width,
+					y: Math.random() * height,
+					vx: rand(-0.14, 0.14),
+					vy: rand(-0.14, 0.14),
+					size: rand(1, 2.3),
+					baseOpacity: rand(0.2, 0.55),
+					hue: rand(205, 275),
 				});
 			}
-			// Limit trail length
-			const maxTrail = reducedMotion.current ? 24 : 72;
-			if (trailRef.current.length > maxTrail) {
-				trailRef.current.splice(0, trailRef.current.length - maxTrail);
+		};
+
+		const updateOverlay = () => {
+			overlay.style.setProperty("--mx", `${glow.x}px`);
+			overlay.style.setProperty("--my", `${glow.y}px`);
+		};
+
+		const onMove = (x: number, y: number) => {
+			mouse.x = x;
+			mouse.y = y;
+			if (prefersReduced) {
+				glow.x = x;
+				glow.y = y;
+				updateOverlay();
 			}
-			lastMouseRef.current = { x, y };
 		};
-
-		const handleMouseMove = (e: MouseEvent) => {
-			mouseRef.current.x = e.clientX;
-			mouseRef.current.y = e.clientY;
-			addTrailPoint(e.clientX, e.clientY);
-		};
-
-		const handleTouchMove = (e: TouchEvent) => {
-			if (!e.touches.length) return;
+		const handleMouse = (e: MouseEvent) => onMove(e.clientX, e.clientY);
+		const handleTouch = (e: TouchEvent) => {
 			const t = e.touches[0];
-			mouseRef.current.x = t.clientX;
-			mouseRef.current.y = t.clientY;
-			addTrailPoint(t.clientX, t.clientY);
+			if (t) onMove(t.clientX, t.clientY);
 		};
 
+		let animationId = 0;
 		const animate = () => {
-			const { width, height } = canvas;
-			// Clear
+			const light = isLight();
+
+			// Persistent, eased spotlight follow
+			glow.x += (mouse.x - glow.x) * 0.08;
+			glow.y += (mouse.y - glow.y) * 0.08;
+			updateOverlay();
+
 			ctx.clearRect(0, 0, width, height);
 
-			// Easing blob follow
-			const blob = blobRef.current;
-			const mouse = mouseRef.current;
-			const ease = reducedMotion.current ? 0.2 : 0.12;
-			blob.x += (mouse.x - blob.x) * ease;
-			blob.y += (mouse.y - blob.y) * ease;
+			const connectDist = 130;
+			for (let i = 0; i < particles.length; i++) {
+				const p = particles[i];
 
-			// FLOATING PARTICLES LAYER
-			elementsRef.current.forEach((el, index) => {
-				const dx = mouse.x - el.x;
-				const dy = mouse.y - el.y;
-				const distance = Math.hypot(dx, dy);
-				const maxDistance = 200;
-
-				if (distance < maxDistance) {
-					const force = (maxDistance - distance) / maxDistance;
-					el.x += dx * force * 0.01;
-					el.y += dy * force * 0.01;
+				// Gentle attraction toward the cursor
+				const dx = mouse.x - p.x;
+				const dy = mouse.y - p.y;
+				const dist = Math.hypot(dx, dy);
+				if (dist < 180) {
+					const f = (180 - dist) / 180;
+					p.x += dx * f * 0.008;
+					p.y += dy * f * 0.008;
 				}
 
-				el.x += el.speedX;
-				el.y += el.speedY;
-				if (el.x < 0 || el.x > width / dprRef.current) el.speedX *= -1;
-				if (el.y < 0 || el.y > height / dprRef.current) el.speedY *= -1;
-				el.x = Math.max(0, Math.min(width / dprRef.current, el.x));
-				el.y = Math.max(0, Math.min(height / dprRef.current, el.y));
+				p.x += p.vx;
+				p.y += p.vy;
+				if (p.x < 0 || p.x > width) p.vx *= -1;
+				if (p.y < 0 || p.y > height) p.vy *= -1;
+				p.x = Math.max(0, Math.min(width, p.x));
+				p.y = Math.max(0, Math.min(height, p.y));
 
-				const gradient = ctx.createRadialGradient(
-					el.x,
-					el.y,
-					0,
-					el.x,
-					el.y,
-					el.size * 3.2,
-				);
-				gradient.addColorStop(0, `hsla(${el.hue}, 80%, 60%, ${el.opacity})`);
-				gradient.addColorStop(
-					0.5,
-					`hsla(${el.hue}, 80%, 55%, ${el.opacity * 0.35})`,
-				);
-				gradient.addColorStop(1, `hsla(${el.hue}, 80%, 45%, 0)`);
 				ctx.beginPath();
-				ctx.arc(el.x, el.y, el.size * 3.2, 0, Math.PI * 2);
-				ctx.fillStyle = gradient;
+				ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+				ctx.fillStyle = light
+					? `hsla(${p.hue}, 70%, 45%, ${p.baseOpacity * 0.55})`
+					: `hsla(${p.hue}, 85%, 68%, ${p.baseOpacity})`;
 				ctx.fill();
 
-				// Connect nearby elements
-				elementsRef.current.slice(index + 1).forEach((other) => {
-					const ddx = el.x - other.x;
-					const ddy = el.y - other.y;
-					const d = Math.hypot(ddx, ddy);
-					const maxD = 120;
-					if (d < maxD) {
-						const opacity = (1 - d / maxD) * 0.1;
+				// Connect nearby particles
+				for (let j = i + 1; j < particles.length; j++) {
+					const o = particles[j];
+					const lx = p.x - o.x;
+					const ly = p.y - o.y;
+					const d = Math.hypot(lx, ly);
+					if (d < connectDist) {
+						const op = (1 - d / connectDist) * (light ? 0.1 : 0.16);
 						ctx.beginPath();
-						ctx.moveTo(el.x, el.y);
-						ctx.lineTo(other.x, other.y);
-						ctx.strokeStyle = `hsla(220, 80%, 65%, ${opacity})`;
+						ctx.moveTo(p.x, p.y);
+						ctx.lineTo(o.x, o.y);
+						ctx.strokeStyle = light
+							? `hsla(215, 60%, 40%, ${op})`
+							: `hsla(220, 85%, 72%, ${op})`;
 						ctx.lineWidth = 1;
 						ctx.stroke();
 					}
-				});
-			});
-
-			// TRAIL LAYER (additive glow)
-			ctx.save();
-			ctx.globalCompositeOperation = "lighter";
-			for (let i = 0; i < trailRef.current.length; i++) {
-				const p = trailRef.current[i];
-				p.x += p.vx;
-				p.y += p.vy;
-				p.life -= reducedMotion.current ? 0.05 : 0.025;
-				if (p.life <= 0) continue;
-				const r = (1 - p.life) * 18 + 6; // grow then fade
-				const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, r);
-				g.addColorStop(0, `hsla(${p.hue}, 90%, 60%, ${0.25 * p.life})`);
-				g.addColorStop(0.6, `hsla(${p.hue}, 90%, 55%, ${0.12 * p.life})`);
-				g.addColorStop(1, `hsla(${p.hue}, 90%, 45%, 0)`);
-				ctx.beginPath();
-				ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
-				ctx.fillStyle = g;
-				ctx.fill();
+				}
 			}
-			// Remove dead points efficiently
-			trailRef.current = trailRef.current.filter((p) => p.life > 0);
-			ctx.restore();
 
-			// CURSOR BLOB (soft spotlight with brand gradient)
-			const blobRadius = reducedMotion.current ? 70 : 110;
-			const mg = ctx.createRadialGradient(
-				blob.x,
-				blob.y,
-				0,
-				blob.x,
-				blob.y,
-				blobRadius,
-			);
-			mg.addColorStop(0, "hsla(210, 100%, 60%, 0.18)"); // primary
-			mg.addColorStop(0.5, "hsla(270, 95%, 60%, 0.10)"); // accent
-			mg.addColorStop(1, "hsla(210, 100%, 56%, 0)");
+			// Persistent cursor glow rendered onto the canvas
+			ctx.save();
+			ctx.globalCompositeOperation = light ? "source-over" : "lighter";
+			const r = 170;
+			const g = ctx.createRadialGradient(glow.x, glow.y, 0, glow.x, glow.y, r);
+			if (light) {
+				g.addColorStop(0, "hsla(210, 100%, 55%, 0.07)");
+				g.addColorStop(1, "hsla(210, 100%, 55%, 0)");
+			} else {
+				g.addColorStop(0, "hsla(210, 100%, 62%, 0.11)");
+				g.addColorStop(0.5, "hsla(270, 95%, 62%, 0.06)");
+				g.addColorStop(1, "hsla(210, 100%, 56%, 0)");
+			}
 			ctx.beginPath();
-			ctx.arc(blob.x, blob.y, blobRadius, 0, Math.PI * 2);
-			ctx.fillStyle = mg;
+			ctx.arc(glow.x, glow.y, r, 0, Math.PI * 2);
+			ctx.fillStyle = g;
 			ctx.fill();
+			ctx.restore();
 
 			animationId = requestAnimationFrame(animate);
 		};
 
 		resize();
-		init();
-		animate();
+		initParticles();
+		updateOverlay();
 
-		window.addEventListener("resize", resize);
-		window.addEventListener("mousemove", handleMouseMove);
-		window.addEventListener("touchmove", handleTouchMove, { passive: true });
+		if (!prefersReduced) animate();
+
+		const handleResize = () => {
+			resize();
+			initParticles();
+		};
+		window.addEventListener("resize", handleResize);
+		window.addEventListener("mousemove", handleMouse);
+		window.addEventListener("touchmove", handleTouch, { passive: true });
 
 		return () => {
-			window.removeEventListener("resize", resize);
-			window.removeEventListener("mousemove", handleMouseMove);
-			window.removeEventListener("touchmove", handleTouchMove);
+			window.removeEventListener("resize", handleResize);
+			window.removeEventListener("mousemove", handleMouse);
+			window.removeEventListener("touchmove", handleTouch);
 			cancelAnimationFrame(animationId);
 		};
 	}, []);
 
 	return (
-		<canvas
-			ref={canvasRef}
-			className="fixed inset-0 pointer-events-none z-0"
-			style={{ background: "transparent" }}
-		/>
+		<>
+			<div
+				ref={overlayRef}
+				aria-hidden="true"
+				className="bg-grid-reveal fixed inset-0 z-0 pointer-events-none"
+			/>
+			<canvas
+				ref={canvasRef}
+				className="fixed inset-0 z-0 pointer-events-none"
+				style={{ background: "transparent" }}
+			/>
+		</>
 	);
 }

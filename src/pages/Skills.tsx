@@ -1,5 +1,6 @@
 import { Cloud, Code, Database, Globe, Layers, Settings } from "lucide-react";
 import { SEOHead } from "@/components/SEO";
+import { SectionHeading } from "@/components/SectionHeading";
 import { skillCategories } from "@/data/skills";
 
 const iconMap = {
@@ -30,15 +31,17 @@ export default function Skills() {
 			<div className="min-h-screen py-20">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					{/* Header */}
-					<div className="text-center mb-10 sm:mb-16 slide-in-up">
-						<h1 className="text-3xl sm:text-5xl font-bold mb-4">
-							Technical <span className="gradient-text">Skills</span>
-						</h1>
-						<p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
-							A comprehensive overview of my technical expertise across
-							different domains of software engineering
-						</p>
-					</div>
+					<SectionHeading
+						as="h1"
+						className="mb-10 sm:mb-16 slide-in-up"
+						eyebrow="Capabilities"
+						title={
+							<>
+								Technical <span className="gradient-text">Skills</span>
+							</>
+						}
+						subtitle="A comprehensive overview of my technical expertise across different domains of software engineering"
+					/>
 
 					{/* Skills Overview */}
 					<div

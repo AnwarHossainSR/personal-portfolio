@@ -250,7 +250,14 @@
 @layer components {
   /* Premium Component Classes */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary via-accent to-primary-glow bg-clip-text text-transparent animate-glow-pulse;
+    @apply bg-gradient-to-r from-primary via-accent to-primary-glow bg-clip-text text-transparent;
+  }
+
+  /* Opt-in animated gradient (used sparingly for emphasis) */
+  .gradient-text-animated {
+    @apply bg-gradient-to-r from-primary via-accent to-primary-glow bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: gradient-shift 6s linear infinite;
   }
 
   .gradient-border {
@@ -341,18 +348,40 @@
 
   /* Interactive Elements */
   .interactive-card {
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      transform 0.4s var(--curve-smooth),
+      box-shadow 0.4s var(--curve-smooth),
+      border-color 0.4s var(--curve-smooth);
   }
 
   .interactive-card:hover {
-    transform: scale(1.05);
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.12) 0%,
-      rgba(255, 255, 255, 0.06) 50%,
-      rgba(255, 255, 255, 0.12) 100%
-    );
+    transform: translateY(-6px);
+    border-color: hsl(var(--primary) / 0.4);
     box-shadow: var(--shadow-elevated);
+  }
+
+  /* Spotlight that follows the pointer across a card (set via inline vars) */
+  .spotlight-card {
+    position: relative;
+  }
+
+  .spotlight-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      260px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      hsl(var(--primary) / 0.12),
+      transparent 65%
+    );
+    pointer-events: none;
+  }
+
+  .spotlight-card:hover::after {
+    opacity: 1;
   }
 }
 
@@ -548,4 +577,139 @@
 
 .animate-count-up {
   animation: countUp 0.8s ease-out forwards;
+}
+
+/* ---------------------------------------------------------------------------
+   Vercel-style grid that lights up around the cursor
+   (driven by --mx / --my set from InteractiveBackground)
+--------------------------------------------------------------------------- */
+.bg-grid-reveal {
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    hsl(var(--foreground) / 0.22) 1px,
+    transparent 0
+  );
+  background-size: 34px 34px;
+  opacity: 0.55;
+  -webkit-mask-image: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    #000 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 50%),
+    #000 0%,
+    rgba(0, 0, 0, 0.35) 45%,
+    transparent 72%
+  );
+}
+
+.light .bg-grid-reveal {
+  opacity: 0.4;
+}
+
+/* ---------------------------------------------------------------------------
+   Custom cursor (dot + easing ring)
+--------------------------------------------------------------------------- */
+@media (pointer: fine) {
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none !important;
+  }
+}
+
+.cursor-dot,
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  will-change: transform;
+}
+
+.cursor-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  box-shadow: 0 0 12px hsl(var(--primary) / 0.85);
+}
+
+.cursor-ring {
+  width: 34px;
+  height: 34px;
+  border-radius: 9999px;
+  border: 1.5px solid hsl(var(--primary) / 0.55);
+  background: hsl(var(--primary) / 0.04);
+  transition:
+    opacity 0.25s ease,
+    width 0.25s var(--curve-smooth),
+    height 0.25s var(--curve-smooth),
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.cursor-ring.cursor-ring--hover {
+  width: 56px;
+  height: 56px;
+  border-color: hsl(var(--accent) / 0.65);
+  background: hsl(var(--accent) / 0.1);
+}
+
+.cursor-ring.cursor-ring--down {
+  width: 26px;
+  height: 26px;
+  background: hsl(var(--primary) / 0.12);
+}
+
+/* ---------------------------------------------------------------------------
+   Misc utilities & polish
+--------------------------------------------------------------------------- */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient-shift 6s linear infinite;
+}
+
+/* Accent text selection */
+::selection {
+  background: hsl(var(--primary) / 0.25);
+  color: hsl(var(--foreground));
+}
+
+/* Consistent, accessible focus rings */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring) / 0.7);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Theme-aware base grid dots */
+.light {
+  --bg-grid: radial-gradient(
+    circle at 1px 1px,
+    rgba(15, 23, 42, 0.08) 1px,
+    transparent 0
+  );
 }

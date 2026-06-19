@@ -1,6 +1,8 @@
 import { ExternalLink, Filter, Github, Search } from "lucide-react";
 import { useState } from "react";
 import { SEOHead } from "@/components/SEO";
+import { SectionHeading } from "@/components/SectionHeading";
+import { SpotlightCard } from "@/components/SpotlightCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { projects } from "@/data/projects";
@@ -33,15 +35,17 @@ export default function Projects() {
 			<div className="min-h-screen py-20">
 				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 					{/* Header */}
-					<div className="text-center mb-10 sm:mb-16 slide-in-up">
-						<h1 className="text-3xl sm:text-5xl font-bold mb-4">
-							Featured <span className="gradient-text">Projects</span>
-						</h1>
-						<p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
-							A showcase of innovative solutions, scalable architectures, and
-							impactful applications I've built
-						</p>
-					</div>
+					<SectionHeading
+						as="h1"
+						className="mb-10 sm:mb-16 slide-in-up"
+						eyebrow="Portfolio"
+						title={
+							<>
+								Featured <span className="gradient-text">Projects</span>
+							</>
+						}
+						subtitle="A showcase of innovative solutions, scalable architectures, and impactful applications I've built"
+					/>
 
 					{/* Filters and Search */}
 					<div
@@ -85,9 +89,9 @@ export default function Projects() {
 					{/* Projects Grid */}
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 						{filteredProjects.map((project, index) => (
-							<div
+							<SpotlightCard
 								key={project.id}
-								className="premium-card group hover:scale-105 transition-all duration-500 overflow-hidden slide-in-up"
+								className="premium-card interactive-card group overflow-hidden slide-in-up"
 								style={{ animationDelay: `${index * 100}ms` }}
 							>
 								{/* Project Image */}
@@ -226,7 +230,7 @@ export default function Projects() {
 										)}
 									</div>
 								</div>
-							</div>
+							</SpotlightCard>
 						))}
 					</div>
 
