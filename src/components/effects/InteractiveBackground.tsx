@@ -67,7 +67,7 @@ export function InteractiveBackground() {
 					vy: rand(-0.14, 0.14),
 					size: rand(1, 2.3),
 					baseOpacity: rand(0.2, 0.55),
-					hue: rand(205, 275),
+					hue: rand(188, 258),
 				});
 			}
 		};
@@ -143,8 +143,8 @@ export function InteractiveBackground() {
 						ctx.moveTo(p.x, p.y);
 						ctx.lineTo(o.x, o.y);
 						ctx.strokeStyle = light
-							? `hsla(215, 60%, 40%, ${op})`
-							: `hsla(220, 85%, 72%, ${op})`;
+							? `hsla(245, 55%, 45%, ${op})`
+							: `hsla(225, 90%, 74%, ${op})`;
 						ctx.lineWidth = 1;
 						ctx.stroke();
 					}
@@ -157,12 +157,12 @@ export function InteractiveBackground() {
 			const r = 170;
 			const g = ctx.createRadialGradient(glow.x, glow.y, 0, glow.x, glow.y, r);
 			if (light) {
-				g.addColorStop(0, "hsla(210, 100%, 55%, 0.07)");
-				g.addColorStop(1, "hsla(210, 100%, 55%, 0)");
+				g.addColorStop(0, "hsla(252, 83%, 60%, 0.08)");
+				g.addColorStop(1, "hsla(252, 83%, 60%, 0)");
 			} else {
-				g.addColorStop(0, "hsla(210, 100%, 62%, 0.11)");
-				g.addColorStop(0.5, "hsla(270, 95%, 62%, 0.06)");
-				g.addColorStop(1, "hsla(210, 100%, 56%, 0)");
+				g.addColorStop(0, "hsla(252, 95%, 70%, 0.12)");
+				g.addColorStop(0.5, "hsla(188, 92%, 58%, 0.06)");
+				g.addColorStop(1, "hsla(252, 95%, 68%, 0)");
 			}
 			ctx.beginPath();
 			ctx.arc(glow.x, glow.y, r, 0, Math.PI * 2);

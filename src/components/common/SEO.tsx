@@ -65,8 +65,8 @@ export function SEOHead({
 			<meta name="twitter:creator" content="@anwar_dev" />
 
 			{/* Additional Meta Tags */}
-			<meta name="theme-color" content="#3498db" />
-			<meta name="msapplication-TileColor" content="#3498db" />
+			<meta name="theme-color" content="#7c5cfc" />
+			<meta name="msapplication-TileColor" content="#7c5cfc" />
 
 			{/* Article specific tags */}
 			{publishedTime && (

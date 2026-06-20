@@ -4,35 +4,23 @@ import {
 	ChevronDown,
 	Code,
 	Download,
-	ExternalLink,
-	Github,
-	Linkedin,
 	Mail,
 	Trophy,
-	Youtube,
 	Zap,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import FloatingIcons from "@/components/FloatingIcons";
-import { SEOHead } from "@/components/SEO";
-import { SectionHeading } from "@/components/SectionHeading";
-import { SpotlightCard } from "@/components/SpotlightCard";
-import { StatsCard } from "@/components/StatsCounter";
-import Terminal from "@/components/Terminal";
-import TypingEffect from "@/components/TypingEffect";
+import { SEOHead } from "@/components/common/SEO";
+import { SectionHeading } from "@/components/common/SectionHeading";
+import { SpotlightCard } from "@/components/common/SpotlightCard";
+import { StatsCard } from "@/components/common/StatsCounter";
+import Terminal from "@/components/common/Terminal";
+import FloatingIcons from "@/components/effects/FloatingIcons";
+import TypingEffect from "@/components/effects/TypingEffect";
 import { Button } from "@/components/ui/button";
+import { getSocialIcon } from "@/constants/social";
 import { personalInfo, socialLinks } from "@/data/personal";
 import { featuredProjects } from "@/data/projects";
 import { topSkills } from "@/data/skills";
-
-const iconMap = {
-	Github,
-	Linkedin,
-	Mail,
-	ExternalLink,
-	Youtube,
-	Twitter: Mail, // fallback
-};
 
 export default function Home() {
 	return (
@@ -141,7 +129,7 @@ export default function Home() {
 							{/* Social Links */}
 							<div className="flex justify-center space-x-6 pt-8">
 								{socialLinks.map((social) => {
-									const Icon = iconMap[social.icon as keyof typeof iconMap];
+									const Icon = getSocialIcon(social.icon);
 									return (
 										<a
 											key={social.name}

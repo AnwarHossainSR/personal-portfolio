@@ -1,6 +1,6 @@
 import { Award, Building, Calendar, ExternalLink } from "lucide-react";
-import { SEOHead } from "@/components/SEO";
-import { SectionHeading } from "@/components/SectionHeading";
+import { SEOHead } from "@/components/common/SEO";
+import { SectionHeading } from "@/components/common/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { experience as experiences } from "@/data/experience";
 

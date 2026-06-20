@@ -1,22 +1,6 @@
-import {
-	ExternalLink,
-	Github,
-	Linkedin,
-	Mail,
-	Twitter,
-	Youtube,
-} from "lucide-react";
 import React from "react";
+import { getSocialIcon } from "@/constants/social";
 import { personalInfo, socialLinks } from "@/data/personal";
-
-const iconMap = {
-	Github,
-	Linkedin,
-	Mail,
-	ExternalLink,
-	Twitter,
-	Youtube,
-};
 
 export const Footer = React.memo(() => {
 	const lastUpdatedDate = personalInfo.lastUpdated;
@@ -41,7 +25,7 @@ export const Footer = React.memo(() => {
 						{/* Social Links */}
 						<div className="flex space-x-4">
 							{socialLinks.map((social) => {
-								const Icon = iconMap[social.icon as keyof typeof iconMap];
+								const Icon = getSocialIcon(social.icon);
 								return (
 									<a
 										key={social.name}

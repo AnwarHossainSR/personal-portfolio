@@ -1,8 +1,8 @@
 import React from "react";
-import { CustomCursor } from "./CustomCursor";
-import { Footer } from "./Footer";
-import { InteractiveBackground } from "./InteractiveBackground";
-import { Navigation } from "./Navigation";
+import { CustomCursor } from "@/components/effects/CustomCursor";
+import { InteractiveBackground } from "@/components/effects/InteractiveBackground";
+import { Footer } from "@/components/layout/Footer";
+import { Navigation } from "@/components/layout/Navigation";
 
 interface LayoutProps {
 	children: React.ReactNode;

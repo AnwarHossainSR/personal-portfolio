@@ -1,6 +1,6 @@
 import { Play, Youtube } from "lucide-react";
 import { useState } from "react";
-import { SEOHead } from "@/components/SEO";
+import { SEOHead } from "@/components/common/SEO";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";

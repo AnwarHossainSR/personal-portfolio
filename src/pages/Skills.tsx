@@ -1,6 +1,6 @@
 import { Cloud, Code, Database, Globe, Layers, Settings } from "lucide-react";
-import { SEOHead } from "@/components/SEO";
-import { SectionHeading } from "@/components/SectionHeading";
+import { SEOHead } from "@/components/common/SEO";
+import { SectionHeading } from "@/components/common/SectionHeading";
 import { skillCategories } from "@/data/skills";
 
 const iconMap = {

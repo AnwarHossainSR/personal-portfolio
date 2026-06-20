@@ -1,25 +1,14 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-	Check,
-	Copy,
-	Download,
-	ExternalLink,
-	Github,
-	Linkedin,
-	Mail,
-	MapPin,
-	Phone,
-	Send,
-	Youtube,
-} from "lucide-react";
+import { Check, Copy, Download, Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { SEOHead } from "@/components/SEO";
-import { SectionHeading } from "@/components/SectionHeading";
+import { SEOHead } from "@/components/common/SEO";
+import { SectionHeading } from "@/components/common/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { getSocialIcon } from "@/constants/social";
 import { personalInfo, socialLinks } from "@/data/personal";
 import { useToast } from "@/hooks/use-toast";
 
@@ -32,15 +21,6 @@ const contactSchema = z.object({
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
-
-const iconMap = {
-	Github,
-	Linkedin,
-	Mail,
-	ExternalLink,
-	Youtube,
-	Twitter: Mail,
-};
 
 export default function Contact() {
 	const [copied, setCopied] = useState<string | null>(null);
@@ -240,9 +220,7 @@ export default function Contact() {
 								</h3>
 								<div className="flex justify-center sm:justify-start gap-4">
 									{socialLinks.map((social) => {
-										const Icon =
-											iconMap[social.icon as keyof typeof iconMap] ??
-											ExternalLink;
+										const Icon = getSocialIcon(social.icon);
 										return (
 											<a
 												key={social.name}

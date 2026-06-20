@@ -1,8 +1,8 @@
 import { ExternalLink, Filter, Github, Search } from "lucide-react";
 import { useState } from "react";
-import { SEOHead } from "@/components/SEO";
-import { SectionHeading } from "@/components/SectionHeading";
-import { SpotlightCard } from "@/components/SpotlightCard";
+import { SEOHead } from "@/components/common/SEO";
+import { SectionHeading } from "@/components/common/SectionHeading";
+import { SpotlightCard } from "@/components/common/SpotlightCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { projects } from "@/data/projects";

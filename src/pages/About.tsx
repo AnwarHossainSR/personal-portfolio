@@ -1,6 +1,6 @@
 import { Award, Calendar, Code, Download, MapPin, Users } from "lucide-react";
-import { SEOHead } from "@/components/SEO";
-import { SectionHeading } from "@/components/SectionHeading";
+import { SEOHead } from "@/components/common/SEO";
+import { SectionHeading } from "@/components/common/SectionHeading";
 import { Button } from "@/components/ui/button";
 import { personalInfo } from "@/data/personal";
 
