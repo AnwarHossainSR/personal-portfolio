@@ -8,7 +8,7 @@ export const skillCategories = [
       { name: "Agentic AI Workflows", level: "Advanced", yearsOfExperience: "1+", inProduction: true },
       { name: "AI Automation", level: "Advanced", yearsOfExperience: "1+", inProduction: true },
       { name: "Prompt Engineering", level: "Advanced", yearsOfExperience: "1+", inProduction: true },
-      { name: "OpenAI API Concepts", level: "Intermediate", yearsOfExperience: "1+", inProduction: true },
+      { name: "Gemini API Concepts", level: "Intermediate", yearsOfExperience: "1+", inProduction: true },
       { name: "Tool Orchestration", level: "Advanced", yearsOfExperience: "1+", inProduction: true },
       { name: "Workflow Automation", level: "Advanced", yearsOfExperience: "3+", inProduction: true },
     ],
@@ -139,7 +139,7 @@ export const certifications = [
 export const topSkills = [
   "AI Automation",
   "Agentic AI",
-  "OpenAI API",
+  "Gemini API",
   "AWS",
   "Node.js",
   "React",

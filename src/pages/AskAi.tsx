@@ -109,11 +109,22 @@ INSTRUCTIONS:
 const SYSTEM_CONTEXT = buildSystemContext();
 
 const suggestedQuestions = [
-  { icon: Zap, text: "What is Anwar's expertise in AWS?" },
-  { icon: MessageSquare, text: "Tell me about his recent projects" },
+  { icon: Zap, text: "How does Anwar approach AI automation?" },
+  { icon: MessageSquare, text: "Tell me about his agentic AI work" },
   { icon: Sparkles, text: "What tech stack does he specialize in?" },
   { icon: Bot, text: "How can I get in touch with Anwar?" },
 ];
+
+const getGeminiText = (data: {
+  candidates?: Array<{
+    content?: { parts?: Array<{ text?: string }> };
+  }>;
+}) =>
+  data.candidates?.[0]?.content?.parts
+    ?.map((part) => part.text)
+    .filter(Boolean)
+    .join("\n")
+    .trim();
 
 export default function AskAi() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -123,7 +134,7 @@ export default function AskAi() {
   const [showSettings, setShowSettings] = useState(false);
   const [customApiKey, setCustomApiKey] = useState(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("openai_api_key") || "";
+      return localStorage.getItem("gemini_api_key") || "";
     }
     return "";
   });
@@ -163,8 +174,8 @@ export default function AskAi() {
     setIsLoading(true);
 
     try {
-      // Use custom API key if set, otherwise fall back to env variable
-      const apiKey = customApiKey || import.meta.env.VITE_OPENAI_API_KEY;
+      const apiKey = customApiKey || import.meta.env.VITE_GEMINI_API_KEY;
+      const model = import.meta.env.VITE_GEMINI_MODEL || "gemini-1.5-flash";
 
       if (!apiKey) {
         setMessages((prev) => [
@@ -172,7 +183,7 @@ export default function AskAi() {
           {
             role: "assistant",
             content:
-              "OpenAI API key is not configured. Please add VITE_OPENAI_API_KEY to your .env.local file or set your own key in the API settings to enable the AI assistant.",
+              "Gemini API key is not configured. Please add VITE_GEMINI_API_KEY to your .env.local file or set your own Gemini key in the API settings to enable the AI assistant.",
             isError: true,
             errorType: "config_error",
           },
@@ -182,24 +193,29 @@ export default function AskAi() {
       }
 
       const response = await fetch(
-        "https://api.openai.com/v1/chat/completions",
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${encodeURIComponent(
+          apiKey,
+        )}`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${apiKey}`,
           },
           body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [
-              { role: "system", content: SYSTEM_CONTEXT },
-              ...messages
-                .filter((m) => !m.isError)
-                .map((m) => ({ role: m.role, content: m.content })),
-              { role: "user", content: text },
+            systemInstruction: {
+              parts: [{ text: SYSTEM_CONTEXT }],
+            },
+            contents: [
+              ...messages.filter((m) => !m.isError).map((m) => ({
+                role: m.role === "assistant" ? "model" : "user",
+                parts: [{ text: m.content }],
+              })),
+              { role: "user", parts: [{ text }] },
             ],
-            max_tokens: 500,
-            temperature: 0.7,
+            generationConfig: {
+              maxOutputTokens: 500,
+              temperature: 0.7,
+            },
           }),
         }
       );
@@ -228,10 +244,11 @@ export default function AskAi() {
       }
 
       const data = await response.json();
+      const responseText = getGeminiText(data);
       const assistantMessage: Message = {
         role: "assistant",
         content:
-          data.choices[0]?.message?.content ||
+          responseText ||
           "Sorry, I couldn't generate a response.",
       };
 
@@ -268,7 +285,7 @@ export default function AskAi() {
   const saveApiKey = () => {
     if (tempApiKey.trim()) {
       setCustomApiKey(tempApiKey.trim());
-      localStorage.setItem("openai_api_key", tempApiKey.trim());
+      localStorage.setItem("gemini_api_key", tempApiKey.trim());
     }
     setTempApiKey("");
     setShowSettings(false);
@@ -276,7 +293,7 @@ export default function AskAi() {
 
   const clearApiKey = () => {
     setCustomApiKey("");
-    localStorage.removeItem("openai_api_key");
+    localStorage.removeItem("gemini_api_key");
     setTempApiKey("");
   };
 
@@ -284,8 +301,8 @@ export default function AskAi() {
     <>
     <SEOHead
       title="Ask AI"
-      description="Chat with an AI assistant about Anwar Hossain's professional experience, skills, and projects. Powered by OpenAI GPT-4o-mini."
-      keywords="Ask AI, Anwar Hossain AI, Portfolio Assistant, AI Chatbot, OpenAI"
+      description="Chat with a Gemini-powered AI assistant about Anwar Hossain's professional experience, AI automation focus, skills, and projects."
+      keywords="Ask AI, Anwar Hossain AI, Portfolio Assistant, AI Chatbot, Gemini AI, Agentic AI"
       url="https://anwarportfolio.vercel.app/ask-ai"
     />
     <div className="min-h-[calc(100vh-4rem)] py-12 px-4 sm:px-6 lg:px-8">
@@ -300,7 +317,7 @@ export default function AskAi() {
               </div>
             </div>
             <span className="text-sm font-semibold bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">
-              AI-Powered Assistant
+              Gemini-Powered Assistant
             </span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold mb-4 tracking-tight">
@@ -385,13 +402,13 @@ export default function AskAi() {
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Provide your own OpenAI API key. If set, it will be used
+                    Provide your own Gemini API key. If set, it will be used
                     instead of the default configuration.
                   </p>
                   <div className="space-y-3">
                     <Input
                       type="password"
-                      placeholder="sk-..."
+                      placeholder="Gemini API key"
                       value={tempApiKey}
                       onChange={(e) => setTempApiKey(e.target.value)}
                       className="font-mono text-sm"
@@ -399,7 +416,7 @@ export default function AskAi() {
                     {customApiKey && (
                       <div className="flex items-center gap-2 text-xs text-green-600 dark:text-green-400">
                         <div className="w-2 h-2 rounded-full bg-green-500" />
-                        Custom API key is active
+                        Custom Gemini key is active
                       </div>
                     )}
                     <div className="flex gap-2">
@@ -419,7 +436,7 @@ export default function AskAi() {
                   </div>
                   <p className="text-xs text-muted-foreground mt-4 leading-relaxed">
                     Your key is stored locally in your browser and never sent to
-                    any server except directly to OpenAI.
+                    any server except directly to Google Gemini.
                   </p>
                 </div>
               </div>
@@ -579,7 +596,7 @@ export default function AskAi() {
               </div>
               <p className="text-xs text-muted-foreground mt-4 text-center">
                 Powered by{" "}
-                <span className="font-medium">OpenAI GPT-4o-mini</span> -
+                <span className="font-medium">Google Gemini</span> -
                 Responses are AI-generated
               </p>
             </div>

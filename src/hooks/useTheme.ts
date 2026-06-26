@@ -1,10 +1,20 @@
 import { useEffect, useState } from "react";
 
 type Theme = "dark" | "light" | "system";
+const THEME_DEFAULT_VERSION = "dark-v2";
 
 export function useTheme() {
 	const [theme, setTheme] = useState<Theme>(() => {
 		if (typeof window !== "undefined") {
+			if (
+				localStorage.getItem("theme-default-version") !==
+				THEME_DEFAULT_VERSION
+			) {
+				localStorage.setItem("theme", "dark");
+				localStorage.setItem("theme-default-version", THEME_DEFAULT_VERSION);
+				return "dark";
+			}
+
 			return (localStorage.getItem("theme") as Theme) || "dark";
 		}
 		return "dark";
@@ -30,6 +40,7 @@ export function useTheme() {
 		const newTheme = theme === "light" ? "dark" : "light";
 		setTheme(newTheme);
 		localStorage.setItem("theme", newTheme);
+		localStorage.setItem("theme-default-version", THEME_DEFAULT_VERSION);
 	};
 
 	return {
@@ -37,6 +48,7 @@ export function useTheme() {
 		setTheme: (theme: Theme) => {
 			setTheme(theme);
 			localStorage.setItem("theme", theme);
+			localStorage.setItem("theme-default-version", THEME_DEFAULT_VERSION);
 		},
 		toggleTheme,
 	};
