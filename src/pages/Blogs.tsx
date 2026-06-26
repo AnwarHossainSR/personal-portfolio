@@ -119,7 +119,7 @@ export default function Blogs() {
 												day: "numeric",
 											})}
 										</time>
-										• {post.readingTime}
+										- {post.readingTime}
 									</CardDescription>
 								</CardHeader>
 								<CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">

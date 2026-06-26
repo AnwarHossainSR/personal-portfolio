@@ -1,366 +1,270 @@
-import FloatingIcons from "@/components/FloatingIcons";
 import { SEOHead } from "@/components/SEO";
-import { StatsCard } from "@/components/StatsCounter";
 import Terminal from "@/components/Terminal";
-import TypingEffect from "@/components/TypingEffect";
 import { Button } from "@/components/ui/button";
-import { personalInfo, socialLinks } from "@/data/personal";
+import { experienceStats } from "@/data/experience";
+import { personalInfo } from "@/data/personal";
 import { featuredProjects } from "@/data/projects";
 import { topSkills } from "@/data/skills";
 import {
   ArrowRight,
-  Award,
-  ChevronDown,
-  Code,
+  BadgeCheck,
+  Bot,
+  CheckCircle2,
   Download,
   ExternalLink,
   Github,
   Linkedin,
   Mail,
-  Trophy,
-  Youtube,
-  Zap,
+  Server,
+  Sparkles,
+  Workflow,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-const iconMap = {
-  Github,
-  Linkedin,
-  Mail,
-  ExternalLink,
-  Youtube,
-  Twitter: Mail, // fallback
-};
+const heroMetrics = [
+  { label: "Years experience", value: experienceStats.totalYears },
+  { label: "Projects delivered", value: experienceStats.projectsCompleted },
+  { label: "Core technologies", value: experienceStats.technologies },
+  { label: "Companies", value: `${experienceStats.companiesWorked}` },
+];
+
+const services = [
+  {
+    icon: Bot,
+    title: "AI automation and agentic workflows",
+    copy: "LLM-assisted tools, prompt systems, workflow orchestration, and automation-first product thinking.",
+  },
+  {
+    icon: Workflow,
+    title: "Cloud automation",
+    copy: "AWS serverless, APIs, event flows, databases, storage, monitoring, and delivery automation.",
+  },
+  {
+    icon: Server,
+    title: "Full-stack AI-ready systems",
+    copy: "React, Next.js, Node.js, Laravel, TypeScript, and practical product execution.",
+  },
+];
+
+function ArchitecturePreview({ notes }: { notes?: string[] }) {
+  const items = notes?.slice(0, 5) ?? ["Client", "API", "Service", "Data", "Ops"];
+
+  return (
+    <div className="rounded-lg border border-card-border bg-secondary/50 p-4">
+      <div className="grid grid-cols-5 gap-2">
+        {items.map((item, index) => (
+          <div key={item} className="min-w-0">
+            <div className="h-16 rounded-md border border-primary/20 bg-background/70 p-2 flex items-center justify-center text-center text-[10px] font-semibold text-muted-foreground">
+              {item}
+            </div>
+            {index < items.length - 1 && (
+              <div className="mx-auto my-2 h-px w-full bg-gradient-to-r from-primary/10 via-primary/60 to-primary/10" />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
     <>
       <SEOHead
-        title="Home"
-        description="Senior Software Engineer with 6+ years of experience in AWS cloud architecture, full-stack development, and DevOps. Specialized in React, Node.js, and serverless systems."
-        keywords="Anwar Hossain, Senior Software Engineer, AWS Architect, Full Stack Developer, React, Node.js, DevOps"
+        title="Senior Software Engineer"
+        description="Md. Anwar Hossain is a Senior Software Engineer specializing in AI automation, agentic AI workflows, AWS cloud architecture, full-stack development, and DevOps."
+        keywords="Md. Anwar Hossain, AI Automation Engineer, Agentic AI, Senior Software Engineer, AWS Architect, Full Stack Developer, React, Node.js, DevOps"
         url="https://anwarportfolio.vercel.app"
       />
       <div className="min-h-screen">
-        {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          {/* Background Effects */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-hero opacity-50" />
-            <FloatingIcons />
-            <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-            <div
-              className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse"
-              style={{ animationDelay: "2s" }}
-            />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <div className="space-y-12 slide-in-up hero-glow">
-              <div className="space-y-6">
-                <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-sm mb-4">
-                  <span className="text-sm text-primary font-medium">
-                    🚀 Senior Software Engineer
-                  </span>
+        <section className="relative overflow-hidden bg-gradient-hero py-20 sm:py-24 lg:py-28">
+          <div className="section-shell">
+            <div className="grid items-center gap-12 lg:grid-cols-[1.12fr_0.88fr]">
+              <div className="slide-in-up">
+                <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
+                  <span className="h-2 w-2 rounded-full bg-accent" />
+                  Available for AI automation, agentic AI, and senior cloud engineering roles
                 </div>
 
-                <h1 className="text-3xl sm:text-5xl lg:text-7xl font-bold tracking-tight">
-                  <span className="block">Hi, I'm</span>
-                  <span className="gradient-text block mt-1 sm:mt-2">
-                    {personalInfo.name}
-                  </span>
+                <h1 className="max-w-4xl text-4xl font-black tracking-tight text-balance text-foreground sm:text-6xl lg:text-7xl">
+                  {personalInfo.name}
+                  <span className="block gradient-text">builds AI automation and reliable cloud software.</span>
                 </h1>
 
-                <h2 className="text-lg sm:text-2xl lg:text-4xl font-medium text-muted-foreground/80 leading-tight min-h-[3rem]">
-                  <TypingEffect
-                    texts={[
-                      "Architecting Scalable Systems on AWS Cloud",
-                      "Building Full-Stack Applications",
-                      "Designing Microservices Architecture",
-                      "Implementing DevOps Best Practices",
-                    ]}
-                    typingSpeed={80}
-                    deletingSpeed={50}
-                    pauseDuration={2500}
-                    loop={true}
-                  />
-                </h2>
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
+                  {personalInfo.bio.short}
+                </p>
 
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-3 text-xs sm:text-sm lg:text-base">
-                  <span className="px-2 py-1 sm:px-4 sm:py-2 bg-card/50 backdrop-blur-sm rounded-full border border-card-border text-foreground/80">
-                    System Design Expert
-                  </span>
-                  <span className="px-2 py-1 sm:px-4 sm:py-2 bg-card/50 backdrop-blur-sm rounded-full border border-card-border text-foreground/80">
-                    DevOps Engineer
-                  </span>
-                  <span className="px-2 py-1 sm:px-4 sm:py-2 bg-card/50 backdrop-blur-sm rounded-full border border-card-border text-foreground/80">
-                    6+ Years Experience
-                  </span>
-                </div>
-              </div>
-
-              <p className="text-sm sm:text-lg lg:text-xl text-muted-foreground/90 max-w-4xl mx-auto leading-relaxed font-light px-2 sm:px-0">
-                {personalInfo.bio.short}
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
-                <Button
-                  size="default"
-                  className="group bg-gradient-primary text-white px-8 py-3 rounded-xl shadow-premium hover:shadow-glow transition-all duration-500 hover:scale-105"
-                  asChild
-                >
-                  <Link to="/projects">
-                    <ArrowRight className="mr-2 w-4 h-4 group-hover:scale-110 transition-transform" />
-                    View My Work
-                  </Link>
-                </Button>
-
-                <Button
-                  variant="outline"
-                  size="default"
-                  className="group px-8 py-3 rounded-xl border-2 border-primary/30 bg-card/20 backdrop-blur-sm hover:bg-primary/10 hover:border-primary/50 hover:scale-105 transition-all duration-500"
-                  asChild
-                >
-                  <a
-                    href="/resume.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Download className="mr-2 w-4 h-4 group-hover:scale-110 transition-transform" />
-                    Download Resume
-                  </a>
-                </Button>
-              </div>
-
-              {/* Social Links */}
-              <div className="flex justify-center space-x-6 pt-8">
-                {socialLinks.map((social) => {
-                  const Icon = iconMap[social.icon as keyof typeof iconMap];
-                  return (
-                    <a
-                      key={social.name}
-                      href={social.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group p-4 rounded-2xl bg-card/30 backdrop-blur-sm border border-card-border/50 hover:bg-primary/10 hover:border-primary/30 transition-all duration-500 hover:scale-110"
-                      aria-label={social.name}
-                    >
-                      <Icon className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                  <Button size="lg" className="bg-gradient-primary font-bold text-primary-foreground shadow-glow" asChild>
+                    <Link to="/projects">
+                      View case studies
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button size="lg" variant="outline" className="border-card-border bg-card/80" asChild>
+                    <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                      <Download className="mr-2 h-4 w-4" />
+                      Resume
                     </a>
-                  );
-                })}
+                  </Button>
+                  <Button size="lg" variant="ghost" className="text-muted-foreground hover:text-foreground" asChild>
+                    <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer">
+                      <Linkedin className="mr-2 h-4 w-4" />
+                      LinkedIn
+                    </a>
+                  </Button>
+                </div>
+
+                <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {heroMetrics.map((metric) => (
+                    <div key={metric.label} className="metric-tile">
+                      <div className="text-2xl font-black text-foreground">{metric.value}</div>
+                      <div className="mt-1 text-xs font-medium text-muted-foreground">{metric.label}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="relative">
+                <div className="premium-card overflow-hidden p-4">
+                  <div className="aspect-[4/5] overflow-hidden rounded-md bg-secondary">
+                    <img src={personalInfo.avatar} alt={personalInfo.name} className="h-full w-full object-cover" />
+                  </div>
+                  <div className="relative mt-4 space-y-4">
+                    <div>
+                      <p className="text-sm font-semibold text-primary">{personalInfo.title}</p>
+                      <p className="mt-1 text-sm text-muted-foreground">{personalInfo.subtitle}</p>
+                    </div>
+                    <div className="grid gap-2 text-sm text-muted-foreground">
+                      {personalInfo.highlights.slice(0, 4).map((item) => (
+                        <div key={item} className="flex items-start gap-2">
+                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                          <span>{item}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="flex-1 border-card-border" asChild>
+                        <a href={personalInfo.github} target="_blank" rel="noopener noreferrer">
+                          <Github className="mr-2 h-4 w-4" />
+                          GitHub
+                        </a>
+                      </Button>
+                      <Button variant="outline" size="sm" className="flex-1 border-card-border" asChild>
+                        <Link to="/contact">
+                          <Mail className="mr-2 h-4 w-4" />
+                          Contact
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-
-          {/* Scroll Indicator */}
-          <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
-            <div className="flex flex-col items-center space-y-2">
-              <ChevronDown className="w-6 h-6 text-muted-foreground/60" />
-              <span className="text-xs text-muted-foreground/60 font-medium">
-                Scroll to explore
-              </span>
-            </div>
-          </div>
         </section>
 
-        {/* Stats Section */}
-        <section className="py-16 sm:py-20 relative">
-          <div className="absolute inset-0 mesh-gradient opacity-30" />
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
-              <StatsCard
-                value={6}
-                suffix="+"
-                label="Years Experience"
-                icon={<Award className="w-8 h-8" />}
-              />
-              <StatsCard
-                value={50}
-                suffix="+"
-                label="Projects Completed"
-                icon={<Code className="w-8 h-8" />}
-              />
-              <StatsCard
-                value={20}
-                suffix="+"
-                label="Technologies"
-                icon={<Zap className="w-8 h-8" />}
-              />
-              <StatsCard
-                value={100}
-                suffix="%"
-                label="Client Satisfaction"
-                icon={<Trophy className="w-8 h-8" />}
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Featured Skills */}
-        <section className="py-16 sm:py-24 lg:py-32 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-card/20 to-transparent" />
-          <div className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 sm:mb-16 lg:mb-20">
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                Core <span className="gradient-text">Expertise</span>
-              </h2>
-              <p className="text-sm sm:text-lg lg:text-xl text-muted-foreground/80 max-w-3xl mx-auto leading-relaxed px-2">
-                Technologies and methodologies I leverage to architect and
-                deliver enterprise-grade solutions
-              </p>
-            </div>
-
-            <div className="flex flex-wrap justify-center gap-2 sm:gap-4 lg:gap-6 fade-in-stagger">
-              {topSkills.map((skill, index) => (
-                <div
-                  key={skill}
-                  className="group premium-card interactive-card px-3 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-4 cursor-default"
-                  style={{ animationDelay: `${index * 0.1}s` }}
-                >
-                  <span className="text-xs sm:text-sm lg:text-base font-semibold text-foreground/90 group-hover:text-primary transition-colors">
-                    {skill}
-                  </span>
-                  <div className="w-full h-0.5 sm:h-1 bg-muted rounded-full mt-1 sm:mt-2 overflow-hidden">
-                    <div
-                      className="h-full bg-gradient-primary rounded-full transform -translate-x-full group-hover:translate-x-0 transition-transform duration-700"
-                      style={{ transitionDelay: `${index * 0.05}s` }}
-                    />
-                  </div>
+        <section className="py-16 sm:py-20">
+          <div className="section-shell">
+            <div className="grid gap-4 lg:grid-cols-3">
+              {services.map((service) => (
+                <div key={service.title} className="premium-card interactive-card p-6">
+                  <service.icon className="h-7 w-7 text-primary" />
+                  <h2 className="mt-5 text-xl font-bold">{service.title}</h2>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{service.copy}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* Featured Projects */}
-        <section className="py-16 sm:py-24 lg:py-32 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-accent/5" />
-          <div className="relative max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-            <div className="text-center mb-10 sm:mb-16 lg:mb-20">
-              <h2 className="text-2xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-                Featured <span className="gradient-text">Projects</span>
+        <section className="py-16 sm:py-20">
+          <div className="section-shell">
+            <div className="mx-auto max-w-3xl text-center">
+              <p className="eyebrow">Selected expertise</p>
+              <h2 className="mt-3 text-3xl font-black sm:text-5xl">
+                Built around real production delivery
               </h2>
-              <p className="text-sm sm:text-lg lg:text-xl text-muted-foreground/80 max-w-3xl mx-auto leading-relaxed px-2">
-                Production-ready solutions showcasing technical expertise across
-                full-stack development and cloud architecture
+              <p className="mt-4 text-muted-foreground">
+                A focused stack for AI-assisted products, workflow automation, cloud-backed applications, backend services, and polished product interfaces.
               </p>
             </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-10 fade-in-stagger">
-              {featuredProjects.map((project, index) => (
-                <div
-                  key={project.id}
-                  className="group premium-card interactive-card p-4 sm:p-6 lg:p-8 relative overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  <div className="relative z-10">
-                    <div className="aspect-video bg-gradient-surface rounded-xl mb-6 overflow-hidden border border-card-border/50">
-                      <div className="w-full h-full bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center">
-                        <span className="text-lg font-medium text-muted-foreground/70 group-hover:text-primary transition-colors duration-300">
-                          {project.title}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-3 sm:space-y-4">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs sm:text-sm font-medium text-primary bg-primary/10 px-2 py-1 sm:px-3 sm:py-1.5 rounded-lg border border-primary/20">
-                          {project.category}
-                        </span>
-                        <span className="text-xs sm:text-sm text-muted-foreground/70">
-                          {project.year}
-                        </span>
-                      </div>
-
-                      <h3 className="text-lg sm:text-xl lg:text-2xl font-bold group-hover:text-primary transition-colors duration-300">
-                        {project.title}
-                      </h3>
-
-                      <p className="text-muted-foreground/80 text-xs sm:text-sm lg:text-base leading-relaxed">
-                        {project.description}
-                      </p>
-
-                      <div className="flex flex-wrap gap-2">
-                        {project.technologies.slice(0, 3).map((tech) => (
-                          <span
-                            key={tech}
-                            className="text-sm px-3 py-1.5 bg-muted/30 text-muted-foreground rounded-lg hover:bg-accent/10 hover:text-accent transition-colors"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                        {project.technologies.length > 3 && (
-                          <span className="text-sm px-3 py-1.5 bg-muted/30 text-muted-foreground rounded-lg">
-                            +{project.technologies.length - 3}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="mt-10 flex flex-wrap justify-center gap-3">
+              {topSkills.map((skill) => (
+                <span key={skill} className="rounded-full border border-card-border bg-card px-4 py-2 text-sm font-semibold text-muted-foreground">
+                  {skill}
+                </span>
               ))}
             </div>
+          </div>
+        </section>
 
-            <div className="text-center mt-16">
-              <Button
-                variant="outline"
-                size="default"
-                className="group px-8 py-3 rounded-xl border-2 border-primary/30 hover:bg-primary/10 hover:border-primary/50 hover:scale-105 transition-all duration-500"
-                asChild
-              >
+        <section className="py-16 sm:py-20">
+          <div className="section-shell">
+            <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <p className="eyebrow">Case studies</p>
+                <h2 className="mt-3 text-3xl font-black sm:text-5xl">Featured project proof</h2>
+              </div>
+              <Button variant="outline" className="border-card-border" asChild>
                 <Link to="/projects">
-                  Explore All Projects
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  Explore all projects
+                  <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
             </div>
+
+            <div className="grid gap-6 lg:grid-cols-3">
+              {featuredProjects.map((project) => (
+                <article key={project.id} className="premium-card interactive-card overflow-hidden p-5">
+                  <ArchitecturePreview notes={project.architectureNotes} />
+                  <div className="mt-5 flex items-center justify-between gap-3">
+                    <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+                      {project.category}
+                    </span>
+                    <span className="text-xs font-medium text-muted-foreground">{project.year}</span>
+                  </div>
+                  <h3 className="mt-4 text-xl font-black">{project.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-muted-foreground">{project.description}</p>
+                  <div className="mt-5 rounded-md border border-card-border bg-background/50 p-3">
+                    <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
+                      <span>{project.outcome}</span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* CTA Section */}
-        <section className="py-16 sm:py-24 lg:py-32 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-primary/10 via-accent/5 to-primary/10" />
-          <div className="relative max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 text-center">
-            <div className="premium-card p-6 sm:p-10 lg:p-16 hero-glow">
-              <h2 className="text-xl sm:text-3xl lg:text-5xl font-bold mb-4 sm:mb-6 lg:mb-8">
-                Ready to Build Something{" "}
-                <span className="gradient-text">Extraordinary</span>?
-              </h2>
-              <p className="text-sm sm:text-base lg:text-xl text-muted-foreground/90 mb-6 sm:mb-8 lg:mb-12 max-w-3xl mx-auto leading-relaxed">
-                I'm passionate about tackling complex technical challenges and
-                building scalable systems that drive business growth. Let's
-                discuss how we can bring your vision to life.
+        <section className="py-16 sm:py-20">
+          <div className="section-shell">
+            <div className="premium-card overflow-hidden p-8 text-center sm:p-12">
+              <Sparkles className="mx-auto h-8 w-8 text-primary" />
+              <h2 className="mt-5 text-3xl font-black sm:text-5xl">Need AI automation that actually ships?</h2>
+              <p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
+                I can help with agentic workflows, AI-assisted tools, cloud architecture, backend systems, full-stack delivery, DevOps automation, and technical leadership.
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button
-                  size="default"
-                  className="group bg-gradient-primary text-white px-8 py-3 rounded-xl shadow-premium hover:shadow-glow transition-all duration-500 hover:scale-105"
-                  asChild
-                >
+              <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+                <Button className="bg-gradient-primary font-bold text-primary-foreground" asChild>
                   <Link to="/contact">
-                    <Mail className="mr-2 w-4 h-4 group-hover:scale-110 transition-transform" />
-                    Let's Connect
+                    Start a conversation
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button
-                  variant="outline"
-                  size="default"
-                  className="group px-8 py-3 rounded-xl border-2 border-accent/30 hover:bg-accent/10 hover:border-accent/50 hover:scale-105 transition-all duration-500"
-                  asChild
-                >
-                  <Link to="/about">
-                    <ArrowRight className="mr-2 w-4 h-4 group-hover:scale-110 transition-transform" />
-                    Discover My Journey
-                  </Link>
+                <Button variant="outline" className="border-card-border" asChild>
+                  <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                    Open resume
+                    <ExternalLink className="ml-2 h-4 w-4" />
+                  </a>
                 </Button>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Terminal Component */}
         <Terminal />
       </div>
     </>

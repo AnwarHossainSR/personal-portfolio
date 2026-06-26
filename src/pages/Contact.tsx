@@ -1,17 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-	Check,
-	Copy,
-	Download,
-	ExternalLink,
-	Github,
-	Linkedin,
-	Mail,
-	MapPin,
-	Phone,
-	Send,
-	Youtube,
-} from "lucide-react";
+import { Check, Copy, Download, Github, Linkedin, Mail, MapPin, Phone, Send, Youtube } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -22,430 +10,183 @@ import { Textarea } from "@/components/ui/textarea";
 import { personalInfo, socialLinks } from "@/data/personal";
 import { useToast } from "@/hooks/use-toast";
 
-// Form validation schema
 const contactSchema = z.object({
-	name: z.string().min(2, "Name must be at least 2 characters"),
-	email: z.string().email("Please enter a valid email address"),
-	subject: z.string().min(5, "Subject must be at least 5 characters"),
-	message: z.string().min(10, "Message must be at least 10 characters"),
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  subject: z.string().min(5, "Subject must be at least 5 characters"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
 
 const iconMap = {
-	Github,
-	Linkedin,
-	Mail,
-	ExternalLink,
-	Youtube,
-	Twitter: Mail,
+  Github,
+  Linkedin,
+  Mail,
+  Youtube,
 };
 
 export default function Contact() {
-	const [copied, setCopied] = useState<string | null>(null);
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const { toast } = useToast();
+  const [copied, setCopied] = useState<string | null>(null);
+  const { toast } = useToast();
 
-	// React Hook Form setup
-	const {
-		register,
-		handleSubmit,
-		formState: { errors, isValid, isDirty },
-		reset,
-	} = useForm<ContactFormData>({
-		resolver: zodResolver(contactSchema),
-		mode: "onChange", // Validate on change for real-time feedback
-		defaultValues: {
-			name: "",
-			email: "",
-			subject: "",
-			message: "",
-		},
-	});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+    },
+  });
 
-	const copyToClipboard = async (text: string, type: string) => {
-		try {
-			await navigator.clipboard.writeText(text);
-			setCopied(type);
-			toast({
-				title: "Copied!",
-				description: `${type} copied to clipboard`,
-			});
-			setTimeout(() => setCopied(null), 2000);
-		} catch (err) {
-			console.error("Failed to copy: ", err);
-			toast({
-				title: "Error",
-				description: "Failed to copy to clipboard",
-				variant: "destructive",
-			});
-		}
-	};
+  const copyToClipboard = async (text: string, type: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(type);
+      toast({ title: "Copied", description: `${type} copied to clipboard.` });
+      setTimeout(() => setCopied(null), 2000);
+    } catch {
+      toast({
+        title: "Copy failed",
+        description: "Please copy it manually.",
+        variant: "destructive",
+      });
+    }
+  };
 
-	const onSubmit = async (data: ContactFormData) => {
-		setIsSubmitting(true);
+  const onSubmit = (data: ContactFormData) => {
+    const subject = encodeURIComponent(data.subject);
+    const body = encodeURIComponent(
+      `Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`,
+    );
+    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+  };
 
-		try {
-			const response = await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				body: JSON.stringify(data),
-			});
+  return (
+    <>
+      <SEOHead
+        title="Contact Me"
+        description="Contact Md. Anwar Hossain for senior software engineering, AWS cloud, DevOps, system design, and full-stack development opportunities."
+        keywords="Contact Anwar Hossain, Senior Software Engineer, AWS Consultant, Full Stack Developer"
+        url="https://anwarportfolio.vercel.app/contact"
+      />
+      <div className="min-h-screen py-16 sm:py-20">
+        <div className="section-shell">
+          <div className="mx-auto max-w-3xl text-center slide-in-up">
+            <p className="eyebrow">Contact</p>
+            <h1 className="mt-3 text-4xl font-black sm:text-6xl">Let us discuss the engineering work</h1>
+            <p className="mt-5 text-lg leading-8 text-muted-foreground">
+              Open to senior engineering roles, cloud architecture conversations, full-stack delivery, and DevOps-focused collaboration.
+            </p>
+          </div>
 
-			if (!response.ok) throw new Error("Submission failed");
+          <div className="mt-12 grid gap-8 lg:grid-cols-[0.88fr_1.12fr]">
+            <div className="space-y-4">
+              {[
+                { label: "Email", value: personalInfo.email, href: `mailto:${personalInfo.email}`, icon: Mail },
+                { label: "Phone", value: personalInfo.phone, href: `tel:${personalInfo.phone}`, icon: Phone },
+                { label: "Location", value: personalInfo.location, href: null, icon: MapPin },
+              ].map((item) => (
+                <div key={item.label} className="premium-card p-5">
+                  <div className="flex items-center gap-4">
+                    <div className="rounded-md bg-primary/10 p-3 text-primary">
+                      <item.icon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <h2 className="font-bold">{item.label}</h2>
+                      {item.href ? (
+                        <a href={item.href} className="mt-1 block truncate text-sm text-muted-foreground hover:text-primary">
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="mt-1 text-sm text-muted-foreground">{item.value}</p>
+                      )}
+                    </div>
+                    <Button variant="outline" size="icon" className="border-card-border" onClick={() => copyToClipboard(item.value, item.label)}>
+                      {copied === item.label ? <Check className="h-4 w-4 text-accent" /> : <Copy className="h-4 w-4" />}
+                    </Button>
+                  </div>
+                </div>
+              ))}
 
-			toast({
-				title: "Message Sent! 🎉",
-				description: "Thank you for your message. I'll get back to you soon!",
-			});
-			reset();
-		} catch {
-			toast({
-				title: "Error",
-				description: "Failed to send message. Please try again.",
-				variant: "destructive",
-			});
-		} finally {
-			setIsSubmitting(false);
-		}
-	};
+              <div className="premium-card p-5">
+                <h2 className="font-bold">Professional links</h2>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  {socialLinks.map((social) => {
+                    const Icon = iconMap[social.icon as keyof typeof iconMap] ?? Mail;
+                    return (
+                      <a
+                        key={social.name}
+                        href={social.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-md border border-card-border bg-secondary/60 px-3 py-2 text-sm font-bold text-muted-foreground transition hover:border-primary/50 hover:text-primary"
+                      >
+                        <Icon className="h-4 w-4" />
+                        {social.name}
+                      </a>
+                    );
+                  })}
+                </div>
+              </div>
 
-	return (
-		<>
-			<SEOHead
-				title="Contact Me"
-				description="Get in touch with Anwar Hossain for collaboration opportunities, technical discussions, or project inquiries. Available for AWS consulting and full-stack development."
-				keywords="Contact Anwar Hossain, Software Engineer Contact, AWS Consultant, Full Stack Developer Hire"
-				url="https://anwarportfolio.vercel.app/contact"
-			/>
-			<div className="min-h-screen py-20">
-				<div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-					{/* Header */}
-					<div className="text-center mb-10 sm:mb-16 slide-in-up">
-						<h1 className="text-3xl sm:text-5xl font-bold mb-4">
-							Get in <span className="gradient-text">Touch</span>
-						</h1>
-						<p className="text-lg sm:text-xl text-muted-foreground max-w-3xl mx-auto px-2">
-							Ready to discuss your next project? I'm always interested in new
-							opportunities, collaborations, and innovative challenges.
-						</p>
-					</div>
+              <div className="premium-card p-5">
+                <h2 className="font-bold">Resume</h2>
+                <p className="mt-2 text-sm leading-6 text-muted-foreground">
+                  Open the PDF resume for the complete experience, skills, and contact summary.
+                </p>
+                <Button className="mt-4 w-full bg-gradient-primary font-bold text-primary-foreground" asChild>
+                  <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                    <Download className="mr-2 h-4 w-4" />
+                    Open resume
+                  </a>
+                </Button>
+              </div>
+            </div>
 
-					<div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-						{/* Contact Information */}
-						<div className="space-y-6 sm:space-y-8 slide-in-up">
-							<div>
-								<h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">
-									Let's Connect
-								</h2>
-								<p className="text-sm sm:text-base text-muted-foreground mb-6 sm:mb-8 leading-relaxed">
-									I'm currently open to new opportunities and would love to hear
-									about your project. Whether you're looking for a senior
-									engineer to lead your team or need expert consultation on
-									system architecture, let's start a conversation.
-								</p>
-							</div>
-
-							{/* Contact Details */}
-							<div className="space-y-6">
-								{/* Email */}
-								<div className="premium-card p-4 sm:p-6 group hover:scale-102 transition-all duration-300">
-									<div className="flex items-center gap-3 sm:gap-4">
-										<div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-primary flex items-center justify-center flex-shrink-0">
-											<Mail className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-										</div>
-										<div className="flex-1 min-w-0">
-											<h3 className="text-sm sm:font-semibold mb-0.5 sm:mb-1">
-												Email
-											</h3>
-											<p className="text-xs sm:text-base text-muted-foreground truncate">
-												{personalInfo.email}
-											</p>
-										</div>
-										<Button
-											size="sm"
-											variant="outline"
-											onClick={() =>
-												copyToClipboard(personalInfo.email, "Email")
-											}
-											className="opacity-0 group-hover:opacity-100 transition-opacity"
-											type="button"
-										>
-											{copied === "Email" ? (
-												<Check className="w-4 h-4 cursor-pointer text-green-600" />
-											) : (
-												<Copy className="w-4 h-4 cursor-pointer" />
-											)}
-										</Button>
-									</div>
-								</div>
-
-								{/* Phone */}
-								<div className="premium-card p-4 sm:p-6 group hover:scale-102 transition-all duration-300">
-									<div className="flex items-center gap-3 sm:gap-4">
-										<div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-primary flex items-center justify-center flex-shrink-0">
-											<Phone className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-										</div>
-										<div className="flex-1 min-w-0">
-											<h3 className="text-sm sm:font-semibold mb-0.5 sm:mb-1">
-												Phone
-											</h3>
-											<p className="text-xs sm:text-base text-muted-foreground truncate">
-												{personalInfo.phone}
-											</p>
-										</div>
-										<Button
-											size="sm"
-											variant="outline"
-											onClick={() =>
-												copyToClipboard(personalInfo.phone, "Phone")
-											}
-											className="opacity-0 group-hover:opacity-100 transition-opacity"
-											type="button"
-										>
-											{copied === "Phone" ? (
-												<Check className="w-4 h-4 cursor-pointer text-green-600" />
-											) : (
-												<Copy className="w-4 h-4 cursor-pointer" />
-											)}
-										</Button>
-									</div>
-								</div>
-
-								{/* Location */}
-								<div className="premium-card p-4 sm:p-6 hover:scale-102 transition-all duration-300">
-									<div className="flex items-center gap-3 sm:gap-4">
-										<div className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-gradient-primary flex items-center justify-center flex-shrink-0">
-											<MapPin className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
-										</div>
-										<div>
-											<h3 className="text-sm sm:font-semibold mb-0.5 sm:mb-1">
-												Location
-											</h3>
-											<p className="text-xs sm:text-base text-muted-foreground">
-												{personalInfo.location}
-											</p>
-										</div>
-									</div>
-								</div>
-							</div>
-
-							{/* Social Links */}
-							<div>
-								<h3 className="text-lg sm:font-semibold mb-4 text-center sm:text-left">
-									Follow Me
-								</h3>
-								<div className="flex justify-center sm:justify-start gap-4">
-									{socialLinks.map((social) => {
-										const Icon =
-											iconMap[social.icon as keyof typeof iconMap] ??
-											ExternalLink;
-										return (
-											<a
-												key={social.name}
-												href={social.url}
-												target="_blank"
-												rel="noopener noreferrer"
-												className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg bg-muted/50 hover:bg-primary/20 hover:text-primary transition-all duration-200 flex items-center justify-center group hover:scale-110"
-												aria-label={social.name}
-											>
-												<Icon className="w-4 h-4 sm:w-5 sm:h-5" />
-											</a>
-										);
-									})}
-								</div>
-							</div>
-
-							{/* Resume Download */}
-							<div className="premium-card p-5 sm:p-6">
-								<h3 className="text-lg sm:font-semibold mb-2 sm:mb-3">
-									Resume
-								</h3>
-								<p className="text-sm sm:text-base text-muted-foreground mb-4">
-									Download my complete resume to learn more about my experience
-									and skills.
-								</p>
-								<Button
-									className="w-full sm:w-auto bg-gradient-primary"
-									asChild
-								>
-									<a
-										href="/resume.pdf"
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<Download className="w-4 h-4 cursor-pointer mr-2" />
-										Download Resume
-									</a>
-								</Button>
-							</div>
-						</div>
-
-						{/* Contact Form */}
-						<div className="slide-in-up" style={{ animationDelay: "200ms" }}>
-							<div className="premium-card p-5 sm:p-8">
-								<h2 className="text-xl sm:text-2xl font-bold mb-6">
-									Send a Message
-								</h2>
-								<form
-									onSubmit={handleSubmit(onSubmit)}
-									className="space-y-4 sm:space-y-6"
-								>
-									<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-										<div>
-											<label
-												htmlFor="name"
-												className="block text-sm font-medium mb-2"
-											>
-												Name *
-											</label>
-											<Input
-												id="name"
-												placeholder="Your name"
-												{...register("name")}
-												className={
-													errors.name
-														? "border-red-500 focus:border-red-500"
-														: ""
-												}
-											/>
-											{errors.name && (
-												<p className="text-red-500 text-sm mt-1">
-													{errors.name.message}
-												</p>
-											)}
-										</div>
-										<div>
-											<label
-												htmlFor="email"
-												className="block text-sm font-medium mb-2"
-											>
-												Email *
-											</label>
-											<Input
-												id="email"
-												type="email"
-												placeholder="your.email@example.com"
-												{...register("email")}
-												className={
-													errors.email
-														? "border-red-500 focus:border-red-500"
-														: ""
-												}
-											/>
-											{errors.email && (
-												<p className="text-red-500 text-sm mt-1">
-													{errors.email.message}
-												</p>
-											)}
-										</div>
-									</div>
-
-									<div>
-										<label
-											htmlFor="subject"
-											className="block text-sm font-medium mb-2"
-										>
-											Subject *
-										</label>
-										<Input
-											id="subject"
-											placeholder="Project discussion, collaboration, etc."
-											{...register("subject")}
-											className={
-												errors.subject
-													? "border-red-500 focus:border-red-500"
-													: ""
-											}
-										/>
-										{errors.subject && (
-											<p className="text-red-500 text-sm mt-1">
-												{errors.subject.message}
-											</p>
-										)}
-									</div>
-
-									<div>
-										<label
-											htmlFor="message"
-											className="block text-sm font-medium mb-2"
-										>
-											Message *
-										</label>
-										<Textarea
-											id="message"
-											placeholder="Tell me about your project, requirements, or just say hello..."
-											rows={6}
-											{...register("message")}
-											className={
-												errors.message
-													? "border-red-500 focus:border-red-500"
-													: ""
-											}
-										/>
-										{errors.message && (
-											<p className="text-red-500 text-sm mt-1">
-												{errors.message.message}
-											</p>
-										)}
-									</div>
-
-									<Button
-										type="submit"
-										size="lg"
-										className="w-full bg-gradient-primary group disabled:opacity-50"
-										disabled={!isValid || isSubmitting}
-									>
-										{isSubmitting ? (
-											<>
-												<div className="w-4 h-4 cursor-pointer mr-2 border-2 border-white border-t-transparent rounded-full animate-spin" />
-												Sending...
-											</>
-										) : (
-											<>
-												<Send className="w-4 h-4 cursor-pointer mr-2 group-hover:translate-x-1 transition-transform" />
-												Send Message
-											</>
-										)}
-									</Button>
-
-									<p className="text-xs text-muted-foreground">
-										* All fields are required. Your message will be sent
-										successfully!
-									</p>
-								</form>
-							</div>
-						</div>
-					</div>
-
-					{/* CTA Section */}
-					<div className="text-center mt-20 premium-card p-8">
-						<h3 className="text-2xl font-bold mb-4">
-							Ready to Start Your <span className="gradient-text">Project</span>
-							?
-						</h3>
-						<p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-							Whether you need a technical co-founder, senior engineer, or
-							system architecture consultant, I'm here to help bring your vision
-							to life.
-						</p>
-						<div className="flex flex-col sm:flex-row gap-4 justify-center">
-							<Button size="lg" className="bg-gradient-primary" asChild>
-								<a href={`mailto:${personalInfo.email}`}>
-									<Mail className="mr-2 w-4 h-4" />
-									Email Me Directly
-								</a>
-							</Button>
-							<Button size="lg" variant="outline" asChild>
-								<a href={`tel:${personalInfo.phone}`}>
-									<Phone className="mr-2 w-4 h-4" />
-									Schedule a Call
-								</a>
-							</Button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</>
-	);
+            <div className="premium-card p-6 sm:p-8">
+              <h2 className="text-2xl font-black">Send a message</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                This opens your email app with the message prepared. No backend form service is required.
+              </p>
+              <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-5">
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div>
+                    <label htmlFor="name" className="mb-2 block text-sm font-bold">Name</label>
+                    <Input id="name" placeholder="Your name" {...register("name")} className="border-card-border bg-background/70" />
+                    {errors.name && <p className="mt-1 text-sm text-destructive">{errors.name.message}</p>}
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="mb-2 block text-sm font-bold">Email</label>
+                    <Input id="email" type="email" placeholder="you@example.com" {...register("email")} className="border-card-border bg-background/70" />
+                    {errors.email && <p className="mt-1 text-sm text-destructive">{errors.email.message}</p>}
+                  </div>
+                </div>
+                <div>
+                  <label htmlFor="subject" className="mb-2 block text-sm font-bold">Subject</label>
+                  <Input id="subject" placeholder="Project, role, or collaboration" {...register("subject")} className="border-card-border bg-background/70" />
+                  {errors.subject && <p className="mt-1 text-sm text-destructive">{errors.subject.message}</p>}
+                </div>
+                <div>
+                  <label htmlFor="message" className="mb-2 block text-sm font-bold">Message</label>
+                  <Textarea id="message" rows={7} placeholder="Tell me what you are building or hiring for..." {...register("message")} className="border-card-border bg-background/70" />
+                  {errors.message && <p className="mt-1 text-sm text-destructive">{errors.message.message}</p>}
+                </div>
+                <Button type="submit" size="lg" className="w-full bg-gradient-primary font-bold text-primary-foreground" disabled={!isValid}>
+                  <Send className="mr-2 h-4 w-4" />
+                  Prepare email
+                </Button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

@@ -579,7 +579,7 @@ export default function AskAi() {
               </div>
               <p className="text-xs text-muted-foreground mt-4 text-center">
                 Powered by{" "}
-                <span className="font-medium">OpenAI GPT-4o-mini</span> •
+                <span className="font-medium">OpenAI GPT-4o-mini</span> -
                 Responses are AI-generated
               </p>
             </div>

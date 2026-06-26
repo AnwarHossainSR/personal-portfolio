@@ -1,68 +1,70 @@
 export const personalInfo = {
-	name: "Md. Anwar Hossain",
-	title: "Senior Software Engineer",
-	subtitle: "AWS Architect | System Designer | Full-Stack Leader",
-	email: "anwarmahedisr@gmail.com",
-	phone: "+8801729532097",
-	location: "Notunbazar, Vatara, Dhaka",
-	linkedin: "https://www.linkedin.com/in/anwarsr/",
-	github: "https://github.com/AnwarHossainSR",
-	website: "https://anwarportfolio.vercel.app",
-	youtube: "https://www.youtube.com/@DevelopmentKit",
-	avatar: "/images/profile.png",
+  name: "Md. Anwar Hossain",
+  title: "Senior Software Engineer",
+  subtitle: "AI Automation | Agentic AI | AWS Cloud | Full-Stack Engineering",
+  email: "anwarmahedisr@gmail.com",
+  phone: "+8801729532097",
+  location: "Dhaka, Bangladesh",
+  linkedin: "https://www.linkedin.com/in/anwarsr/",
+  github: "https://github.com/AnwarHossainSR",
+  website: "https://anwarportfolio.vercel.app",
+  youtube: "https://www.youtube.com/@DevelopmentKit",
+  avatar: "/images/profile.png",
 
-	bio: {
-		short:
-			"Highly skilled software engineer with over 6 years of experience in full-stack web development, AWS cloud infrastructure, and DevOps. I specialize in building scalable, robust applications and dynamic user interfaces using modern technologies.",
-		long: `I am a highly skilled and motivated software engineer with over 6 years of experience in full-stack web development, AWS cloud infrastructure, and DevOps. I specialize in building scalable, robust applications and dynamic user interfaces using modern technologies.
+  bio: {
+    short:
+      "Senior Software Engineer with 6+ years of experience building scalable products, AI automation workflows, AWS cloud systems, DevOps pipelines, and production-ready user experiences.",
+    long: `I build reliable software systems across the full stack, with a strong focus on AWS cloud architecture, backend platforms, frontend product quality, and DevOps automation.
 
-My expertise spans the entire technology stack, from React and Next.js frontend applications to Node.js and Laravel backend systems, all orchestrated on AWS cloud infrastructure with serverless architecture.
+My work spans React and Next.js interfaces, Node.js and Laravel APIs, serverless AWS services, CI/CD pipelines, databases, and production operations. I enjoy translating business requirements into maintainable architectures that teams can ship and support with confidence.
 
-Throughout my career, I've worked with companies like Craftsmen Ltd. and BJIT Group Ltd., where I've designed scalable systems, built video streaming services, implemented CI/CD pipelines, and contributed to fast-paced, team-oriented agile projects. I'm passionate about solving complex technical challenges and building systems that drive business growth.`,
-	},
+Across roles at Craftsmen Ltd., BJIT Group Ltd., and Annon Lab, I have contributed to scalable web platforms, video streaming and VOD workflows, microservice-oriented systems, API development, and engineering practices that improve delivery speed and reliability.`,
+  },
 
-	highlights: [
-		"6+ years of professional development experience",
-		"Expert in AWS services and Serverless architecture",
-		"Full-stack engineer with production-grade app experience",
-		"Proficient with CI/CD pipelines and cloud-first engineering",
-		"Built video streaming services and VOD pipelines",
-		"Strong problem-solving and team collaboration skills",
-	],
+  highlights: [
+    "6+ years of professional software engineering experience",
+    "AI automation, agentic workflow design, and LLM-enabled product thinking",
+    "AWS serverless, cloud infrastructure, and DevOps delivery",
+    "Full-stack delivery with React, Next.js, Node.js, Laravel, and PHP",
+    "System design, microservices, API architecture, and database optimization",
+    "Video streaming, VOD pipelines, and production operations experience",
+    "Comfortable leading teams, mentoring engineers, and improving delivery practices",
+  ],
 
-	currentFocus: [
-		"AWS Lambda and Serverless architecture",
-		"Video streaming and VOD pipelines",
-		"React, Next.js, and Node.js development",
-		"DevOps automation and CI/CD",
-	],
-	lastUpdated: new Date("2025-10-11"),
+  currentFocus: [
+    "AI automation, agentic assistants, and workflow orchestration",
+    "AWS Lambda, API Gateway, DynamoDB, S3, ECS, and CloudFront",
+    "Scalable backend services and clean API contracts",
+    "React, Next.js, TypeScript, and polished user interfaces",
+    "CI/CD automation, Docker, Terraform, and release reliability",
+  ],
+  lastUpdated: new Date("2026-06-26"),
 };
 
 export const socialLinks = [
-	{
-		name: "GitHub",
-		url: "https://github.com/AnwarHossainSR",
-		icon: "Github",
-	},
-	{
-		name: "LinkedIn",
-		url: "https://www.linkedin.com/in/anwarsr/",
-		icon: "Linkedin",
-	},
-	{
-		name: "Email",
-		url: "mailto:anwarmahedisr@gmail.com",
-		icon: "Mail",
-	},
-	{
-		name: "YouTube",
-		url: "https://www.youtube.com/@DevelopmentKit",
-		icon: "Youtube",
-	},
-	{
-		name: "Portfolio",
-		url: "https://anwarportfolio.vercel.app",
-		icon: "ExternalLink",
-	},
+  {
+    name: "GitHub",
+    url: "https://github.com/AnwarHossainSR",
+    icon: "Github",
+  },
+  {
+    name: "LinkedIn",
+    url: "https://www.linkedin.com/in/anwarsr/",
+    icon: "Linkedin",
+  },
+  {
+    name: "Email",
+    url: "mailto:anwarmahedisr@gmail.com",
+    icon: "Mail",
+  },
+  {
+    name: "YouTube",
+    url: "https://www.youtube.com/@DevelopmentKit",
+    icon: "Youtube",
+  },
+  {
+    name: "Portfolio",
+    url: "https://anwarportfolio.vercel.app",
+    icon: "ExternalLink",
+  },
 ];

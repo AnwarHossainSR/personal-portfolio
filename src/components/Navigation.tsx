@@ -24,8 +24,8 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = debounce(() => {
-      setScrolled(window.scrollY > 50);
-    }, 100); // Debounce for 100ms
+      setScrolled(window.scrollY > 24);
+    }, 80);
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -39,35 +39,26 @@ export function Navigation() {
     <>
       <nav
         className={cn(
-          "fixed top-0 left-0 right-0 z-[100] transition-all duration-300",
-          scrolled ? "glass-nav shadow-premium" : "bg-transparent",
+          "fixed left-0 right-0 top-0 z-[100] transition-all duration-300",
+          scrolled ? "glass-nav shadow-premium" : "border-b border-transparent bg-background/70 backdrop-blur-md",
         )}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link
-              to="/"
-              className="text-xl font-bold gradient-text hover:opacity-80 transition-opacity"
-            >
-              Anwar.dev
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between gap-4">
+            <Link to="/" className="text-lg font-black tracking-tight text-foreground transition hover:text-primary">
+              Anwar<span className="text-primary">.dev</span>
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden items-center gap-1 lg:flex">
               {navigationItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    "relative text-sm font-medium transition-colors duration-200",
-                    "hover:text-primary-glow",
-                    "after:absolute after:left-0 after:bottom-[-4px] after:w-0 after:h-0.5",
-                    "after:bg-gradient-primary after:transition-all after:duration-300",
-                    "hover:after:w-full",
+                    "rounded-md px-3 py-2 text-sm font-semibold transition",
                     location.pathname === item.href
-                      ? "text-primary-glow after:w-full"
-                      : "text-muted-foreground",
+                      ? "bg-primary/10 text-primary"
+                      : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
                   )}
                 >
                   {item.name}
@@ -75,90 +66,58 @@ export function Navigation() {
               ))}
             </div>
 
-            {/* Theme Toggle and Resume Download Button */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden items-center gap-3 md:flex">
               <ThemeToggle />
-              <Button
-                variant="outline"
-                size="sm"
-                className="border-primary/20 hover:border-primary/40 hover:bg-primary/5"
-                asChild
-              >
+              <Button size="sm" className="bg-gradient-primary font-bold text-primary-foreground" asChild>
                 <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
-                  <Download className="w-4 h-4 mr-2" />
+                  <Download className="mr-2 h-4 w-4" />
                   Resume
-                  <ExternalLink className="w-3 h-3 ml-2" />
+                  <ExternalLink className="ml-2 h-3.5 w-3.5" />
                 </a>
               </Button>
             </div>
 
-            {/* Mobile menu button */}
             <button
+              type="button"
               onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 -mr-2 rounded-lg hover:bg-muted/50 transition-colors z-[110]"
+              className="z-[110] rounded-md border border-card-border bg-card p-2 transition hover:bg-muted md:hidden"
               aria-label="Toggle navigation menu"
             >
-              {isOpen ? (
-                <X className="h-6 w-6 text-primary" />
-              ) : (
-                <Menu className="h-6 w-6" />
-              )}
+              {isOpen ? <X className="h-5 w-5 text-primary" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
-        <div
-          className={cn(
-            "md:hidden transition-all duration-300 ease-in-out overflow-hidden",
-            isOpen ? "max-h-[90vh] opacity-100" : "max-h-0 opacity-0",
-          )}
-        >
-          <div className="px-4 pt-2 pb-8 bg-background/95 backdrop-blur-2xl border-b border-border/50 shadow-2xl">
-            <div className="space-y-3">
+        <div className={cn("overflow-hidden transition-all duration-300 md:hidden", isOpen ? "max-h-[90vh] opacity-100" : "max-h-0 opacity-0")}>
+          <div className="border-t border-border bg-background/98 px-4 pb-6 pt-3 shadow-premium">
+            <div className="grid gap-2">
               {navigationItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.href}
                   className={cn(
-                    "block px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    "hover:bg-muted/50",
-                    location.pathname === item.href
-                      ? "text-primary bg-primary/10"
-                      : "text-muted-foreground",
+                    "rounded-md px-3 py-2 text-sm font-semibold transition",
+                    location.pathname === item.href ? "bg-primary/10 text-primary" : "text-muted-foreground hover:bg-muted hover:text-foreground",
                   )}
                 >
                   {item.name}
                 </Link>
               ))}
-              <div className="pt-3 border-t border-border/50 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-muted-foreground">Theme</span>
-                  <ThemeToggle />
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-primary/20 hover:border-primary/40"
-                  asChild
-                >
-                  <a
-                    href="/resume.pdf"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download Resume
-                    <ExternalLink className="w-3 h-3 ml-2" />
-                  </a>
-                </Button>
+              <div className="mt-3 flex items-center justify-between border-t border-border pt-4">
+                <span className="text-sm font-semibold text-muted-foreground">Theme</span>
+                <ThemeToggle />
               </div>
+              <Button className="mt-2 w-full bg-gradient-primary font-bold text-primary-foreground" asChild>
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer">
+                  <Download className="mr-2 h-4 w-4" />
+                  Download resume
+                </a>
+              </Button>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Spacer to prevent content from hiding behind fixed navbar */}
       <div className="h-16" />
     </>
   );

@@ -1,7 +1,7 @@
 import { personalInfo } from "@/data/personal";
 import { featuredProjects } from "@/data/projects";
 import { topSkills } from "@/data/skills";
-import { KeyboardEvent, useEffect, useRef, useState } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 interface TerminalLine {
@@ -11,35 +11,26 @@ interface TerminalLine {
 
 const COMMANDS = {
   help: "Display all available commands",
-  about: "Show information about me",
-  skills: "List my technical skills",
+  about: "Show profile summary",
+  skills: "List core technical skills",
   projects: "Display featured projects",
   contact: "Show contact information",
-  experience: "Display work history",
+  experience: "Display work focus",
   clear: "Clear terminal screen",
-  theme: "Toggle theme (dark/light)",
-  whoami: "Display current user info",
+  whoami: "Display current profile",
   ls: "List available sections",
-  cat: "Display section content (usage: cat [section])",
+  cat: "Navigate to a section (usage: cat projects)",
   github: "Open GitHub profile",
   linkedin: "Open LinkedIn profile",
-  resume: "Download resume",
+  resume: "Open resume",
   exit: "Minimize terminal",
 };
 
 const ASCII_BANNER = `
-╔═══════════════════════════════════════════════════════════╗
-║                                                           ║
-║   █████╗ ███╗   ██╗██╗    ██╗ █████╗ ██████╗            ║
-║  ██╔══██╗████╗  ██║██║    ██║██╔══██╗██╔══██╗           ║
-║  ███████║██╔██╗ ██║██║ █╗ ██║███████║██████╔╝           ║
-║  ██╔══██║██║╚██╗██║██║███╗██║██╔══██║██╔══██╗           ║
-║  ██║  ██║██║ ╚████║╚███╔███╔╝██║  ██║██║  ██║           ║
-║  ╚═╝  ╚═╝╚═╝  ╚═══╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝           ║
-║                                                           ║
-║          Senior Software Engineer & AWS Architect         ║
-║                                                           ║
-╚═══════════════════════════════════════════════════════════╝
++-----------------------------------------------------------+
+| Md. Anwar Hossain                                        |
+| Senior Software Engineer | AWS | Full-Stack | DevOps      |
++-----------------------------------------------------------+
 
 Type 'help' to see available commands.
 `;
@@ -63,190 +54,134 @@ export default function Terminal() {
     }
   }, [lines]);
 
+  useEffect(() => {
+    if (!isMinimized) {
+      inputRef.current?.focus();
+    }
+  }, [isMinimized]);
+
+  const appendLine = (line: TerminalLine) => {
+    setLines((previous) => [...previous, line]);
+  };
+
   const executeCommand = (cmd: string) => {
     const trimmedCmd = cmd.trim().toLowerCase();
     const [command, ...args] = trimmedCmd.split(" ");
 
-    setLines((prev) => [...prev, { type: "command", content: `$ ${cmd}` }]);
-
+    appendLine({ type: "command", content: `$ ${cmd}` });
     if (!command) return;
 
     switch (command) {
-      case "help":
+      case "help": {
         const helpText = Object.entries(COMMANDS)
-          .map(([cmd, desc]) => `  ${cmd.padEnd(12)} - ${desc}`)
+          .map(([name, description]) => `  ${name.padEnd(12)} - ${description}`)
           .join("\n");
-        setLines((prev) => [
-          ...prev,
-          { type: "output", content: "Available commands:\n\n" + helpText },
-        ]);
+        appendLine({ type: "output", content: `Available commands:\n\n${helpText}` });
         break;
-
+      }
       case "about":
-        setLines((prev) => [
-          ...prev,
-          {
-            type: "output",
-            content: `${personalInfo.name}\n${personalInfo.title}\n\n${personalInfo.bio.short}\n\nLocation: ${personalInfo.location}\nEmail: ${personalInfo.email}`,
-          },
-        ]);
+        appendLine({
+          type: "output",
+          content: `${personalInfo.name}\n${personalInfo.title}\n\n${personalInfo.bio.short}\n\nLocation: ${personalInfo.location}\nEmail: ${personalInfo.email}`,
+        });
         break;
-
       case "skills":
-        setLines((prev) => [
-          ...prev,
-          {
-            type: "output",
-            content: `Core Technical Skills:\n\n${topSkills.map((skill, i) => `  ${i + 1}. ${skill}`).join("\n")}`,
-          },
-        ]);
+        appendLine({
+          type: "output",
+          content: `Core technical skills:\n\n${topSkills.map((skill, index) => `  ${index + 1}. ${skill}`).join("\n")}`,
+        });
         break;
-
-      case "projects":
+      case "projects": {
         const projectsList = featuredProjects
           .map(
-            (p, i) =>
-              `  ${i + 1}. ${p.title} (${p.year})\n     ${p.description}\n     Tech: ${p.technologies.slice(0, 3).join(", ")}`,
+            (project, index) =>
+              `  ${index + 1}. ${project.title} (${project.year})\n     ${project.description}\n     Stack: ${project.technologies.slice(0, 4).join(", ")}`,
           )
           .join("\n\n");
-        setLines((prev) => [
-          ...prev,
-          { type: "output", content: `Featured Projects:\n\n${projectsList}` },
-        ]);
+        appendLine({ type: "output", content: `Featured projects:\n\n${projectsList}` });
         break;
-
+      }
       case "contact":
-        setLines((prev) => [
-          ...prev,
-          {
-            type: "output",
-            content: `Contact Information:\n\nEmail: ${personalInfo.email}\nGitHub: github.com/AnwarHossainSR\nLinkedIn: linkedin.com/in/anwar-hossain\n\nType 'github' or 'linkedin' to open profiles.`,
-          },
-        ]);
+        appendLine({
+          type: "output",
+          content: `Contact:\n\nEmail: ${personalInfo.email}\nGitHub: ${personalInfo.github}\nLinkedIn: ${personalInfo.linkedin}`,
+        });
         break;
-
       case "experience":
-        setLines((prev) => [
-          ...prev,
-          {
-            type: "output",
-            content: `Work Experience:\n\n6+ years in software engineering\nSpecializations:\n  • AWS Cloud Architecture\n  • Full-Stack Development\n  • DevOps & CI/CD\n  • System Design\n\nFor detailed experience, visit /experience page.`,
-          },
-        ]);
+        appendLine({
+          type: "output",
+          content:
+            "Work focus:\n\n  - AWS Cloud Architecture\n  - Full-Stack Development\n  - DevOps and CI/CD\n  - System Design\n\nFor details, visit /experience.",
+        });
         break;
-
       case "clear":
         setLines([]);
         break;
-
-      case "theme":
-        document.documentElement.classList.toggle("light");
-        setLines((prev) => [
-          ...prev,
-          { type: "output", content: "Theme toggled!" },
-        ]);
-        break;
-
       case "whoami":
-        setLines((prev) => [
-          ...prev,
-          {
-            type: "output",
-            content: `${personalInfo.name}\nSenior Software Engineer\nAWS Certified Solutions Architect`,
-          },
-        ]);
+        appendLine({
+          type: "output",
+          content: `${personalInfo.name}\n${personalInfo.title}\n${personalInfo.subtitle}`,
+        });
         break;
-
       case "ls":
-        setLines((prev) => [
-          ...prev,
-          {
-            type: "output",
-            content:
-              "Available sections:\n\n  home/\n  about/\n  experience/\n  projects/\n  skills/\n  contact/\n  youtube/",
-          },
-        ]);
+        appendLine({
+          type: "output",
+          content: "Available sections:\n\n  about/\n  experience/\n  projects/\n  skills/\n  contact/\n  youtube/\n  ask-ai/",
+        });
         break;
-
       case "cat":
         if (args.length === 0) {
-          setLines((prev) => [
-            ...prev,
-            { type: "error", content: "Usage: cat [section]" },
-          ]);
+          appendLine({ type: "error", content: "Usage: cat [section]" });
         } else {
-          const section = args[0];
+          const section = args[0] === "home" ? "" : args[0];
           navigate(`/${section}`);
-          setLines((prev) => [
-            ...prev,
-            { type: "output", content: `Navigating to /${section}...` },
-          ]);
+          appendLine({ type: "output", content: `Navigating to /${section}...` });
         }
         break;
-
       case "github":
-        window.open("https://github.com/AnwarHossainSR", "_blank");
-        setLines((prev) => [
-          ...prev,
-          { type: "output", content: "Opening GitHub profile..." },
-        ]);
+        window.open(personalInfo.github, "_blank");
+        appendLine({ type: "output", content: "Opening GitHub profile..." });
         break;
-
       case "linkedin":
-        window.open("https://linkedin.com/in/anwar-hossain", "_blank");
-        setLines((prev) => [
-          ...prev,
-          { type: "output", content: "Opening LinkedIn profile..." },
-        ]);
+        window.open(personalInfo.linkedin, "_blank");
+        appendLine({ type: "output", content: "Opening LinkedIn profile..." });
         break;
-
       case "resume":
         window.open("/resume.pdf", "_blank");
-        setLines((prev) => [
-          ...prev,
-          { type: "output", content: "Opening resume..." },
-        ]);
+        appendLine({ type: "output", content: "Opening resume..." });
         break;
-
       case "exit":
         setIsMinimized(true);
         break;
-
       default:
-        setLines((prev) => [
-          ...prev,
-          {
-            type: "error",
-            content: `Command not found: ${command}\nType 'help' for available commands.`,
-          },
-        ]);
+        appendLine({
+          type: "error",
+          content: `Command not found: ${command}\nType 'help' for available commands.`,
+        });
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     if (!input.trim()) return;
 
-    setHistory((prev) => [...prev, input]);
+    setHistory((previous) => [...previous, input]);
     setHistoryIndex(-1);
     executeCommand(input);
     setInput("");
     setSuggestions([]);
   };
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "ArrowUp") {
-      e.preventDefault();
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
       if (history.length > 0) {
-        const newIndex =
-          historyIndex === -1
-            ? history.length - 1
-            : Math.max(0, historyIndex - 1);
+        const newIndex = historyIndex === -1 ? history.length - 1 : Math.max(0, historyIndex - 1);
         setHistoryIndex(newIndex);
         setInput(history[newIndex]);
       }
-    } else if (e.key === "ArrowDown") {
-      e.preventDefault();
+    } else if (event.key === "ArrowDown") {
+      event.preventDefault();
       if (historyIndex !== -1) {
         const newIndex = Math.min(history.length - 1, historyIndex + 1);
         if (newIndex === history.length - 1 && historyIndex === newIndex) {
@@ -257,8 +192,8 @@ export default function Terminal() {
           setInput(history[newIndex]);
         }
       }
-    } else if (e.key === "Tab") {
-      e.preventDefault();
+    } else if (event.key === "Tab") {
+      event.preventDefault();
       if (suggestions.length > 0) {
         setInput(suggestions[0]);
         setSuggestions([]);
@@ -268,14 +203,11 @@ export default function Terminal() {
 
   const handleInputChange = (value: string) => {
     setInput(value);
-    if (value.trim()) {
-      const matches = Object.keys(COMMANDS).filter((cmd) =>
-        cmd.startsWith(value.toLowerCase()),
-      );
-      setSuggestions(matches);
-    } else {
-      setSuggestions([]);
-    }
+    setSuggestions(
+      value.trim()
+        ? Object.keys(COMMANDS).filter((command) => command.startsWith(value.toLowerCase()))
+        : [],
+    );
   };
 
   if (isMinimized) {
@@ -283,84 +215,56 @@ export default function Terminal() {
       <button
         type="button"
         onClick={() => setIsMinimized(false)}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 px-4 py-2 sm:px-6 sm:py-3 bg-gradient-primary text-white rounded-xl shadow-premium hover:shadow-glow transition-all duration-300 hover:scale-105 font-mono text-xs sm:text-sm"
+        className="fixed bottom-4 right-4 z-50 rounded-md border border-primary/30 bg-background/90 px-4 py-2 font-mono text-xs font-bold text-primary shadow-premium backdrop-blur transition hover:bg-primary hover:text-primary-foreground sm:bottom-6 sm:right-6"
       >
-        $ Open Terminal
+        $ terminal
       </button>
     );
   }
 
   return (
-    <div className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-50 w-[calc(100vw-2rem)] sm:w-full sm:max-w-2xl">
-      <div className="premium-card overflow-hidden font-mono text-xs sm:text-sm">
-        {/* Terminal Header */}
-        <div className="flex items-center justify-between px-3 py-2 sm:px-4 sm:py-3 bg-gradient-to-r from-primary/20 to-accent/20 border-b border-card-border/50">
-          <div className="flex items-center space-x-2">
-            <div className="flex space-x-1.5 sm:space-x-2">
-              <button
-                type="button"
-                onClick={() => setIsMinimized(true)}
-                className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500 hover:bg-yellow-600 transition-colors"
-                aria-label="Minimize"
-              />
-              <button
-                type="button"
-                onClick={() => setLines([])}
-                className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500 hover:bg-green-600 transition-colors"
-                aria-label="Clear"
-              />
-              <div className="w-3 h-3 rounded-full bg-red-500" />
-            </div>
-            <span className="ml-4 text-foreground/70">anwar@portfolio:~$</span>
+    <div className="fixed bottom-4 right-4 z-50 w-[calc(100vw-2rem)] sm:bottom-6 sm:right-6 sm:max-w-2xl">
+      <div className="premium-card overflow-hidden font-mono text-xs">
+        <div className="flex items-center justify-between border-b border-card-border bg-secondary/80 px-4 py-3">
+          <div className="flex items-center gap-3">
+            <button type="button" onClick={() => setIsMinimized(true)} className="h-3 w-3 rounded-full bg-yellow-500" aria-label="Minimize" />
+            <button type="button" onClick={() => setLines([])} className="h-3 w-3 rounded-full bg-green-500" aria-label="Clear" />
+            <span className="text-muted-foreground">anwar@portfolio:~$</span>
           </div>
-          <div className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
-            Interactive Terminal
-          </div>
+          <span className="hidden text-muted-foreground sm:block">Developer console</span>
         </div>
 
-        {/* Terminal Body */}
-        <div
-          ref={terminalRef}
-          className="bg-background/95 backdrop-blur-xl p-3 sm:p-4 h-64 sm:h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-primary/30 scrollbar-track-transparent"
-          onClick={() => inputRef.current?.focus()}
-        >
-          {lines.map((line, i) => (
+        <div ref={terminalRef} className="h-72 overflow-y-auto bg-background/95 p-4 scrollbar-thin sm:h-96">
+          {lines.map((line, index) => (
             <div
-              key={i}
-              className={`mb-1.5 sm:mb-2 ${
+              key={`${line.content}-${index}`}
+              className={`mb-2 ${
                 line.type === "command"
-                  ? "text-primary font-semibold"
+                  ? "font-semibold text-primary"
                   : line.type === "error"
                     ? "text-destructive"
                     : "text-foreground/80"
               }`}
             >
-              <pre className="whitespace-pre-wrap font-mono text-[10px] sm:text-xs leading-relaxed">
-                {line.content}
-              </pre>
+              <pre className="whitespace-pre-wrap font-mono leading-relaxed">{line.content}</pre>
             </div>
           ))}
 
-          {/* Input Line */}
-          <form onSubmit={handleSubmit} className="flex items-center space-x-2">
+          <form onSubmit={handleSubmit} className="flex items-center gap-2">
             <span className="text-primary">$</span>
             <input
               ref={inputRef}
               type="text"
               value={input}
-              onChange={(e) => handleInputChange(e.target.value)}
+              onChange={(event) => handleInputChange(event.target.value)}
               onKeyDown={handleKeyDown}
-              className="flex-1 bg-transparent border-none outline-none text-foreground font-mono text-xs"
-              placeholder="Type 'help' for commands..."
-              autoFocus
+              className="flex-1 border-none bg-transparent font-mono text-foreground outline-none"
+              placeholder="Type help..."
             />
           </form>
 
-          {/* Suggestions */}
           {suggestions.length > 0 && (
-            <div className="mt-2 text-muted-foreground text-xs">
-              Suggestions: {suggestions.join(", ")}
-            </div>
+            <div className="mt-2 text-muted-foreground">Suggestions: {suggestions.join(", ")}</div>
           )}
         </div>
       </div>
