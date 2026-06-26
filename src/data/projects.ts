@@ -8,7 +8,7 @@ export const projects = [
       "Designed an agentic automation concept that connects user intent, structured prompts, business context, and tool execution patterns. The focus is practical AI automation: reducing repetitive work, improving decision support, and keeping human review in the loop.",
     category: "AI Automation",
     technologies: [
-      "OpenAI API",
+      "Gemini API",
       "Agentic AI",
       "Prompt Engineering",
       "React",
