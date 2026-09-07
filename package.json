@@ -12,7 +12,11 @@
 		"build:dev": "vite build --mode development",
 		"lint": "biome check --write .",
 		"format": "biome format --write .",
-		"preview": "vite preview"
+		"preview": "vite preview",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"verify": "bun run test && bun run lint && bun run build"
 	},
 	"dependencies": {
 		"@hookform/resolvers": "^3.10.0",
@@ -68,16 +72,21 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.3.12",
 		"@tailwindcss/typography": "^0.5.16",
+		"@testing-library/jest-dom": "^7.0.1",
+		"@testing-library/react": "^16.3.3",
+		"@testing-library/user-event": "^14.6.7",
 		"@types/lodash": "^4.17.20",
 		"@types/node": "^25.0.10",
 		"@types/react": "^19.2.9",
 		"@types/react-dom": "^19.2.3",
-		"@vitejs/plugin-react-swc": "^4.2.2",
+		"@vitejs/plugin-react-swc": "^4.3.3",
 		"autoprefixer": "^10.4.21",
 		"globals": "^17.1.0",
+		"jsdom": "^30.0.1",
 		"postcss": "^8.5.6",
 		"tailwindcss": "^3.4.19",
 		"typescript": "^5.8.3",
-		"vite": "^7.1.1"
+		"vite": "^7.1.1",
+		"vitest": "^3"
 	}
 }
