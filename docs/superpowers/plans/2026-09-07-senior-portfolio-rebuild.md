@@ -759,6 +759,9 @@ point. Answer in plain sentences; polish happens later.
 - **Only claim what you owned.** Every case study has a `scope` field whose job
   is to say where your boundary was. Naming the boundary is a seniority signal.
 - **Assume you will be asked about every sentence for 45 minutes.**
+- **Never type these tokens, even as placeholders:** `TODO`, `TBD`,
+  `Lorem ipsum`, `example.com`, `FIXME`, `<<REPLACE>>`. The build fails on
+  them anywhere in content.
 
 ## Positioning (one set)
 
@@ -781,39 +784,43 @@ constraints and a hard decision over the ones with the biggest logos.
    rebuilding the upload path", not "VOD Platform".
 3. One-sentence summary a hiring manager could repeat to a colleague.
 4. Organisation (anonymise if needed), domain, period, team composition.
-5. **Scope:** what did you own? What did you explicitly not own?
+5. **Role:** what you were responsible for on this engagement — not your job
+   title.
+6. **Scope:** what did you own? What did you explicitly not own?
+7. **Stack:** the 3–8 technologies you used on this specific project, not
+   your full skill list.
 
 ### Context (aim for 3–5 sentences)
-6. What was the situation before you touched it?
-7. Who was hurting, and how did that show up in the business?
-8. Why was it worth engineering time?
+8. What was the situation before you touched it?
+9. Who was hurting, and how did that show up in the business?
+10. Why was it worth engineering time?
 
 ### Constraints (at least 2, one sentence each)
-9. Time, headcount, budget, legacy systems, compliance, uptime requirements,
-   team skill mix — what boxed the solution in?
+11. Time, headcount, budget, legacy systems, compliance, uptime requirements,
+    team skill mix — what boxed the solution in?
 
 ### Decisions (1–4; this is the most valuable section on the site)
 For each:
-10. The question you had to answer, phrased as a question.
-11. What you chose.
-12. **At least one alternative you rejected, and why.** This is mandatory.
-13. **What the choice cost you.** Every real decision costs something —
+12. The question you had to answer, phrased as a question.
+13. What you chose.
+14. **At least one alternative you rejected, and why.** This is mandatory.
+15. **What the choice cost you.** Every real decision costs something —
     complexity, latency, money, flexibility, or someone's time. Name it.
 
 ### Results
-14. Evidence level: `measured` (you have real numbers), `estimated` (you have a
+16. Evidence level: `measured` (you have real numbers), `estimated` (you have a
     defensible approximation and will say so), or `qualitative` (no numbers).
-15. If measured or estimated, per metric: what was measured, the before value,
+17. If measured or estimated, per metric: what was measured, the before value,
     the after value, and **how it was measured** — instrument, window, baseline.
     Example: "p95 checkout latency, CloudWatch, 30 days either side of the
     cutover, same traffic mix."
 
 ### Reflection
-16. What would you do differently? Be specific and slightly uncomfortable.
+18. What would you do differently? Be specific and slightly uncomfortable.
     Vague humility reads as false; a concrete regret reads as calibration.
 
 ### Links
-17. Any public artefact: repo, post, talk, docs. If there is none, leave it
+19. Any public artefact: repo, post, talk, docs. If there is none, leave it
     empty. **Do not link a GitHub profile as if it were the project.**
 
 ## Roles (for the About page)
