@@ -10,6 +10,8 @@ interface SEOProps {
 	author?: string;
 	publishedTime?: string;
 	modifiedTime?: string;
+	/** Set on pages that should not be indexed, e.g. NotFound. */
+	noIndex?: boolean;
 }
 
 const defaultSEO = {
@@ -34,6 +36,7 @@ export function SEOHead({
 	author = defaultSEO.author,
 	publishedTime,
 	modifiedTime,
+	noIndex = false,
 }: SEOProps) {
 	const fullTitle = title ? `${title} | ${defaultSEO.title}` : defaultSEO.title;
 
@@ -44,7 +47,10 @@ export function SEOHead({
 			<meta name="description" content={description} />
 			<meta name="keywords" content={keywords} />
 			<meta name="author" content={author} />
-			<meta name="robots" content="index, follow" />
+			<meta
+				name="robots"
+				content={noIndex ? "noindex, nofollow" : "index, follow"}
+			/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<link rel="canonical" href={url} />
 
