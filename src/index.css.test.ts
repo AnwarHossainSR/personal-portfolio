@@ -54,6 +54,16 @@ function sourceFiles(dir: string): string[] {
 	});
 }
 
+describe("typography contract", () => {
+	it("loads fonts from the document head, not a css import", () => {
+		expect(css).not.toContain("@import url(\"https://fonts.googleapis.com");
+	});
+
+	it("paints the paper ground on body", () => {
+		expect(css).toMatch(/body\s*\{[^}]*bg-paper/s);
+	});
+});
+
 describe("component classes", () => {
 	it("has no remaining references to the removed classes", () => {
 		const offenders = sourceFiles(SRC)

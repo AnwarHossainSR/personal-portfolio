@@ -67,9 +67,9 @@ export default {
 				ring: "oklch(var(--ring) / <alpha-value>)",
 			},
 			fontFamily: {
-				sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
-				display: ["Newsreader", "Georgia", "serif"],
-				mono: ["JetBrains Mono", "ui-monospace", "monospace"],
+				display: ["Newsreader", "Georgia", "Times New Roman", "serif"],
+				sans: ["Hind Siliguri", "system-ui", "-apple-system", "sans-serif"],
+				mono: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
 			},
 			transitionTimingFunction: {
 				smooth: "var(--curve-smooth)",
