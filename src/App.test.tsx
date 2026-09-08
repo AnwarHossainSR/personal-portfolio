@@ -1,22 +1,23 @@
 import { screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import App from "@/App";
-import { NAV_ITEMS } from "@/components/Navigation";
+import { SECTIONS } from "@/components/AnchorNav";
 import { renderWithRouter } from "@/test/render";
 
 describe("navigation", () => {
-	it("exposes four primary items", () => {
-		expect(NAV_ITEMS.map((item) => item.label)).toEqual([
+	it("exposes the section anchors", () => {
+		expect(SECTIONS.map((section) => section.label)).toEqual([
+			"What I do",
 			"Work",
-			"About",
-			"Writing",
+			"Process",
+			"Stack",
 			"Contact",
 		]);
 	});
 
 	it("does not offer a YouTube or Ask AI destination", () => {
-		const hrefs = NAV_ITEMS.map((item) => item.href).join(" ");
-		expect(hrefs).not.toMatch(/youtube|ask-ai/);
+		const ids = SECTIONS.map((section) => section.id).join(" ");
+		expect(ids).not.toMatch(/youtube|ask-ai/);
 	});
 
 	it("keeps the mobile menu's aria-controls target mounted while closed", async () => {
