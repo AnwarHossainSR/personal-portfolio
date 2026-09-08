@@ -662,20 +662,31 @@ export type Result = z.infer<typeof resultSchema>;
 export type Decision = z.infer<typeof decisionSchema>;
 export type RejectedOption = z.infer<typeof rejectedOptionSchema>;
 
-export function parseCaseStudy(input: unknown): CaseStudy {
+/**
+ * `parseCaseStudy` and `parseNote` are the same shape — extract the slug,
+ * guard against placeholder text before zod ever sees the input, parse, and
+ * throw a labelled, formatted error on failure. Only the label prefix and the
+ * schema differ, so that difference is the only thing each caller supplies.
+ */
+function parseLabelled<T>(schema: z.ZodType<T>, input: unknown, kind: string): T {
 	const slug =
 		input && typeof input === "object" && "slug" in input ? String(input.slug) : "unknown";
-	assertNoPlaceholders(input, `case-study:${slug}`);
+	const label = `${kind}:${slug}`;
+	assertNoPlaceholders(input, label);
 
-	const parsed = caseStudySchema.safeParse(input);
+	const parsed = schema.safeParse(input);
 	if (!parsed.success) {
 		const detail = parsed.error.issues
 			.map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`)
 			.join("; ");
-		throw new Error(`case-study:${slug} is invalid — ${detail}`);
+		throw new Error(`${label} is invalid — ${detail}`);
 	}
 
 	return parsed.data;
+}
+
+export function parseCaseStudy(input: unknown): CaseStudy {
+	return parseLabelled(caseStudySchema, input, "case-study");
 }
 
 export const noteSchema = z.object({
@@ -690,18 +701,7 @@ export const noteSchema = z.object({
 export type Note = z.infer<typeof noteSchema>;
 
 export function parseNote(input: unknown): Note {
-	const slug = input && typeof input === "object" && "slug" in input ? String(input.slug) : "unknown";
-	assertNoPlaceholders(input, `note:${slug}`);
-
-	const parsed = noteSchema.safeParse(input);
-	if (!parsed.success) {
-		const detail = parsed.error.issues
-			.map((issue) => `${issue.path.join(".") || "(root)"}: ${issue.message}`)
-			.join("; ");
-		throw new Error(`note:${slug} is invalid — ${detail}`);
-	}
-
-	return parsed.data;
+	return parseLabelled(noteSchema, input, "note");
 }
 ```
 
