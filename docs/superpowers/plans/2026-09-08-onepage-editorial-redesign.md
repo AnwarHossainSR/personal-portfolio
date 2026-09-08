@@ -782,11 +782,17 @@ describe("Hero", () => {
 });
 
 describe("WhatIDo", () => {
-	it("renders one block per headline point", () => {
+	it("renders one block per capability, title and body", () => {
 		renderWithRouter(<WhatIDo />);
-		for (const point of profile.headline) {
-			expect(screen.getByText(point)).toBeInTheDocument();
+		for (const capability of profile.capabilities) {
+			expect(screen.getByText(capability.title)).toBeInTheDocument();
+			expect(screen.getByText(capability.body)).toBeInTheDocument();
 		}
+	});
+
+	it("renders the creed line", () => {
+		renderWithRouter(<WhatIDo />);
+		expect(screen.getByText(profile.creed)).toBeInTheDocument();
 	});
 });
 ```
@@ -854,23 +860,31 @@ export function Hero() {
 Create `src/sections/WhatIDo.tsx`:
 
 ```tsx
-import { Section } from "@/components/section";
+import { Eyebrow, Section } from "@/components/section";
 import { profile } from "@/data/profile";
 
 export function WhatIDo() {
 	return (
-		<Section id="what-i-do" number="01" eyebrow="Capabilities" title="What I do">
-			<div className="grid gap-x-10 gap-y-8 md:grid-cols-3">
-				{profile.headline.map((point, index) => (
-					<div key={point}>
+		<Section id="what-i-do" number="01" eyebrow="Capabilities" title="What I can do for your team">
+			<div className="grid gap-x-10 gap-y-10 md:grid-cols-2">
+				{profile.capabilities.map((capability, index) => (
+					<div key={capability.title}>
 						<span className="font-mono text-[11px] tracking-[0.18em] text-faint">
 							{String(index + 1).padStart(2, "0")}
 						</span>
-						<p className="mt-3 font-display text-2xl font-medium leading-[1.12] tracking-tight text-ink md:text-3xl">
-							{point}
-						</p>
+						<h3 className="mt-3 font-display text-2xl font-medium leading-[1.12] tracking-tight text-ink md:text-3xl">
+							{capability.title}
+						</h3>
+						<p className="mt-3 max-w-[46ch] leading-relaxed text-muted">{capability.body}</p>
 					</div>
 				))}
+			</div>
+
+			<div className="mt-16 border-t border-line pt-8">
+				<Eyebrow>The work</Eyebrow>
+				<p className="mt-3 max-w-[34ch] font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
+					{profile.creed}
+				</p>
 			</div>
 		</Section>
 	);

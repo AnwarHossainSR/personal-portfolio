@@ -96,12 +96,12 @@ export default function Home() {
 						What I'm hired for
 					</h2>
 					<ul className="mt-8 max-w-[62ch] space-y-4">
-						{profile.headline.map((point) => (
+						{profile.capabilities.map((capability) => (
 							<li
-								key={point}
+								key={capability.title}
 								className="text-[17px] leading-[1.7] text-muted-foreground"
 							>
-								{point}
+								{capability.title}
 							</li>
 						))}
 					</ul>

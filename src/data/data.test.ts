@@ -10,8 +10,22 @@ describe("profile", () => {
 		expect(profile.positioning.length).toBeLessThan(160);
 	});
 
-	it("carries at most three headline points", () => {
-		expect(profile.headline.length).toBeLessThanOrEqual(3);
+	it("carries at most four capabilities, each a short noun phrase", () => {
+		expect(profile.capabilities.length).toBeLessThanOrEqual(4);
+		for (const capability of profile.capabilities) {
+			expect(capability.title.split(/\s+/).length).toBeLessThanOrEqual(3);
+			expect(capability.body.length).toBeGreaterThan(20);
+		}
+	});
+
+	it("states the positioning as short declarative sentences", () => {
+		const sentences = profile.positioning
+			.split(".")
+			.filter((part) => part.trim().length > 0);
+		expect(sentences.length).toBeGreaterThanOrEqual(3);
+		for (const sentence of sentences) {
+			expect(sentence.trim().split(/\s+/).length).toBeLessThanOrEqual(6);
+		}
 	});
 
 	it("does not link a YouTube channel from the primary link set", () => {
