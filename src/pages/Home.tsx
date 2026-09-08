@@ -1,193 +1,113 @@
-import {
-	ArrowRight,
-	CheckCircle2,
-	Download,
-	ExternalLink,
-	Github,
-	Linkedin,
-	Mail,
-	Sparkles,
-} from "lucide-react";
 import { Link } from "react-router-dom";
+import { EvidenceBadge } from "@/components/case-study/EvidenceBadge";
 import { SEOHead } from "@/components/SEO";
-import { Button } from "@/components/ui/button";
+import { featuredCaseStudies } from "@/content/case-studies";
 import { profile } from "@/data/profile";
-
-const githubLink = profile.links.find((link) => link.label === "GitHub");
-const linkedinLink = profile.links.find((link) => link.label === "LinkedIn");
 
 export default function Home() {
 	return (
 		<>
-			<SEOHead
-				title="Senior Software Engineer"
-				description="Md. Anwar Hossain is a Senior Software Engineer specializing in AI automation, agentic AI workflows, AWS cloud architecture, full-stack development, and DevOps."
-				path="/"
-			/>
-			<div className="min-h-screen">
-				<section className="relative overflow-hidden bg-gradient-hero py-20 sm:py-24 lg:py-28">
-					<div className="section-shell">
-						<div className="grid items-center gap-12 lg:grid-cols-[1.12fr_0.88fr]">
-							<div className="slide-in-up">
-								<div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-sm font-semibold text-accent">
-									<span className="h-2 w-2 rounded-full bg-accent" />
-									{profile.availability}
-								</div>
+			<SEOHead description={profile.positioning} path="/" />
+			<div className="mx-auto max-w-5xl px-5 sm:px-8">
+				<section className="py-20 sm:py-28">
+					{/* The name is in the nav and the footer. The h1 is the only line a
+					    scanning reader is guaranteed to read, so it states the problem
+					    shape rather than the job title. */}
+					<h1 className="max-w-[20ch] text-[32px] font-semibold leading-[1.15] tracking-tight sm:text-[46px]">
+						{profile.positioning}
+					</h1>
 
-								<h1 className="max-w-4xl text-4xl font-black tracking-tight text-balance text-foreground sm:text-6xl lg:text-7xl">
-									{profile.name}
-									<span className="block gradient-text">
-										{profile.positioning}
-									</span>
-								</h1>
+					<div className="mt-8 max-w-[64ch] space-y-5 text-[17px] leading-[1.75] text-muted-foreground">
+						{profile.pitch.map((paragraph) => (
+							<p key={paragraph}>{paragraph}</p>
+						))}
+					</div>
 
-								<p className="mt-6 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">
-									{profile.pitch[0]}
-								</p>
-
-								<div className="mt-8 flex flex-col gap-3 sm:flex-row">
-									<Button
-										size="lg"
-										className="bg-gradient-primary font-bold text-primary-foreground shadow-glow"
-										asChild
-									>
-										<Link to="/work">
-											View case studies
-											<ArrowRight className="ml-2 h-4 w-4" />
-										</Link>
-									</Button>
-									<Button
-										size="lg"
-										variant="outline"
-										className="border-card-border bg-card/80"
-										asChild
-									>
-										<a
-											href={profile.resumePath}
-											target="_blank"
-											rel="noopener noreferrer"
-										>
-											<Download className="mr-2 h-4 w-4" />
-											Resume
-										</a>
-									</Button>
-									{linkedinLink && (
-										<Button
-											size="lg"
-											variant="ghost"
-											className="text-muted-foreground hover:text-foreground"
-											asChild
-										>
-											<a
-												href={linkedinLink.href}
-												target="_blank"
-												rel="noopener noreferrer"
-											>
-												<Linkedin className="mr-2 h-4 w-4" />
-												LinkedIn
-											</a>
-										</Button>
-									)}
-								</div>
-							</div>
-
-							<div className="relative">
-								<div className="premium-card overflow-hidden p-4">
-									<div className="aspect-[4/5] overflow-hidden rounded-md bg-secondary">
-										<img
-											src="/images/profile.png"
-											alt={profile.name}
-											className="h-full w-full object-cover"
-										/>
-									</div>
-									<div className="relative mt-4 space-y-4">
-										<div>
-											<p className="text-sm font-semibold text-primary">
-												{profile.positioning}
-											</p>
-										</div>
-										<div className="grid gap-2 text-sm text-muted-foreground">
-											{profile.headline.map((item) => (
-												<div key={item} className="flex items-start gap-2">
-													<CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-													<span>{item}</span>
-												</div>
-											))}
-										</div>
-										<div className="flex gap-2">
-											{githubLink && (
-												<Button
-													variant="outline"
-													size="sm"
-													className="flex-1 border-card-border"
-													asChild
-												>
-													<a
-														href={githubLink.href}
-														target="_blank"
-														rel="noopener noreferrer"
-													>
-														<Github className="mr-2 h-4 w-4" />
-														GitHub
-													</a>
-												</Button>
-											)}
-											<Button
-												variant="outline"
-												size="sm"
-												className="flex-1 border-card-border"
-												asChild
-											>
-												<Link to="/contact">
-													<Mail className="mr-2 h-4 w-4" />
-													Contact
-												</Link>
-											</Button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
+					<div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+						<Link
+							to="/contact"
+							className="rounded-md bg-foreground px-4 py-2.5 font-medium text-background transition-opacity hover:opacity-90"
+						>
+							Get in touch
+						</Link>
+						<a
+							href={profile.resumePath}
+							target="_blank"
+							rel="noreferrer"
+							className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+						>
+							Résumé (PDF)
+						</a>
+						{profile.links.map((link) => (
+							<a
+								key={link.href}
+								href={link.href}
+								target="_blank"
+								rel="noreferrer"
+								className="text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+							>
+								{link.label}
+							</a>
+						))}
 					</div>
 				</section>
 
-				<section className="py-16 sm:py-20">
-					<div className="section-shell">
-						<div className="premium-card overflow-hidden p-8 text-center sm:p-12">
-							<Sparkles className="mx-auto h-8 w-8 text-primary" />
-							<h2 className="mt-5 text-3xl font-black sm:text-5xl">
-								Let's talk about what you're building
-							</h2>
-							<p className="mx-auto mt-4 max-w-2xl text-muted-foreground">
-								{profile.pitch[1]}
-							</p>
-							<div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-								<Button
-									className="bg-gradient-primary font-bold text-primary-foreground"
-									asChild
-								>
-									<Link to="/contact">
-										Start a conversation
-										<ArrowRight className="ml-2 h-4 w-4" />
-									</Link>
-								</Button>
-								<Button
-									variant="outline"
-									className="border-card-border"
-									asChild
-								>
-									<a
-										href={profile.resumePath}
-										target="_blank"
-										rel="noopener noreferrer"
+				<section className="border-t border-border/70 py-16">
+					<h2 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+						Selected work
+					</h2>
+
+					<ol className="mt-10 space-y-14">
+						{featuredCaseStudies.map((study) => (
+							<li key={study.slug}>
+								<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted-foreground">
+									<span>{study.organisation}</span>
+									<span aria-hidden="true">·</span>
+									<span>{study.period}</span>
+									<EvidenceBadge level={study.evidence} />
+								</div>
+								<h3 className="mt-3 max-w-[26ch] text-xl font-semibold leading-snug tracking-tight sm:text-2xl">
+									<Link
+										to={`/work/${study.slug}`}
+										className="transition-colors hover:text-accent"
 									>
-										Open resume
-										<ExternalLink className="ml-2 h-4 w-4" />
-									</a>
-								</Button>
-							</div>
-						</div>
-					</div>
+										{study.title}
+									</Link>
+								</h3>
+								<p className="mt-3 max-w-[64ch] text-[17px] leading-[1.7] text-muted-foreground">
+									{study.summary}
+								</p>
+							</li>
+						))}
+					</ol>
+
+					<p className="mt-12">
+						<Link
+							to="/work"
+							className="text-sm text-foreground underline underline-offset-4 transition-colors hover:text-accent"
+						>
+							All work
+						</Link>
+					</p>
+				</section>
+
+				<section className="border-t border-border/70 py-16">
+					<h2 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+						What I'm hired for
+					</h2>
+					<ul className="mt-8 max-w-[62ch] space-y-4">
+						{profile.headline.map((point) => (
+							<li
+								key={point}
+								className="text-[17px] leading-[1.7] text-muted-foreground"
+							>
+								{point}
+							</li>
+						))}
+					</ul>
+					<p className="mt-10 max-w-[62ch] text-[15px] leading-relaxed text-muted-foreground">
+						{profile.availability} {profile.responseTime}
+					</p>
 				</section>
 			</div>
 		</>
