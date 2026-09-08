@@ -21,7 +21,7 @@ export function EvidenceBadge({ level }: { level: EvidenceLevel }) {
 	return (
 		<span
 			title={label.hint}
-			className="inline-flex items-center rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground"
+			className="inline-flex items-center rounded-full border border-line px-2.5 py-1 text-xs text-muted"
 		>
 			{label.text}
 		</span>

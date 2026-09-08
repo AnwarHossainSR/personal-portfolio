@@ -8,8 +8,8 @@ export function DecisionBlock({
 	index: number;
 }) {
 	return (
-		<article className="border-t border-border/70 pt-8">
-			<p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+		<article className="border-t border-line pt-8">
+			<p className="text-xs uppercase tracking-[0.18em] text-muted">
 				Decision {index + 1}
 			</p>
 			<h3 className="mt-3 max-w-[46ch] text-xl font-semibold leading-snug tracking-tight">
@@ -18,20 +18,20 @@ export function DecisionBlock({
 
 			<dl className="mt-6 grid gap-6 sm:grid-cols-2">
 				<div>
-					<dt className="text-sm font-medium text-foreground">Chose</dt>
-					<dd className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+					<dt className="text-sm font-medium text-ink">Chose</dt>
+					<dd className="mt-2 text-[15px] leading-relaxed text-muted">
 						{decision.chose}
 					</dd>
 				</div>
 				<div>
-					<dt className="text-sm font-medium text-foreground">Rejected</dt>
+					<dt className="text-sm font-medium text-ink">Rejected</dt>
 					<dd className="mt-2 space-y-4">
 						{decision.rejected.map((option) => (
 							<div key={option.option}>
-								<p className="text-[15px] leading-relaxed text-muted-foreground">
+								<p className="text-[15px] leading-relaxed text-muted">
 									{option.option}
 								</p>
-								<p className="mt-1 text-[15px] leading-relaxed text-muted-foreground/80">
+								<p className="mt-1 text-[15px] leading-relaxed text-faint">
 									{option.why}
 								</p>
 							</div>
@@ -41,8 +41,8 @@ export function DecisionBlock({
 			</dl>
 
 			<div className="mt-6 border-l-2 border-accent/60 pl-4">
-				<p className="text-sm font-medium text-foreground">What it cost</p>
-				<p className="mt-1.5 max-w-[62ch] text-[15px] leading-relaxed text-muted-foreground">
+				<p className="text-sm font-medium text-ink">What it cost</p>
+				<p className="mt-1.5 max-w-[62ch] text-[15px] leading-relaxed text-muted">
 					{decision.tradeoff}
 				</p>
 			</div>

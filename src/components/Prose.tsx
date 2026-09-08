@@ -16,7 +16,7 @@ export function Prose({
 	return (
 		<div
 			className={cn(
-				"max-w-[68ch] text-[17px] leading-[1.75] text-muted-foreground",
+				"max-w-[68ch] text-[17px] leading-[1.75] text-muted",
 				className,
 			)}
 		>
