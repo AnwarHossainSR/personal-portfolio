@@ -24,10 +24,47 @@ export default {
 				surface: "var(--color-surface)",
 				"surface-deep": "var(--color-surface-deep)",
 				ink: "var(--color-ink)",
-				muted: "var(--color-muted)",
 				faint: "var(--color-faint)",
 				line: "var(--color-line)",
-				accent: "var(--color-accent)",
+				// shadcn compatibility bridge (src/styles/tokens.css). `muted` and
+				// `accent` collide with the warm palette's single-colour entries
+				// above: resolved by making both an object whose DEFAULT is the
+				// exact same warm var, so `bg-muted`/`text-muted` and
+				// `bg-accent`/`text-accent` keep resolving to the identical warm
+				// colour, while `-foreground` adds the shadcn pairing on top.
+				background: "var(--background)",
+				foreground: "var(--foreground)",
+				card: {
+					DEFAULT: "var(--card)",
+					foreground: "var(--card-foreground)",
+				},
+				popover: {
+					DEFAULT: "var(--popover)",
+					foreground: "var(--popover-foreground)",
+				},
+				primary: {
+					DEFAULT: "var(--primary)",
+					foreground: "var(--primary-foreground)",
+				},
+				secondary: {
+					DEFAULT: "var(--secondary)",
+					foreground: "var(--secondary-foreground)",
+				},
+				muted: {
+					DEFAULT: "var(--color-muted)",
+					foreground: "var(--muted-foreground)",
+				},
+				accent: {
+					DEFAULT: "var(--color-accent)",
+					foreground: "var(--accent-foreground)",
+				},
+				destructive: {
+					DEFAULT: "var(--destructive)",
+					foreground: "var(--destructive-foreground)",
+				},
+				border: "var(--border)",
+				input: "var(--input)",
+				ring: "var(--ring)",
 			},
 			fontFamily: {
 				sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
