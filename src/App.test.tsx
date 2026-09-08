@@ -42,6 +42,10 @@ describe("routes", () => {
 		expect(await screen.findByText(/page not found/i)).toBeInTheDocument();
 	});
 
-	// Restored in Task 8 Step 6, once Work.tsx renders a "Selected work" heading.
-	it.todo("redirects the old projects URL to work");
+	it("redirects the old projects URL to work", async () => {
+		renderWithRouter(<App />, { route: "/projects" });
+		expect(
+			await screen.findByRole("heading", { name: /selected work/i }),
+		).toBeInTheDocument();
+	});
 });
