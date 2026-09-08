@@ -55,7 +55,7 @@ export default function CaseStudy() {
 						<EvidenceBadge level={study.evidence} />
 					</div>
 
-					<h1 className="mt-5 max-w-[22ch] text-3xl font-semibold leading-[1.15] tracking-tight sm:text-[40px]">
+					<h1 className="mt-5 max-w-[22ch] font-display text-3xl font-semibold leading-[1.15] tracking-tight sm:text-[40px]">
 						{study.title}
 					</h1>
 

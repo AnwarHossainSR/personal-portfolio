@@ -74,21 +74,9 @@ export default {
 				},
 			},
 			fontFamily: {
-				inter: ["Inter", "sans-serif"],
-				mono: ["JetBrains Mono", "monospace"],
-			},
-			backgroundImage: {
-				"gradient-primary": "var(--gradient-primary)",
-				"gradient-accent": "var(--gradient-accent)",
-				"gradient-success": "var(--gradient-success)",
-				"gradient-hero": "var(--gradient-hero)",
-				"gradient-surface": "var(--gradient-surface)",
-			},
-			boxShadow: {
-				premium: "var(--shadow-premium)",
-				glow: "var(--shadow-glow)",
-				card: "var(--shadow-card)",
-				elevated: "var(--shadow-elevated)",
+				sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
+				display: ["Newsreader", "Georgia", "serif"],
+				mono: ["JetBrains Mono", "ui-monospace", "monospace"],
 			},
 			transitionTimingFunction: {
 				smooth: "var(--curve-smooth)",

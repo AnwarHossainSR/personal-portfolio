@@ -38,7 +38,7 @@ export default function Note() {
 						<time dateTime={note.published}>{note.published}</time> ·{" "}
 						{note.readingMinutes} min · {note.tags.join(", ")}
 					</p>
-					<h1 className="mt-4 max-w-[24ch] text-3xl font-semibold leading-[1.15] tracking-tight sm:text-[38px]">
+					<h1 className="mt-4 max-w-[24ch] font-display text-3xl font-semibold leading-[1.15] tracking-tight sm:text-[38px]">
 						{note.title}
 					</h1>
 				</header>
