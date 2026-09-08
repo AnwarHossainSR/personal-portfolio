@@ -20,51 +20,51 @@ export default {
 		},
 		extend: {
 			colors: {
-				paper: "var(--color-paper)",
-				surface: "var(--color-surface)",
-				"surface-deep": "var(--color-surface-deep)",
-				ink: "var(--color-ink)",
-				faint: "var(--color-faint)",
-				line: "var(--color-line)",
+				paper: "oklch(var(--color-paper) / <alpha-value>)",
+				surface: "oklch(var(--color-surface) / <alpha-value>)",
+				"surface-deep": "oklch(var(--color-surface-deep) / <alpha-value>)",
+				ink: "oklch(var(--color-ink) / <alpha-value>)",
+				faint: "oklch(var(--color-faint) / <alpha-value>)",
+				line: "oklch(var(--color-line) / <alpha-value>)",
 				// shadcn compatibility bridge (src/styles/tokens.css). `muted` and
 				// `accent` collide with the warm palette's single-colour entries
 				// above: resolved by making both an object whose DEFAULT is the
 				// exact same warm var, so `bg-muted`/`text-muted` and
 				// `bg-accent`/`text-accent` keep resolving to the identical warm
 				// colour, while `-foreground` adds the shadcn pairing on top.
-				background: "var(--background)",
-				foreground: "var(--foreground)",
+				background: "oklch(var(--background) / <alpha-value>)",
+				foreground: "oklch(var(--foreground) / <alpha-value>)",
 				card: {
-					DEFAULT: "var(--card)",
-					foreground: "var(--card-foreground)",
+					DEFAULT: "oklch(var(--card) / <alpha-value>)",
+					foreground: "oklch(var(--card-foreground) / <alpha-value>)",
 				},
 				popover: {
-					DEFAULT: "var(--popover)",
-					foreground: "var(--popover-foreground)",
+					DEFAULT: "oklch(var(--popover) / <alpha-value>)",
+					foreground: "oklch(var(--popover-foreground) / <alpha-value>)",
 				},
 				primary: {
-					DEFAULT: "var(--primary)",
-					foreground: "var(--primary-foreground)",
+					DEFAULT: "oklch(var(--primary) / <alpha-value>)",
+					foreground: "oklch(var(--primary-foreground) / <alpha-value>)",
 				},
 				secondary: {
-					DEFAULT: "var(--secondary)",
-					foreground: "var(--secondary-foreground)",
+					DEFAULT: "oklch(var(--secondary) / <alpha-value>)",
+					foreground: "oklch(var(--secondary-foreground) / <alpha-value>)",
 				},
 				muted: {
-					DEFAULT: "var(--color-muted)",
-					foreground: "var(--muted-foreground)",
+					DEFAULT: "oklch(var(--color-muted) / <alpha-value>)",
+					foreground: "oklch(var(--muted-foreground) / <alpha-value>)",
 				},
 				accent: {
-					DEFAULT: "var(--color-accent)",
-					foreground: "var(--accent-foreground)",
+					DEFAULT: "oklch(var(--color-accent) / <alpha-value>)",
+					foreground: "oklch(var(--accent-foreground) / <alpha-value>)",
 				},
 				destructive: {
-					DEFAULT: "var(--destructive)",
-					foreground: "var(--destructive-foreground)",
+					DEFAULT: "oklch(var(--destructive) / <alpha-value>)",
+					foreground: "oklch(var(--destructive-foreground) / <alpha-value>)",
 				},
-				border: "var(--border)",
-				input: "var(--input)",
-				ring: "var(--ring)",
+				border: "oklch(var(--border) / <alpha-value>)",
+				input: "oklch(var(--input) / <alpha-value>)",
+				ring: "oklch(var(--ring) / <alpha-value>)",
 			},
 			fontFamily: {
 				sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],

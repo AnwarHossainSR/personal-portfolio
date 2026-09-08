@@ -22,7 +22,7 @@
   }
 
   ::selection {
-    background: color-mix(in oklch, var(--color-accent) 28%, transparent);
+    @apply bg-accent/[0.28];
   }
 }
 
@@ -32,8 +32,7 @@
   }
 
   .rule {
-    @apply border-t;
-    border-top-color: color-mix(in oklch, var(--color-line) 70%, transparent);
+    @apply border-t border-line/70;
   }
 
   .eyebrow {

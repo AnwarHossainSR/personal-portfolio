@@ -9,14 +9,14 @@
  */
 :root,
 .dark {
-	--color-paper: oklch(18% 0.012 85);
-	--color-surface: oklch(22% 0.014 85);
-	--color-surface-deep: oklch(26% 0.016 85);
-	--color-ink: oklch(94% 0.012 85);
-	--color-muted: oklch(72% 0.012 75);
-	--color-faint: oklch(58% 0.012 75);
-	--color-line: oklch(34% 0.012 80);
-	--color-accent: oklch(68% 0.15 35);
+	--color-paper: 18% 0.012 85;
+	--color-surface: 22% 0.014 85;
+	--color-surface-deep: 26% 0.016 85;
+	--color-ink: 94% 0.012 85;
+	--color-muted: 72% 0.012 75;
+	--color-faint: 58% 0.012 75;
+	--color-line: 34% 0.012 80;
+	--color-accent: 68% 0.15 35;
 
 	/*
 	 * shadcn/Radix compatibility bridge. These are not a second palette —
@@ -46,14 +46,14 @@
 }
 
 .light {
-	--color-paper: oklch(96.5% 0.012 85);
-	--color-surface: oklch(93.8% 0.014 85);
-	--color-surface-deep: oklch(90% 0.016 85);
-	--color-ink: oklch(21% 0.014 70);
-	--color-muted: oklch(45% 0.012 70);
-	--color-faint: oklch(60% 0.012 75);
-	--color-line: oklch(80% 0.012 80);
-	--color-accent: oklch(52% 0.17 35);
+	--color-paper: 96.5% 0.012 85;
+	--color-surface: 93.8% 0.014 85;
+	--color-surface-deep: 90% 0.016 85;
+	--color-ink: 21% 0.014 70;
+	--color-muted: 45% 0.012 70;
+	--color-faint: 60% 0.012 75;
+	--color-line: 80% 0.012 80;
+	--color-accent: 52% 0.17 35;
 
 	/* Same bridge, re-resolved against the light warm tokens above. */
 	--background: var(--color-paper);
