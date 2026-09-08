@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { findPlaceholders } from "@/content/guards";
 import { profile } from "@/data/profile";
+import { roles } from "@/data/roles";
 import { stackGroups } from "@/data/stack";
 
 describe("profile", () => {
@@ -21,6 +22,25 @@ describe("profile", () => {
 
 	it("has no placeholder text", () => {
 		expect(findPlaceholders(profile)).toEqual([]);
+	});
+});
+
+describe("roles", () => {
+	it("names a scope for every role", () => {
+		for (const role of roles) {
+			expect(role.scope.length).toBeGreaterThan(30);
+		}
+	});
+
+	it("keeps impact statements to at most three per role", () => {
+		for (const role of roles) {
+			expect(role.impact.length).toBeLessThanOrEqual(3);
+			expect(role.impact.length).toBeGreaterThan(0);
+		}
+	});
+
+	it("has no placeholder text", () => {
+		expect(findPlaceholders(roles)).toEqual([]);
 	});
 });
 
