@@ -24,18 +24,18 @@ export const stackGroups: StackGroup[] = [
 		items: [
 			{
 				name: "Node.js + TypeScript",
-				usedFor: "Most production services since 2021",
-				since: "2019",
+				usedFor: "Most production services",
+				since: "2021",
 			},
 			{
 				name: "Express",
 				usedFor: "HTTP layer on the Node services",
-				since: "2019",
+				since: "2021",
 			},
 			{
 				name: "Laravel / PHP",
-				usedFor: "Enterprise applications at BJIT and Annon Lab",
-				since: "2020",
+				usedFor: "Enterprise applications at BJIT and Annonlab",
+				since: "2021",
 			},
 			{
 				name: "PostgreSQL",
@@ -45,7 +45,7 @@ export const stackGroups: StackGroup[] = [
 			{
 				name: "Redis",
 				usedFor: "Caching and queues in front of hot paths",
-				since: "2021",
+				since: "2022",
 			},
 		],
 	},
@@ -56,12 +56,12 @@ export const stackGroups: StackGroup[] = [
 			{
 				name: "Lambda + API Gateway",
 				usedFor: "Event-driven and request-scoped workloads",
-				since: "2021",
+				since: "2024",
 			},
 			{
 				name: "S3 + CloudFront",
 				usedFor: "Media storage and delivery on the VOD work",
-				since: "2022",
+				since: "2024",
 			},
 			{
 				name: "ECS + EC2",
@@ -71,12 +71,12 @@ export const stackGroups: StackGroup[] = [
 			{
 				name: "Terraform",
 				usedFor: "Environment provisioning; parity between staging and prod",
-				since: "2023",
+				since: "2024",
 			},
 			{
 				name: "GitHub Actions",
-				usedFor: "Build, test and deploy pipelines with rollback",
-				since: "2022",
+				usedFor: "Build, test and deploy pipelines",
+				since: "2024",
 			},
 		],
 	},
@@ -87,7 +87,7 @@ export const stackGroups: StackGroup[] = [
 			{
 				name: "React",
 				usedFor: "Product interfaces and internal tools",
-				since: "2020",
+				since: "2021",
 			},
 			{
 				name: "Next.js",

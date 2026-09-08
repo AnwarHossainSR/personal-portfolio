@@ -15,6 +15,34 @@ array — the schema will reject the change if any result lacks a method.
 Work through the sections below. Anything you cannot defend for forty-five
 minutes in an interview should be cut, not softened.
 
+## 0. The question to ask before any of the others
+
+For each of the three case studies, answer this first, because everything
+below it depends on the answer:
+
+- [ ] **`vod-delivery` — did you build a video ingest, encoding and delivery
+      path on AWS Media Services?** If the work was narrower than that (say you
+      integrated with a pipeline someone else designed), the `scope` and `role`
+      fields need rewriting before anything else.
+- [ ] **`analytics-platform` — did you own both the dashboard and the API
+      behind it?** The case study's whole argument is a decision about where
+      aggregation happens, which only makes sense if you owned both sides. If
+      you owned only the front end, this becomes a different, smaller story.
+- [ ] **`release-path` — did you introduce Terraform and the CI/CD pipeline,
+      as opposed to working within ones already in place?** The résumé says you
+      provisioned environments with Terraform and engineered the pipelines;
+      confirm that means you established them.
+
+A first draft of these case studies asserted several specifics the résumé does
+not support — that existing infrastructure was *imported* into Terraform state
+rather than rebuilt, that the analytics dashboard *became slow as data grew*
+and now *caps rendered resolution*, and that the team had *no media
+specialists*. All three have been removed, because none of them could be traced
+to a source. If any of them is in fact true, it is worth putting back — a
+specific story beats a general one, and those were the most interesting claims
+in the drafts. But put them back because they happened, not because they read
+well.
+
 ---
 
 ## 1. Identity — decide these first
@@ -59,10 +87,10 @@ and adaptive streaming pipelines."*
 Confirm each:
 
 - [ ] You owned ingest, encoding orchestration, storage lifecycle and CDN delivery — and **not** the player or the surrounding product UI. The `scope` field says exactly this. Correct it if the boundary was different.
-- [ ] The choice of managed AWS Media Services **over self-hosted FFmpeg workers** was a real decision you made or were part of, and the reason given (no media specialists on the team to operate a transcode farm) is the real reason.
+- [ ] The choice of managed AWS Media Services **over self-hosted FFmpeg workers** was a real decision you made or were part of, and the reason given (not wanting to operate a transcode farm alongside the product) is the real reason.
 - [ ] The stated cost of that choice — managed-service premium per minute, limited codec/packaging control — is one you would actually name.
 - [ ] Adaptive bitrate over a single rendition, served through CloudFront rather than straight from S3, is what actually happened.
-- [ ] The reflection — that storage lifecycle policy should have shipped with the encoding ladder rather than after it — is a regret you actually hold. **If this did not happen, replace it.** A borrowed regret is the easiest thing in the world to catch someone out on.
+- [ ] The reflection says storage lifecycle deserves to be settled with the encoding ladder rather than after it. It is written as a judgement, not as a claim that you got it wrong. **A borrowed regret is the easiest thing in the world to be caught out on** — if you do not hold this view, replace it with one you do.
 - [ ] Team description is deliberately vague ("product engineering team ... colleagues either side of it") because I do not know the headcount. Put the real composition in.
 
 ## 4. Case study: `analytics-platform`
@@ -75,8 +103,8 @@ Confirm each:
 
 - [ ] You owned the dashboard front end **and** the query/aggregation API behind it, but not the upstream data collection or storage schema.
 - [ ] Server-side aggregation over sending raw rows to the browser was a real decision, and the payload-scales-with-customer-data reasoning is the real reason.
-- [ ] Capping rendered resolution rather than drawing every point is something the product actually does. **This is the most likely one to be wrong** — if the dashboard renders everything, cut this decision entirely rather than adjusting it.
-- [ ] The reflection — that you treated it as a rendering problem before separating server time from client time — is genuinely yours.
+- [ ] The second decision now says the dashboards **refresh on an interval** rather than pushing over a persistent connection. Confirm which one the product does. If it genuinely streams, this decision inverts and the tradeoff changes with it.
+- [ ] The reflection is about the coupling cost of server-side aggregation. Confirm you would actually stand behind it, and replace it if a real regret from this work comes to mind.
 - [ ] Highcharts is named in the stack because your résumé names it. Keep or drop.
 
 ## 5. Case study: `release-path`
@@ -87,10 +115,9 @@ serverless microservices with event-driven AWS workflows.
 
 Confirm each:
 
-- [ ] Environments really had drifted because they were built by hand, and bringing them under Terraform was your work.
-- [ ] You **imported existing resources into Terraform state** rather than rebuilding environments fresh and cutting over. This is a specific technical claim and the whole first decision rests on it. If you did it the other way, the decision block inverts.
-- [ ] Releases are genuinely rollback-ready, and the migration constraint that follows (previous version must run against the new schema) is one the team actually observes.
-- [ ] The reflection — that you automated deployment before provisioning, in the wrong order — is real.
+- [ ] Before Terraform, environments were provisioned through the console and steps were kept in a runbook or in people's heads. The first decision contrasts those two, so if the prior state was something else, say what it was.
+- [ ] The second decision says releases went from manual to fully automated through GitHub Actions and the Serverless Framework. Confirm that is the change you made.
+- [ ] The reflection is now a general judgement about ordering rather than a claim that you personally got the order wrong. If you did hit that problem, saying so directly is stronger — but only if you did.
 - [ ] Consider whether this third slot is better spent on a **BJIT** story instead. All three case studies are currently Craftsmen work. Your BJIT years are where you won Best Employee of the Year 2023, and a case study spanning two employers reads as a broader track record. The polyglot-persistence work ("matching database choice to workload characteristics") is the obvious candidate.
 
 ## 6. Roles — `src/data/roles.ts`
@@ -109,3 +136,12 @@ Say if you want any of these back:
 - **Education and CGPA.** AIUB BSc Computer Science, 3.92/4.00, plus perfect HSC/SSC scores. Strong, but academic scores stop carrying weight several years into a career and reading as though they still do is a junior signal. They remain on the résumé.
 - **The full technology list.** Your résumé names Go, Vue, Django, FastAPI, Kafka, RabbitMQ, Kubernetes, Azure, Cognito, Firebase and more. The site's stack section lists what you use regularly, grouped by purpose. Breadth belongs on the résumé; the site is for depth.
 - **The YouTube channel.** Now one sentence in About, framed as teaching rather than as a portfolio item.
+
+## 8. Dates in the stack section
+
+Every `since:` year in `src/data/stack.ts` is inferred from your employment
+dates, not from a source that records when you actually started using each
+technology. They are currently anchored so that nothing predates March 2021
+(your first professional role) and the AWS and Terraform work sits inside your
+Craftsmen tenure. Correct any that are wrong — these are cheap to check and
+the kind of small inconsistency an attentive reader notices.

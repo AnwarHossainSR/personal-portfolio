@@ -27,13 +27,13 @@ export const profile: Profile = {
 	positioning:
 		"I build and operate the backend and cloud systems that media and commerce products run on, and I keep them working while they change.",
 	pitch: [
-		"Six years across three companies, most of it on systems where uptime and throughput were the product: video ingest and delivery, transaction-heavy APIs, and the AWS infrastructure underneath them.",
+		"Five years across three companies, most recently on systems where delivery and availability are the product: video ingest and playback, live analytics for enterprise customers, and the AWS infrastructure underneath both.",
 		"I work from the constraint inwards. Most of what I ship is a smaller change than the one originally proposed, chosen because it survives the deploy schedule, the team that has to maintain it, and the traffic that arrives afterwards.",
 	],
 	headline: [
 		"Backend and cloud systems on AWS — serverless and containerised",
 		"Media pipelines: ingest, transcode orchestration, CDN delivery",
-		"Delivery practice: CI/CD, rollback-ready releases, production ownership",
+		"Delivery practice: CI/CD, infrastructure as code, production ownership",
 	],
 	location: "Dhaka, Bangladesh",
 	timezone: "UTC+6",
