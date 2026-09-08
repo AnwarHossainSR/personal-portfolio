@@ -22,3 +22,21 @@ if (!window.matchMedia) {
 			dispatchEvent: () => false,
 		}) as MediaQueryList;
 }
+
+// jsdom does not implement IntersectionObserver; AnchorNav (and anything
+// else that tracks section visibility) needs a stub so tests don't crash.
+if (!("IntersectionObserver" in globalThis)) {
+	class NoopIntersectionObserver {
+		observe() {}
+		unobserve() {}
+		disconnect() {}
+		takeRecords() {
+			return [];
+		}
+		root = null;
+		rootMargin = "";
+		thresholds = [];
+	}
+	// @ts-expect-error — minimal stub for tests
+	globalThis.IntersectionObserver = NoopIntersectionObserver;
+}
