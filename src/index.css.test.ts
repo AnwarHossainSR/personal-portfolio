@@ -4,6 +4,7 @@ import { describe, expect, it } from "vitest";
 
 const SRC = path.resolve(process.cwd(), "src");
 const css = readFileSync(path.join(SRC, "index.css"), "utf8");
+const tokensCss = readFileSync(path.join(SRC, "styles", "tokens.css"), "utf8");
 
 describe("stylesheet", () => {
 	it("no longer defines the decorative classes", () => {
@@ -26,8 +27,11 @@ describe("stylesheet", () => {
 	});
 
 	it("keeps both palettes defined", () => {
-		expect(css).toContain(".light");
-		expect(css).toMatch(/:root,\s*\.dark/);
+		// Colour definitions live in styles/tokens.css, imported at the top of
+		// this stylesheet — see tokens.test.ts for the token-level assertions.
+		expect(css).toContain('@import "./styles/tokens.css"');
+		expect(tokensCss).toContain(".light");
+		expect(tokensCss).toMatch(/:root,\s*\.dark/);
 	});
 });
 
