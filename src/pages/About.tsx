@@ -1,94 +1,142 @@
-import { CheckCircle2, Download, MapPin } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Prose } from "@/components/Prose";
 import { SEOHead } from "@/components/SEO";
-import { Button } from "@/components/ui/button";
 import { profile } from "@/data/profile";
+import { roles } from "@/data/roles";
+import { stackGroups } from "@/data/stack";
 
 export default function About() {
 	return (
 		<>
 			<SEOHead
-				title="About Me"
-				description="Learn about Md. Anwar Hossain, a Senior Software Engineer specializing in AWS, full-stack engineering, system design, and DevOps."
+				title="About"
+				description={`${profile.name} — ${profile.positioning}`}
 				path="/about"
 			/>
-			<div className="min-h-screen py-16 sm:py-20">
-				<div className="section-shell">
-					<section className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-						<div className="premium-card overflow-hidden p-4">
-							<div className="aspect-square overflow-hidden rounded-md bg-secondary">
-								<img
-									src="/images/profile.png"
-									alt={profile.name}
-									className="h-full w-full object-cover"
-								/>
-							</div>
-						</div>
+			<div className="mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
+				<header className="max-w-[58ch]">
+					<h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+						About
+					</h1>
+					<div className="mt-6 space-y-5 text-[17px] leading-[1.75] text-muted-foreground">
+						{profile.pitch.map((paragraph) => (
+							<p key={paragraph}>{paragraph}</p>
+						))}
+					</div>
+					<p className="mt-6 text-sm text-muted-foreground">
+						{profile.location} · {profile.timezone}
+					</p>
+				</header>
 
-						<div className="slide-in-up">
-							<p className="eyebrow">About</p>
-							<h1 className="mt-3 text-4xl font-black sm:text-6xl">
-								{profile.positioning}
-							</h1>
-							<div className="mt-6 space-y-4 text-lg leading-8 text-muted-foreground">
-								{profile.pitch.map((paragraph) => (
-									<p key={paragraph}>{paragraph}</p>
-								))}
-							</div>
-							<div className="mt-6 flex flex-wrap gap-3 text-sm font-semibold text-muted-foreground">
-								<span className="inline-flex items-center gap-2 rounded-full border border-card-border bg-card px-4 py-2">
-									<MapPin className="h-4 w-4 text-primary" />
-									{profile.location}
-								</span>
-								<span className="rounded-full border border-accent/30 bg-accent/10 px-4 py-2 text-accent">
-									{profile.availability}
-								</span>
-							</div>
-							<div className="mt-8 flex flex-col gap-3 sm:flex-row">
-								<Button
-									className="bg-gradient-primary font-bold text-primary-foreground"
-									asChild
-								>
-									<a
-										href={profile.resumePath}
-										target="_blank"
-										rel="noopener noreferrer"
-									>
-										<Download className="mr-2 h-4 w-4" />
-										Open resume
-									</a>
-								</Button>
-								<Button
-									variant="outline"
-									className="border-card-border"
-									asChild
-								>
-									<Link to="/contact">Contact me</Link>
-								</Button>
-							</div>
-						</div>
-					</section>
+				<section
+					id="track-record"
+					className="mt-20 scroll-mt-24 border-t border-border/70 pt-8"
+				>
+					<h2 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+						Track record
+					</h2>
 
-					<section className="mt-16">
-						<div className="mx-auto max-w-3xl text-center">
-							<p className="eyebrow">What I bring</p>
-							<h2 className="mt-3 text-3xl font-black sm:text-5xl">
-								Practical senior engineering across the stack
-							</h2>
-						</div>
-						<div className="mt-10 grid gap-3">
-							{profile.headline.map((item) => (
-								<div
-									key={item}
-									className="flex items-start gap-3 rounded-md border border-card-border bg-background/50 p-3"
-								>
-									<CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-									<span className="text-sm text-muted-foreground">{item}</span>
+					<ol className="mt-10 space-y-12">
+						{roles.map((role) => (
+							<li key={role.id}>
+								<div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+									<h3 className="text-lg font-semibold tracking-tight">
+										{role.title}
+									</h3>
+									<span className="text-muted-foreground">{role.company}</span>
+									<span className="text-sm text-muted-foreground">
+										{role.period}
+									</span>
 								</div>
-							))}
-						</div>
+
+								<p className="mt-3 max-w-[64ch] text-[15px] leading-relaxed text-muted-foreground">
+									{role.scope}
+								</p>
+
+								<ul className="mt-4 max-w-[64ch] space-y-2.5">
+									{role.impact.map((item) => (
+										<li
+											key={item}
+											className="border-l-2 border-border pl-4 text-[16px] leading-[1.7] text-muted-foreground"
+										>
+											{item}
+										</li>
+									))}
+								</ul>
+
+								<p className="mt-4 text-sm text-muted-foreground">
+									{role.stack.join(" · ")}
+								</p>
+							</li>
+						))}
+					</ol>
+				</section>
+
+				<section
+					id="stack"
+					className="mt-20 scroll-mt-24 border-t border-border/70 pt-8"
+				>
+					<h2 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+						Stack
+					</h2>
+					<Prose className="mt-5">
+						<p>
+							Grouped by what I use each thing for. There are no proficiency
+							ratings here — what a tool is used for is something you can check
+							in conversation, and a self-assigned grade is not.
+						</p>
+					</Prose>
+
+					<div className="mt-10 space-y-10">
+						{stackGroups.map((group) => (
+							<div key={group.name}>
+								<h3 className="text-lg font-semibold tracking-tight">
+									{group.name}
+								</h3>
+								<p className="mt-2 max-w-[62ch] text-[15px] leading-relaxed text-muted-foreground">
+									{group.purpose}
+								</p>
+								<dl className="mt-5 space-y-3">
+									{group.items.map((item) => (
+										<div key={item.name} className="sm:flex sm:gap-6">
+											<dt className="text-[15px] text-foreground sm:w-56 sm:shrink-0">
+												{item.name}
+											</dt>
+											<dd className="text-[15px] leading-relaxed text-muted-foreground">
+												{item.usedFor}{" "}
+												<span className="text-muted-foreground/70">
+													· since {item.since}
+												</span>
+											</dd>
+										</div>
+									))}
+								</dl>
+							</div>
+						))}
+					</div>
+				</section>
+
+				{profile.teaching && (
+					<section className="mt-20 border-t border-border/70 pt-8">
+						<h2 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+							Also
+						</h2>
+						<Prose className="mt-5">
+							<p>
+								I recorded a{" "}
+								<a
+									href={profile.teaching.href}
+									target="_blank"
+									rel="noreferrer"
+									className="text-foreground underline underline-offset-4 hover:text-accent"
+								>
+									{profile.teaching.label}
+								</a>{" "}
+								for engineers starting out. It is not what I want to be hired
+								for, but explaining things is part of how I work on a team.
+							</p>
+						</Prose>
 					</section>
-				</div>
+				)}
 			</div>
 		</>
 	);
