@@ -10,8 +10,7 @@ export default function About() {
 			<SEOHead
 				title="About Me"
 				description="Learn about Md. Anwar Hossain, a Senior Software Engineer specializing in AWS, full-stack engineering, system design, and DevOps."
-				keywords="Anwar Hossain, Senior Software Engineer, AWS, Full Stack Developer, About"
-				url="https://anwarportfolio.vercel.app/about"
+				path="/about"
 			/>
 			<div className="min-h-screen py-16 sm:py-20">
 				<div className="section-shell">

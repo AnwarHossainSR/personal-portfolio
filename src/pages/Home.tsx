@@ -22,8 +22,7 @@ export default function Home() {
 			<SEOHead
 				title="Senior Software Engineer"
 				description="Md. Anwar Hossain is a Senior Software Engineer specializing in AI automation, agentic AI workflows, AWS cloud architecture, full-stack development, and DevOps."
-				keywords="Md. Anwar Hossain, AI Automation Engineer, Agentic AI, Senior Software Engineer, AWS Architect, Full Stack Developer, React, Node.js, DevOps"
-				url="https://anwarportfolio.vercel.app"
+				path="/"
 			/>
 			<div className="min-h-screen">
 				<section className="relative overflow-hidden bg-gradient-hero py-20 sm:py-24 lg:py-28">
