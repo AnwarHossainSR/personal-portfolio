@@ -18,6 +18,17 @@ describe("navigation", () => {
 		const hrefs = NAV_ITEMS.map((item) => item.href).join(" ");
 		expect(hrefs).not.toMatch(/youtube|ask-ai/);
 	});
+
+	it("keeps the mobile menu's aria-controls target mounted while closed", async () => {
+		renderWithRouter(<App />);
+		const toggle = await screen.findByRole("button", { name: /open menu/i });
+		const targetId = toggle.getAttribute("aria-controls");
+		expect(targetId).toBeTruthy();
+
+		const target = document.getElementById(targetId ?? "");
+		expect(target).toBeInTheDocument();
+		expect(target).not.toBeVisible();
+	});
 });
 
 describe("routes", () => {

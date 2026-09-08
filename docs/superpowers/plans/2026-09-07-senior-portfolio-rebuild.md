@@ -1653,26 +1653,29 @@ export function Navigation() {
 				</button>
 			</div>
 
-			{open && (
-				<nav id="mobile-nav" aria-label="Primary" className="border-t border-border/70 px-5 pb-5 pt-2 sm:hidden">
-					{items.map((item) => (
-						<Link key={item.href} to={item.href} className="block py-2.5 text-sm text-muted-foreground">
-							{item.label}
-						</Link>
-					))}
-					<a
-						href={profile.resumePath}
-						target="_blank"
-						rel="noreferrer"
-						className="block py-2.5 text-sm text-muted-foreground"
-					>
-						Résumé
-					</a>
-					<div className="pt-3">
-						<ThemeToggle />
-					</div>
-				</nav>
-			)}
+			<nav
+				id="mobile-nav"
+				aria-label="Primary"
+				hidden={!open}
+				className="border-t border-border/70 px-5 pb-5 pt-2 sm:hidden"
+			>
+				{items.map((item) => (
+					<Link key={item.href} to={item.href} className="block py-2.5 text-sm text-muted-foreground">
+						{item.label}
+					</Link>
+				))}
+				<a
+					href={profile.resumePath}
+					target="_blank"
+					rel="noreferrer"
+					className="block py-2.5 text-sm text-muted-foreground"
+				>
+					Résumé
+				</a>
+				<div className="pt-3">
+					<ThemeToggle />
+				</div>
+			</nav>
 		</header>
 	);
 }
