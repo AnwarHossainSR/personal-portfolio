@@ -203,3 +203,68 @@ honest and more useful option — a hiring manager can see the product.
 The site now opens in **light** mode. The warm paper palette was designed
 light-first, so this is the intended presentation; dark is a derived variant
 and remains available from the toggle.
+
+## 11. Claims you supplied directly — 9 September 2026
+
+Everything in this section came from you in conversation, not from the résumé
+or the public product. That makes you the source, which is the strongest kind
+there is — but it also means nothing here was cross-checked, so the wording is
+deliberately plain and stops where your statement stopped. Read each line and
+confirm the site is not saying more than you did.
+
+You said: *"we are doing ai, mcp server, map related stuffs etc … video export
+generation etc"*, *"beanstalk, RDS, dynamo db etc"*, *"RDS, redis, mono repo,
+distributed architecture, posthog"*, *"php, laravel, python"*, and
+*"microservices, event driven architecture"*.
+
+What went onto the site as a result:
+
+- [ ] **`analytics-platform` is now the first case study**, ahead of
+      `vod-delivery`. That is the one a reader sees first.
+- [ ] **A third decision was added to it** — server-side export rendered from
+      stored configuration, as an asynchronous job, rather than captured in the
+      user's browser. This is written as a decision you were part of. If the
+      export path was designed before you joined it, or works differently, it
+      needs rewriting or cutting. **This is the highest-risk line in this
+      section**: the same shape of claim produced three corrections earlier.
+- [ ] **AI and an MCP server** are named in the case study, in your Craftsmen
+      role, in the capabilities list and in the stack. The site says an MCP
+      server lets an AI client drive the same API the editor drives. Confirm
+      that is what it does, and that it exists in production rather than in
+      progress — the site does not currently distinguish the two.
+- [ ] **Maps** are named as part of the editor (charts, maps and tables), which
+      matches the public everviz product.
+- [ ] **Video export generation** is described as the export path producing a
+      static image or a generated video. Confirm the video half is real and is
+      yours, and see the note in section 9 about whether this and `vod-delivery`
+      are the same work described twice — that overlap is now more visible, not
+      less, because both case studies talk about video.
+- [ ] **AWS services added**: Elastic Beanstalk, RDS, DynamoDB, SQS, alongside
+      the Lambda, ECS, EC2, S3 and CloudFront already there. Beanstalk is
+      described as "managed hosting for services that predate the container
+      work" — that framing is inferred, not something you said. Correct it if
+      the reason is different.
+- [ ] **Redis, PostgreSQL on RDS, a monorepo, microservices, event-driven
+      workflows and polyglot persistence** appear in the capabilities and in a
+      new "Architecture" group in the stack section. These are the senior-level
+      signals you asked for; they are also the ones an interviewer will open
+      with, so each should be a system you can draw on a whiteboard.
+- [ ] **PostHog** is described as product analytics behind interface decisions.
+      If you have it installed but do not use it to settle design questions,
+      soften that line.
+- [ ] **PHP, Laravel and Python** are in the stack. Python is described as
+      "Django and FastAPI services, and scripting around the pipelines" — the
+      résumé supports Django and FastAPI; the scripting half is inferred.
+- [ ] **`since:` years for the new stack entries** are inferred the same way as
+      section 8 describes: Beanstalk, RDS + DynamoDB, Highcharts, PostHog and
+      the monorepo are dated 2024 (your Craftsmen start), MCP servers 2025.
+      Correct any that are wrong.
+
+Two constraints were relaxed to fit this in, both of which were mine rather
+than yours, and both are reversible:
+
+- The capabilities list went from four entries to six.
+- A case study's `stack` array can now hold twelve entries rather than eight.
+  Twelve is close to the keyword-dump the cap existed to prevent; if the
+  technology row under a case study starts reading as a list rather than as a
+  description, cut it back.
