@@ -1,5 +1,6 @@
 import { Section } from "@/components/section";
 import { stackGroups } from "@/data/stack";
+import { Reveal } from "@/motion/Reveal";
 
 export function Stack() {
 	return (
@@ -16,8 +17,12 @@ export function Stack() {
 			</p>
 
 			<div className="mt-10 space-y-10">
-				{stackGroups.map((group) => (
-					<div key={group.name} className="border-t border-line pt-6">
+				{stackGroups.map((group, index) => (
+					<Reveal
+						key={group.name}
+						delay={index * 0.08}
+						className="border-t border-line pt-6"
+					>
 						<h3 className="font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
 							{group.name}
 						</h3>
@@ -35,7 +40,7 @@ export function Stack() {
 								</div>
 							))}
 						</dl>
-					</div>
+					</Reveal>
 				))}
 			</div>
 		</Section>
