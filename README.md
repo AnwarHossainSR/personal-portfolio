@@ -1,70 +1,98 @@
-# Getting Started with Create React App
+# anwarportfolio
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A one-page portfolio for **Md. Anwar Hossain** — backend, cloud and platform
+engineering. One anchored page, plus a page per case study.
 
-## Available Scripts
+Live: <https://anwarportfolio.vercel.app>
 
-In the project directory, you can run:
+## What this repository is
 
-### `yarn start`
+Most of the interesting work here is not the UI. It is the constraint that the
+site cannot make a claim it cannot back:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **Content is parsed, not just imported.** Every case study and note goes
+  through a zod schema (`src/content/schema.ts`) at module load. An invalid
+  entry throws during the build and the test run, not in production.
+- **Evidence level is enforced.** A case study declares `evidence` as
+  `measured`, `estimated` or `qualitative`. `measured` requires a `results`
+  array in which every result names the `method` behind the number.
+  `qualitative` requires zero results. The schema rejects anything else, so a
+  number cannot appear on the site without a method next to it.
+- **Placeholders fail the suite.** `src/content/guards.ts` walks any object for
+  `<<REPLACE>>`, `TODO`, `TBD`, `FIXME`, `Lorem ipsum` and `example.com`, and
+  the tests assert none survive.
+- **Every decision names what was rejected.** `decisionSchema` requires at
+  least one rejected alternative with a reason, and a `tradeoff` — the cost of
+  the choice that was made.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+`docs/CONTENT-CONFIRMATION.md` lists every claim on the site alongside where it
+came from, and what still needs confirming.
 
-### `yarn test`
+## Stack
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+| | |
+| --- | --- |
+| Build | Vite 7, Bun |
+| UI | React 19, TypeScript 5.8, React Router 7 |
+| Styling | Tailwind CSS 3.4 over OKLCH design tokens (`src/styles/tokens.css`) |
+| Content | zod 4 schemas |
+| Tests | Vitest, Testing Library, jsdom, axe |
+| Tooling | Biome |
+| Hosting | Vercel |
 
-### `yarn build`
+Design tokens are stored as bare OKLCH channels (`52% 0.17 35`) and wrapped in
+`oklch(var(--token) / <alpha-value>)` by the Tailwind config. That is what makes
+opacity modifiers such as `bg-paper/85` work — Tailwind cannot inject an alpha
+value into a `var()` that already contains a complete `oklch()` call.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Running it
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```sh
+bun install
+bun run dev        # http://localhost:3000
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Script | Does |
+| --- | --- |
+| `bun run dev` | Dev server |
+| `bun run build` | Production build to `dist/` |
+| `bun run preview` | Serve the built output |
+| `bun run test` | Vitest, once |
+| `bun run test:watch` | Vitest, watching |
+| `bun run typecheck` | `tsc --noEmit` |
+| `bun run lint` | Biome, writing fixes |
+| `bun run lint:ci` | Biome, read-only — what CI runs |
+| `bun run verify` | Typecheck, test, lint, build |
 
-### `yarn eject`
+CI runs the same four steps on every push and pull request
+(`.github/workflows/ci.yml`).
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Layout
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+src/
+  content/          Schema-validated content
+    schema.ts       zod schemas; parseCaseStudy / parseNote
+    guards.ts       Placeholder detection
+    case-studies/   One file per case study, registered in index.ts
+    notes/          Empty by design — /writing is mounted only when a note exists
+  data/             Profile, roles, stack
+  sections/         The one page, in order: WhatIDo, Work, Process, Stack, Contact
+  components/       Layout, navigation, section primitives
+  pages/            Home, CaseStudy, Writing, Note, NotFound
+  styles/tokens.css OKLCH palette for both themes
+docs/               The rebuild plans and the content confirmation checklist
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Adding a case study
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. Create `src/content/case-studies/<slug>.ts` exporting
+   `parseCaseStudy({ ... })`.
+2. Register it in `src/content/case-studies/index.ts`. Order there is
+   editorial — the first entry is the one most readers see.
+3. Add its URL to `public/sitemap.xml`.
+4. `bun run verify`. The schema will tell you what the entry is missing.
 
-## Learn More
+## Licence
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Content and design are personal. The code is here to be read.

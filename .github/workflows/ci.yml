@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+    branches: [main, new-design-with-react]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - run: bun install --frozen-lockfile
+
+      # Checked before the tests: a formatting-only diff is cheap to find and
+      # noisy to review, and `lint` rewrites files, so CI runs the read-only form.
+      - name: Lint and format check
+        run: bunx biome check .
+
+      - name: Typecheck
+        run: bunx tsc --noEmit
+
+      - name: Test
+        run: bun run test
+
+      - name: Build
+        run: bun run build

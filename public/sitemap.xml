@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Only routes that render their own page are listed. The site is one anchored
+  page plus the case studies; /work, /about, /contact and the rest are
+  client-side redirects onto anchors, so listing them would ask a crawler to
+  index the same document several times.
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+	<url><loc>https://anwarportfolio.vercel.app/</loc><priority>1.0</priority></url>
+	<url><loc>https://anwarportfolio.vercel.app/work/analytics-platform</loc><priority>0.8</priority></url>
+	<url><loc>https://anwarportfolio.vercel.app/work/vod-delivery</loc><priority>0.8</priority></url>
+	<url><loc>https://anwarportfolio.vercel.app/work/release-path</loc><priority>0.8</priority></url>
+</urlset>
