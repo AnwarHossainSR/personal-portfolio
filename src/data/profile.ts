@@ -19,7 +19,7 @@ export interface Profile {
 	positioning: string;
 	/** Two short paragraphs. First: what you do and for whom. Second: how you work. */
 	pitch: string[];
-	/** Four at most. The things you want remembered. */
+	/** Six at most. The things you want remembered. */
 	capabilities: Capability[];
 	/** One blunt line. The hard truth about the work, and a claim to owning it. */
 	creed: string;
@@ -39,25 +39,33 @@ export const profile: Profile = {
 	positioning:
 		"Build backends. Move them to AWS. Automate the release. Keep it running.",
 	pitch: [
-		"Five years on production systems. Video pipelines, analytics platforms for enterprise customers, and the AWS infrastructure underneath both.",
+		"Five years on production systems. Video and export pipelines, a data visualisation platform used by newsrooms and analysts, and the AWS infrastructure underneath both.",
 		"Most of what I ship is smaller than what was first proposed. It has to survive the deploy schedule, the team that maintains it, and the traffic that arrives afterwards.",
 	],
 	capabilities: [
 		{
 			title: "Backend services",
-			body: "APIs and services in Node and TypeScript. Written to be read, changed and deployed by someone who is not me.",
+			body: "APIs and services in Node, TypeScript, PHP and Python, split into microservices with event-driven workflows between them and kept in one monorepo. PostgreSQL on RDS for the data that matters, Redis in front of the paths that get hit hardest.",
 		},
 		{
 			title: "AWS infrastructure",
-			body: "Lambda, ECS, S3 and CloudFront, provisioned in Terraform. An environment is something you reproduce from code, not something you assemble.",
+			body: "Lambda and API Gateway for event-driven work, ECS, EC2 and Elastic Beanstalk for the long-running services, S3 and CloudFront for delivery, RDS and DynamoDB for state, SQS between the parts that should not wait on each other — all provisioned in Terraform. An environment is something you reproduce from code, not something you assemble.",
 		},
 		{
-			title: "Media pipelines",
-			body: "Video ingest, encoding orchestration and CDN delivery on managed AWS media services.",
+			title: "Media and export",
+			body: "Video ingest, encoding orchestration and CDN delivery on managed AWS media services, and the server-side render path that turns a live visualisation into a static image or a generated video.",
+		},
+		{
+			title: "AI and MCP",
+			body: "LLM features inside the product, and MCP servers that let an AI client drive the same API a person drives through the interface.",
 		},
 		{
 			title: "Release automation",
-			body: "Build, test and deploy through GitHub Actions. Shipping is something anyone on the team can do.",
+			body: "Build, test and deploy through GitHub Actions, across a monorepo where one change can touch several deployables. Shipping is something anyone on the team can do.",
+		},
+		{
+			title: "Product interfaces",
+			body: "React and TypeScript front ends for products people use all day — editors, maps and dashboards — instrumented with PostHog so a design argument can be settled with what users actually did.",
 		},
 	],
 	creed:
@@ -74,7 +82,7 @@ export const profile: Profile = {
 		{ label: "LinkedIn", href: "https://www.linkedin.com/in/anwarsr/" },
 	],
 	teaching: {
-		label: "Tutorial series on YouTube",
+		label: "tutorial series on YouTube",
 		href: "https://www.youtube.com/@DevelopmentKit",
 	},
 };

@@ -10,8 +10,8 @@ describe("profile", () => {
 		expect(profile.positioning.length).toBeLessThan(160);
 	});
 
-	it("carries at most four capabilities, each a short noun phrase", () => {
-		expect(profile.capabilities.length).toBeLessThanOrEqual(4);
+	it("carries at most six capabilities, each a short noun phrase", () => {
+		expect(profile.capabilities.length).toBeLessThanOrEqual(6);
 		for (const capability of profile.capabilities) {
 			expect(capability.title.split(/\s+/).length).toBeLessThanOrEqual(3);
 			expect(capability.body.length).toBeGreaterThan(20);

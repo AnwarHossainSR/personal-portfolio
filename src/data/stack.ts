@@ -33,9 +33,15 @@ export const stackGroups: StackGroup[] = [
 				since: "2021",
 			},
 			{
-				name: "Laravel / PHP",
+				name: "PHP + Laravel",
 				usedFor: "Enterprise applications at BJIT and Annonlab",
 				since: "2021",
+			},
+			{
+				name: "Python",
+				usedFor:
+					"Django and FastAPI services, and scripting around the pipelines",
+				since: "2022",
 			},
 			{
 				name: "PostgreSQL",
@@ -46,6 +52,40 @@ export const stackGroups: StackGroup[] = [
 				name: "Redis",
 				usedFor: "Caching and queues in front of hot paths",
 				since: "2022",
+			},
+			{
+				name: "MCP servers",
+				usedFor:
+					"Exposing product capability to AI clients over the product API",
+				since: "2025",
+			},
+		],
+	},
+	{
+		name: "Architecture",
+		purpose:
+			"How the systems are shaped, which outlasts what they are written in.",
+		items: [
+			{
+				name: "Microservices",
+				usedFor: "Service boundaries drawn per domain rather than per team",
+				since: "2022",
+			},
+			{
+				name: "Event-driven workflows",
+				usedFor:
+					"Queues and events between the parts that should not block each other",
+				since: "2024",
+			},
+			{
+				name: "Monorepo",
+				usedFor: "One repository across the services and the front ends",
+				since: "2024",
+			},
+			{
+				name: "Polyglot persistence",
+				usedFor: "Storage matched to the workload instead of chosen once",
+				since: "2021",
 			},
 		],
 	},
@@ -59,14 +99,24 @@ export const stackGroups: StackGroup[] = [
 				since: "2024",
 			},
 			{
-				name: "S3 + CloudFront",
-				usedFor: "Media storage and delivery on the VOD work",
-				since: "2024",
-			},
-			{
 				name: "ECS + EC2",
 				usedFor: "Long-running containerised services",
 				since: "2022",
+			},
+			{
+				name: "Elastic Beanstalk",
+				usedFor: "Managed hosting for services that predate the container work",
+				since: "2024",
+			},
+			{
+				name: "RDS + DynamoDB",
+				usedFor: "Relational and key-value state behind the services",
+				since: "2024",
+			},
+			{
+				name: "S3 + CloudFront",
+				usedFor: "Media storage and delivery on the VOD and export work",
+				since: "2024",
 			},
 			{
 				name: "Terraform",
@@ -95,9 +145,19 @@ export const stackGroups: StackGroup[] = [
 				since: "2022",
 			},
 			{
+				name: "Highcharts",
+				usedFor: "Charts, maps and tables in the everviz editor",
+				since: "2024",
+			},
+			{
 				name: "Tailwind CSS",
 				usedFor: "Styling, including this site",
 				since: "2022",
+			},
+			{
+				name: "PostHog",
+				usedFor: "Product analytics behind interface decisions",
+				since: "2024",
 			},
 		],
 	},

@@ -53,7 +53,7 @@ export function Contact() {
 
 			{profile.teaching && (
 				<p className="mt-10 max-w-2xl text-sm leading-relaxed text-muted">
-					I also recorded some tutorials{" "}
+					I also recorded a{" "}
 					<a
 						href={profile.teaching.href}
 						target="_blank"

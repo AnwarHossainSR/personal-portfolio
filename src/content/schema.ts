@@ -64,7 +64,7 @@ const caseStudyShape = z.object({
 	team: z.string().min(5),
 	period: z.string().min(4),
 	scope: z.string().min(40, "name what you owned and what you did not"),
-	stack: z.array(z.string().min(1)).min(3).max(8),
+	stack: z.array(z.string().min(1)).min(3).max(12),
 	evidence: z.enum(EVIDENCE_LEVELS),
 	context: z.string().min(120),
 	constraints: z

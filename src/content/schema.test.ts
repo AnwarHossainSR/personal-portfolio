@@ -85,7 +85,21 @@ describe("parseCaseStudy", () => {
 	});
 
 	it("caps the stack list so it cannot become a keyword dump", () => {
-		const stack = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+		const stack = [
+			"a",
+			"b",
+			"c",
+			"d",
+			"e",
+			"f",
+			"g",
+			"h",
+			"i",
+			"j",
+			"k",
+			"l",
+			"m",
+		];
 		expect(() => parseCaseStudy({ ...valid, stack })).toThrow();
 	});
 });

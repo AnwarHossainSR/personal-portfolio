@@ -8,8 +8,8 @@ import { vodDelivery } from "./vod-delivery";
  * answers "can this person do the job", because it is the one most readers see.
  */
 export const caseStudies: CaseStudy[] = [
-	vodDelivery,
 	analyticsPlatform,
+	vodDelivery,
 	releasePath,
 ];
 

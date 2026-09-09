@@ -12,7 +12,15 @@ export const vodDelivery = parseCaseStudy({
 	period: "2024 — present",
 	scope:
 		"I owned the ingest, encoding orchestration, storage lifecycle and CDN delivery configuration. The player experience and the surrounding product UI were built by colleagues; I provided the delivery contract they consumed and did not change their code.",
-	stack: ["AWS Media Services", "AWS S3", "CloudFront", "Node.js", "Lambda"],
+	stack: [
+		"AWS Media Services",
+		"AWS S3",
+		"CloudFront",
+		"Node.js",
+		"Lambda",
+		"Amazon SQS",
+		"Event-driven",
+	],
 	evidence: "qualitative",
 	context:
 		"The product needed to take video uploaded by customers and make it play back smoothly for viewers whose devices and bandwidth varied widely. A single-rendition file served straight from storage does not survive that: viewers on poor connections stall, and viewers on good ones get quality below what their connection could carry. The work was to put a real encoding and delivery pipeline behind the upload.",

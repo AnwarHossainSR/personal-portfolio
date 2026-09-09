@@ -18,7 +18,10 @@ export const releasePath = parseCaseStudy({
 		"Serverless Framework",
 		"AWS Lambda",
 		"AWS ECS",
+		"Amazon SQS",
 		"Docker",
+		"Microservices",
+		"Monorepo",
 	],
 	evidence: "qualitative",
 	context:
