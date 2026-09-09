@@ -27,14 +27,14 @@ export default function Note() {
 			<article className="mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
 				<Link
 					to="/writing"
-					className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+					className="inline-flex items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
 				>
 					<ArrowLeft className="h-4 w-4" aria-hidden="true" />
 					All writing
 				</Link>
 
 				<header className="mt-8">
-					<p className="text-sm text-muted-foreground">
+					<p className="text-sm text-muted">
 						<time dateTime={note.published}>{note.published}</time> ·{" "}
 						{note.readingMinutes} min · {note.tags.join(", ")}
 					</p>

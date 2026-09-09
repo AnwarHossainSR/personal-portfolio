@@ -9,12 +9,9 @@ export default function NotFound() {
 				<h1 className="text-2xl font-semibold tracking-tight">
 					Page not found
 				</h1>
-				<p className="mt-3 max-w-prose text-muted-foreground">
+				<p className="mt-3 max-w-prose text-muted">
 					That page does not exist. The work is at{" "}
-					<Link
-						to="/work"
-						className="text-foreground underline underline-offset-4"
-					>
+					<Link to="/work" className="text-ink underline underline-offset-4">
 						/work
 					</Link>
 					.

@@ -10,7 +10,7 @@ export function ThemeToggle() {
 			variant="ghost"
 			size="sm"
 			onClick={toggleTheme}
-			className="relative w-10 h-10 rounded-xl bg-card/30 backdrop-blur-sm border border-card-border/50 hover:bg-card/50 hover:border-card-border transition-all duration-300"
+			className="relative w-10 h-10 rounded border border-line bg-surface backdrop-blur-sm hover:bg-surface-deep hover:text-ink transition-all duration-300"
 			aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
 		>
 			<Sun className="h-5 w-5 rotate-0 scale-100 transition-all duration-300 dark:-rotate-90 dark:scale-0" />

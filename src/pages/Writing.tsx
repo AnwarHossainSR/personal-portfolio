@@ -14,15 +14,15 @@ export default function Writing() {
 				<h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
 					Writing
 				</h1>
-				<p className="mt-5 max-w-[62ch] text-[17px] leading-[1.75] text-muted-foreground">
+				<p className="mt-5 max-w-[62ch] text-[17px] leading-[1.75] text-muted">
 					Notes on decisions I nearly got wrong and things production taught me.
 					Not tutorials.
 				</p>
 
 				<ol className="mt-14 space-y-10">
 					{notes.map((note) => (
-						<li key={note.slug} className="border-t border-border/70 pt-6">
-							<p className="text-sm text-muted-foreground">
+						<li key={note.slug} className="border-t border-line/70 pt-6">
+							<p className="text-sm text-muted">
 								<time dateTime={note.published}>{note.published}</time> ·{" "}
 								{note.readingMinutes} min
 							</p>
@@ -34,7 +34,7 @@ export default function Writing() {
 									{note.title}
 								</Link>
 							</h2>
-							<p className="mt-3 max-w-[64ch] text-[17px] leading-[1.7] text-muted-foreground">
+							<p className="mt-3 max-w-[64ch] text-[17px] leading-[1.7] text-muted">
 								{note.summary}
 							</p>
 						</li>
