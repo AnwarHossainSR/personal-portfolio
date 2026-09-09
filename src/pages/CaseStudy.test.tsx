@@ -54,6 +54,11 @@ describe("CaseStudy", () => {
 
 	it("renders a not-found page for an unknown slug", () => {
 		renderAt("no-such-case-study");
-		expect(screen.getByText(/page not found/i)).toBeInTheDocument();
+		expect(
+			screen.getByRole("heading", {
+				level: 1,
+				name: /that page does not exist/i,
+			}),
+		).toBeInTheDocument();
 	});
 });
