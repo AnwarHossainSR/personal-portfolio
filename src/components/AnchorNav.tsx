@@ -85,7 +85,7 @@ export function AnchorNav() {
 					{profile.name}
 				</a>
 
-				<nav aria-label="Sections" className="hidden items-center gap-1 sm:flex">
+				<nav aria-label="Primary" className="hidden items-center gap-1 sm:flex">
 					{SECTIONS.map((section) => (
 						<a
 							key={section.id}
@@ -125,7 +125,7 @@ export function AnchorNav() {
 			{/* Always mounted so aria-controls always resolves; visibility is toggled. */}
 			<nav
 				id="anchor-nav-mobile"
-				aria-label="Sections"
+				aria-label="Primary mobile"
 				hidden={!open}
 				className="border-t border-line px-5 pb-5 pt-2 sm:hidden"
 			>

@@ -26,22 +26,15 @@ export default {
 				ink: "oklch(var(--color-ink) / <alpha-value>)",
 				faint: "oklch(var(--color-faint) / <alpha-value>)",
 				line: "oklch(var(--color-line) / <alpha-value>)",
-				// shadcn compatibility bridge (src/styles/tokens.css). `muted` and
-				// `accent` collide with the warm palette's single-colour entries
-				// above: resolved by making both an object whose DEFAULT is the
-				// exact same warm var, so `bg-muted`/`text-muted` and
-				// `bg-accent`/`text-accent` keep resolving to the identical warm
-				// colour, while `-foreground` adds the shadcn pairing on top.
+				// shadcn compatibility bridge (src/styles/tokens.css). `accent`
+				// collides with the warm palette's single-colour entry above:
+				// resolved by making it an object whose DEFAULT is the exact same
+				// warm var, so `bg-accent`/`text-accent` keep resolving to the
+				// identical warm colour, while `-foreground` adds the shadcn
+				// pairing on top. Pruned to just what button.tsx (the last
+				// surviving ui/* component) still references — no `foreground`,
+				// `popover`, `border`, or a `muted.foreground` pairing.
 				background: "oklch(var(--background) / <alpha-value>)",
-				foreground: "oklch(var(--foreground) / <alpha-value>)",
-				card: {
-					DEFAULT: "oklch(var(--card) / <alpha-value>)",
-					foreground: "oklch(var(--card-foreground) / <alpha-value>)",
-				},
-				popover: {
-					DEFAULT: "oklch(var(--popover) / <alpha-value>)",
-					foreground: "oklch(var(--popover-foreground) / <alpha-value>)",
-				},
 				primary: {
 					DEFAULT: "oklch(var(--primary) / <alpha-value>)",
 					foreground: "oklch(var(--primary-foreground) / <alpha-value>)",
@@ -50,10 +43,7 @@ export default {
 					DEFAULT: "oklch(var(--secondary) / <alpha-value>)",
 					foreground: "oklch(var(--secondary-foreground) / <alpha-value>)",
 				},
-				muted: {
-					DEFAULT: "oklch(var(--color-muted) / <alpha-value>)",
-					foreground: "oklch(var(--muted-foreground) / <alpha-value>)",
-				},
+				muted: "oklch(var(--color-muted) / <alpha-value>)",
 				accent: {
 					DEFAULT: "oklch(var(--color-accent) / <alpha-value>)",
 					foreground: "oklch(var(--accent-foreground) / <alpha-value>)",
@@ -62,7 +52,6 @@ export default {
 					DEFAULT: "oklch(var(--destructive) / <alpha-value>)",
 					foreground: "oklch(var(--destructive-foreground) / <alpha-value>)",
 				},
-				border: "oklch(var(--border) / <alpha-value>)",
 				input: "oklch(var(--input) / <alpha-value>)",
 				ring: "oklch(var(--ring) / <alpha-value>)",
 			},

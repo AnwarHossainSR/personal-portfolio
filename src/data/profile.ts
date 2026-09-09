@@ -74,7 +74,7 @@ export const profile: Profile = {
 		{ label: "LinkedIn", href: "https://www.linkedin.com/in/anwarsr/" },
 	],
 	teaching: {
-		label: "React tutorial series on YouTube",
+		label: "Tutorial series on YouTube",
 		href: "https://www.youtube.com/@DevelopmentKit",
 	},
 };

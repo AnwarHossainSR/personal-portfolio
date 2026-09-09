@@ -14,32 +14,28 @@
 	--color-surface-deep: 26% 0.016 85;
 	--color-ink: 94% 0.012 85;
 	--color-muted: 72% 0.012 75;
-	--color-faint: 58% 0.012 75;
+	--color-faint: 61% 0.012 75;
 	--color-line: 34% 0.012 80;
 	--color-accent: 68% 0.15 35;
 
 	/*
 	 * shadcn/Radix compatibility bridge. These are not a second palette —
 	 * every value below resolves to a warm token defined above, so there is
-	 * still exactly one place to change a colour. Kept only because five
-	 * live components (button, tooltip, toast, toaster, sonner) and the
-	 * theme toggle's own classes are written against these semantic names.
+	 * still exactly one place to change a colour. Kept only because button.tsx
+	 * — the last surviving ui/* component, used by ThemeToggle — is written
+	 * against these semantic names. Pruned to just what it references: no
+	 * --card, --foreground, --popover, --popover-foreground, --muted-foreground
+	 * or --border, since their only consumers (card.tsx, tooltip.tsx, toast.tsx,
+	 * toaster.tsx, sonner.tsx) were unused and are gone.
 	 */
 	--background: var(--color-paper);
-	--foreground: var(--color-ink);
-	--card: var(--color-surface);
-	--card-foreground: var(--color-ink);
-	--popover: var(--color-surface-deep);
-	--popover-foreground: var(--color-ink);
 	--primary: var(--color-accent);
 	--primary-foreground: var(--color-paper);
 	--secondary: var(--color-surface);
 	--secondary-foreground: var(--color-ink);
-	--muted-foreground: var(--color-muted);
 	--accent-foreground: var(--color-paper);
 	--destructive: var(--color-accent);
 	--destructive-foreground: var(--color-paper);
-	--border: var(--color-line);
 	--input: var(--color-line);
 	--ring: var(--color-accent);
 	--radius: 0.375rem;
@@ -51,26 +47,19 @@
 	--color-surface-deep: 90% 0.016 85;
 	--color-ink: 21% 0.014 70;
 	--color-muted: 45% 0.012 70;
-	--color-faint: 60% 0.012 75;
+	--color-faint: 52% 0.012 75;
 	--color-line: 80% 0.012 80;
 	--color-accent: 52% 0.17 35;
 
 	/* Same bridge, re-resolved against the light warm tokens above. */
 	--background: var(--color-paper);
-	--foreground: var(--color-ink);
-	--card: var(--color-surface);
-	--card-foreground: var(--color-ink);
-	--popover: var(--color-surface-deep);
-	--popover-foreground: var(--color-ink);
 	--primary: var(--color-accent);
 	--primary-foreground: var(--color-paper);
 	--secondary: var(--color-surface);
 	--secondary-foreground: var(--color-ink);
-	--muted-foreground: var(--color-muted);
 	--accent-foreground: var(--color-paper);
 	--destructive: var(--color-accent);
 	--destructive-foreground: var(--color-paper);
-	--border: var(--color-line);
 	--input: var(--color-line);
 	--ring: var(--color-accent);
 }
