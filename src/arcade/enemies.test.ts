@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { ENEMY_LEVELS } from "@/arcade/constants";
-import { enemyMaxSpeed, enemyVisible, steerAround } from "@/arcade/enemies";
+import {
+	enemyMaxSpeed,
+	enemyVisible,
+	steerAround,
+	updateEnemies,
+} from "@/arcade/enemies";
 import { Game } from "@/arcade/engine";
 import { angDiff } from "@/arcade/math";
 import type { Enemy } from "@/arcade/types";
@@ -65,6 +70,67 @@ describe("enemyVisible", () => {
 		expect(enemyVisible(enemy)).toBe(false);
 		window.scrollY = 800;
 		expect(enemyVisible(enemy)).toBe(true);
+	});
+});
+
+describe("arrivals", () => {
+	/**
+	 * Regression. Enemies spawn off all four edges; `moveEnemy` rejects any
+	 * candidate position outside `radius .. innerWidth - radius`. Without an
+	 * escape for candidates that are heading back in, an arrival from the left
+	 * or right stops dead in the strip between the viewport edge and `radius`
+	 * — every option it has is out of bounds, so it picks none of them and
+	 * hangs there for the rest of the session.
+	 */
+	function enemyAt(game: Game, x: number, y: number): Enemy {
+		const config = ENEMY_LEVELS[1];
+		const el = document.createElement("div");
+		const healthEl = document.createElement("span");
+		el.appendChild(healthEl);
+		game.root.appendChild(el);
+		const enemy: Enemy = {
+			level: 1,
+			config,
+			x,
+			y,
+			// Pointing at the car, which sits in the middle of the viewport.
+			angle: Math.atan2(game.car.x - x, -(game.car.y - y)),
+			speed: config.baseSpeed,
+			maxSpeed: config.speedLimit,
+			health: config.health,
+			maxHealth: config.health,
+			el,
+			healthEl,
+			fireT: Number.POSITIVE_INFINITY,
+		};
+		game.enemies.push(enemy);
+		return enemy;
+	}
+
+	function arrives(spawnX: number): boolean {
+		const game = newGame();
+		game.state = "drive";
+		game.car.x = innerWidth / 2;
+		game.car.y = innerHeight / 2;
+		const enemy = enemyAt(game, spawnX, innerHeight / 2);
+		const startDistance = Math.abs(enemy.x - game.car.x);
+		for (let frame = 0; frame < 120; frame++) updateEnemies(game, 1 / 60);
+		const moved = startDistance - Math.abs(enemy.x - game.car.x);
+		game.stop();
+		return moved > 1;
+	}
+
+	it("closes in from beyond the right edge", () => {
+		expect(arrives(innerWidth + 32)).toBe(true);
+	});
+
+	it("closes in from beyond the left edge", () => {
+		expect(arrives(-32)).toBe(true);
+	});
+
+	it("closes in from the dead strip just inside the right edge", () => {
+		// The exact band the missing escape trapped them in.
+		expect(arrives(innerWidth - ENEMY_LEVELS[1].clearRadius / 2)).toBe(true);
 	});
 });
 

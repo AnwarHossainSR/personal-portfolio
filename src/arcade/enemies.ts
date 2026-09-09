@@ -299,7 +299,19 @@ function moveEnemy(game: Game, enemy: Enemy, dt: number): void {
 		const angle = enemy.angle + offset;
 		const x = enemy.x + Math.sin(angle) * step;
 		const y = enemy.y - Math.cos(angle) * step;
-		if (x < radius || x > innerWidth - radius) continue;
+		// Out of bounds is only a reason to reject a candidate when it is not
+		// heading back in. The reference has this escape hatch on the vertical
+		// axis only, because it spawns nothing off the left or right edge; with
+		// four-edge spawning, a hard horizontal reject traps an arrival in the
+		// strip between the viewport edge and `radius` — every candidate is out
+		// of bounds, including the ones moving inward, so it stops dead a few
+		// pixels off screen and never arrives.
+		const withinX = x >= radius && x <= innerWidth - radius;
+		const enteringX =
+			(enemy.x > innerWidth - radius && x < enemy.x) ||
+			(enemy.x < radius && x > enemy.x);
+		if (!withinX && !enteringX) continue;
+
 		if (y < -radius || y > maxWorldY + radius) continue;
 		const inBand =
 			y >= window.scrollY - radius &&
