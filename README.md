@@ -81,8 +81,68 @@ src/
   components/       Layout, navigation, section primitives
   pages/            Home, CaseStudy, Writing, Note, NotFound
   styles/tokens.css OKLCH palette for both themes
+  motion/           Scroll reveal, on IntersectionObserver rather than a library
+  arcade/           The overlay engine — see below. Lazily imported, never in the
+                    main chunk
 docs/               The rebuild plans and the content confirmation checklist
 ```
+
+## The arcade overlay
+
+`src/arcade/` is a twin-stick shooter that uses this page as its level, ported
+from [entrptaher/taherxyz](https://github.com/entrptaher/taherxyz) — see
+*Credit* below. It is the most substantial code in the repository, so it is
+worth saying what it is and how it is contained.
+
+**What it does.** It classifies every element on the page as an obstacle from
+computed style — background alpha above 0.06, a background image, a box shadow,
+a visible border — and walks text nodes with a `Range` to get per-character
+rectangles. The collision world is the layout itself. Bullets sweep the segment
+they travelled each frame rather than testing where they landed, so they cannot
+pass through a hairline rule at 1650 px/s. Enemies sample eight headings and
+steer around obstacles instead of chasing in a straight line. Hold `V` to draw
+the collision world onto a canvas, from the same classifier the engine collides
+against.
+
+**How to turn it on.** A control in the footer, labelled `Arcade mode`. The
+choice is remembered in `localStorage` under `arcade:enabled:v1`. `Esc` turns it
+off, as does the same control.
+
+**How it is gated.** `src/arcade/gate.ts` refuses to start under
+`prefers-reduced-motion: reduce` or on any pointer that is not `fine`. That gate
+is also why the game never runs in the test suite: `src/test/setup.ts` stubs
+`matchMedia` to match nothing, and `src/arcade/lifecycle.test.ts` asserts the
+consequence rather than assuming it.
+
+**Why it is lazy.** The engine and its stylesheet are reached only through
+`await import("@/arcade")` in `ArcadeMount.tsx`, and the panel only through
+`lazy()`. A reader who never turns it on downloads none of it.
+`src/arcade/budget.test.ts` asserts that over the module graph — three small
+modules (the gate, the on/off store, the storage keys) are allowed into the main
+bundle and nothing else is.
+
+**What differs from the reference, and why.**
+
+| | |
+| --- | --- |
+| `stop()` genuinely restores the page | The reference is an Astro MPA, where a destroyed heading returns on the next page load. This is a React SPA: React will not put back a text node deleted underneath it. Every destruction registers its reversal first — `src/arcade/undo.ts` |
+| A border collides as a line, not a box | Every section here is a full-width block with a rule on top. Treating that as filled made the whole document solid — nowhere to spawn, and every bullet dead on leaving the barrel |
+| An element the size of the viewport is ground | This site paints its paper on a wrapper `div` rather than on `body` |
+| Off by default | The reference runs unconditionally. The reader who most needs to take the case studies seriously is the one most likely to be mid-sentence when a rocket arrives |
+| Audio starts muted | Unprompted audio on a portfolio is worse than silence. The `AudioContext` is constructed on the first shot, never at load |
+| No `framer-motion` | ~30 kB gzip for one fade and a translate. `src/motion/Reveal.tsx` does it with an `IntersectionObserver` |
+
+The score is sealed with a non-extractable AES-GCM key held in IndexedDB. That
+stops it being edited in devtools storage. It does not stop anyone who opens the
+console — the page can decrypt, so a visitor can too.
+
+## Credit
+
+The visual system and the arcade overlay both come from
+[entrptaher/taherxyz](https://github.com/entrptaher/taherxyz). The design
+language was taken from that site during the rebuild; `src/arcade/` is a port of
+its `MouseCar.astro`, with the deviations listed above. The enemy stat blocks
+and the ballistics constants are that project's, unchanged.
 
 ## Adding a case study
 
