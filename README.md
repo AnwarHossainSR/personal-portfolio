@@ -109,7 +109,8 @@ toggle. The choice is remembered in `localStorage` under `arcade:enabled:v1`.
 `Esc` turns it off, as do the header button and the `Stop` control on the
 panel. While it runs, an `Arcade stats` button sits in the bottom-right corner;
 clicking it opens the telemetry panel, which also holds the sound switch
-(off by default) and a note on how the thing works.
+(off by default), a two-step `Clear score` control, and a note on how the thing
+works.
 
 **How it is gated.** `src/arcade/gate.ts` refuses to start under
 `prefers-reduced-motion: reduce` or on any pointer that is not `fine`. That gate
@@ -140,10 +141,13 @@ bundle and nothing else is.
 | It opens faster | First enemy at 2.5s rather than 12s, three concurrent rather than one. The reference starts itself on every visit and needs a grace period; this one was asked for |
 | The rocket spawns in the middle of the screen | `clearSpot` throws random darts, which on a page with wide margins lands it in the gutter |
 | The panel opens on click | Closed it is one button. A readout permanently docked over a page whose job is to be read is an obstruction, and the numbers are optional |
+| Clearing the score does not reload | The reference removes the stored ciphertext and calls `location.reload()`, which an MPA can afford. A reload here would throw away the run **and** the restored page, so the engine zeroes its counters in place and the telemetry sweep picks them up on the next frame |
 
 The score is sealed with a non-extractable AES-GCM key held in IndexedDB. That
 stops it being edited in devtools storage. It does not stop anyone who opens the
-console — the page can decrypt, so a visitor can too.
+console — the page can decrypt, so a visitor can too. `Clear score` in the panel
+drops the stored value and zeroes the live counters; the key itself is left
+alone, being per-browser rather than per-score.
 
 ## Credit
 

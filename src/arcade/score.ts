@@ -157,6 +157,25 @@ export class ScoreStore {
 		}
 	}
 
+	/**
+	 * Drops the stored score.
+	 *
+	 * The pending write is cancelled first, or the debounced save already in
+	 * flight would seal the old numbers back into storage a moment after they
+	 * were cleared. The AES key in IndexedDB is deliberately left alone: it is
+	 * per-browser rather than per-score, and destroying it would orphan
+	 * nothing while costing a key generation on the next save.
+	 */
+	reset(): void {
+		if (this.timer) window.clearTimeout(this.timer);
+		this.timer = 0;
+		try {
+			localStorage.removeItem(STORAGE.score);
+		} catch {
+			// Nothing was stored to begin with.
+		}
+	}
+
 	dispose(): void {
 		if (this.timer) window.clearTimeout(this.timer);
 		this.timer = 0;

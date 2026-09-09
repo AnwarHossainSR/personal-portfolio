@@ -1,7 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { destroyChar, destroyElement } from "@/arcade/bullets";
+import { STORAGE } from "@/arcade/constants";
 import { Game } from "@/arcade/engine";
 import { canRun, start, stop } from "@/arcade/index";
+import { emptyStats } from "@/arcade/score";
 import { UndoLog } from "@/arcade/undo";
 
 /**
@@ -189,6 +191,31 @@ describe("destruction round-trip", () => {
 			rect: { left: 0, top: 0, right: 8, bottom: 12 },
 		});
 		expect(link.textContent).toBe("Work");
+		game.stop();
+	});
+});
+
+describe("resetScore", () => {
+	it("zeroes the live counters as well as the stored ones", () => {
+		document.body.innerHTML = "";
+		const root = document.createElement("div");
+		root.id = "arcade-root";
+		document.body.appendChild(root);
+		const game = new Game(root);
+
+		game.stats.kills = 42;
+		game.stats.broken = 900;
+		game.stats.maxLevel = 3;
+		game.allTimeMaxLevel = 3;
+		game.sessionKillsByLevel[1] = 12;
+		localStorage.setItem(STORAGE.score, "sealed");
+
+		game.resetScore();
+
+		expect(game.stats).toEqual(emptyStats());
+		expect(game.allTimeMaxLevel).toBe(1);
+		expect(game.sessionKillsByLevel[1]).toBe(0);
+		expect(localStorage.getItem(STORAGE.score)).toBeNull();
 		game.stop();
 	});
 });

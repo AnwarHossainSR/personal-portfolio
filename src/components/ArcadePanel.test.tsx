@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { axe } from "vitest-axe";
 import * as matchers from "vitest-axe/matchers";
 import { getArcadeMode, setArcadeMode } from "@/arcade/mode";
@@ -8,6 +8,11 @@ import { TELEMETRY_ID_LIST } from "@/arcade/telemetry-ids";
 import { ArcadePanel } from "@/components/ArcadePanel";
 
 expect.extend(matchers);
+
+afterEach(() => {
+	vi.doUnmock("@/arcade");
+	vi.resetModules();
+});
 
 /** The panel ships closed; most of these assertions are about what is inside. */
 async function renderOpen() {
@@ -77,6 +82,40 @@ describe("ArcadePanel", () => {
 		await renderOpen();
 		await userEvent.click(screen.getByRole("button", { name: /stop/i }));
 		expect(getArcadeMode()).toBe(false);
+	});
+
+	it("will not clear the score on a single click", async () => {
+		// Two steps, like the reference's panel. A one-click control that wipes
+		// an all-time score is a control somebody hits by accident.
+		const resetScore = vi.fn();
+		vi.doMock("@/arcade", () => ({ resetScore }));
+		await renderOpen();
+
+		await userEvent.click(screen.getByRole("button", { name: /clear score/i }));
+		expect(resetScore).not.toHaveBeenCalled();
+		expect(screen.getByRole("alert")).toHaveTextContent(
+			/clear all-time score/i,
+		);
+
+		await userEvent.click(screen.getByRole("button", { name: /cancel/i }));
+		expect(resetScore).not.toHaveBeenCalled();
+		expect(
+			screen.getByRole("button", { name: /clear score/i }),
+		).toBeInTheDocument();
+	});
+
+	it("clears the score on confirmation, through a dynamic import", async () => {
+		const resetScore = vi.fn();
+		vi.doMock("@/arcade", () => ({ resetScore }));
+		await renderOpen();
+
+		await userEvent.click(screen.getByRole("button", { name: /clear score/i }));
+		await userEvent.click(screen.getByRole("button", { name: /confirm/i }));
+		await waitFor(() => expect(resetScore).toHaveBeenCalledTimes(1));
+		// Back to the resting state, not stuck mid-confirmation.
+		expect(
+			screen.getByRole("button", { name: /clear score/i }),
+		).toBeInTheDocument();
 	});
 
 	it("has no axe violations, closed or open", async () => {

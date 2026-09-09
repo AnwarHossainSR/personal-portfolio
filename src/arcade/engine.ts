@@ -17,6 +17,7 @@ import {
 	CAR_W,
 	ENEMY_FIRST,
 	ENEMY_LEVEL_NUMBERS,
+	ENEMY_LEVEL_SPAWN_KILLS,
 	GUN_MODES,
 	GUN_MULTIPLIER_DURATION,
 	GUN_POWERUP_FIRST_MAX,
@@ -148,9 +149,9 @@ export class Game {
 			this.sessionKillsByLevel[level] = 0;
 			this.defeatsByLevel[level] = 0;
 		}
-		// Killing 100 of a level unlocks the next one, once per hundred.
-		this.nextLevelSpawnAt[1] = 100;
-		this.nextLevelSpawnAt[2] = 100;
+		// Killing a hundred of a level unlocks the next one, once per hundred.
+		this.nextLevelSpawnAt[1] = ENEMY_LEVEL_SPAWN_KILLS;
+		this.nextLevelSpawnAt[2] = ENEMY_LEVEL_SPAWN_KILLS;
 
 		try {
 			const saved = localStorage.getItem(STORAGE.gunMode);
@@ -175,7 +176,9 @@ export class Game {
 			mergeSavedStats(this.stats, saved);
 			this.allTimeMaxLevel = Math.max(1, this.stats.maxLevel);
 			this.defeatsByLevel[1] = this.stats.kills;
-			this.nextLevelSpawnAt[1] = (Math.floor(this.stats.kills / 100) + 1) * 100;
+			this.nextLevelSpawnAt[1] =
+				(Math.floor(this.stats.kills / ENEMY_LEVEL_SPAWN_KILLS) + 1) *
+				ENEMY_LEVEL_SPAWN_KILLS;
 			this.telemetry.stats(this.stats);
 		});
 
@@ -421,6 +424,27 @@ export class Game {
 	}
 
 	// ------------------------------------------------------------------ scoring
+
+	/**
+	 * Back to zero, without a reload.
+	 *
+	 * The reference clears the stored ciphertext and reloads the page, which
+	 * an MPA can afford. Here a reload would throw away the run in progress
+	 * and, worse, the restored page — so the live counters are reset in place
+	 * instead. The telemetry sweep in the loop picks the new values up on the
+	 * next frame; nothing has to be pushed from here.
+	 */
+	resetScore(): void {
+		this.scoreStore.reset();
+		this.stats = emptyStats();
+		this.allTimeMaxLevel = 1;
+		for (const level of ENEMY_LEVEL_NUMBERS) {
+			this.sessionKillsByLevel[level] = 0;
+			this.defeatsByLevel[level] = 0;
+		}
+		this.nextLevelSpawnAt[1] = ENEMY_LEVEL_SPAWN_KILLS;
+		this.nextLevelSpawnAt[2] = ENEMY_LEVEL_SPAWN_KILLS;
+	}
 
 	recordStats(): void {
 		this.telemetry.stats(this.stats);

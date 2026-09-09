@@ -1,6 +1,7 @@
 import "@/arcade/arcade.css";
 import { Game } from "@/arcade/engine";
 import { canRunArcade } from "@/arcade/gate";
+import { ScoreStore } from "@/arcade/score";
 
 /**
  * The only surface the application touches.
@@ -24,6 +25,21 @@ let game: Game | null = null;
  * engine into the main bundle.
  */
 export { canRunArcade as canRun } from "@/arcade/gate";
+
+/**
+ * Clears the all-time score. Works whether or not a game is running: with the
+ * overlay off there is no engine to reset, but there is still a sealed value in
+ * storage, and the control that calls this is only ever on screen while the
+ * overlay is on — so both paths exist for the sake of the second one being
+ * correct rather than lucky.
+ */
+export function resetScore(): void {
+	if (game) {
+		game.resetScore();
+		return;
+	}
+	new ScoreStore().reset();
+}
 
 export function isRunning(): boolean {
 	return game !== null;

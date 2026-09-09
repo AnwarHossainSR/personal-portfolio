@@ -46,6 +46,7 @@ function Row({ label, id }: { label: string; id: string }) {
 
 export function ArcadePanel() {
 	const [open, setOpen] = useState(false);
+	const [confirmingReset, setConfirmingReset] = useState(false);
 	const muted = useSyncExternalStore(
 		subscribeMuted,
 		isMuted,
@@ -150,6 +151,57 @@ export function ArcadePanel() {
 					>
 						{muted ? "Off" : "On"}
 					</button>
+				</div>
+
+				{/*
+				 * Clearing the all-time score, two-step like the reference's
+				 * panel. Theirs removes the stored ciphertext and reloads the
+				 * page; a reload here would throw away both the run and the
+				 * restored page, so the engine zeroes its counters in place and
+				 * the telemetry sweep picks them up on the next frame.
+				 *
+				 * The engine is reached through a dynamic import so this control
+				 * cannot drag it into the main bundle. By the time anyone can
+				 * click it the chunk is already loaded — the panel only exists
+				 * while the overlay is running.
+				 */}
+				<div className="border-t border-line/60 pt-3">
+					{confirmingReset ? (
+						<div
+							role="alert"
+							className="flex flex-wrap items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.12em]"
+						>
+							<span className="text-faint">Clear all-time score?</span>
+							<span className="flex items-center gap-3">
+								<button
+									type="button"
+									onClick={() => setConfirmingReset(false)}
+									className="text-faint transition-colors hover:text-ink"
+								>
+									Cancel
+								</button>
+								<button
+									type="button"
+									onClick={async () => {
+										const { resetScore } = await import("@/arcade");
+										resetScore();
+										setConfirmingReset(false);
+									}}
+									className="rounded bg-accent px-2.5 py-1 text-paper transition-opacity hover:opacity-90"
+								>
+									Confirm
+								</button>
+							</span>
+						</div>
+					) : (
+						<button
+							type="button"
+							onClick={() => setConfirmingReset(true)}
+							className="font-mono text-[11px] uppercase tracking-[0.12em] text-faint underline underline-offset-4 transition-colors hover:text-ink"
+						>
+							Clear score
+						</button>
+					)}
 				</div>
 
 				<p className="border-t border-line/60 pt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.12em] text-faint">

@@ -98,6 +98,27 @@ describe("ScoreStore", () => {
 		setTimeout.mockRestore();
 	});
 
+	it("reset() drops the stored score", () => {
+		localStorage.setItem(
+			STORAGE.score,
+			JSON.stringify({ i: "AA==", d: "AA==" }),
+		);
+		new ScoreStore().reset();
+		expect(localStorage.getItem(STORAGE.score)).toBeNull();
+	});
+
+	it("reset() cancels a save already queued", () => {
+		// Otherwise the debounced write lands half a second later and seals the
+		// old numbers straight back into storage.
+		vi.useFakeTimers();
+		const clearTimeout = vi.spyOn(window, "clearTimeout");
+		const store = new ScoreStore();
+		store.queueSave(emptyStats());
+		store.reset();
+		expect(clearTimeout).toHaveBeenCalled();
+		clearTimeout.mockRestore();
+	});
+
 	it("writes nothing to localStorage when the write path fails", async () => {
 		vi.useFakeTimers();
 		const store = new ScoreStore();
