@@ -134,6 +134,76 @@ describe("World.solid", () => {
 	});
 });
 
+describe("World.solidity", () => {
+	/**
+	 * Regression, and the one real deviation from the reference. Every section
+	 * on this site is a full-width block with a one-pixel rule on top. The
+	 * reference classifies that as filled, which made the entire document a
+	 * wall: the rocket had nowhere to spawn and every bullet died the moment it
+	 * left the barrel.
+	 */
+	function bordered(): HTMLElement {
+		mount('<div id="ruled" style="border-top: 1px solid rgb(0, 0, 0)"></div>');
+		const el = document.getElementById("ruled") as HTMLElement;
+		el.getBoundingClientRect = () =>
+			({
+				left: 0,
+				top: 100,
+				right: 800,
+				bottom: 500,
+				width: 800,
+				height: 400,
+			}) as DOMRect;
+		return el;
+	}
+
+	it("classifies a border as an edge, not as a filled box", () => {
+		expect(world().solidity(bordered())).toBe("edge");
+	});
+
+	it("classifies a painted background as filled", () => {
+		mount('<div id="card" style="background-color: rgb(20, 20, 20)"></div>');
+		const el = document.getElementById("card") as HTMLElement;
+		expect(world().solidity(el)).toBe("filled");
+	});
+
+	it("blocks only along the band the border paints", () => {
+		const el = bordered();
+		const w = world();
+		// On the rule.
+		expect(w.edgeRectAt(el, 400, 101)).not.toBeNull();
+		// In the middle of the box, hundreds of pixels from any border.
+		expect(w.edgeRectAt(el, 400, 300)).toBeNull();
+	});
+
+	it("gives a hairline rule a band thick enough to collide with", () => {
+		const band = world().edgeRectAt(bordered(), 400, 101);
+		expect(band).not.toBeNull();
+		expect(
+			(band as { bottom: number; top: number }).bottom -
+				(band as { top: number }).top,
+		).toBeGreaterThanOrEqual(4);
+	});
+
+	it("treats an element the size of the viewport as ground, not an obstacle", () => {
+		// This site paints its paper on a wrapper div rather than on body.
+		mount(
+			'<div id="ground" style="background-color: rgb(240, 240, 240)"></div>',
+		);
+		const el = document.getElementById("ground") as HTMLElement;
+		el.getBoundingClientRect = () =>
+			({
+				left: 0,
+				top: 0,
+				right: window.innerWidth,
+				bottom: window.innerHeight * 4,
+				width: window.innerWidth,
+				height: window.innerHeight * 4,
+			}) as DOMRect;
+		expect(world().solidity(el)).toBeNull();
+	});
+});
+
 describe("World.textRect", () => {
 	it("is null for a tag that is not a text tag", () => {
 		mount('<div id="wrap">words</div>');
