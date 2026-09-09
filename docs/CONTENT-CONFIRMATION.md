@@ -24,10 +24,9 @@ below it depends on the answer:
       path on AWS Media Services?** If the work was narrower than that (say you
       integrated with a pipeline someone else designed), the `scope` and `role`
       fields need rewriting before anything else.
-- [ ] **`analytics-platform` — did you own both the dashboard and the API
-      behind it?** The case study's whole argument is a decision about where
-      aggregation happens, which only makes sense if you owned both sides. If
-      you owned only the front end, this becomes a different, smaller story.
+- [ ] **`analytics-platform` — see section 9.** This case study was rewritten
+      once everviz was identified as the product; the questions that matter for
+      it are there, not here.
 - [ ] **`release-path` — did you introduce Terraform and the CI/CD pipeline,
       as opposed to working within ones already in place?** The résumé says you
       provisioned environments with Terraform and engineered the pipelines;
@@ -99,13 +98,10 @@ Drafted from the résumé line: *"Built a production SaaS data visualization
 platform using React.js and Highcharts, delivering enterprise analytics
 dashboards with real-time data rendering."*
 
-Confirm each:
-
-- [ ] You owned the dashboard front end **and** the query/aggregation API behind it, but not the upstream data collection or storage schema.
-- [ ] Server-side aggregation over sending raw rows to the browser was a real decision, and the payload-scales-with-customer-data reasoning is the real reason.
-- [ ] The second decision now says the dashboards **refresh on an interval** rather than pushing over a persistent connection. Confirm which one the product does. If it genuinely streams, this decision inverts and the tradeoff changes with it.
-- [ ] The reflection is about the coupling cost of server-side aggregation. Confirm you would actually stand behind it, and replace it if a real regret from this work comes to mind.
-- [ ] Highcharts is named in the stack because your résumé names it. Keep or drop.
+**This section is superseded by section 9.** The case study was rewritten after
+everviz was identified as the product, and the questions worth answering moved
+there. The résumé line above is still the source; the framing it produced —
+an internal metrics dashboard — turned out to be wrong for everviz.
 
 ## 5. Case study: `release-path`
 
