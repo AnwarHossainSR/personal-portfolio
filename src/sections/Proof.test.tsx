@@ -30,4 +30,11 @@ describe("Proof", () => {
 			expect(screen.getByText(new RegExp(item.issuer))).toBeInTheDocument();
 		}
 	});
+
+	it("shows no certifications section", () => {
+		renderWithRouter(<Proof />);
+		expect(
+			screen.queryByText(/certification|credential/i),
+		).not.toBeInTheDocument();
+	});
 });

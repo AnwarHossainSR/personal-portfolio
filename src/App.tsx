@@ -12,10 +12,7 @@ import NotFound from "@/pages/NotFound";
 const queryClient = new QueryClient();
 
 const Home = lazy(() => import("@/pages/Home"));
-const Work = lazy(() => import("@/pages/Work"));
 const CaseStudy = lazy(() => import("@/pages/CaseStudy"));
-const About = lazy(() => import("@/pages/About"));
-const Contact = lazy(() => import("@/pages/Contact"));
 const Writing = lazy(() => import("@/pages/Writing"));
 const Note = lazy(() => import("@/pages/Note"));
 
@@ -33,29 +30,41 @@ export default function App() {
 					<Layout>
 						<Suspense fallback={<PageLoader />}>
 							<Routes>
-								<Route path="/" element={<Home />} />
-								<Route path="/work" element={<Work />} />
+								{/* The specific case-study pattern must be declared before the
+								    bare /work redirect below, or the redirect shadows it. */}
 								<Route path="/work/:slug" element={<CaseStudy />} />
-								<Route path="/about" element={<About />} />
-								<Route path="/contact" element={<Contact />} />
+								<Route path="/" element={<Home />} />
 								{notes.length > 0 && (
 									<>
 										<Route path="/writing" element={<Writing />} />
 										<Route path="/writing/:slug" element={<Note />} />
 									</>
 								)}
-								{/* Old URLs keep working; inbound links and search results still land. */}
+								{/* Old page routes collapse onto the one anchored page;
+								    inbound links and search results still land somewhere. */}
+								<Route
+									path="/work"
+									element={<Navigate to="/#work" replace />}
+								/>
+								<Route
+									path="/about"
+									element={<Navigate to="/#what-i-do" replace />}
+								/>
+								<Route
+									path="/contact"
+									element={<Navigate to="/#contact" replace />}
+								/>
 								<Route
 									path="/projects"
-									element={<Navigate to="/work" replace />}
+									element={<Navigate to="/#work" replace />}
 								/>
 								<Route
 									path="/skills"
-									element={<Navigate to="/about#stack" replace />}
+									element={<Navigate to="/#stack" replace />}
 								/>
 								<Route
 									path="/experience"
-									element={<Navigate to="/about#track-record" replace />}
+									element={<Navigate to="/#work" replace />}
 								/>
 								<Route path="*" element={<NotFound />} />
 							</Routes>

@@ -43,12 +43,39 @@ export function AnchorNav() {
 			{ rootMargin: "-45% 0px -50% 0px" },
 		);
 
-		for (const section of SECTIONS) {
-			const el = document.getElementById(section.id);
-			if (el) observer.observe(el);
+		// AnchorNav sits outside the route's Suspense boundary, so this effect
+		// can run before a lazily-loaded page (Home included) has mounted its
+		// sections. Attach to whatever exists now, then watch the DOM for the
+		// rest arriving so the highlight still works instead of silently never
+		// activating.
+		const observed = new Set<string>();
+		const attachAvailable = () => {
+			for (const section of SECTIONS) {
+				if (observed.has(section.id)) continue;
+				const el = document.getElementById(section.id);
+				if (el) {
+					observer.observe(el);
+					observed.add(section.id);
+				}
+			}
+			return observed.size === SECTIONS.length;
+		};
+
+		let mutationObserver: MutationObserver | undefined;
+		if (!attachAvailable()) {
+			mutationObserver = new MutationObserver(() => {
+				if (attachAvailable()) mutationObserver?.disconnect();
+			});
+			mutationObserver.observe(document.body, {
+				childList: true,
+				subtree: true,
+			});
 		}
 
-		return () => observer.disconnect();
+		return () => {
+			mutationObserver?.disconnect();
+			observer.disconnect();
+		};
 	}, []);
 
 	return (

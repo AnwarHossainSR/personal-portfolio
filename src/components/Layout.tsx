@@ -4,10 +4,10 @@ import { Navigation } from "@/components/Navigation";
 
 export function Layout({ children }: { children: ReactNode }) {
 	return (
-		<div className="min-h-screen bg-background">
+		<div className="min-h-screen bg-paper">
 			<a
 				href="#main"
-				className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[200] focus:rounded-md focus:bg-card focus:px-4 focus:py-2 focus:text-sm focus:ring-2 focus:ring-ring"
+				className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[200] focus:rounded focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:text-ink focus:ring-2 focus:ring-accent"
 			>
 				Skip to content
 			</a>
