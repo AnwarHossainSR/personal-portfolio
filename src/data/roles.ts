@@ -20,9 +20,9 @@ export const roles: Role[] = [
 		period: "May 2024 — present",
 		location: "Dhaka, Bangladesh",
 		scope:
-			"Full-stack and cloud work on a SaaS analytics product and a video-on-demand delivery system. I own the AWS infrastructure those run on and the pipelines that deploy them.",
+			"Full-stack and cloud work on everviz, a data visualisation platform by Visual Elements that lets people build charts, maps and tables and publish them anywhere. I work across the product and own the AWS infrastructure it runs on and the pipelines that deploy it.",
 		impact: [
-			"Designed and shipped a video-on-demand delivery system on AWS Media Services, covering encoding, storage and adaptive streaming.",
+			"Work on the React and Highcharts authoring interface, and on the services that store, render and publish what it produces.",
 			"Moved environment provisioning to Terraform, so environments are reproducible from code rather than assembled by hand.",
 			"Built the CI/CD pipelines on GitHub Actions and the Serverless Framework that the team releases through.",
 		],

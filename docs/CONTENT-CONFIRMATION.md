@@ -145,3 +145,65 @@ technology. They are currently anchored so that nothing predates March 2021
 (your first professional role) and the AWS and Terraform work sits inside your
 Craftsmen tenure. Correct any that are wrong — these are cheap to check and
 the kind of small inconsistency an attentive reader notices.
+
+## 9. everviz — newly named, needs your confirmation
+
+Your GitHub access to the `Visual-Elements` organisation identified the product
+behind the Craftsmen work: **everviz** (everviz.com), a data visualisation
+platform by Visual Elements of Bergen, Norway, powered by Highcharts. It lets
+journalists, analysts and broadcasters build charts, maps and tables without
+code and publish them anywhere.
+
+This is a material improvement — naming a real, public product beats "an
+enterprise SaaS product" — but it introduced new claims:
+
+- [ ] **The relationship.** The site now says "Craftsmen Ltd., on everviz
+      (Visual Elements)". Confirm that is how to describe it. If Craftsmen is
+      contracted by Visual Elements, say so plainly; if you are employed
+      differently, correct it.
+- [ ] **The `analytics-platform` case study was rewritten.** The earlier draft
+      described an internal metrics dashboard — "customers see their own
+      operational data". That was wrong for everviz, which is an authoring and
+      publishing tool, not a dashboard. The new version describes building the
+      editor. Confirm that is the work you do.
+- [ ] **Both decisions in it are inferred from the public product**, not from
+      anything you told me. "Curate the configuration surface rather than expose
+      all of it" and "published output renders independently of the authoring
+      service" are how the product visibly behaves — they are not confirmed as
+      decisions you were part of. If you were not, say so and they should be
+      rewritten or cut.
+- [ ] **Your team description** says "product engineering team working with the
+      everviz product group in Norway". Correct it if the arrangement differs.
+
+### The VOD case study may be the same work
+
+Your résumé lists a "Video-on-Demand (VOD) content delivery system using AWS
+Media Services" at Craftsmen. The Visual-Elements organisation also contains an
+export service described as being used for **location map videos**, and a chart
+export server. Those may be the same work described two ways, or they may be
+genuinely separate projects.
+
+- [ ] If `vod-delivery` and the everviz export work are the same thing, the two
+      case studies overlap and one should absorb the other — right now the site
+      implies two independent systems.
+- [ ] If they are separate, `vod-delivery` should say which product it belongs
+      to, the way `analytics-platform` now does.
+
+### What was deliberately left out
+
+The organisation has around forty repositories and **all but six are private**.
+Nothing internal is named on the site — no repository names, no service
+topology, no infrastructure detail. Two reasons: a private repository link is a
+404 for every visitor, and an employer's internal architecture is not yours to
+publish. Everything cited is either the public product or its public
+documentation.
+
+You have no commits in the six public repositories, so there is no public code
+artifact to link. The case study links to everviz.com instead, which is the
+honest and more useful option — a hiring manager can see the product.
+
+## 10. Default theme
+
+The site now opens in **light** mode. The warm paper palette was designed
+light-first, so this is the intended presentation; dark is a derived variant
+and remains available from the toggle.
