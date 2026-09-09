@@ -1,5 +1,6 @@
 import "@/arcade/arcade.css";
 import { Game } from "@/arcade/engine";
+import { canRunArcade } from "@/arcade/gate";
 
 /**
  * The only surface the application touches.
@@ -18,29 +19,18 @@ import { Game } from "@/arcade/engine";
 let game: Game | null = null;
 
 /**
- * The gate, copied from the reference and deliberately not softened.
- *
- * `prefers-reduced-motion` is a request, not a hint. A non-fine pointer means
- * either a touch device — where there is no aim, no WASD, and the camera
- * fights the scroll — or an environment with no pointer at all, which is what
- * jsdom reports. The test stub in src/test/setup.ts answers `false` to every
- * media query, so this one check is also what keeps the game out of the test
- * suite; see src/arcade/lifecycle.test.ts.
+ * Re-exported from gate.ts, which the React components import directly. It
+ * lives there rather than here so asking "can this run?" does not drag the
+ * engine into the main bundle.
  */
-export function canRun(): boolean {
-	if (typeof window === "undefined" || !window.matchMedia) return false;
-	if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-		return false;
-	}
-	return window.matchMedia("(pointer: fine)").matches;
-}
+export { canRunArcade as canRun } from "@/arcade/gate";
 
 export function isRunning(): boolean {
 	return game !== null;
 }
 
 export function start(): void {
-	if (game || !canRun()) return;
+	if (game || !canRunArcade()) return;
 	const root = document.createElement("div");
 	root.id = "arcade-root";
 	// The overlay is not content. Nothing it injects may reach a screen reader,

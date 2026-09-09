@@ -1,4 +1,5 @@
 import { SECTIONS } from "@/components/AnchorNav";
+import { ArcadeToggle } from "@/components/ArcadeToggle";
 import { profile } from "@/data/profile";
 
 export function Footer() {
@@ -30,6 +31,10 @@ export function Footer() {
 						</a>
 					))}
 				</nav>
+			</div>
+
+			<div className="mx-auto max-w-6xl px-5 pb-10 sm:px-8">
+				<ArcadeToggle />
 			</div>
 		</footer>
 	);

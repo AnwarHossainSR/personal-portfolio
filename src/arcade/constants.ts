@@ -1,3 +1,5 @@
+export { ENEMY_LEVEL_NUMBERS, STORAGE } from "@/arcade/storage";
+
 /**
  * Tuning. Every number here is taken from the reference implementation
  * unchanged. They are a set, not a list — the enemy stat blocks in particular
@@ -70,14 +72,6 @@ export const COLORS = [
 
 export const GUN_MODES = ["normal", "character", "tetris", "curve"] as const;
 export type GunMode = (typeof GUN_MODES)[number];
-
-/** Namespaced so nothing here can collide with the site's own storage. */
-export const STORAGE = {
-	gunMode: "arcade:gun-mode:v1",
-	muted: "arcade:muted:v1",
-	enabled: "arcade:enabled:v1",
-	score: "arcade:sealed-score:v1",
-} as const;
 
 export const SCORE_DB_NAME = "arcade-score-v1";
 export const SCORE_DB_STORE = "keyring";
@@ -174,5 +168,3 @@ export const ENEMY_LEVELS: Record<number, EnemyConfig> = {
 		startSpeedMax: 0.58,
 	},
 };
-
-export const ENEMY_LEVEL_NUMBERS = Object.keys(ENEMY_LEVELS).map(Number);

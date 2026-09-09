@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ArcadeMount } from "@/components/ArcadeMount";
 import { Footer } from "@/components/Footer";
 import { Navigation } from "@/components/Navigation";
 
@@ -21,6 +22,7 @@ export function Layout({ children }: { children: ReactNode }) {
 				{children}
 			</main>
 			<Footer />
+			<ArcadeMount />
 		</div>
 	);
 }

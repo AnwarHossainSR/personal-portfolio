@@ -1,5 +1,7 @@
-import { ENEMY_LEVEL_NUMBERS, type GunMode } from "@/arcade/constants";
+import type { GunMode } from "@/arcade/constants";
 import type { Stats } from "@/arcade/score";
+import { ENEMY_LEVEL_NUMBERS } from "@/arcade/storage";
+import { enemyRowIds, TELEMETRY_IDS } from "@/arcade/telemetry-ids";
 
 /**
  * The bridge between the engine and the panel in ArcadePanel.tsx.
@@ -10,32 +12,14 @@ import type { Stats } from "@/arcade/score";
  * a component sixty times a second to change one text node, and would put the
  * game's frame budget at the mercy of the reconciler.
  *
- * The ids live here rather than in the panel so a test can hold the two
- * together: ArcadePanel.test.tsx asserts every id below is present in the
- * rendered markup, which is what stops the panel and the engine drifting into
- * a display that silently shows nothing.
+ * The ids themselves are in telemetry-ids.ts, which the panel imports on its
+ * own so this writer never reaches the main bundle.
  */
-export const TELEMETRY_IDS = {
-	shots: "arcade-shots",
-	broken: "arcade-broken",
-	grabs: "arcade-grabs",
-	hull: "arcade-hull",
-	gunMode: "arcade-gun-mode",
-	enemySpeed: "arcade-enemy-speed",
-	maxLevel: "arcade-max-level",
-} as const;
-
-export const enemyRowIds = (level: number) => ({
-	current: `arcade-enemy-${level}-current`,
-	session: `arcade-enemy-${level}-session`,
-	allTime: `arcade-enemy-${level}-all-time`,
-});
-
-/** Flat list, for the test that holds the panel and the engine together. */
-export const TELEMETRY_ID_LIST: string[] = [
-	...Object.values(TELEMETRY_IDS),
-	...ENEMY_LEVEL_NUMBERS.flatMap((level) => Object.values(enemyRowIds(level))),
-];
+export {
+	enemyRowIds,
+	TELEMETRY_ID_LIST,
+	TELEMETRY_IDS,
+} from "@/arcade/telemetry-ids";
 
 export class Telemetry {
 	/** Last value written per id, so an unchanged count costs no DOM write. */
