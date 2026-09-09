@@ -50,16 +50,23 @@ describe("Telemetry", () => {
 		expect(second.textContent).toBe("2");
 	});
 
-	it("does not touch the DOM when the value has not changed", () => {
+	it("writes what the DOM does not already say, not what it last remembered", () => {
+		// The panel can be collapsed and reopened mid-game, which replaces
+		// every row with a fresh element showing its placeholder. A writer that
+		// short-circuits on a remembered value would leave it there.
 		const telemetry = new Telemetry();
 		const el = document.createElement("span");
 		el.id = TELEMETRY_IDS.hull;
 		document.body.appendChild(el);
 		telemetry.hull(3);
-		el.textContent = "tampered";
+		expect(el.textContent).toBe("3");
+
+		el.remove();
+		const reopened = document.createElement("span");
+		reopened.id = TELEMETRY_IDS.hull;
+		reopened.textContent = "0";
+		document.body.appendChild(reopened);
 		telemetry.hull(3);
-		expect(el.textContent).toBe("tampered");
-		telemetry.hull(2);
-		expect(el.textContent).toBe("2");
+		expect(reopened.textContent).toBe("3");
 	});
 });

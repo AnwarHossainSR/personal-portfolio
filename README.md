@@ -107,8 +107,9 @@ against.
 **How to turn it on.** The `Arcade` button in the header, next to the theme
 toggle. The choice is remembered in `localStorage` under `arcade:enabled:v1`.
 `Esc` turns it off, as do the header button and the `Stop` control on the
-panel. While it runs, a fixed panel in the bottom-right corner shows live
-telemetry and folds away a note on how the thing works.
+panel. While it runs, an `Arcade stats` button sits in the bottom-right corner;
+clicking it opens the telemetry panel, which also holds the sound switch
+(off by default) and a note on how the thing works.
 
 **How it is gated.** `src/arcade/gate.ts` refuses to start under
 `prefers-reduced-motion: reduce` or on any pointer that is not `fine`. That gate
@@ -133,6 +134,12 @@ bundle and nothing else is.
 | Off by default | The reference runs unconditionally. The reader who most needs to take the case studies seriously is the one most likely to be mid-sentence when a rocket arrives |
 | Audio starts muted | Unprompted audio on a portfolio is worse than silence. The `AudioContext` is constructed on the first shot, never at load |
 | No `framer-motion` | ~30 kB gzip for one fade and a translate. `src/motion/Reveal.tsx` does it with an `IntersectionObserver` |
+| The site chrome is pass-through | The header is sticky, painted and viewport-wide, which made it a wall nothing could cross — enemies queued along the top edge. `<header>` and `<footer>` carry `data-arcade-keep`: not obstacles, not destructible, and bullets bounce off them |
+| Enemies before the page in collision | The reference tests the page first. On a page this dense with text that means an aimed shot dies on a glyph a few pixels short of its target. Enemies are drawn on top, so they are hit first |
+| Enemies arrive on four edges | The reference uses only top and bottom, which bunches every arrival into two lanes |
+| It opens faster | First enemy at 2.5s rather than 12s, three concurrent rather than one. The reference starts itself on every visit and needs a grace period; this one was asked for |
+| The rocket spawns in the middle of the screen | `clearSpot` throws random darts, which on a page with wide margins lands it in the gutter |
+| The panel opens on click | Closed it is one button. A readout permanently docked over a page whose job is to be read is an obstruction, and the numbers are optional |
 
 The score is sealed with a non-extractable AES-GCM key held in IndexedDB. That
 stops it being edited in devtools storage. It does not stop anyone who opens the

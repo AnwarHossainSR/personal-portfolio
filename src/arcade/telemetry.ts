@@ -22,18 +22,18 @@ export {
 } from "@/arcade/telemetry-ids";
 
 export class Telemetry {
-	/** Last value written per id, so an unchanged count costs no DOM write. */
-	private readonly rendered = new Map<string, string>();
 	private readonly nodes = new Map<string, HTMLElement>();
 
 	/**
-	 * Never caches a miss.
+	 * Never caches a miss, and never trusts a cached node.
 	 *
-	 * The engine starts before the panel exists — ArcadeMount calls `start()`
-	 * in an effect and the panel arrives a tick later through `lazy()` — and
-	 * the panel can be unmounted while the game keeps running. Caching a null
-	 * lookup, or a node React has since replaced, silently freezes every
-	 * counter at its initial zero with nothing in the console to say so.
+	 * The engine outlives the panel in both directions: it starts before the
+	 * panel is mounted — ArcadeMount calls `start()` in an effect and the panel
+	 * arrives a tick later through `lazy()` — and it keeps running while the
+	 * panel is collapsed, which unmounts every row. A stale or negative cache
+	 * here freezes the readout at its placeholder with a game running perfectly
+	 * behind it and nothing in the console to say so. That bug has been written
+	 * twice; the lookup is cheap and the cache is not worth it.
 	 */
 	private node(id: string): HTMLElement | null {
 		const cached = this.nodes.get(id);
@@ -44,20 +44,21 @@ export class Telemetry {
 		return found;
 	}
 
+	/**
+	 * The DOM is the record of what was last written, rather than a map beside
+	 * it. A remembered value cannot tell you that the element holding it was
+	 * replaced by a fresh one still showing its placeholder.
+	 */
 	private write(id: string, value: string): void {
-		if (this.rendered.get(id) === value) return;
 		const node = this.node(id);
-		// No panel on screen: leave `rendered` alone so the value is written
-		// the moment one appears.
 		if (!node) return;
-		this.rendered.set(id, value);
+		if (node.textContent === value) return;
 		node.textContent = value;
 	}
 
 	/** The panel is mounted and unmounted independently of the engine. */
 	forget(): void {
 		this.nodes.clear();
-		this.rendered.clear();
 	}
 
 	stats(stats: Stats): void {

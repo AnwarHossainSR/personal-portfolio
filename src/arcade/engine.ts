@@ -934,10 +934,13 @@ export class Game {
 		resolveBulletCollisions(this);
 		this.renderBoundaries(now);
 
-		// Gun mode and hull change rarely, but "rarely" included "once, before
-		// the panel was mounted", which left the readout showing its own
-		// placeholder for the whole session. Pushed every frame instead; the
-		// writer skips a value it has already written.
+		// Everything the panel shows is pushed every frame, not on the events
+		// that change it. The panel can be closed and reopened at any moment,
+		// which unmounts and remounts every row, and an event-driven write that
+		// happened while it was closed is a row stuck on its placeholder. The
+		// writer compares against the DOM and does nothing when it already
+		// says the right thing, so the cost of this is a handful of id lookups.
+		this.telemetry.stats(this.stats);
 		this.telemetry.gunMode(this.gunMode);
 		this.telemetry.hull(this.playerHealth);
 		this.telemetry.enemies(

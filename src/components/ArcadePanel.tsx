@@ -17,6 +17,11 @@ import { enemyRowIds, TELEMETRY_IDS } from "@/arcade/telemetry-ids";
  * page — a readout you have to scroll to the bottom of the document to see is
  * a readout nobody reads.
  *
+ * Closed by default, and closed means one small button rather than a docked
+ * header bar. A panel that is always on screen is a permanent obstruction on a
+ * page whose job is to be read, and the numbers are optional: you can play the
+ * whole thing without ever opening it.
+ *
  * The rows themselves are static markup. React renders them once and never
  * touches them again: the engine writes the numbers directly by id, at
  * whatever rate the game runs. Routing a per-frame counter through React state
@@ -40,12 +45,26 @@ function Row({ label, id }: { label: string; id: string }) {
 }
 
 export function ArcadePanel() {
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 	const muted = useSyncExternalStore(
 		subscribeMuted,
 		isMuted,
 		getMutedServerSnapshot,
 	);
+
+	if (!open) {
+		return (
+			<button
+				type="button"
+				data-arcade-keep
+				onClick={() => setOpen(true)}
+				aria-expanded={false}
+				className="pointer-events-auto fixed bottom-4 right-4 z-[70] rounded-md border border-line bg-paper/95 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted shadow-sm backdrop-blur transition-colors hover:text-ink"
+			>
+				Arcade stats
+			</button>
+		);
+	}
 
 	return (
 		<aside
@@ -66,12 +85,11 @@ export function ArcadePanel() {
 				<div className="flex items-center gap-3">
 					<button
 						type="button"
-						onClick={() => setOpen(!open)}
-						aria-expanded={open}
-						aria-controls="arcade-panel-body"
+						onClick={() => setOpen(false)}
+						aria-expanded={true}
 						className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint transition-colors hover:text-ink"
 					>
-						{open ? "Hide" : "Show"}
+						Hide
 					</button>
 					<button
 						type="button"
@@ -83,16 +101,7 @@ export function ArcadePanel() {
 				</div>
 			</div>
 
-			{/*
-			 * Hidden rather than unmounted. Telemetry re-resolves a missing node
-			 * on the next write, but a collapsed panel that destroyed its own
-			 * rows would still flash every counter back to zero on expand.
-			 */}
-			<div
-				id="arcade-panel-body"
-				hidden={!open}
-				className="max-h-[60vh] space-y-3 overflow-y-auto px-4 py-3"
-			>
+			<div className="max-h-[60vh] space-y-3 overflow-y-auto px-4 py-3">
 				<div className="space-y-1.5 font-mono text-[11px] uppercase tracking-[0.12em]">
 					<Row label="Shots" id={TELEMETRY_IDS.shots} />
 					<Row label="Glyphs destroyed" id={TELEMETRY_IDS.broken} />

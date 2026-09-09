@@ -69,9 +69,10 @@ describe("ArcadeMount", () => {
 		setArcadeMode(true);
 		render(<ArcadeMount />);
 		await waitFor(() => expect(start).toHaveBeenCalled());
-		// The panel is lazy too, so it arrives a tick after the engine.
+		// The panel is lazy too, so it arrives a tick after the engine, and it
+		// arrives closed — one button rather than a docked readout.
 		expect(
-			await screen.findByRole("heading", { name: /arcade overlay/i }),
+			await screen.findByRole("button", { name: /arcade stats/i }),
 		).toBeInTheDocument();
 	});
 
@@ -89,11 +90,11 @@ describe("ArcadeMount", () => {
 		setArcadeMode(true);
 		render(<ArcadeMount />);
 		await waitFor(() => expect(start).toHaveBeenCalled());
-		await screen.findByRole("heading", { name: /arcade overlay/i });
+		await screen.findByRole("button", { name: /arcade stats/i });
 		await userEvent.keyboard("{Escape}");
 		await waitFor(() => expect(stop).toHaveBeenCalled());
 		expect(
-			screen.queryByRole("heading", { name: /arcade overlay/i }),
+			screen.queryByRole("button", { name: /arcade stats/i }),
 		).not.toBeInTheDocument();
 	});
 });
