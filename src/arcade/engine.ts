@@ -74,6 +74,7 @@ import { circleRect, type Rect, World } from "@/arcade/world";
 export class Game {
 	readonly root: HTMLElement;
 	readonly carEl: HTMLElement;
+	private readonly boundaryCanvas: HTMLCanvasElement;
 	readonly world: World;
 	readonly effects: Effects;
 	readonly audio = new Audio();
@@ -119,6 +120,8 @@ export class Game {
 	private respawnAt = 0;
 	private outsideAt = 0;
 	private blastAt = { x: 0, y: 0 };
+	private boundariesVisible = false;
+	private nextBoundaryRenderAt = 0;
 	private spawnProtectionTimer = 0;
 	private enemyLoopTimer = 0;
 	private initialSpawnTimer = 0;
@@ -129,6 +132,11 @@ export class Game {
 		this.root = root;
 		this.world = new World(root);
 		this.effects = new Effects(root);
+
+		this.boundaryCanvas = document.createElement("canvas");
+		this.boundaryCanvas.id = "arcade-boundaries";
+		this.boundaryCanvas.setAttribute("aria-hidden", "true");
+		root.appendChild(this.boundaryCanvas);
 
 		this.carEl = document.createElement("div");
 		this.carEl.id = "arcade-car";
@@ -293,7 +301,7 @@ export class Game {
 			}
 			const k = e.key.toLowerCase();
 			if (k === "v") {
-				this.root.classList.add("arcade-show-boundaries");
+				this.setBoundariesVisible(true);
 				return;
 			}
 			if (!e.repeat && k >= "1" && k <= "4") {
@@ -317,7 +325,7 @@ export class Game {
 			const e = event as KeyboardEvent;
 			const k = e.key.toLowerCase();
 			if (k === "v") {
-				this.root.classList.remove("arcade-show-boundaries");
+				this.setBoundariesVisible(false);
 				return;
 			}
 			if (k === "f") this.keyFiring = false;
@@ -328,8 +336,88 @@ export class Game {
 			this.pointerFiring = false;
 			this.keyFiring = false;
 			this.keys.clear();
-			this.root.classList.remove("arcade-show-boundaries");
+			this.setBoundariesVisible(false);
 		});
+	}
+
+	// ---------------------------------------------------------------- debugging
+
+	private setBoundariesVisible(visible: boolean): void {
+		this.boundariesVisible = visible;
+		this.boundaryCanvas.style.display = visible ? "block" : "none";
+		if (visible) this.nextBoundaryRenderAt = 0;
+	}
+
+	/**
+	 * Hold V to see the collision world.
+	 *
+	 * Drawn from the same classifier the engine collides against — filled
+	 * elements as their box, bordered ones as the bands their borders paint,
+	 * text as its measured rect — so this is what the collision code sees
+	 * rather than a description of it. Redrawn a few times a second, not every
+	 * frame: it walks every element on the page.
+	 */
+	private renderBoundaries(now: number): void {
+		if (!this.boundariesVisible || now < this.nextBoundaryRenderAt) return;
+		this.nextBoundaryRenderAt = now + 220;
+		const context = this.boundaryCanvas.getContext("2d");
+		if (!context) return;
+
+		const width = Math.max(1, innerWidth);
+		const height = Math.max(1, innerHeight);
+		const dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+		const pixelWidth = Math.round(width * dpr);
+		const pixelHeight = Math.round(height * dpr);
+		if (
+			this.boundaryCanvas.width !== pixelWidth ||
+			this.boundaryCanvas.height !== pixelHeight
+		) {
+			this.boundaryCanvas.width = pixelWidth;
+			this.boundaryCanvas.height = pixelHeight;
+		}
+		context.setTransform(dpr, 0, 0, dpr, 0, 0);
+		context.clearRect(0, 0, width, height);
+		context.beginPath();
+		context.rect(0.5, 0.5, width - 1, height - 1);
+
+		for (const el of document.querySelectorAll("body *")) {
+			if (this.root.contains(el)) continue;
+			if (el.closest("[data-arcade-keep]")) continue;
+			const cs = getComputedStyle(el);
+			if (cs.display === "none" || cs.visibility === "hidden") continue;
+			if (Number(cs.opacity) < 0.02) continue;
+
+			const solidity = this.world.solidity(el);
+			const rects: Array<Rect | DOMRect | null> =
+				solidity === "filled"
+					? [el.getBoundingClientRect()]
+					: solidity === "edge"
+						? this.world.edgeBands(el)
+						: [this.world.textRect(el)];
+
+			for (const rect of rects) {
+				if (!rect) continue;
+				if (rect.right <= 0 || rect.bottom <= 0) continue;
+				if (rect.left >= width || rect.top >= height) continue;
+				context.rect(
+					rect.left + 0.5,
+					rect.top + 0.5,
+					rect.right - rect.left,
+					rect.bottom - rect.top,
+				);
+			}
+		}
+
+		// Canvas does not resolve custom properties, so the token is read off
+		// the document and rebuilt as a literal colour.
+		const danger = getComputedStyle(document.documentElement)
+			.getPropertyValue("--color-arcade-danger")
+			.trim();
+		context.strokeStyle = danger
+			? `oklch(${danger} / 0.35)`
+			: "rgba(220, 90, 70, 0.35)";
+		context.lineWidth = 1;
+		context.stroke();
 	}
 
 	// ------------------------------------------------------------------ scoring
@@ -809,6 +897,7 @@ export class Game {
 		this.effects.update(dt);
 		updateBullets(this, dt);
 		resolveBulletCollisions(this);
+		this.renderBoundaries(now);
 
 		this.telemetry.enemies(
 			Object.fromEntries(

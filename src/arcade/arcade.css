@@ -39,6 +39,19 @@ html.arcade-no-select [contenteditable="true"] {
 	-webkit-user-select: text;
 }
 
+/*
+ * Hold V. The engine draws the collision world onto this canvas — see
+ * renderBoundaries in engine.ts.
+ */
+#arcade-boundaries {
+	position: absolute;
+	inset: 0;
+	display: none;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
 #arcade-car {
 	position: absolute;
 	left: 0;
@@ -340,17 +353,6 @@ html.arcade-no-select [contenteditable="true"] {
 	background: oklch(var(--color-arcade-danger));
 	transform-origin: left center;
 	transition: transform 0.12s ease-out;
-}
-
-/*
- * Hold V. Outlines every rect the engine treats as an obstacle, drawn from the
- * page's own elements rather than from a separate debug list — so what you see
- * is what the collision code sees, not a description of it.
- */
-.arcade-show-boundaries ~ * *,
-html.arcade-no-select:has(.arcade-show-boundaries) body *:not(#arcade-root *) {
-	outline: 1px solid oklch(var(--color-arcade-danger) / 0.3);
-	outline-offset: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

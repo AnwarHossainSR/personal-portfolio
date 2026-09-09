@@ -121,6 +121,9 @@ export function circleRect(
 	return { nx: dx / d, ny: dy / d, push: cr - d };
 }
 
+type BorderSide = "Top" | "Right" | "Bottom" | "Left";
+const BORDER_SIDES: BorderSide[] = ["Top", "Right", "Bottom", "Left"];
+
 const finiteRect = (r: DOMRect): boolean =>
 	[r.left, r.top, r.right, r.bottom].every(Number.isFinite);
 
@@ -154,39 +157,141 @@ export class World {
 	}
 
 	/**
-	 * Is this element an obstacle? Decided from computed style rather than
-	 * from a class list, so the game works on markup it has never seen. The
-	 * 0.06 alpha threshold is deliberate: below it a background is a tint
-	 * rather than a surface, and treating tints as walls makes the page
-	 * unnavigable.
+	 * How an element occupies space: filled, edged, or not at all.
+	 *
+	 * Decided from computed style rather than from a class list, so the game
+	 * works on markup it has never seen. Two rules here are deviations from the
+	 * reference, and both are forced by this site's layout rather than by
+	 * taste:
+	 *
+	 * `filled` is the reference's behaviour — a painted surface, so the whole
+	 * box is a wall.
+	 *
+	 * `edge` is new. The reference treats a visible top border as though the
+	 * element were filled, which is harmless on a site built from small cards
+	 * and fatal here: every section on this page is a full-width block with a
+	 * one-pixel rule on top, so classifying them as filled makes the entire
+	 * document solid and the rocket has nowhere to spawn. A border paints a
+	 * line, so it collides as a line — see `edgeRectAt`.
+	 *
+	 * The 0.06 alpha threshold is the reference's and is deliberate: below it a
+	 * background is a tint rather than a surface, and treating tints as walls
+	 * makes the page unnavigable.
 	 */
-	solid(el: Element): boolean {
-		if (this.root.contains(el)) return false;
+	solidity(el: Element): "filled" | "edge" | null {
+		if (this.root.contains(el)) return null;
 		const tag = el.tagName;
-		if (tag === "BODY" || tag === "HTML") return false;
-		if (ALWAYS_SOLID.has(tag)) return true;
+		if (tag === "BODY" || tag === "HTML") return null;
+		if (this.isGround(el)) return null;
+		if (ALWAYS_SOLID.has(tag)) return "filled";
 		const cs = getComputedStyle(el);
-		if (alpha(cs.backgroundColor) > 0.06) return true;
+		if (alpha(cs.backgroundColor) > 0.06) return "filled";
 		// A property the engine cannot read resolves to "" rather than "none"
 		// in some environments; an unset background is not a wall.
-		if (cs.backgroundImage && cs.backgroundImage !== "none") return true;
-		if (cs.boxShadow && cs.boxShadow !== "none") return true;
-		// The reference checks width and colour only. Style is checked here as
-		// well because a width with `border-style: none` paints nothing — the
-		// browser reports the used width as 0 so the reference gets the right
-		// answer by accident, and jsdom reports the computed 16px so it gets
-		// the wrong one.
-		const borderStyle = cs.borderTopStyle;
-		if (
-			borderStyle &&
-			borderStyle !== "none" &&
-			borderStyle !== "hidden" &&
-			Number.parseFloat(cs.borderTopWidth) > 0 &&
-			alpha(cs.borderTopColor) > 0.06
-		) {
-			return true;
+		if (cs.backgroundImage && cs.backgroundImage !== "none") return "filled";
+		if (cs.boxShadow && cs.boxShadow !== "none") return "filled";
+		for (const side of BORDER_SIDES) {
+			if (this.borderWidth(cs, side) > 0) return "edge";
 		}
-		return false;
+		return null;
+	}
+
+	/** Kept as the plain question the rest of the engine asks. */
+	solid(el: Element): boolean {
+		return this.solidity(el) !== null;
+	}
+
+	/**
+	 * An element at least as large as the viewport in both axes is the ground,
+	 * not an obstacle. This site paints its paper on a wrapper div rather than
+	 * on `body`, and without this the very first element under every probe is a
+	 * wall the size of the document.
+	 */
+	private isGround(el: Element): boolean {
+		const r = el.getBoundingClientRect();
+		return r.width >= window.innerWidth && r.height >= window.innerHeight;
+	}
+
+	/**
+	 * Used border width. Style is checked as well as width because a width with
+	 * `border-style: none` paints nothing — a browser reports the used width as
+	 * 0 so the reference gets the right answer by accident, while jsdom reports
+	 * the computed 16px and gets the wrong one.
+	 */
+	private borderWidth(cs: CSSStyleDeclaration, side: BorderSide): number {
+		const style = cs[`border${side}Style` as const] as string;
+		if (!style || style === "none" || style === "hidden") return 0;
+		const width = Number.parseFloat(
+			cs[`border${side}Width` as const] as string,
+		);
+		if (!(width > 0)) return 0;
+		if (alpha(cs[`border${side}Color` as const] as string) <= 0.06) return 0;
+		return width;
+	}
+
+	/**
+	 * The bands a border actually paints.
+	 *
+	 * Thickened to a 4px minimum: a one-pixel rule that collides as one pixel
+	 * is a rule bullets pass through and the rocket parks inside, which reads
+	 * as broken rather than as subtle.
+	 */
+	edgeBands(el: Element): Rect[] {
+		const cs = getComputedStyle(el);
+		const r = el.getBoundingClientRect();
+		if (!finiteRect(r)) return [];
+		const bands: Rect[] = [];
+		for (const side of BORDER_SIDES) {
+			const width = this.borderWidth(cs, side);
+			if (!width) continue;
+			const t = Math.max(width, 4);
+			if (side === "Top") {
+				bands.push({
+					left: r.left,
+					right: r.right,
+					top: r.top,
+					bottom: r.top + t,
+				});
+			} else if (side === "Bottom") {
+				bands.push({
+					left: r.left,
+					right: r.right,
+					top: r.bottom - t,
+					bottom: r.bottom,
+				});
+			} else if (side === "Left") {
+				bands.push({
+					left: r.left,
+					right: r.left + t,
+					top: r.top,
+					bottom: r.bottom,
+				});
+			} else {
+				bands.push({
+					left: r.right - t,
+					right: r.right,
+					top: r.top,
+					bottom: r.bottom,
+				});
+			}
+		}
+		return bands;
+	}
+
+	/** The band under a probe point, or null if the point is inside the box. */
+	edgeRectAt(el: Element, px: number, py: number): Rect | null {
+		const pad = 2;
+		for (const band of this.edgeBands(el)) {
+			if (
+				px >= band.left - pad &&
+				px <= band.right + pad &&
+				py >= band.top - pad &&
+				py <= band.bottom + pad
+			) {
+				return band;
+			}
+		}
+		return null;
 	}
 
 	/** The rect of an element's text, or null if it has none worth hitting. */
@@ -305,9 +410,14 @@ export class World {
 			if (el === document.body || el === document.documentElement) continue;
 			if (this.root.contains(el)) continue;
 			if ((el as HTMLElement).dataset?.arcadeKeep !== undefined) continue;
-			if (this.solid(el)) {
+			const solidity = this.solidity(el);
+			if (solidity === "filled") {
 				const r = el.getBoundingClientRect();
 				if (finiteRect(r)) return r;
+			} else if (solidity === "edge") {
+				// Only the painted line blocks, not the whole box.
+				const band = this.edgeRectAt(el, px, py);
+				if (band) return band;
 			}
 			const text = this.textRect(el);
 			if (text) return text;

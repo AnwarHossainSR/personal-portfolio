@@ -26,8 +26,12 @@ import {
 interface Hit {
 	el?: Element;
 	g?: Glyph;
+	/** The rect that actually blocked, which for a border is the band, not the box. */
+	rect?: Rect;
 	key: string;
 	keep: boolean;
+	/** Only a filled surface can be destroyed; a rule is bounced off. */
+	destructible: boolean;
 }
 
 // ------------------------------------------------------------------- geometry
@@ -314,20 +318,39 @@ function probeHit(game: Game, px: number, py: number): Hit | null {
 		if (game.root.contains(el)) continue;
 		if (el.classList.contains(CHAR_BLANK_CLASS)) continue;
 		const keep = el.closest(KEEP_SELECTOR);
-		if (keep) return { el: keep, key: "keep", keep: true };
-		if (game.world.solid(el)) return { el, key: "el", keep: false };
+		if (keep) return { el: keep, key: "keep", keep: true, destructible: false };
+		const solidity = game.world.solidity(el);
+		if (solidity === "filled") {
+			return { el, key: "el", keep: false, destructible: true };
+		}
+		if (solidity === "edge") {
+			// A border paints a line, so only the line blocks. Testing the whole
+			// box here — which is what asking `solid()` would do — kills every
+			// bullet fired anywhere inside a section that has a rule on top,
+			// which on this site is every section.
+			const band = game.world.edgeRectAt(el, px, py);
+			if (band) {
+				return {
+					el,
+					rect: band,
+					key: "edge",
+					keep: false,
+					destructible: false,
+				};
+			}
+		}
 	}
 	const g = game.world.glyphAt(px, py);
 	if (!g) return null;
 	if (g.node.parentElement?.classList.contains(CHAR_BLANK_CLASS)) return null;
 	const keep = g.node.parentElement?.closest(KEEP_SELECTOR);
-	if (keep) return { el: keep, key: "keep", keep: true };
+	if (keep) return { el: keep, key: "keep", keep: true, destructible: false };
 	// Keyed by rect rather than by node: the node is re-split on every hit, so
 	// a node identity would let a piercing shot delete the same glyph twice.
 	const key = `t:${[g.rect.left, g.rect.top, g.rect.right, g.rect.bottom]
 		.map((v) => v.toFixed(1))
 		.join(",")}`;
-	return { g, key, keep: false };
+	return { g, key, keep: false, destructible: true };
 }
 
 function bounceBullet(
@@ -431,12 +454,12 @@ export function updateBullets(game: Game, dt: number): void {
 				if (hit.keep || b.mode === "tetris") {
 					bounceBullet(
 						b,
-						hit.el?.getBoundingClientRect() ?? hit.g?.rect ?? null,
+						hit.rect ?? hit.el?.getBoundingClientRect() ?? hit.g?.rect ?? null,
 						px,
 						py,
 					);
 					if (b.mode === "tetris" && hit.g) destroyChar(game, hit.g);
-					else if (b.mode === "tetris" && hit.el && !hit.keep) {
+					else if (b.mode === "tetris" && hit.el && hit.destructible) {
 						destroyElement(game, hit.el);
 					}
 					bounced = true;

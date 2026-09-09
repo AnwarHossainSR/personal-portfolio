@@ -24,15 +24,31 @@ export {
 export class Telemetry {
 	/** Last value written per id, so an unchanged count costs no DOM write. */
 	private readonly rendered = new Map<string, string>();
-	private readonly nodes = new Map<string, HTMLElement | null>();
+	private readonly nodes = new Map<string, HTMLElement>();
+
+	/**
+	 * Never caches a miss.
+	 *
+	 * The engine starts before the panel exists — ArcadeMount calls `start()`
+	 * in an effect and the panel arrives a tick later through `lazy()` — and
+	 * the panel can be unmounted while the game keeps running. Caching a null
+	 * lookup, or a node React has since replaced, silently freezes every
+	 * counter at its initial zero with nothing in the console to say so.
+	 */
+	private node(id: string): HTMLElement | null {
+		const cached = this.nodes.get(id);
+		if (cached?.isConnected) return cached;
+		const found = document.getElementById(id);
+		if (found) this.nodes.set(id, found);
+		else this.nodes.delete(id);
+		return found;
+	}
 
 	private write(id: string, value: string): void {
 		if (this.rendered.get(id) === value) return;
-		let node = this.nodes.get(id);
-		if (node === undefined) {
-			node = document.getElementById(id);
-			this.nodes.set(id, node);
-		}
+		const node = this.node(id);
+		// No panel on screen: leave `rendered` alone so the value is written
+		// the moment one appears.
 		if (!node) return;
 		this.rendered.set(id, value);
 		node.textContent = value;
