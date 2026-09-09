@@ -1,0 +1,65 @@
+/*
+ * Warm paper palette. Every neutral sits on hue 70–85; the single accent is at
+ * hue 35. The warmth is the design — neutralising these hues turns the site
+ * back into generic SaaS blue-grey.
+ *
+ * Light values are taken verbatim from the reference implementation. Dark is
+ * derived by inverting lightness while holding hue and chroma, so the warm
+ * character survives the theme switch.
+ */
+:root,
+.dark {
+	--color-paper: 18% 0.012 85;
+	--color-surface: 22% 0.014 85;
+	--color-surface-deep: 26% 0.016 85;
+	--color-ink: 94% 0.012 85;
+	--color-muted: 72% 0.012 75;
+	--color-faint: 61% 0.012 75;
+	--color-line: 34% 0.012 80;
+	--color-accent: 68% 0.15 35;
+
+	/*
+	 * shadcn/Radix compatibility bridge. These are not a second palette —
+	 * every value below resolves to a warm token defined above, so there is
+	 * still exactly one place to change a colour. Kept only because button.tsx
+	 * — the last surviving ui/* component, used by ThemeToggle — is written
+	 * against these semantic names. Pruned to just what it references: no
+	 * --card, --foreground, --popover, --popover-foreground, --muted-foreground
+	 * or --border, since their only consumers (card.tsx, tooltip.tsx, toast.tsx,
+	 * toaster.tsx, sonner.tsx) were unused and are gone.
+	 */
+	--background: var(--color-paper);
+	--primary: var(--color-accent);
+	--primary-foreground: var(--color-paper);
+	--secondary: var(--color-surface);
+	--secondary-foreground: var(--color-ink);
+	--accent-foreground: var(--color-paper);
+	--destructive: var(--color-accent);
+	--destructive-foreground: var(--color-paper);
+	--input: var(--color-line);
+	--ring: var(--color-accent);
+	--radius: 0.375rem;
+}
+
+.light {
+	--color-paper: 96.5% 0.012 85;
+	--color-surface: 93.8% 0.014 85;
+	--color-surface-deep: 90% 0.016 85;
+	--color-ink: 21% 0.014 70;
+	--color-muted: 45% 0.012 70;
+	--color-faint: 52% 0.012 75;
+	--color-line: 80% 0.012 80;
+	--color-accent: 52% 0.17 35;
+
+	/* Same bridge, re-resolved against the light warm tokens above. */
+	--background: var(--color-paper);
+	--primary: var(--color-accent);
+	--primary-foreground: var(--color-paper);
+	--secondary: var(--color-surface);
+	--secondary-foreground: var(--color-ink);
+	--accent-foreground: var(--color-paper);
+	--destructive: var(--color-accent);
+	--destructive-foreground: var(--color-paper);
+	--input: var(--color-line);
+	--ring: var(--color-accent);
+}

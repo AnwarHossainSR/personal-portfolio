@@ -1,23 +1,22 @@
 import { useEffect, useState } from "react";
 
 type Theme = "dark" | "light" | "system";
-const THEME_DEFAULT_VERSION = "dark-v2";
+const THEME_DEFAULT_VERSION = "light-v1";
 
 export function useTheme() {
 	const [theme, setTheme] = useState<Theme>(() => {
 		if (typeof window !== "undefined") {
 			if (
-				localStorage.getItem("theme-default-version") !==
-				THEME_DEFAULT_VERSION
+				localStorage.getItem("theme-default-version") !== THEME_DEFAULT_VERSION
 			) {
-				localStorage.setItem("theme", "dark");
+				localStorage.setItem("theme", "light");
 				localStorage.setItem("theme-default-version", THEME_DEFAULT_VERSION);
-				return "dark";
+				return "light";
 			}
 
-			return (localStorage.getItem("theme") as Theme) || "dark";
+			return (localStorage.getItem("theme") as Theme) || "light";
 		}
-		return "dark";
+		return "light";
 	});
 
 	useEffect(() => {

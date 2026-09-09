@@ -1,23 +1,26 @@
-import React from "react";
-import { Footer } from "./Footer";
-import { InteractiveBackground } from "./InteractiveBackground";
-import { Navigation } from "./Navigation";
-import { ParticleBackground } from "./ParticleBackground";
+import type { ReactNode } from "react";
+import { Footer } from "@/components/Footer";
+import { Navigation } from "@/components/Navigation";
 
-interface LayoutProps {
-	children: React.ReactNode;
-}
-
-export const Layout = React.memo(({ children }: LayoutProps) => {
+export function Layout({ children }: { children: ReactNode }) {
 	return (
-		<div className="min-h-screen bg-background relative">
-			<ParticleBackground />
-			<InteractiveBackground />
-			<div className="relative z-10">
-				<Navigation />
-				<main className="relative">{children}</main>
-				<Footer />
-			</div>
+		/*
+		 * Flex column with a growing main: short pages (the 404, a single note)
+		 * would otherwise leave the footer stranded mid-viewport with dead paper
+		 * below it.
+		 */
+		<div className="flex min-h-screen flex-col bg-paper">
+			<a
+				href="#main"
+				className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[200] focus:rounded focus:bg-surface focus:px-4 focus:py-2 focus:text-sm focus:text-ink focus:ring-2 focus:ring-accent"
+			>
+				Skip to content
+			</a>
+			<Navigation />
+			<main id="main" className="flex-1">
+				{children}
+			</main>
+			<Footer />
 		</div>
 	);
-});
+}

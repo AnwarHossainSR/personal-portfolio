@@ -1,57 +1,59 @@
+import { lazy, Suspense } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { SEOProvider } from "@/components/SEO";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { notes } from "@/content/notes";
 import NotFound from "@/pages/NotFound";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { lazy, Suspense } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 
-const queryClient = new QueryClient();
 const Home = lazy(() => import("@/pages/Home"));
-const About = lazy(() => import("@/pages/About"));
-const Experience = lazy(() => import("@/pages/Experience"));
-const Projects = lazy(() => import("@/pages/Projects"));
-const Skills = lazy(() => import("@/pages/Skills"));
-const YouTube = lazy(() => import("@/pages/YouTube"));
-const AskAi = lazy(() => import("@/pages/AskAi"));
-const Contact = lazy(() => import("@/pages/Contact"));
+const CaseStudy = lazy(() => import("@/pages/CaseStudy"));
+const Writing = lazy(() => import("@/pages/Writing"));
+const Note = lazy(() => import("@/pages/Note"));
 
-const PageLoader = () => (
-  <div className="min-h-[60vh] grid place-items-center">
-    <div className="rounded-lg border border-card-border bg-card/80 px-5 py-3 text-sm text-muted-foreground">
-      Loading portfolio...
-    </div>
-  </div>
-);
+function PageLoader() {
+	return <div className="min-h-[60vh]" aria-busy="true" />;
+}
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <SEOProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Layout>
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/experience" element={<Experience />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/skills" element={<Skills />} />
-                <Route path="/youtube" element={<YouTube />} />
-                <Route path="/ask-ai" element={<AskAi />} />
-                <Route path="/contact" element={<Contact />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </Layout>
-        </BrowserRouter>
-      </TooltipProvider>
-    </SEOProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+export default function App() {
+	return (
+		<SEOProvider>
+			<Layout>
+				<Suspense fallback={<PageLoader />}>
+					<Routes>
+						{/* The specific case-study pattern must be declared before the
+						    bare /work redirect below, or the redirect shadows it. */}
+						<Route path="/work/:slug" element={<CaseStudy />} />
+						<Route path="/" element={<Home />} />
+						{notes.length > 0 && (
+							<>
+								<Route path="/writing" element={<Writing />} />
+								<Route path="/writing/:slug" element={<Note />} />
+							</>
+						)}
+						{/* Old page routes collapse onto the one anchored page;
+						    inbound links and search results still land somewhere. */}
+						<Route path="/work" element={<Navigate to="/#work" replace />} />
+						<Route
+							path="/about"
+							element={<Navigate to="/#what-i-do" replace />}
+						/>
+						<Route
+							path="/contact"
+							element={<Navigate to="/#contact" replace />}
+						/>
+						<Route
+							path="/projects"
+							element={<Navigate to="/#work" replace />}
+						/>
+						<Route path="/skills" element={<Navigate to="/#stack" replace />} />
+						<Route
+							path="/experience"
+							element={<Navigate to="/#work" replace />}
+						/>
+						<Route path="*" element={<NotFound />} />
+					</Routes>
+				</Suspense>
+			</Layout>
+		</SEOProvider>
+	);
+}

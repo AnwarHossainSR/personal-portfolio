@@ -1,27 +1,39 @@
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { SECTIONS } from "@/components/AnchorNav";
+import { SEOHead } from "@/components/SEO";
+import { Eyebrow } from "@/components/section";
 
-const NotFound = () => {
-	const location = useLocation();
-
-	useEffect(() => {
-		console.error(
-			"404 Error: User attempted to access non-existent route:",
-			location.pathname,
-		);
-	}, [location.pathname]);
-
+export default function NotFound() {
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-100">
-			<div className="text-center">
-				<h1 className="text-4xl font-bold mb-4">404</h1>
-				<p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
-				<a href="/" className="text-blue-500 hover:text-blue-700 underline">
-					Return to Home
-				</a>
-			</div>
-		</div>
-	);
-};
+		<>
+			<SEOHead title="Page not found" noIndex />
+			<div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 md:py-32">
+				<Eyebrow>404</Eyebrow>
 
-export default NotFound;
+				<h1 className="mt-3 max-w-[18ch] font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink md:text-5xl">
+					That page does not exist
+				</h1>
+
+				<p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+					It may have moved when the site became a single page. Everything now
+					lives on one route, in these sections.
+				</p>
+
+				<nav
+					aria-label="Sections"
+					className="mt-8 flex flex-wrap gap-x-6 gap-y-3"
+				>
+					{SECTIONS.map((section) => (
+						<Link
+							key={section.id}
+							to={`/#${section.id}`}
+							className="text-ink underline underline-offset-4 transition-colors hover:text-accent"
+						>
+							{section.label}
+						</Link>
+					))}
+				</nav>
+			</div>
+		</>
+	);
+}

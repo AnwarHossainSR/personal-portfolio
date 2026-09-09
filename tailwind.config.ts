@@ -20,75 +20,45 @@ export default {
 		},
 		extend: {
 			colors: {
-				border: "hsl(var(--border))",
-				input: "hsl(var(--input))",
-				ring: "hsl(var(--ring))",
-				background: "hsl(var(--background))",
-				foreground: "hsl(var(--foreground))",
+				paper: "oklch(var(--color-paper) / <alpha-value>)",
+				surface: "oklch(var(--color-surface) / <alpha-value>)",
+				"surface-deep": "oklch(var(--color-surface-deep) / <alpha-value>)",
+				ink: "oklch(var(--color-ink) / <alpha-value>)",
+				faint: "oklch(var(--color-faint) / <alpha-value>)",
+				line: "oklch(var(--color-line) / <alpha-value>)",
+				// shadcn compatibility bridge (src/styles/tokens.css). `accent`
+				// collides with the warm palette's single-colour entry above:
+				// resolved by making it an object whose DEFAULT is the exact same
+				// warm var, so `bg-accent`/`text-accent` keep resolving to the
+				// identical warm colour, while `-foreground` adds the shadcn
+				// pairing on top. Pruned to just what button.tsx (the last
+				// surviving ui/* component) still references — no `foreground`,
+				// `popover`, `border`, or a `muted.foreground` pairing.
+				background: "oklch(var(--background) / <alpha-value>)",
 				primary: {
-					DEFAULT: "hsl(var(--primary))",
-					foreground: "hsl(var(--primary-foreground))",
-					glow: "hsl(var(--primary-glow))",
-					dark: "hsl(var(--primary-dark))",
+					DEFAULT: "oklch(var(--primary) / <alpha-value>)",
+					foreground: "oklch(var(--primary-foreground) / <alpha-value>)",
 				},
 				secondary: {
-					DEFAULT: "hsl(var(--secondary))",
-					foreground: "hsl(var(--secondary-foreground))",
+					DEFAULT: "oklch(var(--secondary) / <alpha-value>)",
+					foreground: "oklch(var(--secondary-foreground) / <alpha-value>)",
+				},
+				muted: "oklch(var(--color-muted) / <alpha-value>)",
+				accent: {
+					DEFAULT: "oklch(var(--color-accent) / <alpha-value>)",
+					foreground: "oklch(var(--accent-foreground) / <alpha-value>)",
 				},
 				destructive: {
-					DEFAULT: "hsl(var(--destructive))",
-					foreground: "hsl(var(--destructive-foreground))",
+					DEFAULT: "oklch(var(--destructive) / <alpha-value>)",
+					foreground: "oklch(var(--destructive-foreground) / <alpha-value>)",
 				},
-				muted: {
-					DEFAULT: "hsl(var(--muted))",
-					foreground: "hsl(var(--muted-foreground))",
-				},
-				accent: {
-					DEFAULT: "hsl(var(--accent))",
-					foreground: "hsl(var(--accent-foreground))",
-					glow: "hsl(var(--accent-glow))",
-				},
-				success: {
-					DEFAULT: "hsl(var(--success))",
-					foreground: "hsl(var(--success-foreground))",
-					glow: "hsl(var(--success-glow))",
-				},
-				popover: {
-					DEFAULT: "hsl(var(--popover))",
-					foreground: "hsl(var(--popover-foreground))",
-				},
-				card: {
-					DEFAULT: "hsl(var(--card))",
-					foreground: "hsl(var(--card-foreground))",
-					border: "hsl(var(--card-border))",
-				},
-				sidebar: {
-					DEFAULT: "hsl(var(--sidebar-background))",
-					foreground: "hsl(var(--sidebar-foreground))",
-					primary: "hsl(var(--sidebar-primary))",
-					"primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-					accent: "hsl(var(--sidebar-accent))",
-					"accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-					border: "hsl(var(--sidebar-border))",
-					ring: "hsl(var(--sidebar-ring))",
-				},
+				input: "oklch(var(--input) / <alpha-value>)",
+				ring: "oklch(var(--ring) / <alpha-value>)",
 			},
 			fontFamily: {
-				inter: ["Inter", "sans-serif"],
-				mono: ["JetBrains Mono", "monospace"],
-			},
-			backgroundImage: {
-				"gradient-primary": "var(--gradient-primary)",
-				"gradient-accent": "var(--gradient-accent)",
-				"gradient-success": "var(--gradient-success)",
-				"gradient-hero": "var(--gradient-hero)",
-				"gradient-surface": "var(--gradient-surface)",
-			},
-			boxShadow: {
-				premium: "var(--shadow-premium)",
-				glow: "var(--shadow-glow)",
-				card: "var(--shadow-card)",
-				elevated: "var(--shadow-elevated)",
+				display: ["Newsreader", "Georgia", "Times New Roman", "serif"],
+				sans: ["Hind Siliguri", "system-ui", "-apple-system", "sans-serif"],
+				mono: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
 			},
 			transitionTimingFunction: {
 				smooth: "var(--curve-smooth)",
