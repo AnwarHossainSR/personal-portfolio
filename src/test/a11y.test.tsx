@@ -65,7 +65,7 @@ describe("accessibility", () => {
 			</Layout>,
 		);
 		expect(
-			off.getByRole("button", { name: /arcade mode: off/i }),
+			off.getByRole("button", { name: /turn arcade mode on/i }),
 		).toBeInTheDocument();
 		expect(await axe(off.container)).toHaveNoViolations();
 		off.unmount();
@@ -77,7 +77,7 @@ describe("accessibility", () => {
 			</Layout>,
 		);
 		expect(
-			on.getByRole("button", { name: /arcade mode: on/i }),
+			on.getByRole("button", { name: /turn arcade mode off/i }),
 		).toBeInTheDocument();
 		expect(await axe(on.container)).toHaveNoViolations();
 		setArcadeMode(false);

@@ -57,9 +57,17 @@ export const GUN_POWERUP_NEXT_MIN = 14000;
 export const GUN_POWERUP_NEXT_MAX = 26000;
 export const GUN_MULTIPLIER_DURATION = 10000;
 
-export const ENEMY_FIRST = 12000;
+/*
+ * The reference waits 12s for the first enemy and adds one to the concurrent
+ * cap every 45s, which is right for a game that starts itself on every visit —
+ * a reader who never wanted it gets a long grace period. This overlay is
+ * opt-in: somebody pressed a button, so the game should be a game by the time
+ * they have found the rocket, not two minutes later.
+ */
+export const ENEMY_FIRST = 2500;
+export const ENEMIES_START = 3;
 export const ENEMIES_MAX = 8;
-export const ENEMY_ALIVE_STEP = 45000;
+export const ENEMY_ALIVE_STEP = 15000;
 
 /** Explosion debris. Bound to the theme so both grounds get readable colour. */
 export const COLORS = [

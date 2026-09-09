@@ -104,9 +104,11 @@ steer around obstacles instead of chasing in a straight line. Hold `V` to draw
 the collision world onto a canvas, from the same classifier the engine collides
 against.
 
-**How to turn it on.** A control in the footer, labelled `Arcade mode`. The
-choice is remembered in `localStorage` under `arcade:enabled:v1`. `Esc` turns it
-off, as does the same control.
+**How to turn it on.** The `Arcade` button in the header, next to the theme
+toggle. The choice is remembered in `localStorage` under `arcade:enabled:v1`.
+`Esc` turns it off, as do the header button and the `Stop` control on the
+panel. While it runs, a fixed panel in the bottom-right corner shows live
+telemetry and folds away a note on how the thing works.
 
 **How it is gated.** `src/arcade/gate.ts` refuses to start under
 `prefers-reduced-motion: reduce` or on any pointer that is not `fine`. That gate

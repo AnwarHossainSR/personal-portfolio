@@ -1,4 +1,5 @@
-import { type GunMode, STORAGE } from "@/arcade/constants";
+import type { GunMode } from "@/arcade/constants";
+import { isMuted } from "@/arcade/sound";
 
 /**
  * WebAudio, on two deliberate deviations from the reference.
@@ -11,31 +12,11 @@ import { type GunMode, STORAGE } from "@/arcade/constants";
  */
 export class Audio {
 	private ctx: AudioContext | null = null;
-	private muted = true;
-
-	constructor() {
-		try {
-			this.muted = localStorage.getItem(STORAGE.muted) !== "0";
-		} catch {
-			// Private browsing, or storage disabled. Stay quiet.
-		}
-	}
-
-	get isMuted(): boolean {
-		return this.muted;
-	}
-
-	setMuted(muted: boolean): void {
-		this.muted = muted;
-		try {
-			localStorage.setItem(STORAGE.muted, muted ? "1" : "0");
-		} catch {
-			// Non-fatal: the preference lasts the session instead.
-		}
-	}
 
 	private context(): AudioContext | null {
-		if (this.muted) return null;
+		// Read per call rather than cached, so unmuting mid-game takes effect
+		// on the next shot instead of the next reload.
+		if (isMuted()) return null;
 		if (this.ctx) {
 			if (this.ctx.state === "suspended") void this.ctx.resume();
 			return this.ctx;

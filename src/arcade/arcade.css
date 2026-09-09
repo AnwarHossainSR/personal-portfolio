@@ -343,14 +343,19 @@ html.arcade-no-select [contenteditable="true"] {
 	filter: drop-shadow(0 0 10px oklch(var(--color-accent) / 0.85));
 }
 
+/*
+ * Scaled on the X axis by the engine. Green because a bar that is red when
+ * full reads as damage taken rather than health remaining, which is exactly
+ * backwards while you are deciding whether to keep shooting.
+ */
 .arcade-enemy-health {
 	position: absolute;
 	left: 0;
 	top: -7px;
 	width: 100%;
 	height: 3px;
-	border: 1px solid oklch(var(--color-ink) / 0.5);
-	background: oklch(var(--color-arcade-danger));
+	border: 1px solid oklch(var(--color-ink) / 0.45);
+	background: oklch(var(--color-arcade-health));
 	transform-origin: left center;
 	transition: transform 0.12s ease-out;
 }

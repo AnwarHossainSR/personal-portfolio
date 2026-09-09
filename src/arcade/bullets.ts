@@ -449,6 +449,23 @@ export function updateBullets(game: Game, dt: number): void {
 			probesLeft--;
 			const px = b.x + ((nx - b.x) * s) / steps;
 			const py = b.y + ((ny - b.y) * s) / steps;
+			// Enemies before the page. They are drawn on top of it and they fly
+			// over it, so a shot that reaches one should hit it rather than the
+			// paragraph behind it — the reference tests the page first, which
+			// on a page as dense with text as this one means almost every
+			// aimed shot dies on a glyph a few pixels short of its target.
+			for (const enemy of game.enemies) {
+				const ex = enemy.x - px;
+				const ey = enemy.y - py;
+				const radius = enemy.config.radius + 6;
+				if (enemyVisible(enemy) && ex * ex + ey * ey < radius * radius) {
+					damageEnemy(game, enemy);
+					dead = true;
+					break;
+				}
+			}
+			if (dead) break;
+
 			const hit = probeHit(game, px, py - window.scrollY);
 			if (hit) {
 				if (hit.keep || b.mode === "tetris") {
@@ -473,17 +490,6 @@ export function updateBullets(game: Game, dt: number): void {
 				}
 				if (dead || bounced) break;
 			}
-			for (const enemy of game.enemies) {
-				const ex = enemy.x - px;
-				const ey = enemy.y - py;
-				const radius = enemy.config.radius + 6;
-				if (enemyVisible(enemy) && ex * ex + ey * ey < radius * radius) {
-					damageEnemy(game, enemy);
-					dead = true;
-					break;
-				}
-			}
-			if (dead) break;
 		}
 
 		if (dead) {

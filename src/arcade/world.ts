@@ -409,7 +409,11 @@ export class World {
 		for (const el of this.elementsAt(px, py)) {
 			if (el === document.body || el === document.documentElement) continue;
 			if (this.root.contains(el)) continue;
-			if ((el as HTMLElement).dataset?.arcadeKeep !== undefined) continue;
+			// The whole subtree, not just the element carrying the flag. The
+			// site chrome is marked this way, and a sticky header that spans
+			// the viewport is otherwise a wall nothing can spawn through — the
+			// symptom is enemies piling up along the top edge, unable to enter.
+			if (el.closest("[data-arcade-keep]")) continue;
 			const solidity = this.solidity(el);
 			if (solidity === "filled") {
 				const r = el.getBoundingClientRect();

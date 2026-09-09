@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 import * as matchers from "vitest-axe/matchers";
+import { getArcadeMode, setArcadeMode } from "@/arcade/mode";
 import { TELEMETRY_ID_LIST } from "@/arcade/telemetry-ids";
 import { ArcadePanel } from "@/components/ArcadePanel";
 
@@ -40,6 +42,25 @@ describe("ArcadePanel", () => {
 		expect(
 			screen.getByRole("link", { name: /read the source/i }),
 		).toHaveAttribute("href", expect.stringContaining("/src/arcade"));
+	});
+
+	it("collapses without unmounting the rows the engine writes to", async () => {
+		// Unmounting them would drop every counter back to zero on expand, and
+		// the engine has no way to know it happened.
+		const { container } = render(<ArcadePanel />);
+		await userEvent.click(screen.getByRole("button", { name: /hide/i }));
+		const body = container.querySelector("#arcade-panel-body") as HTMLElement;
+		expect(body.hidden).toBe(true);
+		expect(container.querySelector(`#${TELEMETRY_ID_LIST[0]}`)).not.toBeNull();
+		await userEvent.click(screen.getByRole("button", { name: /show/i }));
+		expect(body.hidden).toBe(false);
+	});
+
+	it("stops the overlay from its own control", async () => {
+		setArcadeMode(true);
+		render(<ArcadePanel />);
+		await userEvent.click(screen.getByRole("button", { name: /stop/i }));
+		expect(getArcadeMode()).toBe(false);
 	});
 
 	it("has no axe violations", async () => {

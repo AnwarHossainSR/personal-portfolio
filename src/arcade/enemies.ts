@@ -1,6 +1,7 @@
 import { bulletHitsObstacle } from "@/arcade/bullets";
 import {
 	ENEMIES_MAX,
+	ENEMIES_START,
 	ENEMY_ALIVE_STEP,
 	ENEMY_LEVEL_SPAWN_KILLS,
 	ENEMY_LEVELS,
@@ -25,11 +26,18 @@ export function enemyCount(game: Game, level: number): number {
 	return count;
 }
 
-/** One more concurrent enemy every 45 seconds, to a hard ceiling of eight. */
+/**
+ * How many level-1 enemies may be alive at once.
+ *
+ * The reference starts at one and adds another every 45 seconds, which suits a
+ * game that starts itself: the first minute is quiet for a reader who never
+ * asked for it. Here somebody pressed a button, so it opens at three and
+ * reaches the ceiling of eight inside a minute and a half.
+ */
 export function enemyMaxAlive(game: Game, now = performance.now()): number {
 	return Math.min(
 		ENEMIES_MAX,
-		1 + Math.floor((now - game.gameStartedAt) / ENEMY_ALIVE_STEP),
+		ENEMIES_START + Math.floor((now - game.gameStartedAt) / ENEMY_ALIVE_STEP),
 	);
 }
 
@@ -79,13 +87,24 @@ export function spawnEnemy(game: Game, level: number): boolean {
 	let x: number;
 	let y: number;
 	if (level === 1) {
-		// Level 1 arrives from off-screen, above or below. Higher levels are
-		// placed in the viewport, away from the player — they are an event.
-		x = rand(config.clearRadius + 8, innerWidth - config.clearRadius - 8);
-		y =
-			Math.random() < 0.5
-				? window.scrollY - config.clearRadius * 2
-				: window.scrollY + innerHeight + config.clearRadius * 2;
+		// Level 1 arrives from off-screen on any edge. The reference uses only
+		// top and bottom, which bunches every arrival into the same two lanes —
+		// visible here as a queue along the top of the page.
+		const margin = config.clearRadius * 2;
+		const edge = Math.floor(Math.random() * 4);
+		if (edge === 0) {
+			x = rand(config.clearRadius + 8, innerWidth - config.clearRadius - 8);
+			y = window.scrollY - margin;
+		} else if (edge === 1) {
+			x = rand(config.clearRadius + 8, innerWidth - config.clearRadius - 8);
+			y = window.scrollY + innerHeight + margin;
+		} else if (edge === 2) {
+			x = -margin;
+			y = rand(window.scrollY + margin, window.scrollY + innerHeight - margin);
+		} else {
+			x = innerWidth + margin;
+			y = rand(window.scrollY + margin, window.scrollY + innerHeight - margin);
+		}
 	} else {
 		const spot =
 			game.clearSpot(

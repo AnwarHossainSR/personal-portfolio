@@ -55,6 +55,7 @@ export default {
 				"accent-deep": "oklch(var(--color-accent-deep) / <alpha-value>)",
 				"arcade-enemy": "oklch(var(--color-arcade-enemy) / <alpha-value>)",
 				"arcade-danger": "oklch(var(--color-arcade-danger) / <alpha-value>)",
+				"arcade-health": "oklch(var(--color-arcade-health) / <alpha-value>)",
 				input: "oklch(var(--input) / <alpha-value>)",
 				ring: "oklch(var(--ring) / <alpha-value>)",
 			},

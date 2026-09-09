@@ -105,20 +105,22 @@ describe("ArcadeToggle", () => {
 		expect(container.innerHTML).toBe("");
 	});
 
-	it("says plainly what it is and what state it is in", () => {
+	it("carries its state in the accessible name and aria-pressed", () => {
 		setGate(true);
 		render(<ArcadeToggle />);
-		const button = screen.getByRole("button", { name: /arcade mode: off/i });
+		const button = screen.getByRole("button", { name: /turn arcade mode on/i });
 		expect(button).toHaveAttribute("aria-pressed", "false");
 	});
 
 	it("remembers the choice", async () => {
 		setGate(true);
 		render(<ArcadeToggle />);
-		await userEvent.click(screen.getByRole("button", { name: /arcade mode/i }));
+		await userEvent.click(
+			screen.getByRole("button", { name: /turn arcade mode on/i }),
+		);
 		expect(localStorage.getItem(STORAGE.enabled)).toBe("1");
 		expect(
-			screen.getByRole("button", { name: /arcade mode: on/i }),
+			screen.getByRole("button", { name: /turn arcade mode off/i }),
 		).toHaveAttribute("aria-pressed", "true");
 	});
 });

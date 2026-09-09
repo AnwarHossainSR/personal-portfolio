@@ -502,9 +502,25 @@ export class Game {
 
 	// ------------------------------------------------------------------- player
 
+	/** The middle of what the reader is currently looking at. */
+	private viewportCentre(): { x: number; y: number } {
+		return {
+			x: innerWidth / 2,
+			y: window.scrollY + innerHeight / 2,
+		};
+	}
+
 	private initialSpawn = (): void => {
 		if (this.disposed || this.state !== "parked") return;
-		const spot = this.clearSpot(CAR_CLEAR_R + 6);
+		// Start in the middle of the screen and search outwards, rather than
+		// taking the first free spot anywhere in the viewport. clearSpot throws
+		// 64 random darts, which on a page with wide margins usually lands the
+		// rocket in the gutter — somebody who just switched this on should not
+		// have to go looking for it.
+		const centre = this.viewportCentre();
+		const spot =
+			this.safePointAround(centre.x, centre.y, CAR_CLEAR_R + 6) ??
+			this.clearSpot(CAR_CLEAR_R + 6);
 		if (spot) this.spawn(spot.x, spot.y);
 		else this.initialSpawnTimer = window.setTimeout(this.initialSpawn, 500);
 	};
@@ -553,6 +569,13 @@ export class Game {
 	}
 
 	blast(reason: "idle" | "enemy" | "r" | "crush"): void {
+		// Clearing this is not optional. The idle timer fires when the cursor
+		// leaves the document; if it survives the blast, the very next frame
+		// after the respawn sees an expired timer and blasts again, and the
+		// rocket flickers once every five seconds forever. The reference has
+		// the same hole — it is just harder to notice on a page you did not
+		// deliberately switch the game on for.
+		this.outsideAt = 0;
 		this.state = "blasted";
 		this.respawnAt = performance.now() + CAR_RESPAWN_DELAY;
 		this.blastAt = { x: this.car.x, y: this.car.y };
@@ -844,9 +867,11 @@ export class Game {
 		) {
 			spawnEnemy(this, 1);
 		}
-		// Spawn pressure ramps for the first ~2.5 minutes and then holds.
+		// Spawn pressure ramps and then holds. Faster than the reference's
+		// 8200ms opening for the same reason the cap starts higher: this
+		// overlay was asked for.
 		const elapsed = Math.max(0, (now - this.gameStartedAt) / 1000);
-		const interval = Math.max(2800, 8200 - elapsed * 35);
+		const interval = Math.max(1400, 4200 - elapsed * 35);
 		this.enemyLoopTimer = window.setTimeout(this.enemyLoop, interval);
 	};
 
@@ -881,10 +906,20 @@ export class Game {
 				this.car.y - window.scrollY - CAR_H / 2
 			}px) rotate(${(this.car.angle * 180) / Math.PI}deg)`;
 		} else if (this.state === "blasted" && now >= this.respawnAt) {
-			// Back where you died if that spot is still free, otherwise anywhere
-			// clear; if the page is momentarily too dense for either, try again
-			// shortly rather than dropping the rocket into a heading.
-			if (!this.respawn(this.blastAt.x, this.blastAt.y)) {
+			// Back where you died if that spot is still free, otherwise the
+			// middle of the screen; if the page is momentarily too dense for
+			// either, try again shortly rather than dropping the rocket into a
+			// heading.
+			const centre = this.viewportCentre();
+			const fallback = this.safePointAround(
+				centre.x,
+				centre.y,
+				CAR_CLEAR_R + 6,
+			);
+			const from = this.spotClear(this.blastAt.x, this.blastAt.y, CAR_CLEAR_R)
+				? this.blastAt
+				: (fallback ?? this.blastAt);
+			if (!this.respawn(from.x, from.y)) {
 				this.respawnAt = now + 500;
 			}
 		}
@@ -899,6 +934,12 @@ export class Game {
 		resolveBulletCollisions(this);
 		this.renderBoundaries(now);
 
+		// Gun mode and hull change rarely, but "rarely" included "once, before
+		// the panel was mounted", which left the readout showing its own
+		// placeholder for the whole session. Pushed every frame instead; the
+		// writer skips a value it has already written.
+		this.telemetry.gunMode(this.gunMode);
+		this.telemetry.hull(this.playerHealth);
 		this.telemetry.enemies(
 			Object.fromEntries(
 				ENEMY_LEVEL_NUMBERS.map((level) => [level, enemyCount(this, level)]),

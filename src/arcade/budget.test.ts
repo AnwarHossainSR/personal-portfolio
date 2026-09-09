@@ -26,6 +26,8 @@ const ALLOWED_STATIC = new Set([
 	"@/arcade/storage",
 ]);
 
+const PANEL_MAY_IMPORT = new Set(["@/arcade/telemetry-ids", "@/arcade/sound"]);
+
 /** Reached only through `import()` or `lazy()`, so they get their own chunk. */
 const LAZY_ONLY = new Set(["@/arcade", "@/components/ArcadePanel"]);
 
@@ -65,8 +67,10 @@ describe("bundle budget", () => {
 				if (ALLOWED_STATIC.has(specifier)) continue;
 				// The panel imports the telemetry ids, and the panel is itself
 				// only reached through lazy(), so it rides the arcade chunk.
+				// The panel is itself reached only through lazy(), so what it
+				// imports rides the arcade chunk with it.
 				if (
-					specifier === "@/arcade/telemetry-ids" &&
+					PANEL_MAY_IMPORT.has(specifier) &&
 					file.endsWith(`${path.sep}ArcadePanel.tsx`)
 				) {
 					continue;
