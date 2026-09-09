@@ -29,6 +29,8 @@ describe("Stack", () => {
 		for (const group of stackGroups) {
 			expect(screen.getByText(group.name)).toBeInTheDocument();
 		}
-		expect(container.textContent).not.toMatch(/\bExpert\b|\bAdvanced\b|\bIntermediate\b/);
+		expect(container.textContent).not.toMatch(
+			/\bExpert\b|\bAdvanced\b|\bIntermediate\b/,
+		);
 	});
 });

@@ -35,10 +35,7 @@ export function ResultsTable({ results }: { results: Result[] }) {
 				</thead>
 				<tbody>
 					{results.map((result) => (
-						<tr
-							key={result.metric}
-							className="border-b border-line align-top"
-						>
+						<tr key={result.metric} className="border-b border-line align-top">
 							<th scope="row" className="py-4 pr-6 font-normal text-ink">
 								{result.metric}
 								{/* The method is the reason the number is worth anything. It sits with
@@ -47,9 +44,7 @@ export function ResultsTable({ results }: { results: Result[] }) {
 									{result.method}
 								</span>
 							</th>
-							<td className="py-4 pr-6 text-muted">
-								{result.before}
-							</td>
+							<td className="py-4 pr-6 text-muted">{result.before}</td>
 							<td className="py-4 pr-6 text-ink">{result.after}</td>
 						</tr>
 					))}

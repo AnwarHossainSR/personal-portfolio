@@ -11,12 +11,14 @@
 		"build": "vite build",
 		"build:dev": "vite build --mode development",
 		"lint": "biome check --write .",
+		"lint:ci": "biome check .",
+		"typecheck": "tsc --noEmit",
 		"format": "biome format --write .",
 		"preview": "vite preview",
 		"test": "vitest run",
 		"test:watch": "vitest",
 		"test:coverage": "vitest run --coverage",
-		"verify": "bun run test && bun run lint && bun run build"
+		"verify": "bun run typecheck && bun run test && bun run lint && bun run build"
 	},
 	"dependencies": {
 		"@radix-ui/react-slot": "^1.2.3",

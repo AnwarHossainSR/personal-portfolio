@@ -56,7 +56,7 @@ function sourceFiles(dir: string): string[] {
 
 describe("typography contract", () => {
 	it("loads fonts from the document head, not a css import", () => {
-		expect(css).not.toContain("@import url(\"https://fonts.googleapis.com");
+		expect(css).not.toContain('@import url("https://fonts.googleapis.com');
 	});
 
 	it("paints the paper ground on body", () => {

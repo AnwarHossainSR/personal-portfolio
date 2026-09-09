@@ -3,7 +3,12 @@ import { processSteps } from "@/data/process";
 
 export function Process() {
 	return (
-		<Section id="process" number="03" eyebrow="How I work" title="Three things that shape the work">
+		<Section
+			id="process"
+			number="03"
+			eyebrow="How I work"
+			title="Three things that shape the work"
+		>
 			<div className="grid gap-x-10 gap-y-10 md:grid-cols-3">
 				{processSteps.map((step, index) => (
 					<div key={step.title}>

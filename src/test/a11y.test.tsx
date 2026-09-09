@@ -1,7 +1,7 @@
+import { Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 import * as matchers from "vitest-axe/matchers";
-import { Route, Routes } from "react-router-dom";
 import { Layout } from "@/components/Layout";
 import { caseStudies } from "@/content/case-studies";
 import CaseStudy from "@/pages/CaseStudy";
