@@ -7,7 +7,7 @@ export default function NotFound() {
 	return (
 		<>
 			<SEOHead title="Page not found" noIndex />
-			<div className="mx-auto flex min-h-[60vh] max-w-6xl flex-col justify-center px-5 py-24 sm:px-8">
+			<div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 md:py-32">
 				<Eyebrow>404</Eyebrow>
 
 				<h1 className="mt-3 max-w-[18ch] font-display text-4xl font-medium leading-[1.08] tracking-tight text-ink md:text-5xl">
