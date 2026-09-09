@@ -268,3 +268,56 @@ than yours, and both are reversible:
   Twelve is close to the keyword-dump the cap existed to prevent; if the
   technology row under a case study starts reading as a list rather than as a
   description, cut it back.
+
+---
+
+## 12. The arcade overlay panel — 9 September 2026
+
+The panel that appears when arcade mode is on
+(`src/components/ArcadePanel.tsx`) sits outside the content schema. That makes
+it the easiest place in the codebase to make an unbacked claim without a test
+catching it, so its prose is listed here under the same rules as everything
+else.
+
+Unlike sections 0–11, none of this is about you. Every claim below is about
+code in this repository, which means all of it is checkable — the file is
+named next to each one.
+
+- [ ] **"It classifies every element as an obstacle from computed style —
+      background alpha, background image, box shadow, border."** Exactly what
+      `World.solidity` does (`src/arcade/world.ts`). The alpha threshold is
+      0.06; the panel does not quote the number, and should not start.
+- [ ] **"walks text nodes with a Range to get per-character rectangles"** —
+      `World.glyphAt`, via `document.caretRangeFromPoint` and
+      `Range.getClientRects`.
+- [ ] **"Bullets sweep the segment they travelled each frame instead of
+      testing where they landed, which is what stops them passing through a
+      hairline rule at speed."** Two mechanisms, both real:
+      `segmentsWithinDistance` for bullet-against-bullet and the stepped
+      `BULLET_COLLISION_STEP` walk for bullet-against-page
+      (`src/arcade/bullets.ts`). The "at speed" is 1650 px/s, about 27 px per
+      frame at 60 Hz — stated in the code, not on the page.
+- [ ] **"Enemies sample eight headings and steer around obstacles rather than
+      chasing in a straight line."** `steerAround` samples exactly eight
+      (`src/arcade/enemies.ts`).
+- [ ] **"The score is sealed with a key held in IndexedDB: that stops it being
+      edited in storage, and does not stop anyone who opens the console."**
+      This is the line worth keeping honest. AES-GCM under a non-extractable
+      key is real (`src/arcade/score.ts`), and so is the limitation: the page
+      decrypts on load, so anyone with the console has the same access. The
+      sentence says both halves on purpose. Do not let it be shortened to the
+      first half.
+- [ ] **"Nothing it destroys is permanent … because React will not put back a
+      text node deleted underneath it."** `src/arcade/undo.ts`, exercised by
+      the round-trip tests in `src/arcade/lifecycle.test.ts` and verified in a
+      real browser: 143 glyphs destroyed, all restored on `Esc`.
+- [ ] **The credit in the README.** The design language and this mechanic both
+      come from `github.com/entrptaher/taherxyz`. The enemy stat blocks and
+      ballistics constants are that project's, unchanged. Saying so costs
+      nothing; not saying so is the kind of thing that gets noticed.
+
+One number is *not* on the site and should stay off it: the bundle cost. The
+engine chunk is 14.55 kB gzip and the main chunk grew 0.74 kB (113.27 → 114.01)
+for the control and the on/off store. That belongs in the README and the commit
+history, not in a panel that a reader cannot verify.
+

@@ -3,6 +3,7 @@ import { EvidenceBadge } from "@/components/case-study/EvidenceBadge";
 import { Eyebrow, Section } from "@/components/section";
 import { caseStudies } from "@/content/case-studies";
 import { roles } from "@/data/roles";
+import { Reveal } from "@/motion/Reveal";
 
 export function Work() {
 	return (
@@ -13,9 +14,11 @@ export function Work() {
 			title="Built and run in production"
 		>
 			<ol className="space-y-14">
-				{caseStudies.map((study) => (
-					<li
+				{caseStudies.map((study, index) => (
+					<Reveal
+						as="li"
 						key={study.slug}
+						delay={index * 0.08}
 						className="border-t border-line pt-6 first:border-t-0 first:pt-0"
 					>
 						<div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-muted">
@@ -57,7 +60,7 @@ export function Work() {
 								Read the case study
 							</Link>
 						</p>
-					</li>
+					</Reveal>
 				))}
 			</ol>
 
@@ -65,9 +68,11 @@ export function Work() {
 				<Eyebrow>Track record</Eyebrow>
 
 				<ol className="mt-8 space-y-10">
-					{roles.map((role) => (
-						<li
+					{roles.map((role, index) => (
+						<Reveal
+							as="li"
 							key={role.id}
+							delay={index * 0.08}
 							className="border-t border-line/60 pt-6 first:border-t-0 first:pt-0"
 						>
 							<div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
@@ -93,7 +98,7 @@ export function Work() {
 							<p className="mt-3 font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
 								{role.stack.join(" · ")}
 							</p>
-						</li>
+						</Reveal>
 					))}
 				</ol>
 			</div>

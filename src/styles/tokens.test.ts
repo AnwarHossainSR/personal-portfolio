@@ -12,25 +12,39 @@ const tailwindConfig = readFileSync(
 	"utf8",
 );
 
-const TOKENS = [
-	"--color-paper",
-	"--color-surface",
-	"--color-surface-deep",
-	"--color-ink",
-	"--color-muted",
-	"--color-faint",
-	"--color-line",
-	"--color-accent",
-];
+const darkBlock = css.slice(css.indexOf(":root"), css.indexOf(".light"));
+const lightBlock = css.slice(css.indexOf(".light"));
+
+/**
+ * Parsed out of the stylesheet rather than listed by hand, so a token added
+ * tomorrow is held to the same rules as the eight that shipped with the
+ * redesign — both themes, bare channels, and an <alpha-value> wrapper in the
+ * Tailwind config. A hand-written list only ever covers the past.
+ */
+function definedTokens(block: string): string[] {
+	return [
+		...new Set([...block.matchAll(/(--color-[a-z-]+):/g)].map((m) => m[1])),
+	];
+}
+
+const TOKENS = definedTokens(css);
 
 describe("design tokens", () => {
 	it("defines every token in both themes", () => {
-		const light = css.slice(css.indexOf(".light"));
-		const dark = css.slice(css.indexOf(":root"), css.indexOf(".light"));
+		expect(TOKENS.length).toBeGreaterThan(0);
 		for (const token of TOKENS) {
-			expect(dark, `${token} missing from dark`).toContain(token);
-			expect(light, `${token} missing from light`).toContain(token);
+			expect(darkBlock, `${token} missing from dark`).toContain(`${token}:`);
+			expect(lightBlock, `${token} missing from light`).toContain(`${token}:`);
 		}
+	});
+
+	it("has no token defined in one theme only", () => {
+		// Both directions. A colour that exists only in .light is a bug that is
+		// invisible until someone loads the site in the other theme, and the
+		// arcade overlay in src/arcade runs over both grounds.
+		expect(definedTokens(darkBlock).sort()).toEqual(
+			definedTokens(lightBlock).sort(),
+		);
 	});
 
 	it("stores bare oklch channels rather than a wrapped colour function", () => {
