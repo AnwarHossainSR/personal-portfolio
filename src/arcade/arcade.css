@@ -1,0 +1,378 @@
+/*
+ * Everything the engine paints.
+ *
+ * Imported from src/arcade/index.ts rather than from src/index.css so Vite
+ * emits it in the arcade chunk. A reader who never turns the overlay on never
+ * downloads it — which is the same reason the engine itself is behind a
+ * dynamic import.
+ *
+ * Colours come from src/styles/tokens.css. Nothing here hard-codes a hex, so
+ * one sprite set works on both the paper ground and the dark one.
+ */
+
+#arcade-root {
+	position: fixed;
+	inset: 0;
+	z-index: 60;
+	pointer-events: none;
+}
+
+/*
+ * Text selection is off while the game runs — dragging to select and dragging
+ * to aim are the same gesture — but inputs keep it, so a form is still usable.
+ */
+html.arcade-no-select,
+html.arcade-no-select body,
+html.arcade-no-select body * {
+	user-select: none;
+	-webkit-user-select: none;
+}
+
+html.arcade-no-select {
+	scroll-behavior: auto;
+}
+
+html.arcade-no-select input,
+html.arcade-no-select textarea,
+html.arcade-no-select [contenteditable="true"] {
+	user-select: text;
+	-webkit-user-select: text;
+}
+
+/*
+ * Hold V. The engine draws the collision world onto this canvas — see
+ * renderBoundaries in engine.ts.
+ */
+#arcade-boundaries {
+	position: absolute;
+	inset: 0;
+	display: none;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
+#arcade-car {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 40px;
+	height: 48px;
+	display: none;
+	will-change: transform;
+}
+
+.arcade-car-inner svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+}
+
+.arcade-revive .arcade-car-inner {
+	animation: arcade-revive 0.65s cubic-bezier(0.2, 1.4, 0.3, 1) both;
+}
+
+@keyframes arcade-revive {
+	0% {
+		transform: scale(0.15);
+		opacity: 0;
+	}
+	55% {
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+	}
+}
+
+.arcade-spawn-protected {
+	animation: arcade-spawn-protected 0.22s steps(2, end) infinite;
+}
+
+@keyframes arcade-spawn-protected {
+	0%,
+	100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.18;
+	}
+}
+
+.arcade-part {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border-radius: 3px;
+}
+
+.arcade-flash {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 64px;
+	height: 64px;
+	border-radius: 9999px;
+	background: radial-gradient(
+		circle,
+		oklch(var(--color-accent) / 0.95),
+		oklch(var(--color-arcade-danger) / 0.4) 55%,
+		transparent 72%
+	);
+	animation: arcade-flash 0.55s ease-out forwards;
+}
+
+@keyframes arcade-flash {
+	from {
+		transform: scale(0.2);
+		opacity: 0.95;
+	}
+	to {
+		transform: scale(2.8);
+		opacity: 0;
+	}
+}
+
+.arcade-enemyflash {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 28px;
+	height: 28px;
+	border-radius: 9999px;
+	background: radial-gradient(
+		circle,
+		oklch(var(--color-arcade-danger) / 0.95),
+		oklch(var(--color-arcade-danger) / 0.4) 55%,
+		transparent 72%
+	);
+	animation: arcade-flash 0.4s ease-out forwards;
+	pointer-events: none;
+}
+
+.arcade-muzzle {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 32px;
+	height: 32px;
+	border-radius: 9999px;
+	background: radial-gradient(
+		circle,
+		oklch(var(--color-paper) / 0.95),
+		oklch(var(--color-accent) / 0.45) 52%,
+		transparent 74%
+	);
+	animation: arcade-muzzle 0.2s ease-out forwards;
+	pointer-events: none;
+}
+
+@keyframes arcade-muzzle {
+	from {
+		transform: scale(0.3);
+		opacity: 1;
+	}
+	to {
+		transform: scale(1.8);
+		opacity: 0;
+	}
+}
+
+.arcade-bullet {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 46px;
+	height: 3px;
+	border-radius: 999px;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		oklch(var(--color-accent) / 0.25),
+		oklch(var(--color-accent)) 70%,
+		oklch(var(--color-paper))
+	);
+	box-shadow: 0 0 8px oklch(var(--color-accent) / 0.8);
+	transform-origin: 0% 50%;
+	will-change: transform, opacity;
+	pointer-events: none;
+}
+
+.arcade-bullet.arcade-enemy-level-1-bullet,
+.arcade-bullet.arcade-enemy-level-2-bullet,
+.arcade-bullet.arcade-enemy-level-3-bullet {
+	background: linear-gradient(
+		90deg,
+		transparent,
+		oklch(var(--color-arcade-danger) / 0.25),
+		oklch(var(--color-arcade-danger)) 70%,
+		oklch(var(--color-paper))
+	);
+	box-shadow: 0 0 8px oklch(var(--color-arcade-danger) / 0.8);
+}
+
+.arcade-bullet.arcade-enemy-level-2-bullet {
+	height: 4px;
+}
+
+.arcade-bullet.arcade-enemy-level-3-bullet {
+	height: 5px;
+	box-shadow: 0 0 12px oklch(var(--color-arcade-danger) / 0.95);
+}
+
+.arcade-boom {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 36px;
+	height: 36px;
+	border-radius: 9999px;
+	border: 3px solid oklch(var(--color-accent) / 0.9);
+	box-shadow: 0 0 14px oklch(var(--color-accent) / 0.5);
+	animation: arcade-boom 0.6s ease-out forwards;
+	pointer-events: none;
+}
+
+@keyframes arcade-boom {
+	from {
+		transform: scale(0.25);
+		opacity: 0.9;
+	}
+	to {
+		transform: scale(3.2);
+		opacity: 0;
+	}
+}
+
+.arcade-respawn {
+	animation: arcade-respawn 0.55s ease-out both;
+}
+
+@keyframes arcade-respawn {
+	from {
+		opacity: 0;
+		filter: blur(6px) saturate(2);
+		transform: scale(0.96);
+	}
+	to {
+		opacity: 1;
+		filter: none;
+		transform: none;
+	}
+}
+
+.arcade-score-ball {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 20px;
+	height: 20px;
+	border: 2px solid oklch(var(--color-paper));
+	border-radius: 9999px;
+	background: radial-gradient(
+		circle at 35% 30%,
+		oklch(var(--color-paper)),
+		oklch(var(--color-accent)) 45%,
+		oklch(var(--color-accent-deep))
+	);
+	box-shadow: 0 0 16px oklch(var(--color-accent) / 0.85);
+	pointer-events: none;
+}
+
+.arcade-gun-powerup {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: grid;
+	width: 30px;
+	height: 30px;
+	place-items: center;
+	border: 2px solid oklch(var(--color-paper));
+	border-radius: 8px;
+	background: linear-gradient(
+		145deg,
+		oklch(var(--color-paper)),
+		oklch(var(--color-accent)) 48%,
+		oklch(var(--color-accent-deep))
+	);
+	box-shadow: 0 0 18px oklch(var(--color-accent) / 0.95);
+	color: oklch(var(--color-ink));
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: 9px;
+	font-weight: 800;
+	letter-spacing: 0.04em;
+	animation: arcade-gun-powerup 1.1s ease-in-out infinite;
+	pointer-events: none;
+}
+
+@keyframes arcade-gun-powerup {
+	0%,
+	100% {
+		transform: translateY(0) rotate(-4deg);
+	}
+	50% {
+		transform: translateY(-5px) rotate(4deg);
+	}
+}
+
+.arcade-enemy {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 24px;
+	height: 26px;
+	will-change: transform;
+}
+
+.arcade-enemy .arcade-enemy-svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.arcade-enemy-level-2 {
+	width: 36px;
+	height: 39px;
+	filter: drop-shadow(0 0 8px oklch(var(--color-arcade-danger) / 0.7));
+}
+
+.arcade-enemy-level-3 {
+	width: 48px;
+	height: 52px;
+	filter: drop-shadow(0 0 10px oklch(var(--color-accent) / 0.85));
+}
+
+/*
+ * Scaled on the X axis by the engine. Green because a bar that is red when
+ * full reads as damage taken rather than health remaining, which is exactly
+ * backwards while you are deciding whether to keep shooting.
+ */
+.arcade-enemy-health {
+	position: absolute;
+	left: 0;
+	top: -7px;
+	width: 100%;
+	height: 3px;
+	border: 1px solid oklch(var(--color-ink) / 0.45);
+	background: oklch(var(--color-arcade-health));
+	transform-origin: left center;
+	transition: transform 0.12s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	/*
+	 * Belt and braces. The engine never starts under this preference — see the
+	 * gate in index.ts — but if it somehow did, nothing here should animate.
+	 */
+	.arcade-revive .arcade-car-inner,
+	.arcade-spawn-protected,
+	.arcade-flash,
+	.arcade-enemyflash,
+	.arcade-muzzle,
+	.arcade-boom,
+	.arcade-respawn,
+	.arcade-gun-powerup {
+		animation: none;
+	}
+}

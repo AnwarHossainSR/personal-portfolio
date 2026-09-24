@@ -1,5 +1,6 @@
 import { Section } from "@/components/section";
 import { processSteps } from "@/data/process";
+import { Reveal } from "@/motion/Reveal";
 
 export function Process() {
 	return (
@@ -11,7 +12,7 @@ export function Process() {
 		>
 			<div className="grid gap-x-10 gap-y-10 md:grid-cols-3">
 				{processSteps.map((step, index) => (
-					<div key={step.title}>
+					<Reveal key={step.title} delay={index * 0.08}>
 						<span className="font-mono text-[11px] tracking-[0.18em] text-faint">
 							{String(index + 1).padStart(2, "0")}
 						</span>
@@ -19,7 +20,7 @@ export function Process() {
 							{step.title}
 						</h3>
 						<p className="mt-3 leading-relaxed text-muted">{step.body}</p>
-					</div>
+					</Reveal>
 				))}
 			</div>
 		</Section>

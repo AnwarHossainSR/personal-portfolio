@@ -1,5 +1,6 @@
 import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { ArcadeToggle } from "@/components/ArcadeToggle";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { profile } from "@/data/profile";
 import { cn } from "@/lib/utils";
@@ -79,7 +80,14 @@ export function AnchorNav() {
 	}, []);
 
 	return (
-		<header className="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur">
+		<header
+			// The arcade overlay treats a painted, viewport-wide element as a
+			// wall. A sticky header is exactly that, and enemies enter from
+			// off-screen above — so the chrome is pass-through, and bullets
+			// bounce off it rather than dismantling the navigation.
+			data-arcade-keep
+			className="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur"
+		>
 			<div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-5 sm:px-8">
 				<a
 					href="#top"
@@ -112,6 +120,11 @@ export function AnchorNav() {
 					>
 						Résumé
 					</a>
+					{/*
+					 * Desktop nav only, and it renders nothing where the game
+					 * cannot run — which is every case the mobile menu covers.
+					 */}
+					<ArcadeToggle />
 					<ThemeToggle />
 				</nav>
 

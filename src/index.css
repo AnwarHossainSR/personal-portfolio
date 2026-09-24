@@ -49,3 +49,37 @@
     scroll-behavior: auto !important;
   }
 }
+
+/*
+ * Hero entrance. Deliberately pure CSS rather than the IntersectionObserver in
+ * src/motion/Reveal.tsx: above the fold is already on screen at first paint,
+ * so making it wait for JavaScript would trade a real LCP for an effect. Values
+ * are the reference implementation's, unchanged.
+ */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(22px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+.hero-rise {
+  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-rise-1 { animation-delay: 0.05s; }
+.hero-rise-2 { animation-delay: 0.15s; }
+.hero-rise-3 { animation-delay: 0.25s; }
+.hero-rise-4 { animation-delay: 0.35s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-rise {
+    animation: none;
+  }
+}
