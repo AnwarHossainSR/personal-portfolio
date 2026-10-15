@@ -25,6 +25,8 @@ export interface Profile {
 	creed: string;
 	location: string;
 	timezone: string;
+	/** IANA zone for the live local-time readout; `timezone` is its label. */
+	timeZoneId: string;
 	availability: string;
 	responseTime: string;
 	email: string;
@@ -72,6 +74,7 @@ export const profile: Profile = {
 		"Software gets judged in production, not in review. That is the part I work on.",
 	location: "Dhaka, Bangladesh",
 	timezone: "UTC+6",
+	timeZoneId: "Asia/Dhaka",
 	availability:
 		"Open to senior backend and platform roles. Remote, or Dhaka-based.",
 	responseTime: "Email gets a reply within two working days.",

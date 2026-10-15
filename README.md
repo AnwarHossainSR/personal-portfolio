@@ -35,6 +35,7 @@ came from, and what still needs confirming.
 | Build | Vite 7, Bun |
 | UI | React 19, TypeScript 5.8, React Router 7 |
 | Styling | Tailwind CSS 3.4 over OKLCH design tokens (`src/styles/tokens.css`) |
+| Type | Geist, Geist Mono, Instrument Serif (Google Fonts) |
 | Content | zod 4 schemas |
 | Tests | Vitest, Testing Library, jsdom, axe |
 | Tooling | Biome |
@@ -44,6 +45,40 @@ Design tokens are stored as bare OKLCH channels (`52% 0.17 35`) and wrapped in
 `oklch(var(--token) / <alpha-value>)` by the Tailwind config. That is what makes
 opacity modifiers such as `bg-paper/85` work — Tailwind cannot inject an alpha
 value into a `var()` that already contains a complete `oklch()` call.
+
+## Design
+
+The page reads as an agent's run console. That is not decoration for its own
+sake: the work it describes — take a change from a plan to production, then
+keep it there — is the shape of an agent run, and the AI and MCP work is part
+of what is on offer.
+
+- **Palette.** Warm graphite neutrals (hue 70–85 at very low chroma, held there
+  by `tokens.test.ts`) with two colours on top, each with one job: *ember*
+  (`accent`) is the human hand — the primary action, links, emphasis; *phosphor*
+  (`signal`) is the system — live status, a step that passed. Dark is the
+  default; light re-resolves the same roles. Every text pair is at least 4.5:1
+  against paper, surface and surface-deep in both themes.
+- **Three voices.** Geist carries the structure. Geist Mono is the system
+  talking — labels, paths, the trace. Instrument Serif italic is the human
+  talking, and is used only where a sentence is a judgement: the creed, and
+  *Keep it running.*
+- **The headline is a plan.** Each sentence of the positioning line is a
+  numbered step. The numbers are generated content with empty alt text, so the
+  `h1`'s accessible name is still exactly `profile.positioning` — a test checks
+  `textContent` for equality, not containment.
+- **The trace is labelled.** The console beside the headline says on screen
+  that it is an illustration, not a log, and `AgentTrace.test.tsx` fails if a
+  digit ever appears in it — a duration there would be a measurement nobody
+  took.
+- **Decoration cannot be hit.** Every decorative layer (the dot field, halos,
+  packet wires, the card spotlight) is `pointer-events: none`. The arcade finds
+  walls with `elementsFromPoint`, so a hittable backdrop would be a wall the
+  size of the hero; `index.css.test.ts` holds each layer to it.
+- **Keyboard first.** `⌘K` / `Ctrl K` opens a command palette — a native
+  `<dialog>` with the ARIA combobox pattern — for every section, case study,
+  link, and the theme. It is lazy, so the case-study titles it lists do not
+  ride in the main chunk.
 
 ## Running it
 
@@ -77,11 +112,15 @@ src/
     case-studies/   One file per case study, registered in index.ts
     notes/          Empty by design — /writing is mounted only when a note exists
   data/             Profile, roles, stack
-  sections/         The one page, in order: WhatIDo, Work, Process, Stack, Contact
+  sections/         The one page, in order: Hero (with AgentTrace), WhatIDo
+                    (with McpDiagram), Work, Process, Stack, Proof, Contact
   components/       Layout, navigation, section primitives
+    command/        ⌘K palette: a tiny open/closed store, the shortcut, and
+                    the dialog (lazy)
   pages/            Home, CaseStudy, Writing, Note, NotFound
   styles/tokens.css OKLCH palette for both themes
-  motion/           Scroll reveal, on IntersectionObserver rather than a library
+  motion/           Scroll reveal on IntersectionObserver rather than a library,
+                    and the pointer-tracked card spotlight
   arcade/           The overlay engine — see below. Lazily imported, never in the
                     main chunk
 docs/               The rebuild plans and the content confirmation checklist
@@ -151,11 +190,12 @@ alone, being per-browser rather than per-score.
 
 ## Credit
 
-The visual system and the arcade overlay both come from
-[entrptaher/taherxyz](https://github.com/entrptaher/taherxyz). The design
-language was taken from that site during the rebuild; `src/arcade/` is a port of
-its `MouseCar.astro`, with the deviations listed above. The enemy stat blocks
-and the ballistics constants are that project's, unchanged.
+The arcade overlay comes from
+[entrptaher/taherxyz](https://github.com/entrptaher/taherxyz): `src/arcade/` is
+a port of its `MouseCar.astro`, with the deviations listed above. The enemy
+stat blocks and the ballistics constants are that project's, unchanged. The
+previous visual system was also taken from that site; the current one,
+described under *Design*, replaced it.
 
 ## Adding a case study
 

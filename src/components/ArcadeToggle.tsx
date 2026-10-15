@@ -1,3 +1,4 @@
+import { Gamepad2 } from "lucide-react";
 import { useSyncExternalStore } from "react";
 import { canRunArcade } from "@/arcade/gate";
 import {
@@ -20,7 +21,7 @@ import { cn } from "@/lib/utils";
  * It renders nothing at all where the game cannot run — touch, coarse pointer,
  * reduced motion — so the control never offers something that would do nothing.
  */
-export function ArcadeToggle() {
+export function ArcadeToggle({ className }: { className?: string }) {
 	const enabled = useSyncExternalStore(
 		subscribeArcadeMode,
 		getArcadeMode,
@@ -43,12 +44,14 @@ export function ArcadeToggle() {
 			}
 			onClick={() => setArcadeMode(!enabled)}
 			className={cn(
-				"ml-1 rounded border px-3 py-2 text-sm transition-colors",
+				"inline-flex h-9 items-center gap-1.5 rounded-full border px-3 text-[13px] transition-colors",
 				enabled
-					? "border-accent text-accent"
-					: "border-line text-muted hover:text-ink",
+					? "border-accent/60 bg-accent/10 text-accent"
+					: "border-line/80 bg-surface/60 text-muted hover:text-ink",
+				className,
 			)}
 		>
+			<Gamepad2 className="h-3.5 w-3.5" aria-hidden="true" />
 			Arcade
 		</button>
 	);

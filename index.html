@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="light">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,12 +12,35 @@
     />
     <meta name="author" content="Md. Anwar Hossain" />
 
+    <!--
+      Theme before first paint. Mirrors src/hooks/useTheme.ts: the stored
+      choice wins only when it was made under the current default version,
+      so bumping THEME_DEFAULT_VERSION there must be mirrored here.
+    -->
+    <script>
+      (() => {
+        try {
+          const current =
+            localStorage.getItem("theme-default-version") === "dark-v2";
+          let theme = current ? localStorage.getItem("theme") : "dark";
+          if (theme === "system") {
+            const light = matchMedia("(prefers-color-scheme: light)").matches;
+            theme = light ? "light" : "dark";
+          }
+          document.documentElement.className =
+            theme === "light" ? "light" : "dark";
+        } catch {
+          // Storage is blocked: keep the dark default already on <html>.
+        }
+      })();
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400..700&family=Hind+Siliguri:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300..800&family=Geist+Mono:wght@400..600&family=Instrument+Serif:ital@0;1&display=swap"
     />
 
     <!-- Open Graph / Social Media -->
@@ -53,7 +76,8 @@
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#b63613" />
+    <!-- Kept in step with the active theme by src/hooks/useTheme.ts. -->
+    <meta name="theme-color" content="#0c0a08" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

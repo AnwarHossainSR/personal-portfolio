@@ -16,12 +16,16 @@
   body {
     @apply bg-paper text-ink font-sans antialiased;
     min-width: 320px;
-    font-feature-settings: "cv11", "ss01";
+    font-feature-settings: "ss01", "cv11";
     text-rendering: optimizeLegibility;
   }
 
   ::selection {
-    @apply bg-accent/[0.28];
+    @apply bg-accent/[0.3] text-ink;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-paper;
   }
 }
 
@@ -37,6 +41,19 @@
   .eyebrow {
     @apply text-xs uppercase tracking-[0.18em] text-muted;
   }
+
+  /* A raised surface: cards, the trace console, the palette. */
+  .panel {
+    @apply rounded-2xl border border-line/80 bg-surface shadow-elevation-1;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-paper/40 px-2.5 py-0.5 font-mono text-[11px] leading-5 text-muted;
+  }
+
+  .kbd {
+    @apply inline-flex h-5 min-w-5 items-center justify-center rounded border border-line bg-surface-deep px-1 font-mono text-[10px] leading-none text-muted;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -51,10 +68,343 @@
 }
 
 /*
+ * Decorative layers.
+ *
+ * Every one of these is pointer-events: none, and that is load-bearing rather
+ * than tidy: the arcade overlay (src/arcade/world.ts) finds obstacles with
+ * document.elementsFromPoint, which skips anything that cannot be hit. A
+ * painted backdrop that could be hit would be a wall the size of the hero.
+ */
+
+/* A dot matrix confined to the hero, fading out from behind the console. */
+.dot-field {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(
+    oklch(var(--color-ink) / var(--dot-strength)) 1px,
+    transparent 1.2px
+  );
+  background-size: 22px 22px;
+  -webkit-mask-image: radial-gradient(
+    ellipse 60% 70% at 72% 40%,
+    #000 20%,
+    transparent 72%
+  );
+  mask-image: radial-gradient(
+    ellipse 60% 70% at 72% 40%,
+    #000 20%,
+    transparent 72%
+  );
+}
+
+/* Ember light behind whatever it is placed under. */
+.halo {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+  background: radial-gradient(
+    closest-side,
+    oklch(var(--color-accent) / var(--halo-strength)),
+    oklch(var(--color-accent) / calc(var(--halo-strength) / 4)) 55%,
+    transparent
+  );
+  filter: blur(24px);
+}
+
+.halo-signal {
+  background: radial-gradient(
+    closest-side,
+    oklch(var(--color-signal) / 0.14),
+    transparent
+  );
+}
+
+/*
+ * Pointer-tracked highlight for cards. The position comes from
+ * src/motion/useSpotlight.ts as --spot-x / --spot-y; without it (touch, no
+ * JS, reduced motion) the card simply has no highlight.
+ */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  background: radial-gradient(
+    28rem circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    oklch(var(--color-accent) / 0.09),
+    transparent 45%
+  );
+}
+
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* A live status light: a solid core with a ring that keeps expanding. */
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  flex: none;
+  border-radius: 9999px;
+  background: oklch(var(--color-signal));
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: inherit;
+  animation: ping 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* A terminal caret, drawn rather than typed so it is never read aloud. */
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.08em;
+  min-width: 2px;
+  height: 0.9em;
+  margin-left: 0.12em;
+  vertical-align: -0.06em;
+  background: oklch(var(--color-signal));
+  animation: blink 1.1s steps(1) infinite;
+}
+
+.caret-block::after {
+  width: 0.55em;
+  height: 1.1em;
+  vertical-align: -0.2em;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/*
+ * The headline as a plan. Each sentence of profile.positioning is a step, and
+ * its number is generated content with empty alternative text (the "/ ''"),
+ * so the h1's accessible name stays exactly the positioning line.
+ */
+.plan-step::before {
+  content: attr(data-step);
+  content: attr(data-step) / "";
+  display: inline-block;
+  width: 2.1em;
+  margin-left: -2.1em;
+  font-family: "Geist Mono", ui-monospace, monospace;
+  font-size: 0.2em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  vertical-align: 0.95em;
+  color: oklch(var(--color-faint));
+}
+
+@media (max-width: 767px) {
+  .plan-step::before {
+    display: none;
+  }
+}
+
+/*
+ * Agent trace. Rows arrive in sequence; each one spins until --done, then
+ * ticks. Pure CSS on a one-shot timeline: a console that kept re-running
+ * would be a loading animation, and nothing here is loading.
+ */
+.trace-row {
+  animation: trace-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: var(--at, 0s);
+}
+
+.trace-spin {
+  animation:
+    trace-rotate 0.8s linear infinite,
+    trace-out 0.01s linear forwards;
+  animation-delay: 0s, var(--done, 0s);
+}
+
+.trace-tick {
+  opacity: 0;
+  animation: trace-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation-delay: var(--done, 0s);
+}
+
+.trace-type {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  vertical-align: bottom;
+  width: 0;
+  animation: trace-type 1.4s steps(var(--chars, 20)) forwards;
+  animation-delay: var(--at, 0s);
+}
+
+@keyframes trace-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes trace-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes trace-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes trace-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes trace-type {
+  to {
+    width: calc(var(--chars, 20) * 1ch);
+  }
+}
+
+/* A packet of light travelling a connector, left to right, forever. */
+.packet-track {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.packet-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(var(--color-accent)) 50%,
+    transparent
+  );
+  background-size: 40% 100%;
+  background-repeat: no-repeat;
+  animation: packet 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: var(--at, 0s);
+}
+
+.packet-track-vertical::after {
+  background: linear-gradient(
+    180deg,
+    transparent,
+    oklch(var(--color-accent)) 50%,
+    transparent
+  );
+  background-size: 100% 40%;
+  background-repeat: no-repeat;
+  animation-name: packet-vertical;
+}
+
+@keyframes packet {
+  from {
+    background-position: -60% 0;
+  }
+  to {
+    background-position: 160% 0;
+  }
+}
+
+@keyframes packet-vertical {
+  from {
+    background-position: 0 -60%;
+  }
+  to {
+    background-position: 0 160%;
+  }
+}
+
+/* A thin bar under the header that fills as the page is read. */
+.scroll-progress {
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    animation: progress linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes progress {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/*
+ * The footer's wordmark: a solid fill one step off the ground, fading out
+ * downwards. Not an outline — text-stroke on a variable font draws its
+ * overlapping contours, which shows up as stray boxes inside the H.
+ */
+.wordmark {
+  color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    oklch(var(--color-surface-deep)) 30%,
+    oklch(var(--color-paper))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/*
+ * Theme switch. With the View Transitions API the new theme is revealed as a
+ * circle growing from the toggle (src/components/ThemeToggle.tsx); these two
+ * rules turn off the default cross-fade so the clip-path is all you see.
+ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/*
  * Hero entrance. Deliberately pure CSS rather than the IntersectionObserver in
  * src/motion/Reveal.tsx: above the fold is already on screen at first paint,
- * so making it wait for JavaScript would trade a real LCP for an effect. Values
- * are the reference implementation's, unchanged.
+ * so making it wait for JavaScript would trade a real LCP for an effect.
  */
 @keyframes rise {
   from {
@@ -70,7 +420,7 @@
 }
 
 .hero-rise {
-  animation: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .hero-rise-1 { animation-delay: 0.05s; }
@@ -79,7 +429,34 @@
 .hero-rise-4 { animation-delay: 0.35s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-rise {
+  .hero-rise,
+  .trace-row,
+  .trace-tick,
+  .live-dot::after,
+  .caret::after,
+  .packet-track::after,
+  .scroll-progress {
     animation: none;
+  }
+
+  .trace-spin {
+    display: none;
+  }
+
+  .trace-tick {
+    opacity: 1;
+  }
+
+  .trace-type {
+    width: auto;
+    animation: none;
+  }
+
+  .packet-track::after {
+    display: none;
+  }
+
+  .spotlight::before {
+    display: none;
   }
 }
