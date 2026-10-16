@@ -6,8 +6,7 @@ import {
 	useModifierLabel,
 } from "@/components/command/CommandTrigger";
 import { profile } from "@/data/profile";
-
-const SOURCE_URL = "https://github.com/AnwarHossainSR/personal-portfolio";
+import { SOURCE_URL } from "@/data/site";
 
 export function Footer() {
 	const modifier = useModifierLabel();
@@ -65,6 +64,7 @@ export function Footer() {
 							{[
 								...profile.links,
 								{ label: "Résumé", href: profile.resumePath },
+								{ label: "llms.txt, for AI agents", href: "/llms.txt" },
 							].map((link) => (
 								<li key={link.href}>
 									<a

@@ -13,7 +13,7 @@ export function Process() {
 	return (
 		<Section
 			id="process"
-			number="03"
+			number="04"
 			eyebrow="How I work"
 			title="Three things that shape the work"
 		>
@@ -48,7 +48,7 @@ export function Process() {
 								)}
 							</div>
 
-							<div className="panel mt-5 flex-1 p-6 md:p-7">
+							<div data-arcade-ground className="panel mt-5 flex-1 p-6 md:p-7">
 								<p className="font-mono text-[11px] uppercase tracking-[0.18em] text-faint">
 									{STAGE[index]}
 								</p>

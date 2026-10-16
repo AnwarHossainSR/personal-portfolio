@@ -6,7 +6,7 @@ export function ResultsTable({ results }: { results: Result[] }) {
 	}
 
 	return (
-		<div className="panel overflow-x-auto">
+		<div data-arcade-ground className="panel overflow-x-auto">
 			<table className="w-full min-w-[36rem] border-collapse text-left text-[15px]">
 				<caption className="sr-only">
 					Measured results, with the method used for each

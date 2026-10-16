@@ -79,6 +79,7 @@ export default function CaseStudy() {
 					{study.constraints.map((constraint, index) => (
 						<li
 							key={constraint}
+							data-arcade-ground
 							className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-2 rounded-xl border border-line/70 bg-surface/50 p-4 text-[16px] leading-[1.7] text-muted"
 						>
 							<span
@@ -208,7 +209,7 @@ export default function CaseStudy() {
 								["Role", study.role],
 								["Team", study.team],
 							].map(([term, value]) => (
-								<div key={term} className="panel p-4">
+								<div key={term} data-arcade-ground className="panel p-4">
 									<dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-faint">
 										{term}
 									</dt>
@@ -258,6 +259,7 @@ export default function CaseStudy() {
 					{next !== study && (
 						<Link
 							to={`/work/${next.slug}`}
+							data-arcade-ground
 							className="group mt-20 flex items-center justify-between gap-6 rounded-2xl border border-line/80 bg-surface p-6 shadow-elevation-1 transition-colors hover:border-accent/50 md:p-8"
 						>
 							<span>

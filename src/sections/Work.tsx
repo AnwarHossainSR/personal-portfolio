@@ -13,7 +13,7 @@ export function Work() {
 	return (
 		<Section
 			id="work"
-			number="02"
+			number="03"
 			eyebrow="Selected work"
 			title="Built and run in production"
 		>

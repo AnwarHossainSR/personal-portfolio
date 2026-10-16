@@ -126,3 +126,40 @@ describe("ArcadePanel", () => {
 		expect(await axe(container)).toHaveNoViolations();
 	});
 });
+
+describe("HowToPlay", () => {
+	it("says how to fly as soon as the game starts, without opening anything", () => {
+		render(<ArcadePanel />);
+		const hint = screen.getByRole("complementary", { name: "How to play" });
+		expect(hint).toHaveTextContent(/arrow keys to fly/i);
+		expect(hint).toHaveTextContent(/end the game/i);
+		expect(hint).toHaveAttribute("data-arcade-keep");
+	});
+
+	it("gets out of the way on the first movement key", async () => {
+		render(<ArcadePanel />);
+		await userEvent.keyboard("{ArrowRight}");
+		expect(
+			screen.queryByRole("complementary", { name: "How to play" }),
+		).not.toBeInTheDocument();
+	});
+
+	it("ignores keys that are not movement", async () => {
+		render(<ArcadePanel />);
+		await userEvent.keyboard("1");
+		expect(
+			screen.getByRole("complementary", { name: "How to play" }),
+		).toBeInTheDocument();
+	});
+
+	it("closes from its own button and stays closed when the stats open", async () => {
+		render(<ArcadePanel />);
+		await userEvent.click(screen.getByRole("button", { name: "Got it" }));
+		await userEvent.click(
+			screen.getByRole("button", { name: /arcade stats/i }),
+		);
+		expect(
+			screen.queryByRole("complementary", { name: "How to play" }),
+		).not.toBeInTheDocument();
+	});
+});

@@ -1,4 +1,4 @@
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { setArcadeMode } from "@/arcade/mode";
 import {
 	getMutedServerSnapshot,
@@ -8,6 +8,7 @@ import {
 } from "@/arcade/sound";
 import { ENEMY_LEVEL_NUMBERS } from "@/arcade/storage";
 import { enemyRowIds, TELEMETRY_IDS } from "@/arcade/telemetry-ids";
+import { SOURCE_URL } from "@/data/site";
 
 /**
  * The overlay's readout, and its explanation.
@@ -44,6 +45,105 @@ function Row({ label, id }: { label: string; id: string }) {
 	);
 }
 
+const MOVE_KEYS = new Set([
+	"w",
+	"a",
+	"s",
+	"d",
+	"arrowup",
+	"arrowdown",
+	"arrowleft",
+	"arrowright",
+]);
+const HOW_TO_PLAY_FOR_MS = 12_000;
+
+function Keys({ keys }: { keys: string[] }) {
+	return (
+		<span className="inline-flex gap-1" aria-hidden="true">
+			{keys.map((key) => (
+				<kbd key={key} className="kbd h-6 min-w-6 text-[11px] text-ink">
+					{key}
+				</kbd>
+			))}
+		</span>
+	);
+}
+
+/**
+ * How to play, on screen the moment the game starts.
+ *
+ * The controls used to be written only inside the stats panel, which is
+ * closed by default. So the first thing most people did after switching the
+ * game on was move the mouse, watch the rocket sit still, and decide it was
+ * broken — the rocket flies on the keyboard, and the mouse only aims. This
+ * says so up front, then gets out of the way: on the first movement key, on
+ * its own button, or after twelve seconds.
+ */
+export function HowToPlay() {
+	const [visible, setVisible] = useState(true);
+
+	useEffect(() => {
+		if (!visible) return;
+		const onKeyDown = (event: KeyboardEvent) => {
+			if (MOVE_KEYS.has(event.key.toLowerCase())) setVisible(false);
+		};
+		const timer = window.setTimeout(
+			() => setVisible(false),
+			HOW_TO_PLAY_FOR_MS,
+		);
+		document.addEventListener("keydown", onKeyDown);
+		return () => {
+			document.removeEventListener("keydown", onKeyDown);
+			window.clearTimeout(timer);
+		};
+	}, [visible]);
+
+	if (!visible) return null;
+
+	return (
+		<aside
+			aria-label="How to play"
+			data-arcade-keep
+			className="pointer-events-auto fixed bottom-6 left-1/2 z-[70] w-[min(34rem,calc(100vw-2rem))] -translate-x-1/2 rounded-2xl border border-line bg-paper/95 px-5 py-4 shadow-lg backdrop-blur"
+		>
+			<div className="flex items-center justify-between gap-4">
+				<p className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
+					How to play
+				</p>
+				<button
+					type="button"
+					onClick={() => setVisible(false)}
+					className="rounded-full border border-line px-3 py-1 font-mono text-[11px] uppercase tracking-[0.14em] text-muted transition-colors hover:text-ink"
+				>
+					Got it
+				</button>
+			</div>
+			<ul className="mt-3 grid gap-x-6 gap-y-2.5 text-sm text-muted sm:grid-cols-2">
+				<li className="flex items-center gap-2.5">
+					<Keys keys={["W", "A", "S", "D"]} />
+					<span>or the arrow keys to fly</span>
+				</li>
+				<li className="flex items-center gap-2.5">
+					<Keys keys={["Click"]} />
+					<span>to fire where you point</span>
+				</li>
+				<li className="flex items-center gap-2.5">
+					<Keys keys={["1", "2", "3", "4"]} />
+					<span>to change guns</span>
+				</li>
+				<li className="flex items-center gap-2.5">
+					<Keys keys={["Esc"]} />
+					<span>to end the game</span>
+				</li>
+			</ul>
+			<p className="mt-3 text-[13px] leading-relaxed text-faint">
+				Scroll as you like — the rocket follows you down the page. Shoot the
+				text to clear a path; nothing it breaks is permanent.
+			</p>
+		</aside>
+	);
+}
+
 export function ArcadePanel() {
 	const [open, setOpen] = useState(false);
 	const [confirmingReset, setConfirmingReset] = useState(false);
@@ -55,208 +155,214 @@ export function ArcadePanel() {
 
 	if (!open) {
 		return (
-			<button
-				type="button"
-				data-arcade-keep
-				onClick={() => setOpen(true)}
-				aria-expanded={false}
-				className="pointer-events-auto fixed bottom-4 right-4 z-[70] rounded-md border border-line bg-paper/95 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted shadow-sm backdrop-blur transition-colors hover:text-ink"
-			>
-				Arcade stats
-			</button>
+			<>
+				<HowToPlay />
+				<button
+					type="button"
+					data-arcade-keep
+					onClick={() => setOpen(true)}
+					aria-expanded={false}
+					className="pointer-events-auto fixed bottom-4 right-4 z-[70] rounded-md border border-line bg-paper/95 px-3 py-2 font-mono text-[11px] uppercase tracking-[0.14em] text-muted shadow-sm backdrop-blur transition-colors hover:text-ink"
+				>
+					Arcade stats
+				</button>
+			</>
 		);
 	}
 
 	return (
-		<aside
-			aria-labelledby="arcade-panel-heading"
-			data-arcade-keep
-			// Above the arcade root (z-60) so the game draws behind it, and
-			// pointer-events restored because this panel, unlike everything else
-			// the overlay puts on screen, is meant to be clicked.
-			className="pointer-events-auto fixed bottom-4 right-4 z-[70] w-[19rem] max-w-[calc(100vw-2rem)] rounded-md border border-line bg-paper/95 shadow-lg backdrop-blur"
-		>
-			<div className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5">
-				<h2
-					id="arcade-panel-heading"
-					className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted"
-				>
-					Arcade overlay
-				</h2>
-				<div className="flex items-center gap-3">
-					<button
-						type="button"
-						onClick={() => setOpen(false)}
-						aria-expanded={true}
-						className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint transition-colors hover:text-ink"
+		<>
+			<HowToPlay />
+			<aside
+				aria-labelledby="arcade-panel-heading"
+				data-arcade-keep
+				// Above the arcade root (z-60) so the game draws behind it, and
+				// pointer-events restored because this panel, unlike everything else
+				// the overlay puts on screen, is meant to be clicked.
+				className="pointer-events-auto fixed bottom-4 right-4 z-[70] w-[19rem] max-w-[calc(100vw-2rem)] rounded-md border border-line bg-paper/95 shadow-lg backdrop-blur"
+			>
+				<div className="flex items-center justify-between gap-3 border-b border-line px-4 py-2.5">
+					<h2
+						id="arcade-panel-heading"
+						className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted"
 					>
-						Hide
-					</button>
-					<button
-						type="button"
-						onClick={() => setArcadeMode(false)}
-						className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint transition-colors hover:text-ink"
-					>
-						Stop
-					</button>
-				</div>
-			</div>
-
-			<div className="max-h-[60vh] space-y-3 overflow-y-auto px-4 py-3">
-				<div className="space-y-1.5 font-mono text-[11px] uppercase tracking-[0.12em]">
-					<Row label="Shots" id={TELEMETRY_IDS.shots} />
-					<Row label="Glyphs destroyed" id={TELEMETRY_IDS.broken} />
-					<Row label="Orbs collected" id={TELEMETRY_IDS.grabs} />
-					<Row label="Hull" id={TELEMETRY_IDS.hull} />
-					<Row label="Gun" id={TELEMETRY_IDS.gunMode} />
-					<Row label="Enemy speed" id={TELEMETRY_IDS.enemySpeed} />
-					<Row label="Highest level" id={TELEMETRY_IDS.maxLevel} />
-				</div>
-
-				<div className="space-y-1.5 border-t border-line/60 pt-3 font-mono text-[11px] uppercase tracking-[0.12em]">
-					<div className={`${rowClass} text-faint`}>
-						<span>Enemies</span>
-						<span className="tabular-nums">now/ses/all</span>
-					</div>
-					{ENEMY_LEVEL_NUMBERS.map((level) => {
-						const ids = enemyRowIds(level);
-						return (
-							<div key={level} className={rowClass}>
-								<span className="text-faint">Level {level}</span>
-								<span className={valueClass}>
-									<span id={ids.current}>0</span>
-									{" / "}
-									<span id={ids.session}>0</span>
-									{" / "}
-									<span id={ids.allTime}>0</span>
-								</span>
-							</div>
-						);
-					})}
-				</div>
-
-				<div className="flex items-center justify-between gap-4 border-t border-line/60 pt-3 font-mono text-[11px] uppercase tracking-[0.12em]">
-					<span className="text-faint">Sound</span>
-					{/*
-					 * The control the first cut of this was missing. Audio still
-					 * defaults to off — unprompted noise on a portfolio is worse
-					 * than silence — but silence with no way out is worse than
-					 * either.
-					 */}
-					<button
-						type="button"
-						aria-pressed={!muted}
-						onClick={() => setMuted(!muted)}
-						className="text-ink underline underline-offset-4 transition-colors hover:text-accent"
-					>
-						{muted ? "Off" : "On"}
-					</button>
-				</div>
-
-				{/*
-				 * Clearing the all-time score, two-step like the reference's
-				 * panel. Theirs removes the stored ciphertext and reloads the
-				 * page; a reload here would throw away both the run and the
-				 * restored page, so the engine zeroes its counters in place and
-				 * the telemetry sweep picks them up on the next frame.
-				 *
-				 * The engine is reached through a dynamic import so this control
-				 * cannot drag it into the main bundle. By the time anyone can
-				 * click it the chunk is already loaded — the panel only exists
-				 * while the overlay is running.
-				 */}
-				<div className="border-t border-line/60 pt-3">
-					{confirmingReset ? (
-						<div
-							role="alert"
-							className="flex flex-wrap items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.12em]"
-						>
-							<span className="text-faint">Clear all-time score?</span>
-							<span className="flex items-center gap-3">
-								<button
-									type="button"
-									onClick={() => setConfirmingReset(false)}
-									className="text-faint transition-colors hover:text-ink"
-								>
-									Cancel
-								</button>
-								<button
-									type="button"
-									onClick={async () => {
-										const { resetScore } = await import("@/arcade");
-										resetScore();
-										setConfirmingReset(false);
-									}}
-									className="rounded bg-accent px-2.5 py-1 text-paper transition-opacity hover:opacity-90"
-								>
-									Confirm
-								</button>
-							</span>
-						</div>
-					) : (
+						Arcade overlay
+					</h2>
+					<div className="flex items-center gap-3">
 						<button
 							type="button"
-							onClick={() => setConfirmingReset(true)}
-							className="font-mono text-[11px] uppercase tracking-[0.12em] text-faint underline underline-offset-4 transition-colors hover:text-ink"
+							onClick={() => setOpen(false)}
+							aria-expanded={true}
+							className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint transition-colors hover:text-ink"
 						>
-							Clear score
+							Hide
 						</button>
-					)}
+						<button
+							type="button"
+							onClick={() => setArcadeMode(false)}
+							className="font-mono text-[11px] uppercase tracking-[0.14em] text-faint transition-colors hover:text-ink"
+						>
+							Stop
+						</button>
+					</div>
 				</div>
 
-				<p className="border-t border-line/60 pt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.12em] text-faint">
-					WASD · click to fire · 1–4 guns · V boundaries · Esc to stop
-				</p>
-
-				{/*
-				 * The note that makes this an artifact rather than a gimmick,
-				 * folded away so it does not compete with the numbers. Same rule
-				 * as the rest of the site: no figure here that was not measured,
-				 * and the limitation of the score sealing is stated rather than
-				 * left out.
-				 */}
-				<details className="border-t border-line/60 pt-3 text-sm leading-relaxed text-muted">
-					<summary className="cursor-pointer font-mono text-[11px] uppercase tracking-[0.14em] text-faint transition-colors hover:text-ink">
-						What this is
-					</summary>
-					<div className="mt-3 space-y-3">
-						<p>
-							The overlay reads this page as its level. Every element is
-							classified as an obstacle from computed style — background alpha,
-							background image, box shadow, border — and text nodes are walked
-							with a Range for per-character rectangles, so the collision world
-							is the layout itself rather than a description of it. Hold V to
-							see it.
-						</p>
-						<p>
-							Bullets sweep the segment they travelled each frame instead of
-							testing where they landed, which is what stops them passing
-							through a hairline rule at speed. Enemies sample eight headings
-							and steer around obstacles rather than chasing in a straight line.
-							The score is sealed with a key held in IndexedDB: that stops it
-							being edited in storage, and does not stop anyone who opens the
-							console.
-						</p>
-						<p>
-							Nothing it destroys is permanent. Every change is registered
-							before it is made and reversed when you stop, because React will
-							not put back a text node deleted underneath it.
-						</p>
-						<p>
-							<a
-								href="https://github.com/AnwarHossainSR/personal-portfolio/tree/main/src/arcade"
-								target="_blank"
-								rel="noreferrer"
-								className="text-ink underline underline-offset-4 transition-colors hover:text-accent"
-							>
-								Read the source
-							</a>{" "}
-							— the code is the evidence; a claim about it is not.
-						</p>
+				<div className="max-h-[60vh] space-y-3 overflow-y-auto px-4 py-3">
+					<div className="space-y-1.5 font-mono text-[11px] uppercase tracking-[0.12em]">
+						<Row label="Shots" id={TELEMETRY_IDS.shots} />
+						<Row label="Glyphs destroyed" id={TELEMETRY_IDS.broken} />
+						<Row label="Orbs collected" id={TELEMETRY_IDS.grabs} />
+						<Row label="Hull" id={TELEMETRY_IDS.hull} />
+						<Row label="Gun" id={TELEMETRY_IDS.gunMode} />
+						<Row label="Enemy speed" id={TELEMETRY_IDS.enemySpeed} />
+						<Row label="Highest level" id={TELEMETRY_IDS.maxLevel} />
 					</div>
-				</details>
-			</div>
-		</aside>
+
+					<div className="space-y-1.5 border-t border-line/60 pt-3 font-mono text-[11px] uppercase tracking-[0.12em]">
+						<div className={`${rowClass} text-faint`}>
+							<span>Enemies</span>
+							<span className="tabular-nums">now/ses/all</span>
+						</div>
+						{ENEMY_LEVEL_NUMBERS.map((level) => {
+							const ids = enemyRowIds(level);
+							return (
+								<div key={level} className={rowClass}>
+									<span className="text-faint">Level {level}</span>
+									<span className={valueClass}>
+										<span id={ids.current}>0</span>
+										{" / "}
+										<span id={ids.session}>0</span>
+										{" / "}
+										<span id={ids.allTime}>0</span>
+									</span>
+								</div>
+							);
+						})}
+					</div>
+
+					<div className="flex items-center justify-between gap-4 border-t border-line/60 pt-3 font-mono text-[11px] uppercase tracking-[0.12em]">
+						<span className="text-faint">Sound</span>
+						{/*
+						 * The control the first cut of this was missing. Audio still
+						 * defaults to off — unprompted noise on a portfolio is worse
+						 * than silence — but silence with no way out is worse than
+						 * either.
+						 */}
+						<button
+							type="button"
+							aria-pressed={!muted}
+							onClick={() => setMuted(!muted)}
+							className="text-ink underline underline-offset-4 transition-colors hover:text-accent"
+						>
+							{muted ? "Off" : "On"}
+						</button>
+					</div>
+
+					{/*
+					 * Clearing the all-time score, two-step like the reference's
+					 * panel. Theirs removes the stored ciphertext and reloads the
+					 * page; a reload here would throw away both the run and the
+					 * restored page, so the engine zeroes its counters in place and
+					 * the telemetry sweep picks them up on the next frame.
+					 *
+					 * The engine is reached through a dynamic import so this control
+					 * cannot drag it into the main bundle. By the time anyone can
+					 * click it the chunk is already loaded — the panel only exists
+					 * while the overlay is running.
+					 */}
+					<div className="border-t border-line/60 pt-3">
+						{confirmingReset ? (
+							<div
+								role="alert"
+								className="flex flex-wrap items-center justify-between gap-3 font-mono text-[11px] uppercase tracking-[0.12em]"
+							>
+								<span className="text-faint">Clear all-time score?</span>
+								<span className="flex items-center gap-3">
+									<button
+										type="button"
+										onClick={() => setConfirmingReset(false)}
+										className="text-faint transition-colors hover:text-ink"
+									>
+										Cancel
+									</button>
+									<button
+										type="button"
+										onClick={async () => {
+											const { resetScore } = await import("@/arcade");
+											resetScore();
+											setConfirmingReset(false);
+										}}
+										className="rounded bg-accent px-2.5 py-1 text-paper transition-opacity hover:opacity-90"
+									>
+										Confirm
+									</button>
+								</span>
+							</div>
+						) : (
+							<button
+								type="button"
+								onClick={() => setConfirmingReset(true)}
+								className="font-mono text-[11px] uppercase tracking-[0.12em] text-faint underline underline-offset-4 transition-colors hover:text-ink"
+							>
+								Clear score
+							</button>
+						)}
+					</div>
+
+					<p className="border-t border-line/60 pt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.12em] text-faint">
+						WASD · click to fire · 1–4 guns · V boundaries · Esc to stop
+					</p>
+
+					{/*
+					 * The note that makes this an artifact rather than a gimmick,
+					 * folded away so it does not compete with the numbers. Same rule
+					 * as the rest of the site: no figure here that was not measured,
+					 * and the limitation of the score sealing is stated rather than
+					 * left out.
+					 */}
+					<details className="border-t border-line/60 pt-3 text-sm leading-relaxed text-muted">
+						<summary className="cursor-pointer font-mono text-[11px] uppercase tracking-[0.14em] text-faint transition-colors hover:text-ink">
+							What this is
+						</summary>
+						<div className="mt-3 space-y-3">
+							<p>
+								The overlay reads this page as its level. Every element is
+								classified as an obstacle from computed style — background
+								alpha, background image, box shadow, border — and text nodes are
+								walked with a Range for per-character rectangles, so the
+								collision world is the layout itself rather than a description
+								of it. Hold V to see it.
+							</p>
+							<p>
+								Bullets sweep the segment they travelled each frame instead of
+								testing where they landed, which is what stops them passing
+								through a hairline rule at speed. Enemies sample eight headings
+								and steer around obstacles rather than chasing in a straight
+								line. The score is sealed with a key held in IndexedDB: that
+								stops it being edited in storage, and does not stop anyone who
+								opens the console.
+							</p>
+							<p>
+								Nothing it destroys is permanent. Every change is registered
+								before it is made and reversed when you stop, because React will
+								not put back a text node deleted underneath it.
+							</p>
+							<p>
+								<a
+									href={`${SOURCE_URL}/tree/main/src/arcade`}
+									target="_blank"
+									rel="noreferrer"
+									className="text-ink underline underline-offset-4 transition-colors hover:text-accent"
+								>
+									Read the source
+								</a>{" "}
+								— the code is the evidence; a claim about it is not.
+							</p>
+						</div>
+					</details>
+				</div>
+			</aside>
+		</>
 	);
 }
 

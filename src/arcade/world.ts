@@ -82,6 +82,9 @@ export const KEEP_SELECTOR =
 
 export const CHAR_BLANK_CLASS = "arcade-char-blank";
 
+/** Marks a painted surface as floor rather than wall — see World.isGround. */
+export const GROUND_ATTRIBUTE = "data-arcade-ground";
+
 /** A rect measured against the viewport, lifted into document coordinates. */
 export function toWorldRect(rect: Rect, scrollY: number): Rect {
 	return {
@@ -206,8 +209,15 @@ export class World {
 	 * not an obstacle. This site paints its paper on a wrapper div rather than
 	 * on `body`, and without this the very first element under every probe is a
 	 * wall the size of the document.
+	 *
+	 * An element can also say so itself, with `data-arcade-ground`. The cards
+	 * on this site are painted surfaces, so the style rule alone makes each one
+	 * a solid wall — and a grid of them, 16px apart, is a section the 56px
+	 * rocket cannot enter at all. Marked as ground, a card is floor: the text
+	 * on it still collides glyph by glyph and can still be shot away.
 	 */
 	private isGround(el: Element): boolean {
+		if (el.hasAttribute(GROUND_ATTRIBUTE)) return true;
 		const r = el.getBoundingClientRect();
 		return r.width >= window.innerWidth && r.height >= window.innerHeight;
 	}

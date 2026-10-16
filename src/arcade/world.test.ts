@@ -202,6 +202,20 @@ describe("World.solidity", () => {
 			}) as DOMRect;
 		expect(world().solidity(el)).toBeNull();
 	});
+
+	it("treats a surface marked data-arcade-ground as floor, however it is painted", () => {
+		// The cards on this site are painted surfaces 16px apart. As walls
+		// they sealed whole sections off from a rocket 56px across.
+		mount(
+			'<div id="card" data-arcade-ground style="background-color: rgb(20, 20, 20); box-shadow: 0 0 0 1px red"><p id="copy">Keep it running</p></div>',
+		);
+		const card = document.getElementById("card") as HTMLElement;
+		expect(world().solidity(card)).toBeNull();
+		// Only the card itself: what sits on it is classified as usual.
+		const copy = document.getElementById("copy") as HTMLElement;
+		copy.style.backgroundColor = "rgb(200, 0, 0)";
+		expect(world().solidity(copy)).toBe("filled");
+	});
 });
 
 describe("World.textRect", () => {

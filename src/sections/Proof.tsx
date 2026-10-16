@@ -11,7 +11,7 @@ export function Proof() {
 	return (
 		<Section
 			id="proof"
-			number="05"
+			number="06"
 			eyebrow="Recognition"
 			title="What the work earned"
 		>
@@ -21,6 +21,7 @@ export function Proof() {
 				{recognition.map((item) => (
 					<li
 						key={`${item.title}-${item.year}`}
+						data-arcade-ground
 						className="panel relative flex flex-col gap-6 overflow-hidden p-6 sm:flex-row sm:items-start md:p-8"
 					>
 						<div

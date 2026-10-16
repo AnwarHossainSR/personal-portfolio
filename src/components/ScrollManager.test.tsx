@@ -1,7 +1,7 @@
 import { act, render } from "@testing-library/react";
 import { createMemoryRouter, RouterProvider } from "react-router-dom";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { ScrollManager } from "@/components/ScrollManager";
+import { fragmentId, ScrollManager } from "@/components/ScrollManager";
 
 function renderAt(initial: string) {
 	const router = createMemoryRouter(
@@ -24,8 +24,8 @@ function renderAt(initial: string) {
 
 afterEach(() => {
 	vi.restoreAllMocks();
-	// @ts-expect-error — removing the per-test stub
-	delete Element.prototype.scrollIntoView;
+	// Removes the per-test stub, so jsdom is back to not implementing it.
+	Reflect.deleteProperty(Element.prototype, "scrollIntoView");
 });
 
 describe("ScrollManager", () => {
@@ -52,6 +52,25 @@ describe("ScrollManager", () => {
 		const router = renderAt("/");
 		await act(() => router.navigate("/#work"));
 		expect(scrollIntoView).toHaveBeenCalled();
-		expect(scrollIntoView.mock.contexts.at(-1)).toHaveProperty("id", "work");
+		const contexts = scrollIntoView.mock.contexts;
+		expect(contexts[contexts.length - 1]).toHaveProperty("id", "work");
+	});
+
+	it("survives a malformed hash instead of blanking the page", async () => {
+		// decodeURIComponent throws on this. Thrown inside the effect, it
+		// unmounted the whole layout.
+		const router = renderAt("/");
+		await act(() => router.navigate("/#%E0%A4%A"));
+		expect(document.getElementById("work")).toBeInTheDocument();
+	});
+});
+
+describe("fragmentId", () => {
+	it("decodes a well-formed fragment", () => {
+		expect(fragmentId("#caf%C3%A9")).toBe("café");
+	});
+
+	it("falls back to the fragment as written when it cannot be decoded", () => {
+		expect(fragmentId("#%E0%A4%A")).toBe("%E0%A4%A");
 	});
 });

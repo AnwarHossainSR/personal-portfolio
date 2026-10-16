@@ -402,6 +402,188 @@
 }
 
 /*
+ * Output showcase (src/sections/showcase). Each entrance waits for its tile to
+ * be on screen — the class that starts it (.chart-in, .map-in, .on-air) is set
+ * by useInView — and every one of them is switched off under reduced motion.
+ */
+
+/* Columns grow from the baseline they stand on. */
+.chart-column {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  transform: scaleY(0);
+}
+
+.chart-in .chart-column {
+  animation: chart-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes chart-grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+/* The route draws itself, then a packet keeps travelling it. */
+.map-route {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+}
+
+.map-in .map-route {
+  animation: map-draw 1.6s cubic-bezier(0.65, 0, 0.35, 1) 0.2s forwards;
+}
+
+.map-packet {
+  stroke-dasharray: 6 200;
+  stroke-dashoffset: 6;
+}
+
+.map-in .map-packet {
+  animation: map-packet 2.4s cubic-bezier(0.45, 0, 0.55, 1) 1.8s infinite;
+}
+
+.map-ping {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: map-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+@keyframes map-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes map-packet {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes map-ping {
+  from {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  to {
+    transform: scale(3.4);
+    opacity: 0;
+  }
+}
+
+/* The broadcast set: a floor grid running away from camera. */
+.studio-floor {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: -12%;
+  height: 70%;
+  pointer-events: none;
+  background-image:
+    linear-gradient(oklch(var(--color-ink) / 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, oklch(var(--color-ink) / 0.09) 1px, transparent 1px);
+  background-size: 4cqw 4cqw;
+  transform: perspective(40cqw) rotateX(62deg);
+  transform-origin: 50% 100%;
+  -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 85%);
+  mask-image: linear-gradient(to top, #000 10%, transparent 85%);
+}
+
+/* Lower third: each bar wipes on from the left, the title just behind. */
+.l3 {
+  clip-path: inset(0 100% 0 0);
+}
+
+.on-air .l3 {
+  animation: l3-wipe 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.on-air .l3-title {
+  animation-delay: 0.45s;
+}
+
+.on-air .on-air-ticker {
+  animation: ticker 70s linear infinite;
+}
+
+.on-air-blink {
+  animation: blink 1.2s steps(1) infinite;
+}
+
+.on-air-swap {
+  animation: on-air-swap 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.on-air .on-air-progress {
+  transform-origin: 0 50%;
+  animation: on-air-progress var(--rotate-ms, 3s) linear both;
+}
+
+@keyframes l3-wipe {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes on-air-swap {
+  from {
+    opacity: 0;
+    transform: translateY(0.6cqw);
+  }
+}
+
+@keyframes on-air-progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-column,
+  .chart-in .chart-column {
+    transform: none;
+    animation: none;
+  }
+
+  .map-route,
+  .map-in .map-route {
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+
+  .map-packet,
+  .map-ping,
+  .on-air-progress {
+    display: none;
+  }
+
+  .l3,
+  .on-air .l3 {
+    clip-path: none;
+    animation: none;
+  }
+
+  .on-air .on-air-ticker,
+  .on-air-blink,
+  .on-air-swap {
+    animation: none;
+  }
+}
+
+/*
  * Hero entrance. Deliberately pure CSS rather than the IntersectionObserver in
  * src/motion/Reveal.tsx: above the fold is already on screen at first paint,
  * so making it wait for JavaScript would trade a real LCP for an effect.

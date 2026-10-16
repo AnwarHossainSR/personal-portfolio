@@ -37,8 +37,8 @@ if (!("IntersectionObserver" in globalThis)) {
 		rootMargin = "";
 		thresholds = [];
 	}
-	// @ts-expect-error — minimal stub for tests
-	globalThis.IntersectionObserver = NoopIntersectionObserver;
+	globalThis.IntersectionObserver =
+		NoopIntersectionObserver as unknown as typeof IntersectionObserver;
 }
 
 // jsdom does not implement scrolling. ScrollManager calls window.scrollTo on
