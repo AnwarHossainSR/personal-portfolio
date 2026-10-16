@@ -41,7 +41,7 @@ const rowLabel =
 
 export function Contact() {
 	return (
-		<Section id="contact" number="06" eyebrow="Contact" title="Get in touch">
+		<Section id="contact" number="07" eyebrow="Contact" title="Get in touch">
 			<div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:gap-14">
 				<div className="space-y-5 text-[17px] leading-relaxed text-muted">
 					<p className="flex items-start gap-3 text-ink">
@@ -72,7 +72,10 @@ export function Contact() {
 					)}
 				</div>
 
-				<div className="panel relative overflow-hidden shadow-elevation-2">
+				<div
+					data-arcade-ground
+					className="panel relative overflow-hidden shadow-elevation-2"
+				>
 					<div
 						aria-hidden="true"
 						className="halo -right-32 -top-32 h-80 w-80"
@@ -132,6 +135,29 @@ export function Contact() {
 							<dt className={rowLabel}>Location</dt>
 							<dd className="mt-1.5 text-[15px] text-ink sm:mt-0">
 								{profile.location} · {profile.timezone}
+							</dd>
+						</div>
+						{/*
+						 * For the assistant a recruiter asks about me, rather than for
+						 * the recruiter: the same content as this page, as plain text a
+						 * model can read in one request. Built from the same data.
+						 */}
+						<div className="px-5 py-4 sm:flex sm:items-center sm:gap-6 sm:px-6">
+							<dt className={rowLabel}>For AI agents</dt>
+							<dd className="mt-1.5 text-[15px] sm:mt-0">
+								<a
+									href="/llms.txt"
+									className="font-mono text-[14px] text-ink underline decoration-line underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
+								>
+									/llms.txt
+								</a>
+								<span className="text-muted"> · </span>
+								<a
+									href="/llms-full.txt"
+									className="font-mono text-[14px] text-muted underline decoration-line underline-offset-4 transition-colors hover:text-accent hover:decoration-accent"
+								>
+									/llms-full.txt
+								</a>
 							</dd>
 						</div>
 					</dl>

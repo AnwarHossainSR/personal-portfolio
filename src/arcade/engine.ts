@@ -28,12 +28,14 @@ import {
 	PLAYER_HIT_COOLDOWN,
 	PLAYER_MAX_HEALTH,
 	PLAYER_SPAWN_PROTECTION,
+	RECALL_AFTER,
 	ROCKET_SPEED,
 	SCORE_BALL_DELAY,
 	SCORE_BALL_FIRST,
 	SCORE_BALL_RELOCATE_AFTER,
 	STORAGE,
 } from "@/arcade/constants";
+import { leftBehind, movementKey } from "@/arcade/controls";
 import { Effects } from "@/arcade/effects";
 import {
 	enemyCount,
@@ -126,6 +128,8 @@ export class Game {
 	private spawnProtectionTimer = 0;
 	private enemyLoopTimer = 0;
 	private initialSpawnTimer = 0;
+	/** When the rocket was first seen off-screen; 0 while it is in view. */
+	private leftBehindAt = 0;
 	private disposed = false;
 	private readonly listeners: Array<() => void> = [];
 
@@ -321,7 +325,13 @@ export class Game {
 				if (this.state === "drive") this.blast("r");
 				return;
 			}
-			if ("wasd".includes(k)) this.keys.add(k);
+			const move = movementKey(e.key);
+			if (move) {
+				// An arrow key would also scroll the page. The camera does that
+				// here, and doing both makes the rocket outrun its own view.
+				if (e.key.startsWith("Arrow")) e.preventDefault();
+				this.keys.add(move);
+			}
 		});
 
 		this.on(document, "keyup", (event) => {
@@ -332,7 +342,8 @@ export class Game {
 				return;
 			}
 			if (k === "f") this.keyFiring = false;
-			this.keys.delete(k);
+			const move = movementKey(e.key);
+			if (move) this.keys.delete(move);
 		});
 
 		this.on(window, "blur", () => {
@@ -635,6 +646,35 @@ export class Game {
 		this.telemetry.hull(this.playerHealth);
 		this.carEl.style.display = "block";
 		this.revive();
+		this.arrive();
+		this.state = "drive";
+		return true;
+	}
+
+	/**
+	 * Brings the rocket back into view after the reader scrolled away from it.
+	 * Not a respawn: no death is counted and the hull is not refilled — only
+	 * the position changes, with the arrival effect so the move is seen rather
+	 * than mistaken for a glitch. Spawn protection covers landing next to an
+	 * enemy the reader has not noticed yet.
+	 */
+	private recall(): void {
+		this.leftBehindAt = 0;
+		const centre = this.viewportCentre();
+		const spot =
+			this.safePointAround(this.car.x, centre.y, CAR_CLEAR_R + 6) ??
+			this.clearSpot(CAR_CLEAR_R + 6);
+		// Nowhere free on screen right now; the next frame starts the wait again.
+		if (!spot) return;
+		this.car.x = spot.x;
+		this.car.y = spot.y;
+		this.car.speed = 0;
+		this.cameraVelocity = 0;
+		this.revive();
+		this.arrive();
+	}
+
+	private arrive(): void {
 		// Debris pulled inwards rather than blown outwards: the rocket is
 		// arriving, not exploding.
 		for (let i = 0; i < 10; i++) {
@@ -650,8 +690,6 @@ export class Game {
 				150,
 			);
 		}
-		this.state = "drive";
-		return true;
 	}
 
 	damagePlayer(): void {
@@ -926,6 +964,12 @@ export class Game {
 			if (this.outsideAt && now - this.outsideAt > BLAST_AFTER) {
 				this.blast("idle");
 			}
+			if (leftBehind(this.car.y - window.scrollY, innerHeight)) {
+				if (!this.leftBehindAt) this.leftBehindAt = now;
+				else if (now - this.leftBehindAt > RECALL_AFTER) this.recall();
+			} else {
+				this.leftBehindAt = 0;
+			}
 			this.carEl.style.transform = `translate(${this.car.x - CAR_W / 2}px, ${
 				this.car.y - window.scrollY - CAR_H / 2
 			}px) rotate(${(this.car.angle * 180) / Math.PI}deg)`;
@@ -940,9 +984,15 @@ export class Game {
 				centre.y,
 				CAR_CLEAR_R + 6,
 			);
-			const from = this.spotClear(this.blastAt.x, this.blastAt.y, CAR_CLEAR_R)
-				? this.blastAt
-				: (fallback ?? this.blastAt);
+			const blastInView = !leftBehind(
+				this.blastAt.y - window.scrollY,
+				innerHeight,
+			);
+			const from =
+				blastInView &&
+				this.spotClear(this.blastAt.x, this.blastAt.y, CAR_CLEAR_R)
+					? this.blastAt
+					: (fallback ?? this.blastAt);
 			if (!this.respawn(from.x, from.y)) {
 				this.respawnAt = now + 500;
 			}

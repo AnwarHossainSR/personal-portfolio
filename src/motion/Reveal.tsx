@@ -20,6 +20,8 @@ interface RevealProps {
 	delay?: number;
 	className?: string;
 	as?: ElementType;
+	/** Passed through to the element, e.g. `data-arcade-ground`. */
+	[data: `data-${string}`]: string | boolean | undefined;
 }
 
 // If the observer never fires — no IntersectionObserver, a stubbed one in
@@ -33,6 +35,7 @@ export function Reveal({
 	delay = 0,
 	className,
 	as: Tag = "div",
+	...data
 }: RevealProps) {
 	const reduced = useReducedMotion();
 	const ref = useRef<HTMLElement | null>(null);
@@ -73,13 +76,18 @@ export function Reveal({
 	}, [reduced]);
 
 	if (reduced) {
-		return <Tag className={className}>{children}</Tag>;
+		return (
+			<Tag className={className} {...data}>
+				{children}
+			</Tag>
+		);
 	}
 
 	return (
 		<Tag
 			ref={ref}
 			className={className}
+			{...data}
 			style={{
 				opacity: shown ? 1 : 0,
 				transform: shown ? "none" : "translateY(26px)",

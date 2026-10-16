@@ -25,6 +25,12 @@
 	--color-line: 29% 0.008 80;
 	--color-accent: 73% 0.165 50;
 	--color-signal: 82% 0.15 160;
+	/*
+	 * The de-emphasis gray for charts: the bars that are context rather than
+	 * the point. At least 3:1 against the card surface in both themes, the
+	 * floor for a graphical object to be seen at all.
+	 */
+	--color-chart-rest: 52% 0.008 80;
 
 	/*
 	 * Arcade overlay palette (src/arcade). Kept here rather than in the engine
@@ -81,6 +87,7 @@
 	--color-line: 89% 0.008 80;
 	--color-accent: 52.5% 0.185 40;
 	--color-signal: 49% 0.12 160;
+	--color-chart-rest: 62% 0.01 75;
 
 	/* Arcade overlay palette — same roles, re-resolved for a light page. */
 	--color-accent-deep: 44% 0.16 36;

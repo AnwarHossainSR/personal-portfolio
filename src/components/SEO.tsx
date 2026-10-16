@@ -1,8 +1,7 @@
 import { Helmet, HelmetProvider } from "react-helmet-next";
 import { StructuredData } from "@/components/StructuredData";
 import { profile } from "@/data/profile";
-
-const SITE_URL = "https://anwarportfolio.vercel.app";
+import { SITE_URL } from "@/data/site";
 
 const defaults = {
 	title: `${profile.name} — Senior Software Engineer`,

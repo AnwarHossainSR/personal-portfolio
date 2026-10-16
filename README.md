@@ -75,6 +75,19 @@ of what is on offer.
   packet wires, the card spotlight) is `pointer-events: none`. The arcade finds
   walls with `elementsFromPoint`, so a hittable backdrop would be a wall the
   size of the hero; `index.css.test.ts` holds each layer to it.
+- **The output, drawn.** The *Output* section shows the three things the
+  work produces — a chart, a map and a broadcast graphic — rendered live from
+  this site's own data: tools by the year each came into use (from the Stack
+  section, with a table view), a dot-matrix map of Dhaka and the everviz
+  product group in Norway with live clocks, and a 16:9 broadcast package
+  (lower third, live bug, ticker) sized in container units so it scales like
+  video. The land grid comes from Natural Earth via `world-atlas`, rasterised
+  by `scripts/rasterize-world.py`.
+- **Readable by agents.** `/llms.txt` (the llmstxt.org format) and
+  `/llms-full.txt` (every case study in full) are rendered from the same
+  schema-checked content by a Vite plugin during `vite build`, and served live
+  by the dev server. Each case study carries its evidence level, so a model is
+  told what the work does and does not claim, the same as a person is.
 - **Keyboard first.** `⌘K` / `Ctrl K` opens a command palette — a native
   `<dialog>` with the ARIA combobox pattern — for every section, case study,
   link, and the theme. It is lazy, so the case-study titles it lists do not
@@ -94,7 +107,7 @@ bun run dev        # http://localhost:3000
 | `bun run preview` | Serve the built output |
 | `bun run test` | Vitest, once |
 | `bun run test:watch` | Vitest, watching |
-| `bun run typecheck` | `tsc --noEmit` |
+| `bun run typecheck` | `tsc` against the app and the Node config, one project at a time |
 | `bun run lint` | Biome, writing fixes |
 | `bun run lint:ci` | Biome, read-only — what CI runs |
 | `bun run verify` | Typecheck, test, lint, build |
@@ -113,7 +126,10 @@ src/
     notes/          Empty by design — /writing is mounted only when a note exists
   data/             Profile, roles, stack
   sections/         The one page, in order: Hero (with AgentTrace), WhatIDo
-                    (with McpDiagram), Work, Process, Stack, Proof, Contact
+                    (with McpDiagram), Showcase, Work, Process, Stack, Proof,
+                    Contact
+    showcase/       The chart, the map and the broadcast frame, and their data
+  content/llms.ts   /llms.txt and /llms-full.txt, rendered at build time
   components/       Layout, navigation, section primitives
     command/        ⌘K palette: a tiny open/closed store, the shortcut, and
                     the dialog (lazy)
@@ -124,6 +140,7 @@ src/
   arcade/           The overlay engine — see below. Lazily imported, never in the
                     main chunk
 docs/               The rebuild plans and the content confirmation checklist
+scripts/            rasterize-world.py, which builds the map's land grid
 ```
 
 ## The arcade overlay
@@ -144,7 +161,9 @@ the collision world onto a canvas, from the same classifier the engine collides
 against.
 
 **How to turn it on.** The `Arcade` button in the header, next to the theme
-toggle. The choice is remembered in `localStorage` under `arcade:enabled:v1`.
+toggle. A *How to play* card says the controls the moment it starts — fly
+with WASD or the arrow keys, click to fire, 1–4 for guns, Esc to end — and
+leaves on the first move. The choice is remembered in `localStorage` under `arcade:enabled:v1`.
 `Esc` turns it off, as do the header button and the `Stop` control on the
 panel. While it runs, an `Arcade stats` button sits in the bottom-right corner;
 clicking it opens the telemetry panel, which also holds the sound switch
@@ -179,6 +198,9 @@ bundle and nothing else is.
 | Enemies arrive on four edges | The reference uses only top and bottom, which bunches every arrival into two lanes |
 | It opens faster | First enemy at 2.5s rather than 12s, three concurrent rather than one. The reference starts itself on every visit and needs a grace period; this one was asked for |
 | The rocket spawns in the middle of the screen | `clearSpot` throws random darts, which on a page with wide margins lands it in the gutter |
+| The rocket follows the reader | The camera only ever followed the rocket. Scroll with the wheel and the rocket stayed where it was — four thousand pixels above the screen by the contact section — and the game looked dead. Left behind for 350ms, it is brought back into view, with no death counted and no hull refilled (`src/arcade/controls.ts`) |
+| Cards are floor | This design is built from painted cards 16px apart, and a painted box is a wall: whole sections were sealed off from a 56px rocket. `data-arcade-ground` makes a surface floor; the text on it still collides glyph by glyph and can still be shot |
+| Arrow keys fly too | Most people try the arrows first. They are read as WASD, and stopped from also scrolling the page |
 | The panel opens on click | Closed it is one button. A readout permanently docked over a page whose job is to be read is an obstruction, and the numbers are optional |
 | Clearing the score does not reload | The reference removes the stored ciphertext and calls `location.reload()`, which an MPA can afford. A reload here would throw away the run **and** the restored page, so the engine zeroes its counters in place and the telemetry sweep picks them up on the next frame |
 

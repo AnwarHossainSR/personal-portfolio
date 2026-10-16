@@ -22,8 +22,10 @@ jobs:
       - name: Lint and format check
         run: bunx biome check .
 
+      # Per project: the root tsconfig.json only references the other two, so
+      # a bare `tsc --noEmit` against it checks no files at all.
       - name: Typecheck
-        run: bunx tsc --noEmit
+        run: bun run typecheck
 
       - name: Test
         run: bun run test

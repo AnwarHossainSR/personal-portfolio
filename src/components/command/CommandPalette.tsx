@@ -1,6 +1,7 @@
 import {
 	ArrowRight,
 	AtSign,
+	Bot,
 	Copy,
 	FileText,
 	Github,
@@ -24,10 +25,9 @@ import { useNavigate } from "react-router-dom";
 import { SECTIONS } from "@/components/AnchorNav";
 import { caseStudies } from "@/content/case-studies";
 import { profile } from "@/data/profile";
-import { resolveTheme, toggleTheme, useTheme } from "@/hooks/useTheme";
+import { SOURCE_URL } from "@/data/site";
+import { toggleTheme, useTheme } from "@/hooks/useTheme";
 import { cn } from "@/lib/utils";
-
-const SOURCE_URL = "https://github.com/AnwarHossainSR/personal-portfolio";
 
 type Group = "Navigate" | "Case studies" | "Links" | "Actions";
 const GROUP_ORDER: Group[] = ["Navigate", "Case studies", "Links", "Actions"];
@@ -40,7 +40,12 @@ interface Command {
 	/** Extra words the filter should match that the label does not show. */
 	keywords?: string;
 	icon: LucideIcon;
-	run: () => void;
+	run: () => unknown;
+	/**
+	 * Close only once run() resolves true. For an action that can fail where
+	 * the reader is looking — copying — so a failure stays on screen to retry.
+	 */
+	confirms?: boolean;
 }
 
 const LINK_ICONS: Record<string, LucideIcon> = {
@@ -74,16 +79,18 @@ function matches(command: Command, query: string): boolean {
  */
 export default function CommandPalette({ onClose }: { onClose: () => void }) {
 	const navigate = useNavigate();
-	const { theme } = useTheme();
+	const { resolvedTheme } = useTheme();
 	const dialogRef = useRef<HTMLDialogElement>(null);
 	const inputRef = useRef<HTMLInputElement>(null);
 	const listId = useId();
 	const [query, setQuery] = useState("");
 	const [active, setActive] = useState(0);
-	const [copied, setCopied] = useState(false);
+	const [copy, setCopy] = useState<"idle" | "copied" | "failed">("idle");
+	const closeTimer = useRef<number | undefined>(undefined);
+	useEffect(() => () => window.clearTimeout(closeTimer.current), []);
 
 	const commands = useMemo<Command[]>(() => {
-		const nextTheme = resolveTheme(theme) === "light" ? "dark" : "light";
+		const nextTheme = resolvedTheme === "light" ? "dark" : "light";
 		return [
 			...SECTIONS.map((section) => ({
 				id: `section-${section.id}`,
@@ -93,6 +100,15 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 				icon: Hash,
 				run: () => navigate({ pathname: "/", hash: section.id }),
 			})),
+			{
+				id: "section-output",
+				group: "Navigate" as const,
+				label: "Output: charts, maps and broadcast graphics",
+				hint: "#output",
+				keywords: "data visualisation map tv",
+				icon: Hash,
+				run: () => navigate({ pathname: "/", hash: "output" }),
+			},
 			...caseStudies.map((study) => ({
 				id: `study-${study.slug}`,
 				group: "Case studies" as const,
@@ -120,6 +136,15 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 				run: () => openExternal(link.href),
 			})),
 			{
+				id: "link-llms",
+				group: "Links" as const,
+				label: "This site, for AI assistants",
+				hint: "/llms.txt",
+				keywords: "llm agent machine readable text chatgpt claude",
+				icon: Bot,
+				run: () => openExternal("/llms.txt"),
+			},
+			{
 				id: "link-source",
 				group: "Links" as const,
 				label: "Source code for this site",
@@ -146,9 +171,17 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 				hint: profile.email,
 				keywords: "contact clipboard",
 				icon: Copy,
-				run: () => {
-					void navigator.clipboard?.writeText(profile.email);
-					setCopied(true);
+				confirms: true,
+				run: async () => {
+					try {
+						if (!navigator.clipboard) throw new Error("No clipboard");
+						await navigator.clipboard.writeText(profile.email);
+						setCopy("copied");
+						return true;
+					} catch {
+						setCopy("failed");
+						return false;
+					}
 				},
 			},
 			{
@@ -160,7 +193,7 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 				run: toggleTheme,
 			},
 		];
-	}, [navigate, theme]);
+	}, [navigate, resolvedTheme]);
 
 	const filtered = useMemo(
 		() => commands.filter((command) => matches(command, query)),
@@ -201,10 +234,15 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 
 	const runCommand = (command: Command | undefined) => {
 		if (!command) return;
-		command.run();
-		// Copying keeps the palette open long enough to say it worked.
-		if (command.id === "action-copy-email") {
-			window.setTimeout(onClose, 700);
+		const result = command.run();
+		if (command.confirms) {
+			// Open long enough to say it worked, and open for good if it did
+			// not, so the reader can see that and retry.
+			void Promise.resolve(result).then((done) => {
+				if (done === true) {
+					closeTimer.current = window.setTimeout(onClose, 700);
+				}
+			});
 			return;
 		}
 		onClose();
@@ -304,9 +342,11 @@ export default function CommandPalette({ onClose }: { onClose: () => void }) {
 								const isActive = command === activeCommand;
 								const Icon = command.icon;
 								const label =
-									command.id === "action-copy-email" && copied
-										? "Copied to clipboard"
-										: command.label;
+									command.id !== "action-copy-email" || copy === "idle"
+										? command.label
+										: copy === "copied"
+											? "Copied to clipboard"
+											: "Could not copy — the address is on the right";
 								return (
 									<div
 										key={command.id}

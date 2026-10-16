@@ -1,10 +1,11 @@
-import { act, screen, within } from "@testing-library/react";
+import { act, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useLocation } from "react-router-dom";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { setPaletteOpen } from "@/components/command/store";
 import { Layout } from "@/components/Layout";
 import { caseStudies } from "@/content/case-studies";
+import { profile } from "@/data/profile";
 import { renderWithRouter } from "@/test/render";
 
 function LocationProbe() {
@@ -88,7 +89,10 @@ describe("CommandPalette", () => {
 		const options = screen.getAllByRole("option");
 		expect(options[1]).toHaveAttribute("aria-selected", "true");
 		await user.keyboard("{ArrowUp}{ArrowUp}");
-		expect(options.at(-1)).toHaveAttribute("aria-selected", "true");
+		expect(options[options.length - 1]).toHaveAttribute(
+			"aria-selected",
+			"true",
+		);
 	});
 
 	it("says so when nothing matches", async () => {
@@ -121,5 +125,43 @@ describe("CommandPalette", () => {
 		await user.type(await screen.findByRole("combobox"), "stack");
 		await user.keyboard("{Enter}");
 		expect(screen.getByTestId("location")).toHaveTextContent("/#stack");
+	});
+
+	it("stays open and says so when copying fails", async () => {
+		const user = userEvent.setup();
+		const writeText = vi.fn().mockRejectedValue(new Error("denied"));
+		Object.defineProperty(navigator, "clipboard", {
+			value: { writeText },
+			configurable: true,
+		});
+		renderPage();
+		await user.keyboard("{Control>}k{/Control}");
+		await user.type(await screen.findByRole("combobox"), "copy email");
+		await user.keyboard("{Enter}");
+		expect(writeText).toHaveBeenCalledWith(profile.email);
+		expect(
+			await screen.findByRole("option", { name: /could not copy/i }),
+		).toBeInTheDocument();
+		await new Promise((resolve) => setTimeout(resolve, 800));
+		expect(screen.getByRole("dialog")).toBeInTheDocument();
+	});
+
+	it("confirms a copy that worked, then closes", async () => {
+		const user = userEvent.setup();
+		const writeText = vi.fn().mockResolvedValue(undefined);
+		Object.defineProperty(navigator, "clipboard", {
+			value: { writeText },
+			configurable: true,
+		});
+		renderPage();
+		await user.keyboard("{Control>}k{/Control}");
+		await user.type(await screen.findByRole("combobox"), "copy email");
+		await user.keyboard("{Enter}");
+		expect(
+			await screen.findByRole("option", { name: /copied to clipboard/i }),
+		).toBeInTheDocument();
+		await waitFor(() =>
+			expect(screen.queryByRole("dialog")).not.toBeInTheDocument(),
+		);
 	});
 });

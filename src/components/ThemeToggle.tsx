@@ -1,7 +1,7 @@
 import { Moon, Sun } from "lucide-react";
 import type { MouseEvent } from "react";
 import { Button } from "@/components/ui/button";
-import { resolveTheme, toggleTheme, useTheme } from "@/hooks/useTheme";
+import { toggleTheme, useTheme } from "@/hooks/useTheme";
 import { cn } from "@/lib/utils";
 
 type TransitionDocument = Document & {
@@ -33,26 +33,32 @@ function toggleFrom(event: MouseEvent<HTMLButtonElement>) {
 	);
 
 	const transition = doc.startViewTransition(toggleTheme);
-	void transition.ready.then(() => {
-		document.documentElement.animate(
-			{
-				clipPath: [
-					`circle(0px at ${x}px ${y}px)`,
-					`circle(${radius}px at ${x}px ${y}px)`,
-				],
-			},
-			{
-				duration: 560,
-				easing: "cubic-bezier(0.16, 1, 0.3, 1)",
-				pseudoElement: "::view-transition-new(root)",
-			},
-		);
-	});
+	transition.ready.then(
+		() => {
+			document.documentElement.animate(
+				{
+					clipPath: [
+						`circle(0px at ${x}px ${y}px)`,
+						`circle(${radius}px at ${x}px ${y}px)`,
+					],
+				},
+				{
+					duration: 560,
+					easing: "cubic-bezier(0.16, 1, 0.3, 1)",
+					pseudoElement: "::view-transition-new(root)",
+				},
+			);
+		},
+		() => {
+			// Skipped (a second click before the first was ready). The theme has
+			// already changed; only the animation is lost, which is fine.
+		},
+	);
 }
 
 export function ThemeToggle({ className }: { className?: string }) {
-	const { theme } = useTheme();
-	const next = resolveTheme(theme) === "light" ? "dark" : "light";
+	const { resolvedTheme } = useTheme();
+	const next = resolvedTheme === "light" ? "dark" : "light";
 
 	return (
 		<Button

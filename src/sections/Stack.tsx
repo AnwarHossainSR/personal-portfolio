@@ -15,7 +15,7 @@ export function Stack() {
 	return (
 		<Section
 			id="stack"
-			number="04"
+			number="05"
 			eyebrow="Tools"
 			title="The tools behind the work"
 		>
@@ -33,6 +33,7 @@ export function Stack() {
 					<Reveal
 						key={group.name}
 						delay={(index % 2) * 0.08}
+						data-arcade-ground
 						className="spotlight panel p-6 md:p-7"
 					>
 						<p aria-hidden="true" className="font-mono text-[11px] text-faint">

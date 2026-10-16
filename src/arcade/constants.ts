@@ -44,6 +44,12 @@ export const MAX_PARTS = 160;
 
 export const RESPAWN_AFTER = 5200;
 export const CAR_RESPAWN_DELAY = 5000;
+/**
+ * How long the rocket may sit off-screen before it is brought back into view.
+ * Long enough that a scroll in progress settles first, short enough that the
+ * reader never goes looking for it.
+ */
+export const RECALL_AFTER = 350;
 export const CAMERA_ACCEL = 3600;
 export const CAMERA_MAX = 1400;
 

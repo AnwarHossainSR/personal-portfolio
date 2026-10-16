@@ -12,6 +12,9 @@
     />
     <meta name="author" content="Md. Anwar Hossain" />
 
+    <!-- Kept in step with the active theme by src/hooks/useTheme.ts. -->
+    <meta name="theme-color" content="#0c0a08" />
+
     <!--
       Theme before first paint. Mirrors src/hooks/useTheme.ts: the stored
       choice wins only when it was made under the current default version,
@@ -24,11 +27,18 @@
             localStorage.getItem("theme-default-version") === "dark-v2";
           let theme = current ? localStorage.getItem("theme") : "dark";
           if (theme === "system") {
-            const light = matchMedia("(prefers-color-scheme: light)").matches;
-            theme = light ? "light" : "dark";
+            const prefersLight = matchMedia(
+              "(prefers-color-scheme: light)",
+            ).matches;
+            theme = prefersLight ? "light" : "dark";
           }
-          document.documentElement.className =
-            theme === "light" ? "light" : "dark";
+          const light = theme === "light";
+          document.documentElement.className = light ? "light" : "dark";
+          // The browser chrome too, or a light page sits under dark chrome
+          // until React loads. The meta element is above this script.
+          document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute("content", light ? "#faf9f6" : "#0c0a08");
         } catch {
           // Storage is blocked: keep the dark default already on <html>.
         }
@@ -76,8 +86,6 @@
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
-    <!-- Kept in step with the active theme by src/hooks/useTheme.ts. -->
-    <meta name="theme-color" content="#0c0a08" />
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

@@ -19,14 +19,17 @@ export default function NotFound() {
 						That page does not exist
 					</h1>
 
-					<div className="panel mt-10 max-w-xl overflow-hidden font-mono text-[12.5px]">
+					<div
+						data-arcade-ground
+						className="panel mt-10 max-w-xl overflow-hidden font-mono text-[12.5px]"
+					>
 						<p className="border-b border-line px-4 py-3 text-faint">
 							<span className="text-accent">❯</span> GET{" "}
 							<span className="break-all text-ink">{pathname}</span>
 						</p>
 						<p className="px-4 py-3 text-muted">
-							<span className="text-accent">404</span> route not found ·
-							everything now lives on one page
+							<span className="text-accent">404</span> route not found · the
+							sections below are a good place to start
 						</p>
 					</div>
 

@@ -65,6 +65,7 @@ export function WhatIDo() {
 						<Reveal
 							key={capability.title}
 							delay={(index % 3) * 0.08}
+							data-arcade-ground
 							className={cn(
 								"spotlight panel flex flex-col p-6 md:p-7",
 								WIDE.has(index) && "lg:col-span-2",
@@ -103,6 +104,7 @@ export function WhatIDo() {
 
 				<Reveal
 					delay={0.16}
+					data-arcade-ground
 					className="panel relative flex flex-col justify-between overflow-hidden bg-surface-deep/60 p-6 md:col-span-2 md:p-7 lg:col-span-1"
 				>
 					<div

@@ -9,7 +9,7 @@ export function DecisionBlock({
 	index: number;
 }) {
 	return (
-		<article className="panel overflow-hidden">
+		<article data-arcade-ground className="panel overflow-hidden">
 			<div className="border-b border-line/70 p-6 md:p-7">
 				<p className="font-mono text-[11px] uppercase tracking-[0.18em] text-accent">
 					Decision {String(index + 1).padStart(2, "0")}

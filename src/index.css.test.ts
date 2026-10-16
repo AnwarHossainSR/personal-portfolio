@@ -52,6 +52,7 @@ describe("decorative layers", () => {
 		".dot-field",
 		".halo",
 		".packet-track",
+		".studio-floor",
 	])("%s cannot be hit", (selector) => {
 		expect(block(selector)).toContain("pointer-events: none");
 	});

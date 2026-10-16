@@ -1,6 +1,7 @@
 import { Helmet } from "react-helmet-next";
 import { profile } from "@/data/profile";
 import { roles } from "@/data/roles";
+import { SITE_URL } from "@/data/site";
 
 export function StructuredData() {
 	const data = {
@@ -9,7 +10,7 @@ export function StructuredData() {
 		name: profile.name,
 		jobTitle: "Senior Software Engineer",
 		email: `mailto:${profile.email}`,
-		url: "https://anwarportfolio.vercel.app",
+		url: SITE_URL,
 		address: { "@type": "PostalAddress", addressLocality: profile.location },
 		sameAs: profile.links.map((link) => link.href),
 		worksFor: { "@type": "Organization", name: roles[0].company },

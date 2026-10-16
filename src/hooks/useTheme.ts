@@ -44,8 +44,8 @@ export function resolveTheme(theme: Theme): "dark" | "light" {
 }
 
 function applyTheme(theme: Theme) {
+	resolved = resolveTheme(theme);
 	if (typeof document === "undefined") return;
-	const resolved = resolveTheme(theme);
 	const root = document.documentElement;
 	root.classList.remove("light", "dark");
 	root.classList.add(resolved);
@@ -60,6 +60,8 @@ function applyTheme(theme: Theme) {
  * second one went stale the moment the first was clicked.
  */
 let current: Theme | null = null;
+/** What `current` paints as. Differs from it only while it is "system". */
+let resolved: "dark" | "light" = resolveTheme(DEFAULT_THEME);
 const listeners = new Set<() => void>();
 
 function getTheme(): Theme {
@@ -74,10 +76,43 @@ function getServerTheme(): Theme {
 	return DEFAULT_THEME;
 }
 
+function getResolved(): "dark" | "light" {
+	getTheme();
+	return resolved;
+}
+
+function getServerResolved(): "dark" | "light" {
+	return "dark";
+}
+
+function notify() {
+	for (const listener of listeners) listener();
+}
+
+/*
+ * While the choice is "system", an OS switch between light and dark has to
+ * repaint the page — the stored value has not changed, but what it means has.
+ * Listened for only while something is subscribed.
+ */
+let media: MediaQueryList | null = null;
+function onSystemChange() {
+	if (current !== "system") return;
+	applyTheme("system");
+	notify();
+}
+
 function subscribe(listener: () => void) {
 	listeners.add(listener);
+	if (!media && typeof window !== "undefined" && window.matchMedia) {
+		media = window.matchMedia("(prefers-color-scheme: light)");
+		media.addEventListener?.("change", onSystemChange);
+	}
 	return () => {
 		listeners.delete(listener);
+		if (listeners.size === 0) {
+			media?.removeEventListener?.("change", onSystemChange);
+			media = null;
+		}
 	};
 }
 
@@ -90,7 +125,7 @@ export function setTheme(theme: Theme) {
 		// The choice still applies for this visit.
 	}
 	applyTheme(theme);
-	for (const listener of listeners) listener();
+	notify();
 }
 
 export function toggleTheme() {
@@ -99,5 +134,10 @@ export function toggleTheme() {
 
 export function useTheme() {
 	const theme = useSyncExternalStore(subscribe, getTheme, getServerTheme);
-	return { theme, setTheme, toggleTheme };
+	const resolvedTheme = useSyncExternalStore(
+		subscribe,
+		getResolved,
+		getServerResolved,
+	);
+	return { theme, resolvedTheme, setTheme, toggleTheme };
 }

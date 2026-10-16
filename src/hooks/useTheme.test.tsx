@@ -94,4 +94,60 @@ describe("useTheme", () => {
 		);
 		expect(html).toContain(`=== "${THEME_DEFAULT_VERSION}"`);
 	});
+
+	it("follows the OS while the choice is system", async () => {
+		const listeners = new Set<() => void>();
+		let prefersLight = false;
+		const realMatchMedia = window.matchMedia;
+		window.matchMedia = ((query: string) =>
+			({
+				get matches() {
+					return query.includes("light") && prefersLight;
+				},
+				media: query,
+				addEventListener: (_: string, fn: () => void) => listeners.add(fn),
+				removeEventListener: (_: string, fn: () => void) =>
+					listeners.delete(fn),
+			}) as unknown as MediaQueryList) as typeof window.matchMedia;
+
+		const { useTheme, setTheme } = await freshModule();
+		function Probe() {
+			const { theme, resolvedTheme } = useTheme();
+			return <p>{`${theme}:${resolvedTheme}`}</p>;
+		}
+		render(<Probe />);
+		act(() => setTheme("system"));
+		expect(screen.getByText("system:dark")).toBeInTheDocument();
+
+		prefersLight = true;
+		act(() => {
+			for (const fn of listeners) fn();
+		});
+		expect(screen.getByText("system:light")).toBeInTheDocument();
+		expect(document.documentElement).toHaveClass("light");
+		window.matchMedia = realMatchMedia;
+	});
+
+	it("sets the browser chrome colour before first paint, not after React loads", () => {
+		const html = readFileSync(
+			path.resolve(process.cwd(), "index.html"),
+			"utf8",
+		);
+		const meta = html.indexOf('name="theme-color"');
+		const script = html.match(/<script>([\s\S]*?)<\/script>/);
+		expect(script).not.toBeNull();
+		// The script can only reach an element the parser has already seen.
+		expect(meta).toBeLessThan(html.indexOf("<script>"));
+
+		const element = document.createElement("meta");
+		element.name = "theme-color";
+		element.content = "#0c0a08";
+		document.head.append(element);
+		localStorage.setItem("theme", "light");
+		localStorage.setItem("theme-default-version", "dark-v2");
+		new Function((script as RegExpMatchArray)[1])();
+		expect(document.documentElement.className).toBe("light");
+		expect(element.content).toBe("#faf9f6");
+		element.remove();
+	});
 });

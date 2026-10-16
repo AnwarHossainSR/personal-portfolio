@@ -1,6 +1,21 @@
 import { useEffect } from "react";
 import { useLocation, useNavigationType } from "react-router-dom";
 
+/**
+ * The element id a hash names. A malformed escape (`#%E0%A4%A`, from a
+ * hand-edited or mangled link) makes decodeURIComponent throw, and a throw
+ * here, inside an effect with no error boundary above it, unmounts the whole
+ * layout — a blank page from a bad link. Such a hash is looked up verbatim.
+ */
+export function fragmentId(hash: string): string {
+	const raw = hash.replace(/^#/, "");
+	try {
+		return decodeURIComponent(raw);
+	} catch {
+		return raw;
+	}
+}
+
 /** How long to keep looking for a hash target that a lazy route has not rendered yet. */
 const MAX_FRAMES = 90;
 
@@ -29,7 +44,7 @@ export function ScrollManager() {
 			return;
 		}
 
-		const id = decodeURIComponent(hash.slice(1));
+		const id = fragmentId(hash);
 		let frame = 0;
 		let tries = 0;
 		const attempt = () => {

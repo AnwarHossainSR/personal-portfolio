@@ -46,6 +46,7 @@ export function McpDiagram({ className }: { className?: string }) {
 	return (
 		<div
 			role="img"
+			data-arcade-ground
 			aria-label="An AI client reaches the product API through an MCP server, and a person reaches the same API through the interface."
 			className={cn(
 				"rounded-xl border border-line/80 bg-paper/60 px-3 pb-4 pt-6 font-mono text-[10px] sm:px-4 sm:text-[11px]",
