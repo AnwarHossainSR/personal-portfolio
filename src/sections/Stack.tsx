@@ -1,8 +1,17 @@
 import { Section } from "@/components/section";
 import { stackGroups } from "@/data/stack";
 import { Reveal } from "@/motion/Reveal";
+import { useSpotlight } from "@/motion/useSpotlight";
+
+const slug = (name: string) =>
+	name
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/^-|-$/g, "");
 
 export function Stack() {
+	const onPointerMove = useSpotlight();
+
 	return (
 		<Section
 			id="stack"
@@ -10,32 +19,43 @@ export function Stack() {
 			eyebrow="Tools"
 			title="The tools behind the work"
 		>
-			<p className="max-w-2xl leading-relaxed text-muted">
+			<p className="max-w-2xl text-[17px] leading-relaxed text-muted">
 				Grouped by what I use each thing for. No proficiency ratings — what a
 				tool is used for is something you can check in conversation, and a grade
 				I award myself is not.
 			</p>
 
-			<div className="mt-10 space-y-10">
+			<div
+				onPointerMove={onPointerMove}
+				className="mt-12 grid grid-cols-1 gap-4 md:grid-cols-2"
+			>
 				{stackGroups.map((group, index) => (
 					<Reveal
 						key={group.name}
-						delay={index * 0.08}
-						className="border-t border-line pt-6"
+						delay={(index % 2) * 0.08}
+						className="spotlight panel p-6 md:p-7"
 					>
-						<h3 className="font-display text-xl font-semibold tracking-tight text-ink md:text-2xl">
+						<p aria-hidden="true" className="font-mono text-[11px] text-faint">
+							<span className="text-accent">registry</span>/{slug(group.name)}
+						</p>
+						<h3 className="mt-4 font-display text-xl font-semibold tracking-[-0.02em] text-ink md:text-2xl">
 							{group.name}
 						</h3>
-						<p className="mt-2 max-w-2xl leading-relaxed text-muted">
+						<p className="mt-2 text-[15px] leading-relaxed text-muted">
 							{group.purpose}
 						</p>
-						<dl className="mt-5 space-y-3">
+						<dl className="mt-6 divide-y divide-line/60 border-t border-line/60">
 							{group.items.map((item) => (
-								<div key={item.name} className="sm:flex sm:gap-6">
-									<dt className="text-ink sm:w-56 sm:shrink-0">{item.name}</dt>
-									<dd className="leading-relaxed text-muted">
-										{item.usedFor}{" "}
-										<span className="text-faint">· since {item.since}</span>
+								<div
+									key={item.name}
+									className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-4 gap-y-1 py-3"
+								>
+									<dt className="text-[15px] text-ink">{item.name}</dt>
+									<dd className="font-mono text-[11px] leading-6 text-faint">
+										since {item.since}
+									</dd>
+									<dd className="col-span-2 text-sm leading-relaxed text-muted">
+										{item.usedFor}
 									</dd>
 								</div>
 							))}

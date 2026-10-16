@@ -34,11 +34,11 @@ export default function Note() {
 				</Link>
 
 				<header className="mt-8">
-					<p className="text-sm text-muted">
+					<p className="font-mono text-[12px] text-faint">
 						<time dateTime={note.published}>{note.published}</time> ·{" "}
 						{note.readingMinutes} min · {note.tags.join(", ")}
 					</p>
-					<h1 className="mt-4 max-w-[24ch] font-display text-3xl font-semibold leading-[1.15] tracking-tight sm:text-[38px]">
+					<h1 className="mt-4 max-w-[24ch] font-display text-[2.2rem] font-semibold leading-[1.1] tracking-[-0.035em] text-ink sm:text-5xl">
 						{note.title}
 					</h1>
 				</header>

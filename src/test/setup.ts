@@ -40,3 +40,7 @@ if (!("IntersectionObserver" in globalThis)) {
 	// @ts-expect-error — minimal stub for tests
 	globalThis.IntersectionObserver = NoopIntersectionObserver;
 }
+
+// jsdom does not implement scrolling. ScrollManager calls window.scrollTo on
+// every route change; without a stub each one logs "Not implemented".
+window.scrollTo = (() => {}) as typeof window.scrollTo;

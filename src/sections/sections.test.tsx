@@ -13,6 +13,18 @@ describe("Hero", () => {
 		expect(headings[0]).toHaveTextContent(profile.positioning);
 	});
 
+	it("keeps the step numbers out of the headline's text", () => {
+		// The numbers are generated content (index.css, .plan-step). If they
+		// were ever rendered as text they would join the h1's name, and the
+		// partial match above would not notice.
+		renderWithRouter(<Hero />);
+		const heading = screen.getByRole("heading", { level: 1 });
+		expect(heading.textContent).toBe(profile.positioning);
+		for (const step of heading.querySelectorAll("[data-step]")) {
+			expect(step.getAttribute("data-step")).toMatch(/^\d{2}$/);
+		}
+	});
+
 	it("renders no vanity counters", () => {
 		const { container } = renderWithRouter(<Hero />);
 		expect(container.textContent).not.toMatch(

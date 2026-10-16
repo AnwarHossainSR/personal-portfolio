@@ -1,22 +1,30 @@
 /*
- * Warm paper palette. Every neutral sits on hue 70–85; the single accent is at
- * hue 35. The warmth is the design — neutralising these hues turns the site
- * back into generic SaaS blue-grey.
+ * "Production agent" palette.
  *
- * Light values are taken verbatim from the reference implementation. Dark is
- * derived by inverting lightness while holding hue and chroma, so the warm
- * character survives the theme switch.
+ * Neutrals are a warm graphite: hue 70–85 at very low chroma, so they read as
+ * carbon and bone rather than as the blue-grey every AI product ships with.
+ * The warmth is still the design — tokens.test.ts holds the neutrals to it.
+ *
+ * Two colours sit on top of the neutrals, and each has one job:
+ *
+ *   accent  ember. The human hand: the primary action, links, emphasis.
+ *   signal  phosphor green. The system: live status, a step that passed.
+ *
+ * Dark is the default ground. The second block re-resolves the same roles for
+ * a bone-white page, and every text pair in both has been checked to at least
+ * 4.5:1 against paper, surface and surface-deep.
  */
 :root,
 .dark {
-	--color-paper: 18% 0.012 85;
-	--color-surface: 22% 0.014 85;
-	--color-surface-deep: 26% 0.016 85;
-	--color-ink: 94% 0.012 85;
-	--color-muted: 72% 0.012 75;
-	--color-faint: 61% 0.012 75;
-	--color-line: 34% 0.012 80;
-	--color-accent: 68% 0.15 35;
+	--color-paper: 14.5% 0.006 75;
+	--color-surface: 18.5% 0.007 75;
+	--color-surface-deep: 23% 0.008 75;
+	--color-ink: 96.5% 0.005 85;
+	--color-muted: 76% 0.008 80;
+	--color-faint: 64% 0.009 80;
+	--color-line: 29% 0.008 80;
+	--color-accent: 73% 0.165 50;
+	--color-signal: 82% 0.15 160;
 
 	/*
 	 * Arcade overlay palette (src/arcade). Kept here rather than in the engine
@@ -25,20 +33,28 @@
 	 * against a page of warm neutrals it reads as "not yours" without needing a
 	 * label.
 	 */
-	--color-accent-deep: 58% 0.14 32;
+	--color-accent-deep: 62% 0.16 44;
 	--color-arcade-enemy: 72% 0.02 260;
 	--color-arcade-danger: 68% 0.19 28;
 	--color-arcade-health: 78% 0.17 150;
 
 	/*
+	 * Elevation. Not colours, so not tokens.test.ts's business: on a dark
+	 * ground a drop shadow is invisible, so depth comes from a hairline of
+	 * light along the top edge instead.
+	 */
+	--elevation-1: inset 0 1px 0 0 oklch(100% 0 0 / 0.04);
+	--elevation-2: inset 0 1px 0 0 oklch(100% 0 0 / 0.06),
+		0 24px 48px -24px oklch(0% 0 0 / 0.6);
+	--dot-strength: 0.11;
+	--halo-strength: 0.24;
+
+	/*
 	 * shadcn/Radix compatibility bridge. These are not a second palette —
-	 * every value below resolves to a warm token defined above, so there is
-	 * still exactly one place to change a colour. Kept only because button.tsx
-	 * — the last surviving ui/* component, used by ThemeToggle — is written
-	 * against these semantic names. Pruned to just what it references: no
-	 * --card, --foreground, --popover, --popover-foreground, --muted-foreground
-	 * or --border, since their only consumers (card.tsx, tooltip.tsx, toast.tsx,
-	 * toaster.tsx, sonner.tsx) were unused and are gone.
+	 * every value below resolves to a token defined above, so there is still
+	 * exactly one place to change a colour. Kept only because button.tsx — the
+	 * last surviving ui/* component, used by ThemeToggle — is written against
+	 * these semantic names.
 	 */
 	--background: var(--color-paper);
 	--primary: var(--color-accent);
@@ -50,26 +66,35 @@
 	--destructive-foreground: var(--color-paper);
 	--input: var(--color-line);
 	--ring: var(--color-accent);
-	--radius: 0.375rem;
+	--radius: 0.75rem;
+
+	color-scheme: dark;
 }
 
 .light {
-	--color-paper: 96.5% 0.012 85;
-	--color-surface: 93.8% 0.014 85;
-	--color-surface-deep: 90% 0.016 85;
-	--color-ink: 21% 0.014 70;
-	--color-muted: 45% 0.012 70;
-	--color-faint: 52% 0.012 75;
-	--color-line: 80% 0.012 80;
-	--color-accent: 52% 0.17 35;
+	--color-paper: 98.2% 0.004 85;
+	--color-surface: 96.2% 0.006 85;
+	--color-surface-deep: 93.5% 0.008 85;
+	--color-ink: 19% 0.01 70;
+	--color-muted: 43% 0.01 70;
+	--color-faint: 49% 0.01 75;
+	--color-line: 89% 0.008 80;
+	--color-accent: 52.5% 0.185 40;
+	--color-signal: 49% 0.12 160;
 
-	/* Arcade overlay palette — same roles, re-resolved for paper. */
-	--color-accent-deep: 44% 0.16 32;
+	/* Arcade overlay palette — same roles, re-resolved for a light page. */
+	--color-accent-deep: 44% 0.16 36;
 	--color-arcade-enemy: 38% 0.02 260;
 	--color-arcade-danger: 58% 0.19 28;
 	--color-arcade-health: 62% 0.16 150;
 
-	/* Same bridge, re-resolved against the light warm tokens above. */
+	--elevation-1: 0 1px 2px 0 oklch(30% 0.02 70 / 0.05);
+	--elevation-2: 0 1px 2px 0 oklch(30% 0.02 70 / 0.06),
+		0 24px 48px -24px oklch(30% 0.02 70 / 0.22);
+	--dot-strength: 0.14;
+	--halo-strength: 0.12;
+
+	/* Same bridge, re-resolved against the tokens above. */
 	--background: var(--color-paper);
 	--primary: var(--color-accent);
 	--primary-foreground: var(--color-paper);
@@ -80,4 +105,6 @@
 	--destructive-foreground: var(--color-paper);
 	--input: var(--color-line);
 	--ring: var(--color-accent);
+
+	color-scheme: light;
 }

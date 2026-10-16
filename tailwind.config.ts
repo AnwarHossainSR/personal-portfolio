@@ -53,16 +53,34 @@ export default {
 					foreground: "oklch(var(--destructive-foreground) / <alpha-value>)",
 				},
 				"accent-deep": "oklch(var(--color-accent-deep) / <alpha-value>)",
+				signal: "oklch(var(--color-signal) / <alpha-value>)",
 				"arcade-enemy": "oklch(var(--color-arcade-enemy) / <alpha-value>)",
 				"arcade-danger": "oklch(var(--color-arcade-danger) / <alpha-value>)",
 				"arcade-health": "oklch(var(--color-arcade-health) / <alpha-value>)",
 				input: "oklch(var(--input) / <alpha-value>)",
 				ring: "oklch(var(--ring) / <alpha-value>)",
 			},
+			/*
+			 * Three voices. Geist carries the structure; Geist Mono is the
+			 * system talking — labels, paths, the agent trace; Instrument Serif
+			 * italic is reserved for the human talking, and appears only where
+			 * a sentence is a judgement rather than a fact.
+			 */
 			fontFamily: {
-				display: ["Newsreader", "Georgia", "Times New Roman", "serif"],
-				sans: ["Hind Siliguri", "system-ui", "-apple-system", "sans-serif"],
-				mono: ["ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
+				display: ["Geist", "system-ui", "-apple-system", "sans-serif"],
+				sans: ["Geist", "system-ui", "-apple-system", "sans-serif"],
+				mono: [
+					"Geist Mono",
+					"ui-monospace",
+					"SFMono-Regular",
+					"Menlo",
+					"monospace",
+				],
+				serif: ["Instrument Serif", "Georgia", "Times New Roman", "serif"],
+			},
+			boxShadow: {
+				"elevation-1": "var(--elevation-1)",
+				"elevation-2": "var(--elevation-2)",
 			},
 			transitionTimingFunction: {
 				smooth: "var(--curve-smooth)",

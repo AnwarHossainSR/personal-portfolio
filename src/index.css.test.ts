@@ -35,6 +35,32 @@ describe("stylesheet", () => {
 	});
 });
 
+describe("decorative layers", () => {
+	/*
+	 * The arcade overlay finds its walls with document.elementsFromPoint, which
+	 * skips anything that cannot be hit. A painted backdrop that could be hit
+	 * would be a wall the size of the hero, so every decorative layer has to
+	 * be pointer-transparent — see src/arcade/world.ts.
+	 */
+	const block = (selector: string) => {
+		const start = css.indexOf(`${selector} {`);
+		expect(start, `${selector} is not defined`).toBeGreaterThan(-1);
+		return css.slice(start, css.indexOf("}", start));
+	};
+
+	it.each([
+		".dot-field",
+		".halo",
+		".packet-track",
+	])("%s cannot be hit", (selector) => {
+		expect(block(selector)).toContain("pointer-events: none");
+	});
+
+	it("draws the card spotlight on a layer that cannot be hit", () => {
+		expect(block(".spotlight::before")).toContain("pointer-events: none");
+	});
+});
+
 const REMOVED_CLASSES = [
 	"premium-card",
 	"gradient-text",

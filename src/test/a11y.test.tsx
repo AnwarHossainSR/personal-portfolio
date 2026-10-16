@@ -1,8 +1,10 @@
+import { act } from "@testing-library/react";
 import { Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import { axe } from "vitest-axe";
 import * as matchers from "vitest-axe/matchers";
 import { setArcadeMode } from "@/arcade/mode";
+import { setPaletteOpen } from "@/components/command/store";
 import { Layout } from "@/components/Layout";
 import { caseStudies } from "@/content/case-studies";
 import CaseStudy from "@/pages/CaseStudy";
@@ -11,6 +13,20 @@ import NotFound from "@/pages/NotFound";
 import { renderWithRouter } from "@/test/render";
 
 expect.extend(matchers);
+
+/*
+ * axe takes long enough on the full page that Reveal's fallback timer and the
+ * lazy palette chunk can both land mid-audit. Running it inside act() lets
+ * React apply those updates instead of warning about them.
+ */
+async function audit(container: Element) {
+	let results: Awaited<ReturnType<typeof axe>> | undefined;
+	await act(async () => {
+		results = await axe(container);
+	});
+	if (!results) throw new Error("axe produced no results");
+	return results;
+}
 
 // Rendered through Layout (not the bare page component) so the chrome that
 // ships with every real page — AnchorNav's header, Footer — is part of what
@@ -23,7 +39,7 @@ describe("accessibility", () => {
 				<Home />
 			</Layout>,
 		);
-		expect(await axe(container)).toHaveNoViolations();
+		expect(await audit(container)).toHaveNoViolations();
 	});
 
 	it("a case study page has no axe violations", async () => {
@@ -35,7 +51,7 @@ describe("accessibility", () => {
 			</Layout>,
 			{ route: `/work/${caseStudies[0].slug}` },
 		);
-		expect(await axe(container)).toHaveNoViolations();
+		expect(await audit(container)).toHaveNoViolations();
 	});
 
 	it("the arcade control adds no violations, on or off", async () => {
@@ -67,7 +83,7 @@ describe("accessibility", () => {
 		expect(
 			off.getByRole("button", { name: /turn arcade mode on/i }),
 		).toBeInTheDocument();
-		expect(await axe(off.container)).toHaveNoViolations();
+		expect(await audit(off.container)).toHaveNoViolations();
 		off.unmount();
 
 		setArcadeMode(true);
@@ -79,9 +95,24 @@ describe("accessibility", () => {
 		expect(
 			on.getByRole("button", { name: /turn arcade mode off/i }),
 		).toBeInTheDocument();
-		expect(await axe(on.container)).toHaveNoViolations();
+		expect(await audit(on.container)).toHaveNoViolations();
 		setArcadeMode(false);
 		window.matchMedia = realMatchMedia;
+	});
+
+	it("the command palette has no axe violations while open", async () => {
+		const { container, findByRole } = renderWithRouter(
+			<Layout>
+				<Home />
+			</Layout>,
+		);
+		await act(async () => {
+			setPaletteOpen(true);
+			await import("@/components/command/CommandPalette");
+		});
+		await findByRole("dialog", { name: "Command palette" });
+		expect(await audit(container)).toHaveNoViolations();
+		act(() => setPaletteOpen(false));
 	});
 
 	it("the 404 page has no axe violations", async () => {
@@ -90,6 +121,6 @@ describe("accessibility", () => {
 				<NotFound />
 			</Layout>,
 		);
-		expect(await axe(container)).toHaveNoViolations();
+		expect(await audit(container)).toHaveNoViolations();
 	});
 });

@@ -11,7 +11,7 @@ export default function Writing() {
 				path="/writing"
 			/>
 			<div className="mx-auto max-w-5xl px-5 py-16 sm:px-8 sm:py-24">
-				<h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+				<h1 className="font-display text-[2.5rem] font-semibold leading-[1.04] tracking-[-0.04em] text-ink md:text-6xl">
 					Writing
 				</h1>
 				<p className="mt-5 max-w-[62ch] text-[17px] leading-[1.75] text-muted">
@@ -22,11 +22,11 @@ export default function Writing() {
 				<ol className="mt-14 space-y-10">
 					{notes.map((note) => (
 						<li key={note.slug} className="border-t border-line/70 pt-6">
-							<p className="text-sm text-muted">
+							<p className="font-mono text-[12px] text-faint">
 								<time dateTime={note.published}>{note.published}</time> ·{" "}
 								{note.readingMinutes} min
 							</p>
-							<h2 className="mt-2 max-w-[26ch] text-xl font-semibold leading-snug tracking-tight">
+							<h2 className="mt-2 max-w-[26ch] font-display text-2xl font-semibold leading-snug tracking-[-0.02em] text-ink">
 								<Link
 									to={`/writing/${note.slug}`}
 									className="transition-colors hover:text-accent"
